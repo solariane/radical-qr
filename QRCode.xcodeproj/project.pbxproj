@@ -110,6 +110,7 @@
 			);
 			name = "Radical QR";
 			packageProductDependencies = (
+				373BBFAB2F23EA71008F72BF /* QRCode */,
 			);
 			productName = "Radical QR";
 			productReference = 373BBF752F23EA67008F72BF /* Radical QR.app */;
@@ -201,6 +202,9 @@
 			productRefGroup = 000000000000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
+			packageReferences = (
+				373BBFAA2F23EA70008F72BF /* XCRemoteSwiftPackageReference "QRCode" */,
+			);
 			targets = (
 				373BBF742F23EA67008F72BF /* Radical QR */,
 				373BBF842F23EA69008F72BF /* Radical QRTests */,
@@ -621,6 +625,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		373BBFAA2F23EA70008F72BF /* XCRemoteSwiftPackageReference "QRCode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dagronf/QRCode";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 20.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		373BBFAB2F23EA71008F72BF /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 373BBFAA2F23EA70008F72BF /* XCRemoteSwiftPackageReference "QRCode" */;
+			productName = QRCode;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 000000000000000000000000 /* Project object */;
 }

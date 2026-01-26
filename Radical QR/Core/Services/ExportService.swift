@@ -1,6 +1,7 @@
 import SwiftUI
 import CoreGraphics
 import UniformTypeIdentifiers
+import QRCode
 
 #if os(macOS)
 import AppKit
@@ -150,127 +151,166 @@ final class ExportService: Sendable {
         configuration: QRCodeConfiguration,
         size: ExportSize
     ) async throws -> Data {
-        let generator = QRCodeGenerator()
-
-        guard let modules = generator.extractModules(
-            from: input.encodedContent,
-            correctionLevel: configuration.effectiveErrorCorrectionLevel
-        ),
-              let matrix = QRModuleMatrix(modules: modules) else {
-            throw ExportError.renderingFailed
-        }
-
         let svgSize = CGFloat(size.width)
-        let moduleSize = svgSize / CGFloat(matrix.size)
 
-        var svg = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 \(Int(svgSize)) \(Int(svgSize))" width="\(Int(svgSize))" height="\(Int(svgSize))">
-
-        """
-
-        switch configuration.backgroundType {
-        case .white:
-            svg += """
-              <rect width="100%" height="100%" fill="white"/>
-
-            """
-        case .transparent, .transparentWithLogoCutout:
-            // For transparent backgrounds (including logo cutout), don't add background rect
-            // Logo cutout is handled when drawing the logo
-            break
-        }
-
-        switch configuration.foregroundStyle {
-        case .gradient(let config):
-            svg += generateSVGGradientDef(config, id: "qrGradient")
-        case .solid:
-            break
-        }
-
-        let fillAttribute: String
-        switch configuration.foregroundStyle {
-        case .solid(let color):
-            fillAttribute = colorToHex(color)
-        case .gradient:
-            fillAttribute = "url(#qrGradient)"
-        }
-
-        // Generate optimized SVG path
-        let pathData = generateOptimizedSVGPath(
-            matrix: matrix,
-            moduleSize: moduleSize,
-            roundness: configuration.roundness
+        // Create QR code document using dagronf/QRCode library
+        let doc = try QRCode.Document(
+            utf8String: input.encodedContent,
+            errorCorrection: mapErrorCorrectionLevel(configuration.effectiveErrorCorrectionLevel)
         )
 
-        svg += "  <path fill=\"\(fillAttribute)\" d=\"\(pathData)\"/>\n"
+        // Configure pixel shape based on roundness
+        if configuration.roundness > 0 {
+            doc.design.shape.onPixels = QRCode.PixelShape.RoundedRect(
+                cornerRadiusFraction: configuration.roundness
+            )
+        } else {
+            doc.design.shape.onPixels = QRCode.PixelShape.Square()
+        }
 
+        // Configure eye shape to match roundness
+        if configuration.roundness > 0.5 {
+            doc.design.shape.eye = QRCode.EyeShape.RoundedRect()
+        } else {
+            doc.design.shape.eye = QRCode.EyeShape.Square()
+        }
+
+        // Configure foreground style
+        switch configuration.foregroundStyle {
+        case .solid(let color):
+            doc.design.style.onPixels = QRCode.FillStyle.Solid(color.cgColor)
+            doc.design.style.eye = QRCode.FillStyle.Solid(color.cgColor)
+            doc.design.style.pupil = QRCode.FillStyle.Solid(color.cgColor)
+
+        case .gradient(let gradientConfig):
+            let gradient = createGradientFillStyle(from: gradientConfig)
+            doc.design.style.onPixels = gradient
+            doc.design.style.eye = gradient
+            doc.design.style.pupil = gradient
+        }
+
+        // Configure background
+        switch configuration.backgroundType {
+        case .white:
+            doc.design.style.background = QRCode.FillStyle.Solid(.white)
+        case .transparent, .transparentWithLogoCutout:
+            doc.design.style.background = QRCode.FillStyle.Solid(.clear)
+        }
+
+        // Generate SVG data
+        let svgData = try doc.svgData(dimension: Int(svgSize))
+
+        // If there's a logo, we need to inject it into the SVG
         if let logoData = configuration.logoData {
-            svg += generateSVGLogoElement(logoData: logoData, qrSize: svgSize)
+            return try injectLogoIntoSVG(
+                svgData: svgData,
+                logoData: logoData,
+                qrSize: svgSize,
+                backgroundType: configuration.backgroundType
+            )
         }
 
-        svg += "</svg>"
-
-        guard let data = svg.data(using: .utf8) else {
-            throw ExportError.conversionFailed
-        }
-
-        return data
+        return svgData
     }
 
-    private func generateSVGGradientDef(_ config: GradientConfiguration, id: String) -> String {
-        let startColor = colorToHex(config.startColor)
-        let endColor = colorToHex(config.endColor)
+    private func mapErrorCorrectionLevel(_ level: QRCodeConfiguration.ErrorCorrectionLevel) -> QRCode.ErrorCorrection {
+        switch level {
+        case .low: return .low
+        case .medium: return .medium
+        case .quartile: return .quantize
+        case .high: return .high
+        }
+    }
+
+    private func createGradientFillStyle(from config: GradientConfiguration) -> QRCode.FillStyle.LinearGradient {
+        // The library primarily supports linear gradients well
+        // Map our gradient config to the library's format
+        let startPoint: CGPoint
+        let endPoint: CGPoint
 
         switch config.type {
         case .linear:
             let angleRad = config.angle * .pi / 180
-            let x1 = 50 - cos(angleRad) * 50
-            let y1 = 50 - sin(angleRad) * 50
-            let x2 = 50 + cos(angleRad) * 50
-            let y2 = 50 + sin(angleRad) * 50
-
-            return """
-              <defs>
-                <linearGradient id="\(id)" x1="\(x1)%" y1="\(y1)%" x2="\(x2)%" y2="\(y2)%">
-                  <stop offset="0%" stop-color="\(startColor)"/>
-                  <stop offset="100%" stop-color="\(endColor)"/>
-                </linearGradient>
-              </defs>
-
-            """
-
+            startPoint = CGPoint(x: 0.5 - cos(angleRad) * 0.5, y: 0.5 - sin(angleRad) * 0.5)
+            endPoint = CGPoint(x: 0.5 + cos(angleRad) * 0.5, y: 0.5 + sin(angleRad) * 0.5)
         case .radial:
-            return """
-              <defs>
-                <radialGradient id="\(id)" cx="50%" cy="50%" r="70.7%">
-                  <stop offset="0%" stop-color="\(startColor)"/>
-                  <stop offset="100%" stop-color="\(endColor)"/>
-                </radialGradient>
-              </defs>
-
-            """
-
+            // Approximate radial with diagonal linear
+            startPoint = CGPoint(x: 0.5, y: 0.5)
+            endPoint = CGPoint(x: 1, y: 1)
         case .angular, .diamond:
-            return """
-              <defs>
-                <linearGradient id="\(id)" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="\(startColor)"/>
-                  <stop offset="100%" stop-color="\(endColor)"/>
-                </linearGradient>
-              </defs>
-
-            """
+            startPoint = CGPoint(x: 0, y: 0)
+            endPoint = CGPoint(x: 1, y: 1)
         }
+
+        return QRCode.FillStyle.LinearGradient(
+            try! DSFGradient(pins: [
+                DSFGradient.Pin(config.startColor.cgColor, 0),
+                DSFGradient.Pin(config.endColor.cgColor, 1)
+            ]),
+            startPoint: startPoint,
+            endPoint: endPoint
+        )
     }
 
-    private func generateSVGLogoElement(logoData: Data, qrSize: CGFloat) -> String {
-        let logoSizeRatio: CGFloat = 0.25
-        let logoSize = qrSize * logoSizeRatio
-        let logoOffset = (qrSize - logoSize) / 2
-        let padding = logoSize * 0.1
-        let backgroundSize = logoSize + padding * 2
-        let backgroundOffset = logoOffset - padding
+    private func injectLogoIntoSVG(
+        svgData: Data,
+        logoData: Data,
+        qrSize: CGFloat,
+        backgroundType: BackgroundType
+    ) throws -> Data {
+        guard var svgString = String(data: svgData, encoding: .utf8) else {
+            throw ExportError.conversionFailed
+        }
+
+        // Generate logo SVG elements
+        let logoSVG = generateSVGLogoElement(
+            logoData: logoData,
+            qrSize: qrSize,
+            withBackground: backgroundType == .transparentWithLogoCutout || backgroundType == .white
+        )
+
+        // Insert logo before closing </svg> tag
+        if let range = svgString.range(of: "</svg>") {
+            svgString.insert(contentsOf: logoSVG, at: range.lowerBound)
+        }
+
+        guard let resultData = svgString.data(using: .utf8) else {
+            throw ExportError.conversionFailed
+        }
+
+        return resultData
+    }
+
+
+    private func generateSVGLogoElement(logoData: Data, qrSize: CGFloat, withBackground: Bool = true) -> String {
+        // Get image dimensions to preserve aspect ratio
+        let imageSize = getImageSize(from: logoData)
+        let aspectRatio = imageSize.width / imageSize.height
+
+        let maxLogoSize = qrSize * 0.25
+
+        let logoWidth: CGFloat
+        let logoHeight: CGFloat
+
+        if aspectRatio > 1 {
+            // Wider than tall
+            logoWidth = maxLogoSize
+            logoHeight = maxLogoSize / aspectRatio
+        } else {
+            // Taller than wide (or square)
+            logoHeight = maxLogoSize
+            logoWidth = maxLogoSize * aspectRatio
+        }
+
+        let logoX = (qrSize - logoWidth) / 2
+        let logoY = (qrSize - logoHeight) / 2
+
+        let padding = min(logoWidth, logoHeight) * 0.12
+        let backgroundWidth = logoWidth + padding * 2
+        let backgroundHeight = logoHeight + padding * 2
+        let backgroundX = logoX - padding
+        let backgroundY = logoY - padding
+        let cornerRadius = padding * 0.8
 
         let base64 = logoData.base64EncodedString()
 
@@ -283,112 +323,35 @@ final class ExportService: Sendable {
             imageType = "image/png"
         }
 
-        return """
-          <rect x="\(backgroundOffset)" y="\(backgroundOffset)" width="\(backgroundSize)" height="\(backgroundSize)" rx="\(padding)" ry="\(padding)" fill="white"/>
-          <image x="\(logoOffset)" y="\(logoOffset)" width="\(logoSize)" height="\(logoSize)" href="data:\(imageType);base64,\(base64)"/>
+        var result = ""
 
-        """
-    }
+        if withBackground {
+            result += """
+              <rect x="\(fmt(backgroundX))" y="\(fmt(backgroundY))" width="\(fmt(backgroundWidth))" height="\(fmt(backgroundHeight))" rx="\(fmt(cornerRadius))" ry="\(fmt(cornerRadius))" fill="white"/>
 
-    private func colorToHex(_ color: SerializableColor) -> String {
-        let r = Int(color.red * 255)
-        let g = Int(color.green * 255)
-        let b = Int(color.blue * 255)
-        return String(format: "#%02X%02X%02X", r, g, b)
-    }
-
-    // MARK: - Optimized SVG Path Generation
-
-    /// Generates an optimized SVG path by merging adjacent modules into horizontal runs
-    /// This produces much smaller SVG files compared to individual <rect> elements
-    private func generateOptimizedSVGPath(
-        matrix: QRModuleMatrix,
-        moduleSize: CGFloat,
-        roundness: CGFloat
-    ) -> String {
-        var pathCommands: [String] = []
-        let r = moduleSize * roundness * 0.5  // Corner radius
-
-        // Process row by row, merging horizontal runs
-        for row in 0..<matrix.size {
-            var col = 0
-            while col < matrix.size {
-                // Skip empty modules
-                guard matrix.isModuleFilled(row: row, column: col) else {
-                    col += 1
-                    continue
-                }
-
-                // Find the run length (consecutive filled modules)
-                var runLength = 1
-                while col + runLength < matrix.size &&
-                      matrix.isModuleFilled(row: row, column: col + runLength) {
-                    runLength += 1
-                }
-
-                // Generate path for this run
-                let x = CGFloat(col) * moduleSize
-                let y = CGFloat(row) * moduleSize
-                let width = CGFloat(runLength) * moduleSize
-                let height = moduleSize
-
-                if roundness > 0 {
-                    // Rounded rectangle path
-                    pathCommands.append(roundedRectPath(x: x, y: y, width: width, height: height, radius: r))
-                } else {
-                    // Simple rectangle path (very compact)
-                    pathCommands.append(rectPath(x: x, y: y, width: width, height: height))
-                }
-
-                col += runLength
-            }
+            """
         }
 
-        return pathCommands.joined(separator: " ")
+        result += """
+          <image x="\(fmt(logoX))" y="\(fmt(logoY))" width="\(fmt(logoWidth))" height="\(fmt(logoHeight))" preserveAspectRatio="xMidYMid meet" href="data:\(imageType);base64,\(base64)"/>
+
+        """
+
+        return result
     }
 
-    /// Generates an SVG path for a simple rectangle
-    private func rectPath(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) -> String {
-        // M = move to, h = horizontal line relative, v = vertical line relative, z = close path
-        return "M\(fmt(x)),\(fmt(y))h\(fmt(width))v\(fmt(height))h\(fmt(-width))z"
-    }
-
-    /// Generates an SVG path for a rounded rectangle
-    private func roundedRectPath(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat, radius: CGFloat) -> String {
-        // Clamp radius to half the smaller dimension
-        let r = min(radius, min(width, height) / 2)
-
-        // Start at top-left corner (after the arc)
-        // Use arc commands: A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-        var path = "M\(fmt(x + r)),\(fmt(y))"
-
-        // Top edge
-        path += "h\(fmt(width - 2 * r))"
-
-        // Top-right corner
-        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(r)),\(fmt(r))"
-
-        // Right edge
-        path += "v\(fmt(height - 2 * r))"
-
-        // Bottom-right corner
-        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(-r)),\(fmt(r))"
-
-        // Bottom edge
-        path += "h\(fmt(-(width - 2 * r)))"
-
-        // Bottom-left corner
-        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(-r)),\(fmt(-r))"
-
-        // Left edge
-        path += "v\(fmt(-(height - 2 * r)))"
-
-        // Top-left corner
-        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(r)),\(fmt(-r))"
-
-        path += "z"
-
-        return path
+    private func getImageSize(from data: Data) -> CGSize {
+        #if os(macOS)
+        if let image = NSImage(data: data) {
+            return image.size
+        }
+        #else
+        if let image = UIImage(data: data) {
+            return image.size
+        }
+        #endif
+        // Default to square if we can't determine size
+        return CGSize(width: 100, height: 100)
     }
 
     /// Formats a CGFloat for SVG, removing unnecessary decimals

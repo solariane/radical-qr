@@ -334,21 +334,40 @@ final class QRCodeRenderer: Sendable {
               let cgImage = nsImage.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
             return
         }
+        let imageWidth = CGFloat(cgImage.width)
+        let imageHeight = CGFloat(cgImage.height)
         #else
         guard let uiImage = UIImage(data: logoData),
               let cgImage = uiImage.cgImage else {
             return
         }
+        let imageWidth = uiImage.size.width
+        let imageHeight = uiImage.size.height
         #endif
 
         // Calculate logo placement (centered, ~25% of QR code size)
-        let logoSizeRatio: CGFloat = 0.25
-        let logoSize = size * logoSizeRatio
+        // Preserve original aspect ratio
+        let maxLogoSize = size * 0.25
+        let aspectRatio = imageWidth / imageHeight
+
+        let logoWidth: CGFloat
+        let logoHeight: CGFloat
+
+        if aspectRatio > 1 {
+            // Wider than tall
+            logoWidth = maxLogoSize
+            logoHeight = maxLogoSize / aspectRatio
+        } else {
+            // Taller than wide (or square)
+            logoHeight = maxLogoSize
+            logoWidth = maxLogoSize * aspectRatio
+        }
+
         let logoRect = CGRect(
-            x: (size - logoSize) / 2,
-            y: (size - logoSize) / 2,
-            width: logoSize,
-            height: logoSize
+            x: (size - logoWidth) / 2,
+            y: (size - logoHeight) / 2,
+            width: logoWidth,
+            height: logoHeight
         )
 
         // Draw white background behind logo based on background type:
@@ -356,7 +375,7 @@ final class QRCodeRenderer: Sendable {
         // - transparent: no background (preserve logo transparency)
         // - transparentWithLogoCutout: draw white cutout area for logo
         if backgroundType == .white || backgroundType == .transparentWithLogoCutout {
-            let padding: CGFloat = logoSize * 0.12
+            let padding: CGFloat = min(logoWidth, logoHeight) * 0.12
             let backgroundRect = logoRect.insetBy(dx: -padding, dy: -padding)
             context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
 
