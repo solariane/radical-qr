@@ -28,7 +28,7 @@ final class GeneratorViewModel: ObservableObject {
 
     private let generator = QRCodeGenerator()
     private let renderer = QRCodeRenderer()
-    private let exportService = ExportService()
+    let exportService = ExportService()
 
     // MARK: - Private Properties
 

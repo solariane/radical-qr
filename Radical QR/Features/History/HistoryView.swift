@@ -39,9 +39,13 @@ struct HistoryView: View {
             #endif
             .toolbar {
                 #if os(iOS)
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "action.close", defaultValue: "Close")) {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 #endif

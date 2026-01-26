@@ -12,9 +12,26 @@ struct GeneratorView: View {
     @StateObject private var viewModel = GeneratorViewModel()
     @EnvironmentObject private var purchaseManager: PurchaseManager
 
-    @State private var showExportSheet = false
     @State private var copiedFeedback = false
     @State private var showHelpSheet = false
+    @State private var exportMode: ExportMode = .copy
+    @State private var selectedFormat: ExportFormat = .png
+    @State private var selectedSize: ExportSize = .medium
+    @State private var isExporting = false
+    @State private var showShareSheet = false
+    @State private var exportedFileURL: URL?
+
+    enum ExportMode: String, CaseIterable {
+        case copy
+        case export
+
+        var label: String {
+            switch self {
+            case .copy: String(localized: "mode.copy", defaultValue: "Copy")
+            case .export: String(localized: "mode.export", defaultValue: "Export")
+            }
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -45,10 +62,12 @@ struct GeneratorView: View {
         }
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-        #endif
-        .sheet(isPresented: $showExportSheet) {
-            ExportView(viewModel: viewModel)
+        .sheet(isPresented: $showShareSheet) {
+            if let url = exportedFileURL {
+                ShareSheet(items: [url])
+            }
         }
+        #endif
         .sheet(isPresented: $showHelpSheet) {
             FormatHelpView()
         }
@@ -136,10 +155,10 @@ struct GeneratorView: View {
         VStack(spacing: 16) {
             // QR Code Image with background to show transparency
             ZStack {
-                // Checkerboard background to visualize transparency
-                QRPreviewBackground()
-                    .frame(width: 256, height: 256)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                // Uniform dark gray background to visualize QR transparency
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(red: 26/255, green: 26/255, blue: 26/255))
+                    .frame(width: 272, height: 272)
 
                 if let image = viewModel.previewImage {
                     image
@@ -161,52 +180,186 @@ struct GeneratorView: View {
             .animation(.easeInOut(duration: 0.3), value: viewModel.previewImage != nil)
             .padding(.top, 16)
 
-            // Quick action buttons
-            quickActions
+            // Export section
+            exportSection
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
         }
     }
 
-    // MARK: - Quick Actions
+    // MARK: - Export Section
 
-    private var quickActions: some View {
-        HStack(spacing: 12) {
-            // Copy button
-            Button {
-                Task {
-                    await viewModel.copyToClipboard()
+    private var exportSection: some View {
+        VStack(spacing: 16) {
+            // Mode toggle (Copy / Export)
+            Picker("", selection: $exportMode) {
+                ForEach(ExportMode.allCases, id: \.self) { mode in
+                    Text(mode.label).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            // Size selection
+            sizeSelector
+
+            // Format selection (only for export mode)
+            if exportMode == .export {
+                formatSelector
+            }
+
+            // Action button
+            actionButton
+        }
+    }
+
+    private var sizeSelector: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(String(localized: "export.size", defaultValue: "Size"))
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                if !purchaseManager.isPro {
+                    Text(String(localized: "export.sizeLimit", defaultValue: "Max \(FeatureLimit.freeMaxExportSize)px free"))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(ExportSize.allSizes, id: \.width) { size in
+                        InlineSizeButton(
+                            size: size,
+                            isSelected: selectedSize == size,
+                            isLocked: !purchaseManager.isExportSizeAvailable(size)
+                        ) {
+                            selectedSize = size
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var formatSelector: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(String(localized: "export.format", defaultValue: "Format"))
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(ExportFormat.allCases) { format in
+                        InlineFormatButton(
+                            format: format,
+                            isSelected: selectedFormat == format,
+                            isLocked: format.requiresPro && !purchaseManager.isPro
+                        ) {
+                            selectedFormat = format
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var actionButton: some View {
+        Button {
+            Task {
+                await performAction()
+            }
+        } label: {
+            HStack {
+                if isExporting {
+                    ProgressView()
+                        .tint(.white)
+                } else if copiedFeedback {
+                    Image(systemName: "checkmark")
+                    Text(String(localized: "action.copied", defaultValue: "Copied!"))
+                } else {
+                    Image(systemName: exportMode == .copy ? "doc.on.doc" : "square.and.arrow.down")
+                    Text(exportMode == .copy
+                         ? String(localized: "action.copyQR", defaultValue: "Copy QR Code")
+                         : String(localized: "action.saveQR", defaultValue: "Save QR Code"))
+                }
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(copiedFeedback ? .green : .accentColor)
+        .controlSize(.large)
+        .disabled(isExporting || !canPerformAction)
+    }
+
+    private var canPerformAction: Bool {
+        guard viewModel.hasValidInput else { return false }
+
+        if exportMode == .export {
+            if selectedFormat.requiresPro && !purchaseManager.isPro {
+                return false
+            }
+        }
+
+        if !purchaseManager.isExportSizeAvailable(selectedSize) {
+            return false
+        }
+
+        return true
+    }
+
+    private func performAction() async {
+        isExporting = true
+
+        do {
+            if exportMode == .copy {
+                try await viewModel.exportService.copyToClipboard(
+                    input: QRInput(content: viewModel.inputText),
+                    configuration: viewModel.configuration,
+                    size: CGFloat(selectedSize.width)
+                )
+
+                await MainActor.run {
                     withAnimation {
                         copiedFeedback = true
                     }
-                    try? await Task.sleep(nanoseconds: 2_000_000_000)
+                }
+
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+
+                await MainActor.run {
                     withAnimation {
                         copiedFeedback = false
                     }
                 }
-            } label: {
-                Label(
-                    copiedFeedback
-                        ? String(localized: "action.copied", defaultValue: "Copied!")
-                        : String(localized: "action.copy", defaultValue: "Copy"),
-                    systemImage: copiedFeedback ? "checkmark" : "doc.on.doc"
+            } else {
+                let config = ExportConfiguration(
+                    format: selectedFormat,
+                    size: selectedSize,
+                    includeBackground: viewModel.configuration.backgroundType == .white
                 )
-                .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.bordered)
-            .tint(copiedFeedback ? .green : .accentColor)
 
-            // Export button
-            Button {
-                showExportSheet = true
-            } label: {
-                Label(
-                    String(localized: "action.export", defaultValue: "Export"),
-                    systemImage: "square.and.arrow.up"
-                )
-                .frame(maxWidth: .infinity)
+                let url = try await viewModel.saveToFile(config: config)
+
+                #if os(macOS)
+                NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
+                #else
+                await MainActor.run {
+                    exportedFileURL = url
+                    showShareSheet = true
+                }
+                #endif
             }
-            .buttonStyle(.borderedProminent)
+        } catch {
+            await MainActor.run {
+                viewModel.error = .exportFailed(error.localizedDescription)
+            }
+        }
+
+        await MainActor.run {
+            isExporting = false
         }
     }
 
@@ -716,6 +869,108 @@ struct CompactProLockedButton: View {
     }
 }
 
+// MARK: - Inline Size Button
+
+struct InlineSizeButton: View {
+    let size: ExportSize
+    let isSelected: Bool
+    let isLocked: Bool
+    let action: () -> Void
+
+    @State private var showPaywall = false
+
+    var body: some View {
+        Button {
+            if isLocked {
+                showPaywall = true
+            } else {
+                action()
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(shortDisplayName)
+                    .font(.caption2.monospacedDigit())
+
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 8))
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(
+                Capsule()
+                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
+            )
+            .overlay(
+                Capsule()
+                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(isLocked ? .secondary : (isSelected ? .primary : .secondary))
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(feature: .unlimitedExportSize)
+        }
+    }
+
+    private var shortDisplayName: String {
+        "\(size.width)"
+    }
+}
+
+// MARK: - Inline Format Button
+
+struct InlineFormatButton: View {
+    let format: ExportFormat
+    let isSelected: Bool
+    let isLocked: Bool
+    let action: () -> Void
+
+    @State private var showPaywall = false
+
+    var body: some View {
+        Button {
+            if isLocked {
+                showPaywall = true
+            } else {
+                action()
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Text(format.displayName)
+                    .font(.caption2.weight(.medium))
+
+                if format.isVector {
+                    Text("•")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 8))
+                }
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(
+                Capsule()
+                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
+            )
+            .overlay(
+                Capsule()
+                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(isLocked ? .secondary : (isSelected ? .primary : .secondary))
+        .sheet(isPresented: $showPaywall) {
+            PaywallView(feature: .svgExport)
+        }
+    }
+}
+
 // MARK: - QR Preview Background
 
 struct QRPreviewBackground: View {
@@ -959,6 +1214,20 @@ struct FormatExampleCard: View {
         }
     }
 }
+
+// MARK: - Share Sheet (iOS)
+
+#if os(iOS)
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+#endif
 
 // MARK: - Preview
 

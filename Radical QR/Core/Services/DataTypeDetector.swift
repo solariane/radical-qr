@@ -215,31 +215,111 @@ extension DataTypeDetector {
     /// - Parameter url: The file URL
     /// - Returns: The content string if readable, nil otherwise
     static func extractContent(from url: URL) -> String? {
-        // Check if it's a text file
-        guard let uti = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier else {
-            return nil
-        }
+        let ext = url.pathExtension.lowercased()
 
-        let textTypes = ["public.plain-text", "public.utf8-plain-text", "public.text"]
-
-        if textTypes.contains(uti) || uti.hasPrefix("public.text") {
-            return try? String(contentsOf: url, encoding: .utf8)
-        }
-
-        // For URLs/webloc files
-        if uti == "com.apple.web-internet-location" || url.pathExtension.lowercased() == "webloc" {
+        // Handle webloc/URL files first
+        if ext == "webloc" || ext == "url" {
             return extractURLFromWebloc(url)
+        }
+
+        // Known text file extensions
+        let textExtensions = [
+            "txt", "text", "md", "markdown", "json", "xml", "html", "htm",
+            "css", "js", "ts", "swift", "py", "rb", "java", "c", "cpp", "h",
+            "csv", "log", "ini", "cfg", "conf", "yaml", "yml", "toml",
+            "sh", "bash", "zsh", "fish", "ps1", "bat", "cmd",
+            "sql", "graphql", "proto", "vcf", "vcard", "ics"
+        ]
+
+        // Try by extension first
+        if textExtensions.contains(ext) {
+            return tryReadTextFile(url)
+        }
+
+        // Try by UTI
+        if let uti = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier {
+            let textUTIs = [
+                "public.plain-text",
+                "public.utf8-plain-text",
+                "public.text",
+                "public.source-code",
+                "public.script",
+                "public.shell-script",
+                "public.xml",
+                "public.json",
+                "public.html"
+            ]
+
+            if textUTIs.contains(uti) || uti.hasPrefix("public.text") || uti.contains("text") {
+                return tryReadTextFile(url)
+            }
+        }
+
+        // Last resort: try to read as text if file is small enough (< 100KB)
+        if let attributes = try? FileManager.default.attributesOfItem(atPath: url.path),
+           let fileSize = attributes[.size] as? Int,
+           fileSize < 100_000 {
+            return tryReadTextFile(url)
         }
 
         return nil
     }
 
-    private static func extractURLFromWebloc(_ url: URL) -> String? {
-        guard let data = try? Data(contentsOf: url),
-              let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
-              let urlString = plist["URL"] as? String else {
-            return nil
+    private static func tryReadTextFile(_ url: URL) -> String? {
+        // Try UTF-8 first
+        if let content = try? String(contentsOf: url, encoding: .utf8) {
+            let trimmed = content.trimmingCharacters(in: .whitespacesAndNewlines)
+            // Return nil if empty or looks like binary
+            if trimmed.isEmpty || containsBinaryCharacters(trimmed) {
+                return nil
+            }
+            return trimmed
         }
-        return urlString
+
+        // Try other common encodings
+        let encodings: [String.Encoding] = [.isoLatin1, .windowsCP1252, .macOSRoman]
+        for encoding in encodings {
+            if let content = try? String(contentsOf: url, encoding: encoding) {
+                let trimmed = content.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmed.isEmpty && !containsBinaryCharacters(trimmed) {
+                    return trimmed
+                }
+            }
+        }
+
+        return nil
+    }
+
+    private static func containsBinaryCharacters(_ string: String) -> Bool {
+        // Check for null bytes or other control characters that indicate binary
+        for char in string.unicodeScalars {
+            if char.value == 0 { return true }
+            // Allow common control chars like newline, tab, carriage return
+            if char.value < 32 && char.value != 9 && char.value != 10 && char.value != 13 {
+                return true
+            }
+        }
+        return false
+    }
+
+    private static func extractURLFromWebloc(_ url: URL) -> String? {
+        // Try plist format first (macOS .webloc)
+        if let data = try? Data(contentsOf: url),
+           let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
+           let urlString = plist["URL"] as? String {
+            return urlString
+        }
+
+        // Try Windows .url format (INI-like)
+        if let content = try? String(contentsOf: url, encoding: .utf8) {
+            for line in content.components(separatedBy: .newlines) {
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                if trimmed.lowercased().hasPrefix("url=") {
+                    return String(trimmed.dropFirst(4))
+                }
+            }
+        }
+
+        return nil
     }
 }
