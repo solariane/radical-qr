@@ -196,26 +196,14 @@ final class ExportService: Sendable {
             fillAttribute = "url(#qrGradient)"
         }
 
-        let cornerRadius = moduleSize * configuration.roundness * 0.5
+        // Generate optimized SVG path
+        let pathData = generateOptimizedSVGPath(
+            matrix: matrix,
+            moduleSize: moduleSize,
+            roundness: configuration.roundness
+        )
 
-        svg += "  <g fill=\"\(fillAttribute)\">\n"
-
-        for row in 0..<matrix.size {
-            for col in 0..<matrix.size {
-                guard matrix.isModuleFilled(row: row, column: col) else { continue }
-
-                let x = CGFloat(col) * moduleSize
-                let y = CGFloat(row) * moduleSize
-
-                if configuration.roundness > 0 {
-                    svg += "    <rect x=\"\(x)\" y=\"\(y)\" width=\"\(moduleSize)\" height=\"\(moduleSize)\" rx=\"\(cornerRadius)\" ry=\"\(cornerRadius)\"/>\n"
-                } else {
-                    svg += "    <rect x=\"\(x)\" y=\"\(y)\" width=\"\(moduleSize)\" height=\"\(moduleSize)\"/>\n"
-                }
-            }
-        }
-
-        svg += "  </g>\n"
+        svg += "  <path fill=\"\(fillAttribute)\" d=\"\(pathData)\"/>\n"
 
         if let logoData = configuration.logoData {
             svg += generateSVGLogoElement(logoData: logoData, qrSize: svgSize)
@@ -307,6 +295,108 @@ final class ExportService: Sendable {
         let g = Int(color.green * 255)
         let b = Int(color.blue * 255)
         return String(format: "#%02X%02X%02X", r, g, b)
+    }
+
+    // MARK: - Optimized SVG Path Generation
+
+    /// Generates an optimized SVG path by merging adjacent modules into horizontal runs
+    /// This produces much smaller SVG files compared to individual <rect> elements
+    private func generateOptimizedSVGPath(
+        matrix: QRModuleMatrix,
+        moduleSize: CGFloat,
+        roundness: CGFloat
+    ) -> String {
+        var pathCommands: [String] = []
+        let r = moduleSize * roundness * 0.5  // Corner radius
+
+        // Process row by row, merging horizontal runs
+        for row in 0..<matrix.size {
+            var col = 0
+            while col < matrix.size {
+                // Skip empty modules
+                guard matrix.isModuleFilled(row: row, column: col) else {
+                    col += 1
+                    continue
+                }
+
+                // Find the run length (consecutive filled modules)
+                var runLength = 1
+                while col + runLength < matrix.size &&
+                      matrix.isModuleFilled(row: row, column: col + runLength) {
+                    runLength += 1
+                }
+
+                // Generate path for this run
+                let x = CGFloat(col) * moduleSize
+                let y = CGFloat(row) * moduleSize
+                let width = CGFloat(runLength) * moduleSize
+                let height = moduleSize
+
+                if roundness > 0 {
+                    // Rounded rectangle path
+                    pathCommands.append(roundedRectPath(x: x, y: y, width: width, height: height, radius: r))
+                } else {
+                    // Simple rectangle path (very compact)
+                    pathCommands.append(rectPath(x: x, y: y, width: width, height: height))
+                }
+
+                col += runLength
+            }
+        }
+
+        return pathCommands.joined(separator: " ")
+    }
+
+    /// Generates an SVG path for a simple rectangle
+    private func rectPath(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat) -> String {
+        // M = move to, h = horizontal line relative, v = vertical line relative, z = close path
+        return "M\(fmt(x)),\(fmt(y))h\(fmt(width))v\(fmt(height))h\(fmt(-width))z"
+    }
+
+    /// Generates an SVG path for a rounded rectangle
+    private func roundedRectPath(x: CGFloat, y: CGFloat, width: CGFloat, height: CGFloat, radius: CGFloat) -> String {
+        // Clamp radius to half the smaller dimension
+        let r = min(radius, min(width, height) / 2)
+
+        // Start at top-left corner (after the arc)
+        // Use arc commands: A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+        var path = "M\(fmt(x + r)),\(fmt(y))"
+
+        // Top edge
+        path += "h\(fmt(width - 2 * r))"
+
+        // Top-right corner
+        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(r)),\(fmt(r))"
+
+        // Right edge
+        path += "v\(fmt(height - 2 * r))"
+
+        // Bottom-right corner
+        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(-r)),\(fmt(r))"
+
+        // Bottom edge
+        path += "h\(fmt(-(width - 2 * r)))"
+
+        // Bottom-left corner
+        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(-r)),\(fmt(-r))"
+
+        // Left edge
+        path += "v\(fmt(-(height - 2 * r)))"
+
+        // Top-left corner
+        path += "a\(fmt(r)),\(fmt(r)) 0 0 1 \(fmt(r)),\(fmt(-r))"
+
+        path += "z"
+
+        return path
+    }
+
+    /// Formats a CGFloat for SVG, removing unnecessary decimals
+    private func fmt(_ value: CGFloat) -> String {
+        if value == value.rounded() {
+            return String(Int(value))
+        }
+        return String(format: "%.2f", value)
     }
 }
 
