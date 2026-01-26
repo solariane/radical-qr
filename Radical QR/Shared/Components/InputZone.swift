@@ -193,14 +193,10 @@ struct InputZone: View {
 
         // Try file URL first (most common for drag & drop)
         if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
-            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, error in
-                guard error == nil else { return }
-
-                if let data = item as? Data,
-                   let url = URL(dataRepresentation: data, relativeTo: nil) {
-                    DispatchQueue.main.async {
-                        handleFileURL(url)
-                    }
+            _ = provider.loadObject(ofClass: URL.self) { url, error in
+                guard error == nil, let url = url else { return }
+                Task { @MainActor in
+                    handleFileURL(url)
                 }
             }
             return true
@@ -208,18 +204,10 @@ struct InputZone: View {
 
         // Try URL (web URLs dragged from browser)
         if provider.hasItemConformingToTypeIdentifier(UTType.url.identifier) {
-            provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { item, error in
-                guard error == nil else { return }
-
-                if let data = item as? Data,
-                   let url = URL(dataRepresentation: data, relativeTo: nil) {
-                    DispatchQueue.main.async {
-                        self.text = url.absoluteString
-                    }
-                } else if let url = item as? URL {
-                    DispatchQueue.main.async {
-                        self.text = url.absoluteString
-                    }
+            _ = provider.loadObject(ofClass: URL.self) { url, error in
+                guard error == nil, let url = url else { return }
+                Task { @MainActor in
+                    self.text = url.absoluteString
                 }
             }
             return true
@@ -227,18 +215,10 @@ struct InputZone: View {
 
         // Try plain text
         if provider.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) {
-            provider.loadItem(forTypeIdentifier: UTType.plainText.identifier, options: nil) { item, error in
-                guard error == nil else { return }
-
-                if let data = item as? Data,
-                   let string = String(data: data, encoding: .utf8) {
-                    DispatchQueue.main.async {
-                        self.text = string
-                    }
-                } else if let string = item as? String {
-                    DispatchQueue.main.async {
-                        self.text = string
-                    }
+            _ = provider.loadObject(ofClass: String.self) { string, error in
+                guard error == nil, let string = string else { return }
+                Task { @MainActor in
+                    self.text = string
                 }
             }
             return true
@@ -248,6 +228,14 @@ struct InputZone: View {
     }
 
     private func handleFileURL(_ url: URL) {
+        // Security-scoped resource access for sandboxed apps
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer {
+            if accessing {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+
         // Try to extract content from the file
         if let content = DataTypeDetector.extractContent(from: url) {
             self.text = content
