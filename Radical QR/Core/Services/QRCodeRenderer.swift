@@ -102,7 +102,8 @@ final class QRCodeRenderer: Sendable {
             drawLogo(
                 in: context,
                 logoData: logoData,
-                size: renderSize
+                size: renderSize,
+                backgroundType: configuration.backgroundType
             )
         }
 
@@ -323,7 +324,8 @@ final class QRCodeRenderer: Sendable {
     private func drawLogo(
         in context: CGContext,
         logoData: Data,
-        size: CGFloat
+        size: CGFloat,
+        backgroundType: BackgroundType
     ) {
         #if os(macOS)
         guard let nsImage = NSImage(data: logoData),
@@ -347,23 +349,45 @@ final class QRCodeRenderer: Sendable {
             height: logoSize
         )
 
-        // Draw white background behind logo for better visibility
-        let padding: CGFloat = logoSize * 0.12
-        let backgroundRect = logoRect.insetBy(dx: -padding, dy: -padding)
-        context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+        // Only draw white background behind logo when QR has white background
+        // This preserves transparency when using transparent background
+        if backgroundType == .white {
+            let padding: CGFloat = logoSize * 0.12
+            let backgroundRect = logoRect.insetBy(dx: -padding, dy: -padding)
+            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
 
-        let cornerRadius = padding * 0.8
-        let backgroundPath = CGPath(
-            roundedRect: backgroundRect,
-            cornerWidth: cornerRadius,
-            cornerHeight: cornerRadius,
-            transform: nil
+            let cornerRadius = padding * 0.8
+            let backgroundPath = CGPath(
+                roundedRect: backgroundRect,
+                cornerWidth: cornerRadius,
+                cornerHeight: cornerRadius,
+                transform: nil
+            )
+            context.addPath(backgroundPath)
+            context.fillPath()
+        }
+
+        // Save the current graphics state (which has flipped coordinates)
+        context.saveGState()
+
+        // Un-flip the coordinate system for drawing the logo correctly
+        // The context was flipped with translateBy(0, size) and scaleBy(1, -1)
+        // We need to reverse this transformation for the logo
+        context.translateBy(x: 0, y: size)
+        context.scaleBy(x: 1, y: -1)
+
+        // Now draw the logo in the un-flipped coordinate system
+        // The logoRect y-coordinate needs to be adjusted for the un-flipped system
+        let flippedLogoRect = CGRect(
+            x: logoRect.origin.x,
+            y: size - logoRect.origin.y - logoRect.height,
+            width: logoRect.width,
+            height: logoRect.height
         )
-        context.addPath(backgroundPath)
-        context.fillPath()
+        context.draw(cgImage, in: flippedLogoRect)
 
-        // Draw the logo
-        context.draw(cgImage, in: logoRect)
+        // Restore the flipped state for any subsequent drawing
+        context.restoreGState()
     }
 }
 

@@ -548,17 +548,132 @@ struct GeneratorView: View {
     }
 
     private var compactGradientPicker: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(GradientConfiguration.freeGradients, id: \.self) { preset in
-                    CompactGradientSwatch(
-                        gradient: preset,
-                        isSelected: isGradientSelected(preset)
-                    ) {
-                        viewModel.configuration.foregroundStyle = .gradient(preset)
+        VStack(spacing: 12) {
+            // Gradient type picker (Pro gets Angular & Diamond)
+            if purchaseManager.isPro {
+                HStack(spacing: 6) {
+                    ForEach(GradientConfiguration.GradientType.allCases, id: \.self) { type in
+                        CompactGradientTypeButton(
+                            type: type,
+                            isSelected: currentGradientType == type
+                        ) {
+                            updateGradientType(type)
+                        }
                     }
                 }
             }
+
+            // Preset gradients
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(GradientConfiguration.freeGradients, id: \.self) { preset in
+                        CompactGradientSwatch(
+                            gradient: preset,
+                            isSelected: isGradientSelected(preset)
+                        ) {
+                            viewModel.configuration.foregroundStyle = .gradient(preset)
+                        }
+                    }
+
+                    // Custom gradient color pickers for Pro
+                    if purchaseManager.isPro {
+                        Divider()
+                            .frame(height: 24)
+                            .padding(.horizontal, 4)
+
+                        // Start color picker
+                        VStack(spacing: 2) {
+                            ColorPicker("", selection: Binding(
+                                get: { currentGradientConfig.startColor.color },
+                                set: { updateGradientStartColor(SerializableColor($0)) }
+                            ), supportsOpacity: false)
+                            .labelsHidden()
+                            .frame(width: 32, height: 32)
+
+                            Text(String(localized: "gradient.start", defaultValue: "Start"))
+                                .font(.system(size: 8))
+                                .foregroundStyle(.secondary)
+                        }
+
+                        // End color picker
+                        VStack(spacing: 2) {
+                            ColorPicker("", selection: Binding(
+                                get: { currentGradientConfig.endColor.color },
+                                set: { updateGradientEndColor(SerializableColor($0)) }
+                            ), supportsOpacity: false)
+                            .labelsHidden()
+                            .frame(width: 32, height: 32)
+
+                            Text(String(localized: "gradient.end", defaultValue: "End"))
+                                .font(.system(size: 8))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+
+            // Angle slider for linear gradient (Pro)
+            if purchaseManager.isPro && currentGradientType == .linear {
+                HStack(spacing: 8) {
+                    Text(String(localized: "gradient.angle", defaultValue: "Angle"))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+
+                    Slider(
+                        value: Binding(
+                            get: { currentGradientConfig.angle },
+                            set: { updateGradientAngle($0) }
+                        ),
+                        in: 0...360,
+                        step: 15
+                    )
+                    .tint(currentGradientConfig.startColor.color)
+
+                    Text("\(Int(currentGradientConfig.angle))°")
+                        .font(.caption2.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                        .frame(width: 32)
+                }
+            }
+        }
+    }
+
+    private var currentGradientConfig: GradientConfiguration {
+        if case .gradient(let config) = viewModel.configuration.foregroundStyle {
+            return config
+        }
+        return .purpleViolet
+    }
+
+    private var currentGradientType: GradientConfiguration.GradientType {
+        currentGradientConfig.type
+    }
+
+    private func updateGradientType(_ type: GradientConfiguration.GradientType) {
+        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
+            config.type = type
+            viewModel.configuration.foregroundStyle = .gradient(config)
+        }
+    }
+
+    private func updateGradientStartColor(_ color: SerializableColor) {
+        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
+            config.startColor = color
+            viewModel.configuration.foregroundStyle = .gradient(config)
+        }
+    }
+
+    private func updateGradientEndColor(_ color: SerializableColor) {
+        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
+            config.endColor = color
+            viewModel.configuration.foregroundStyle = .gradient(config)
+        }
+    }
+
+    private func updateGradientAngle(_ angle: Double) {
+        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
+            config.angle = angle
+            viewModel.configuration.foregroundStyle = .gradient(config)
         }
     }
 
@@ -769,6 +884,38 @@ struct CompactGradientSwatch: View {
         .buttonStyle(.plain)
         .scaleEffect(isSelected ? 1.05 : 1.0)
         .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
+    }
+}
+
+// MARK: - Compact Gradient Type Button
+
+struct CompactGradientTypeButton: View {
+    let type: GradientConfiguration.GradientType
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 2) {
+                Image(systemName: type.iconName)
+                    .font(.caption)
+
+                Text(type.displayName)
+                    .font(.system(size: 9))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 6)
+                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(isSelected ? .primary : .secondary)
     }
 }
 
