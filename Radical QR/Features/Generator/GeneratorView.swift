@@ -1,6 +1,12 @@
 import SwiftUI
 import PhotosUI
 
+#if os(macOS)
+import AppKit
+#else
+import UIKit
+#endif
+
 /// Main QR code generator view with inline customization
 struct GeneratorView: View {
     @StateObject private var viewModel = GeneratorViewModel()
@@ -8,6 +14,7 @@ struct GeneratorView: View {
 
     @State private var showExportSheet = false
     @State private var copiedFeedback = false
+    @State private var showHelpSheet = false
 
     var body: some View {
         ZStack {
@@ -42,6 +49,9 @@ struct GeneratorView: View {
         .sheet(isPresented: $showExportSheet) {
             ExportView(viewModel: viewModel)
         }
+        .sheet(isPresented: $showHelpSheet) {
+            FormatHelpView()
+        }
         .alert(item: $viewModel.error) { error in
             Alert(
                 title: Text(String(localized: "error.title", defaultValue: "Error")),
@@ -55,15 +65,31 @@ struct GeneratorView: View {
 
     private var headerSection: some View {
         VStack(spacing: 8) {
-            Text(String(localized: "generator.title", defaultValue: "QR Code Generator"))
-                .font(.largeTitle.weight(.bold))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.white, .white.opacity(0.8)],
-                        startPoint: .leading,
-                        endPoint: .trailing
+            HStack {
+                Spacer()
+
+                Text(String(localized: "generator.title", defaultValue: "QR Code Generator"))
+                    .font(.largeTitle.weight(.bold))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.white, .white.opacity(0.8)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
-                )
+
+                Spacer()
+
+                // Help button
+                Button {
+                    showHelpSheet = true
+                } label: {
+                    Image(systemName: "questionmark.circle")
+                        .font(.title2)
+                        .foregroundStyle(.white.opacity(0.8))
+                }
+                .buttonStyle(.plain)
+            }
 
             Text(String(localized: "generator.subtitle", defaultValue: "No tracking. No storage. Just ephemeral QR codes."))
                 .font(.subheadline)
@@ -108,8 +134,13 @@ struct GeneratorView: View {
 
     private var previewCard: some View {
         VStack(spacing: 16) {
-            // QR Code Image
+            // QR Code Image with background to show transparency
             ZStack {
+                // Checkerboard background to visualize transparency
+                QRPreviewBackground()
+                    .frame(width: 256, height: 256)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+
                 if let image = viewModel.previewImage {
                     image
                         .interpolation(.none)
@@ -685,9 +716,257 @@ struct CompactProLockedButton: View {
     }
 }
 
+// MARK: - QR Preview Background
+
+struct QRPreviewBackground: View {
+    var body: some View {
+        Canvas { context, size in
+            let tileSize: CGFloat = 8
+            let rows = Int(ceil(size.height / tileSize))
+            let cols = Int(ceil(size.width / tileSize))
+
+            for row in 0..<rows {
+                for col in 0..<cols {
+                    let isLight = (row + col) % 2 == 0
+                    let rect = CGRect(
+                        x: CGFloat(col) * tileSize,
+                        y: CGFloat(row) * tileSize,
+                        width: tileSize,
+                        height: tileSize
+                    )
+                    context.fill(
+                        Path(rect),
+                        with: .color(isLight ? Color(white: 0.95) : Color(white: 0.88))
+                    )
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Format Help View
+
+struct FormatHelpView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    // Introduction
+                    Text(String(localized: "help.intro", defaultValue: "QR codes can encode different types of data. The app automatically detects and optimizes the format for you."))
+                        .foregroundStyle(.secondary)
+
+                    // Format sections
+                    ForEach(FormatExample.allExamples, id: \.type) { example in
+                        FormatExampleCard(example: example)
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(String(localized: "help.title", defaultValue: "Supported Formats"))
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(String(localized: "action.done", defaultValue: "Done")) {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct FormatExample: Identifiable {
+    let id = UUID()
+    let type: String
+    let icon: String
+    let title: String
+    let description: String
+    let examples: [(label: String, value: String)]
+
+    static let allExamples: [FormatExample] = [
+        FormatExample(
+            type: "url",
+            icon: "link",
+            title: String(localized: "help.url.title", defaultValue: "URL / Website"),
+            description: String(localized: "help.url.description", defaultValue: "Links to websites open directly in browser when scanned."),
+            examples: [
+                ("Simple", "https://example.com"),
+                ("With path", "https://example.com/page?param=value")
+            ]
+        ),
+        FormatExample(
+            type: "email",
+            icon: "envelope",
+            title: String(localized: "help.email.title", defaultValue: "Email"),
+            description: String(localized: "help.email.description", defaultValue: "Opens email composer with pre-filled recipient."),
+            examples: [
+                ("Simple", "contact@example.com"),
+                ("With mailto:", "mailto:contact@example.com")
+            ]
+        ),
+        FormatExample(
+            type: "phone",
+            icon: "phone",
+            title: String(localized: "help.phone.title", defaultValue: "Phone Number"),
+            description: String(localized: "help.phone.description", defaultValue: "Initiates a phone call when scanned."),
+            examples: [
+                ("International", "+1 555 123 4567"),
+                ("With tel:", "tel:+15551234567")
+            ]
+        ),
+        FormatExample(
+            type: "sms",
+            icon: "message",
+            title: String(localized: "help.sms.title", defaultValue: "SMS"),
+            description: String(localized: "help.sms.description", defaultValue: "Opens messaging app with pre-filled number."),
+            examples: [
+                ("Simple", "sms:+15551234567"),
+                ("With message", "sms:+15551234567?body=Hello")
+            ]
+        ),
+        FormatExample(
+            type: "wifi",
+            icon: "wifi",
+            title: String(localized: "help.wifi.title", defaultValue: "WiFi Network"),
+            description: String(localized: "help.wifi.description", defaultValue: "Allows one-tap WiFi connection (iOS 11+, Android)."),
+            examples: [
+                ("WPA/WPA2", "WIFI:T:WPA;S:NetworkName;P:password123;;"),
+                ("Open network", "WIFI:T:nopass;S:FreeWiFi;;"),
+                ("Hidden", "WIFI:T:WPA;S:HiddenNet;P:secret;H:true;;")
+            ]
+        ),
+        FormatExample(
+            type: "geo",
+            icon: "location",
+            title: String(localized: "help.geo.title", defaultValue: "Location"),
+            description: String(localized: "help.geo.description", defaultValue: "Opens maps app at specific coordinates."),
+            examples: [
+                ("Coordinates", "40.7128, -74.0060"),
+                ("With geo:", "geo:48.8584,2.2945")
+            ]
+        ),
+        FormatExample(
+            type: "vcard",
+            icon: "person.crop.rectangle",
+            title: String(localized: "help.vcard.title", defaultValue: "Contact (vCard)"),
+            description: String(localized: "help.vcard.description", defaultValue: "Adds contact information to address book."),
+            examples: [
+                ("Basic", """
+BEGIN:VCARD
+VERSION:3.0
+N:Doe;John
+FN:John Doe
+TEL:+1-555-123-4567
+EMAIL:john@example.com
+END:VCARD
+""")
+            ]
+        ),
+        FormatExample(
+            type: "text",
+            icon: "text.alignleft",
+            title: String(localized: "help.text.title", defaultValue: "Plain Text"),
+            description: String(localized: "help.text.description", defaultValue: "Any text content that doesn't match other formats."),
+            examples: [
+                ("Message", "Hello, scan me!"),
+                ("Multiline", "Line 1\nLine 2\nLine 3")
+            ]
+        )
+    ]
+}
+
+struct FormatExampleCard: View {
+    let example: FormatExample
+    @State private var copiedIndex: Int?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Header
+            HStack(spacing: 8) {
+                Image(systemName: example.icon)
+                    .font(.title3)
+                    .foregroundStyle(.accentColor)
+                    .frame(width: 28)
+
+                Text(example.title)
+                    .font(.headline)
+            }
+
+            Text(example.description)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            // Examples
+            VStack(alignment: .leading, spacing: 8) {
+                ForEach(Array(example.examples.enumerated()), id: \.offset) { index, item in
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(item.label)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+
+                        HStack {
+                            Text(item.value)
+                                .font(.system(.caption, design: .monospaced))
+                                .lineLimit(4)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Button {
+                                copyToClipboard(item.value, index: index)
+                            } label: {
+                                Image(systemName: copiedIndex == index ? "checkmark" : "doc.on.doc")
+                                    .font(.caption)
+                                    .foregroundStyle(copiedIndex == index ? .green : .accentColor)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .padding(8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.secondary.opacity(0.1))
+                        )
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.secondary.opacity(0.05))
+        )
+    }
+
+    private func copyToClipboard(_ text: String, index: Int) {
+        #if os(macOS)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        #else
+        UIPasteboard.general.string = text
+        #endif
+
+        withAnimation {
+            copiedIndex = index
+        }
+
+        Task {
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            withAnimation {
+                copiedIndex = nil
+            }
+        }
+    }
+}
+
 // MARK: - Preview
 
 #Preview {
     GeneratorView()
         .environmentObject(PurchaseManager.shared)
+}
+
+#Preview("Help Sheet") {
+    FormatHelpView()
 }
