@@ -130,19 +130,29 @@ struct GeneratorView: View {
                 placeholder: String(localized: "generator.input.placeholder", defaultValue: "Enter URL, text, or drop a file...")
             )
 
-            // Data type indicator
+            // Data type indicator with summary
             if viewModel.hasValidInput {
-                HStack(spacing: 8) {
-                    Image(systemName: viewModel.detectedDataType.iconName)
-                    Text(viewModel.detectedDataType.displayName)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 8) {
+                        Image(systemName: viewModel.detectedDataType.iconName)
+                        Text(viewModel.detectedDataType.displayName)
 
-                    Spacer()
+                        Spacer()
 
-                    Text(viewModel.detectedDataType.description)
-                        .foregroundStyle(.white.opacity(0.6))
+                        Text(viewModel.detectedDataType.description)
+                            .foregroundStyle(.white.opacity(0.6))
+                    }
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.8))
+
+                    // Show parsed summary for recognized types
+                    if let summary = DataTypeDetector.summarize(viewModel.inputText, for: viewModel.detectedDataType) {
+                        Text(summary)
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.6))
+                            .lineLimit(2)
+                    }
                 }
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.8))
                 .padding(.horizontal, 4)
                 .padding(.top, 12)
             }
@@ -815,11 +825,28 @@ struct CompactBackgroundButton: View {
 struct CompactLogoButton: View {
     @Binding var logoData: Data?
     @State private var showPhotoPicker = false
+    @State private var showFilePicker = false
     @State private var selectedPhotoItem: PhotosPickerItem?
 
     var body: some View {
-        Button {
-            showPhotoPicker = true
+        Menu {
+            Button {
+                showPhotoPicker = true
+            } label: {
+                Label(
+                    String(localized: "logo.fromPhotos", defaultValue: "From Photos"),
+                    systemImage: "photo.on.rectangle"
+                )
+            }
+
+            Button {
+                showFilePicker = true
+            } label: {
+                Label(
+                    String(localized: "logo.fromFiles", defaultValue: "From Files"),
+                    systemImage: "folder"
+                )
+            }
         } label: {
             Label(
                 String(localized: "logo.add", defaultValue: "Add"),
@@ -827,13 +854,41 @@ struct CompactLogoButton: View {
             )
             .font(.caption)
         }
-        .buttonStyle(.bordered)
-        .controlSize(.small)
+        .menuStyle(.borderlessButton)
+        .fixedSize()
         .photosPicker(isPresented: $showPhotoPicker, selection: $selectedPhotoItem, matching: .images)
         .onChange(of: selectedPhotoItem) { _, newValue in
             Task {
                 await loadSelectedPhoto(newValue)
             }
+        }
+        .fileImporter(
+            isPresented: $showFilePicker,
+            allowedContentTypes: [.image, .png, .jpeg, .gif, .heic, .svg],
+            allowsMultipleSelection: false
+        ) { result in
+            handleFileImport(result)
+        }
+    }
+
+    private func handleFileImport(_ result: Result<[URL], Error>) {
+        switch result {
+        case .success(let urls):
+            guard let url = urls.first else { return }
+
+            let accessing = url.startAccessingSecurityScopedResource()
+            defer {
+                if accessing {
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+
+            if let data = try? Data(contentsOf: url) {
+                logoData = processImageData(data)
+            }
+
+        case .failure:
+            break
         }
     }
 

@@ -5,6 +5,13 @@ import SwiftData
 struct RadicalQRApp: App {
     @StateObject private var purchaseManager = PurchaseManager.shared
 
+    init() {
+        #if DEBUG
+        // Uncomment to test Pro features during development
+        // UserDefaults.standard.set(true, forKey: "debug_force_pro")
+        #endif
+    }
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             HistoryItem.self,

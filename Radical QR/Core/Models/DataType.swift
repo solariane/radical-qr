@@ -8,6 +8,7 @@ enum DataType: String, CaseIterable, Identifiable, Sendable {
     case sms
     case wifi
     case vcard
+    case icalendar
     case geo
     case text
 
@@ -21,6 +22,7 @@ enum DataType: String, CaseIterable, Identifiable, Sendable {
         case .sms: String(localized: "dataType.sms", defaultValue: "SMS")
         case .wifi: String(localized: "dataType.wifi", defaultValue: "Wi-Fi")
         case .vcard: String(localized: "dataType.vcard", defaultValue: "Contact")
+        case .icalendar: String(localized: "dataType.icalendar", defaultValue: "Event")
         case .geo: String(localized: "dataType.geo", defaultValue: "Location")
         case .text: String(localized: "dataType.text", defaultValue: "Text")
         }
@@ -34,6 +36,7 @@ enum DataType: String, CaseIterable, Identifiable, Sendable {
         case .sms: "message"
         case .wifi: "wifi"
         case .vcard: "person.crop.rectangle"
+        case .icalendar: "calendar"
         case .geo: "location"
         case .text: "text.alignleft"
         }
@@ -54,6 +57,8 @@ enum DataType: String, CaseIterable, Identifiable, Sendable {
             String(localized: "dataType.wifi.description", defaultValue: "Wi-Fi network credentials")
         case .vcard:
             String(localized: "dataType.vcard.description", defaultValue: "Contact information")
+        case .icalendar:
+            String(localized: "dataType.icalendar.description", defaultValue: "Calendar event")
         case .geo:
             String(localized: "dataType.geo.description", defaultValue: "Geographic coordinates")
         case .text:

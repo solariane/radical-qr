@@ -50,6 +50,10 @@ enum DataTypeDetector {
             return .vcard
         }
 
+        if lowercased.hasPrefix("begin:vcalendar") || lowercased.hasPrefix("begin:vevent") {
+            return .icalendar
+        }
+
         if lowercased.hasPrefix("geo:") {
             return .geo
         }
@@ -202,8 +206,103 @@ extension DataTypeDetector {
             let cleaned = trimmed.replacingOccurrences(of: " ", with: "")
             return "geo:\(cleaned)"
 
-        case .wifi, .vcard, .text:
+        case .wifi, .vcard, .icalendar, .text:
             return trimmed
+        }
+    }
+}
+
+// MARK: - Content Summary
+
+extension DataTypeDetector {
+    /// Returns a human-readable summary of the detected content
+    /// - Parameters:
+    ///   - input: The raw input string
+    ///   - type: The detected data type
+    /// - Returns: A short summary describing the content
+    static func summarize(_ input: String, for type: DataType) -> String? {
+        let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        switch type {
+        case .url:
+            // Extract domain from URL
+            if let url = URL(string: trimmed.lowercased().hasPrefix("http") ? trimmed : "https://\(trimmed)"),
+               let host = url.host {
+                let path = url.path
+                if path.isEmpty || path == "/" {
+                    return host
+                }
+                return "\(host)\(path.prefix(30))\(path.count > 30 ? "..." : "")"
+            }
+            return nil
+
+        case .email:
+            let email = trimmed.lowercased().hasPrefix("mailto:") ? String(trimmed.dropFirst(7)) : trimmed
+            return email
+
+        case .phone:
+            let phone = trimmed.lowercased().hasPrefix("tel:") ? String(trimmed.dropFirst(4)) : trimmed
+            return phone
+
+        case .sms:
+            if let numberEnd = trimmed.firstIndex(of: "?") {
+                let number = trimmed.lowercased().hasPrefix("sms:") ? String(trimmed.dropFirst(4).prefix(upTo: numberEnd)) : String(trimmed.prefix(upTo: numberEnd))
+                return String(localized: "summary.sms", defaultValue: "SMS to \(number)")
+            }
+            let number = trimmed.lowercased().hasPrefix("sms:") ? String(trimmed.dropFirst(4)) : trimmed
+            return String(localized: "summary.sms", defaultValue: "SMS to \(number)")
+
+        case .wifi:
+            // Parse WIFI:T:WPA;S:NetworkName;P:password;;
+            if let ssidMatch = trimmed.range(of: "S:([^;]+)", options: .regularExpression) {
+                let ssid = String(trimmed[ssidMatch]).dropFirst(2)
+                return String(localized: "summary.wifi", defaultValue: "Wi-Fi: \(ssid)")
+            }
+            return nil
+
+        case .vcard:
+            // Parse vCard for name
+            if let fnMatch = trimmed.range(of: "FN:([^\r\n]+)", options: .regularExpression) {
+                let name = String(trimmed[fnMatch]).dropFirst(3)
+                return String(localized: "summary.vcard", defaultValue: "Contact: \(name)")
+            }
+            if let nMatch = trimmed.range(of: "N:([^;]*);([^;]*)", options: .regularExpression) {
+                let parts = String(trimmed[nMatch]).dropFirst(2).split(separator: ";")
+                if parts.count >= 2 {
+                    let name = "\(parts[1]) \(parts[0])".trimmingCharacters(in: .whitespaces)
+                    if !name.isEmpty {
+                        return String(localized: "summary.vcard", defaultValue: "Contact: \(name)")
+                    }
+                }
+            }
+            return String(localized: "summary.vcard.generic", defaultValue: "Contact card")
+
+        case .icalendar:
+            // Parse iCalendar for event summary
+            if let summaryMatch = trimmed.range(of: "SUMMARY:([^\r\n]+)", options: .regularExpression) {
+                let summary = String(trimmed[summaryMatch]).dropFirst(8)
+                return String(localized: "summary.event", defaultValue: "Event: \(summary)")
+            }
+            // Try to find DTSTART for date info
+            if trimmed.range(of: "DTSTART[^:]*:([^\r\n]+)", options: .regularExpression) != nil {
+                return String(localized: "summary.event.generic", defaultValue: "Calendar event")
+            }
+            return String(localized: "summary.event.generic", defaultValue: "Calendar event")
+
+        case .geo:
+            let coords = trimmed.lowercased().hasPrefix("geo:") ? String(trimmed.dropFirst(4)) : trimmed
+            let parts = coords.split(separator: ",")
+            if parts.count >= 2 {
+                return String(localized: "summary.geo", defaultValue: "Location: \(parts[0]), \(parts[1])")
+            }
+            return nil
+
+        case .text:
+            // For plain text, show preview
+            if trimmed.count <= 50 {
+                return nil // Short enough to show raw
+            }
+            return "\(trimmed.prefix(47))..."
         }
     }
 }

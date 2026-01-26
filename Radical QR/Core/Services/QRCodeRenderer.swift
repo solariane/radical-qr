@@ -106,15 +106,9 @@ final class QRCodeRenderer: Sendable {
             )
         }
 
-        // Create the high-res image
+        // Create the high-res image and downscale for smoother result
         guard let highResImage = context.makeImage() else { return nil }
-
-        // If we rendered at higher scale, downscale for smoother result
-        if scale > 1 {
-            return downsample(image: highResImage, to: Int(size))
-        }
-
-        return highResImage
+        return downsample(image: highResImage, to: Int(size))
     }
 
     // MARK: - Downsampling
