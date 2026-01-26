@@ -18,7 +18,13 @@ final class PurchaseManager: ObservableObject {
 
     /// Whether the user has Pro access
     var isPro: Bool {
-        purchasedProductIDs.contains(Self.proProductID)
+        #if DEBUG
+        // Set to true to test Pro features during development
+        if UserDefaults.standard.bool(forKey: "debug_force_pro") {
+            return true
+        }
+        #endif
+        return purchasedProductIDs.contains(Self.proProductID)
     }
 
     /// The Pro product if available

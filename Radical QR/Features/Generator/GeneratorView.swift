@@ -155,9 +155,9 @@ struct GeneratorView: View {
         VStack(spacing: 16) {
             // QR Code Image with background to show transparency
             ZStack {
-                // Uniform dark gray background to visualize QR transparency
+                // Light gray background to visualize QR transparency
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(red: 26/255, green: 26/255, blue: 26/255))
+                    .fill(Color(white: 0.9))
                     .frame(width: 272, height: 272)
 
                 if let image = viewModel.previewImage {
@@ -267,31 +267,52 @@ struct GeneratorView: View {
     }
 
     private var actionButton: some View {
-        Button {
-            Task {
-                await performAction()
-            }
-        } label: {
-            HStack {
-                if isExporting {
-                    ProgressView()
-                        .tint(.white)
-                } else if copiedFeedback {
-                    Image(systemName: "checkmark")
-                    Text(String(localized: "action.copied", defaultValue: "Copied!"))
-                } else {
-                    Image(systemName: exportMode == .copy ? "doc.on.doc" : "square.and.arrow.down")
-                    Text(exportMode == .copy
-                         ? String(localized: "action.copyQR", defaultValue: "Copy QR Code")
-                         : String(localized: "action.saveQR", defaultValue: "Save QR Code"))
+        VStack(spacing: 8) {
+            // Primary action button
+            Button {
+                Task {
+                    await performAction()
                 }
+            } label: {
+                HStack {
+                    if isExporting {
+                        ProgressView()
+                            .tint(.white)
+                    } else if copiedFeedback {
+                        Image(systemName: "checkmark")
+                        Text(String(localized: "action.copied", defaultValue: "Copied!"))
+                    } else {
+                        Image(systemName: exportMode == .copy ? "doc.on.doc" : "square.and.arrow.down")
+                        Text(exportMode == .copy
+                             ? String(localized: "action.copyQR", defaultValue: "Copy QR Code")
+                             : String(localized: "action.saveQR", defaultValue: "Save QR Code"))
+                    }
+                }
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
+            .buttonStyle(.borderedProminent)
+            .tint(copiedFeedback ? .green : .accentColor)
+            .controlSize(.large)
+            .disabled(isExporting || !canPerformAction)
+
+            // Share button (only in export mode)
+            if exportMode == .export {
+                Button {
+                    Task {
+                        await performShare()
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "square.and.arrow.up")
+                        Text(String(localized: "action.share", defaultValue: "Share"))
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                .disabled(isExporting || !canPerformAction)
+            }
         }
-        .buttonStyle(.borderedProminent)
-        .tint(copiedFeedback ? .green : .accentColor)
-        .controlSize(.large)
-        .disabled(isExporting || !canPerformAction)
     }
 
     private var canPerformAction: Bool {
@@ -352,6 +373,43 @@ struct GeneratorView: View {
                 }
                 #endif
             }
+        } catch {
+            await MainActor.run {
+                viewModel.error = .exportFailed(error.localizedDescription)
+            }
+        }
+
+        await MainActor.run {
+            isExporting = false
+        }
+    }
+
+    private func performShare() async {
+        isExporting = true
+
+        do {
+            let config = ExportConfiguration(
+                format: selectedFormat,
+                size: selectedSize,
+                includeBackground: viewModel.configuration.backgroundType == .white
+            )
+
+            let url = try await viewModel.saveToFile(config: config)
+
+            #if os(macOS)
+            await MainActor.run {
+                let picker = NSSharingServicePicker(items: [url])
+                if let window = NSApp.keyWindow,
+                   let contentView = window.contentView {
+                    picker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
+                }
+            }
+            #else
+            await MainActor.run {
+                exportedFileURL = url
+                showShareSheet = true
+            }
+            #endif
         } catch {
             await MainActor.run {
                 viewModel.error = .exportFailed(error.localizedDescription)

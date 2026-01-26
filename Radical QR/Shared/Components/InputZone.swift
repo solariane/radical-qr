@@ -71,7 +71,7 @@ struct InputZone: View {
                     } label: {
                         Image(systemName: "folder")
                             .font(.title3)
-                            .foregroundStyle(.accentColor)
+                            .foregroundStyle(Color.accentColor)
                     }
                     .buttonStyle(.plain)
                 }
