@@ -889,7 +889,7 @@ struct FormatExampleCard: View {
             HStack(spacing: 8) {
                 Image(systemName: example.icon)
                     .font(.title3)
-                    .foregroundStyle(.accentColor)
+                    .foregroundStyle(Color.accentColor)
                     .frame(width: 28)
 
                 Text(example.title)
@@ -919,7 +919,7 @@ struct FormatExampleCard: View {
                             } label: {
                                 Image(systemName: copiedIndex == index ? "checkmark" : "doc.on.doc")
                                     .font(.caption)
-                                    .foregroundStyle(copiedIndex == index ? .green : .accentColor)
+                                    .foregroundStyle(copiedIndex == index ? .green : Color.accentColor)
                             }
                             .buttonStyle(.plain)
                         }
