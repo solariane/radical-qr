@@ -765,6 +765,16 @@ struct GeneratorView: View {
                 ) {
                     viewModel.configuration.backgroundType = .transparent
                 }
+
+                // Logo cutout option - only show when logo is present and user is Pro
+                if purchaseManager.isPro && viewModel.configuration.logoData != nil {
+                    CompactBackgroundButton(
+                        type: .transparentWithLogoCutout,
+                        isSelected: viewModel.configuration.backgroundType == .transparentWithLogoCutout
+                    ) {
+                        viewModel.configuration.backgroundType = .transparentWithLogoCutout
+                    }
+                }
             }
         }
     }
@@ -930,12 +940,8 @@ struct CompactBackgroundButton: View {
         Button(action: action) {
             HStack(spacing: 4) {
                 ZStack {
-                    if type == .transparent {
-                        // Mini checkerboard
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(.secondary.opacity(0.2))
-                            .frame(width: 16, height: 16)
-                    } else {
+                    switch type {
+                    case .white:
                         RoundedRectangle(cornerRadius: 4)
                             .fill(.white)
                             .frame(width: 16, height: 16)
@@ -943,12 +949,25 @@ struct CompactBackgroundButton: View {
                                 RoundedRectangle(cornerRadius: 4)
                                     .strokeBorder(.secondary.opacity(0.3), lineWidth: 0.5)
                             )
+                    case .transparent:
+                        // Mini checkerboard
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(.secondary.opacity(0.2))
+                            .frame(width: 16, height: 16)
+                    case .transparentWithLogoCutout:
+                        // Checkerboard with white center (logo cutout)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 4)
+                                .fill(.secondary.opacity(0.2))
+                                .frame(width: 16, height: 16)
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(.white)
+                                .frame(width: 8, height: 8)
+                        }
                     }
                 }
 
-                Text(type == .white
-                     ? String(localized: "background.white", defaultValue: "White")
-                     : String(localized: "background.transparent", defaultValue: "Clear"))
+                Text(type.displayName)
                     .font(.caption2)
             }
             .padding(.horizontal, 8)

@@ -178,6 +178,16 @@ struct CustomizationPanel: View {
                 ) {
                     configuration.backgroundType = .transparent
                 }
+
+                // Logo cutout option - only show when logo is present and user is Pro
+                if purchaseManager.isPro && configuration.logoData != nil {
+                    BackgroundOptionButton(
+                        type: .transparentWithLogoCutout,
+                        isSelected: configuration.backgroundType == .transparentWithLogoCutout
+                    ) {
+                        configuration.backgroundType = .transparentWithLogoCutout
+                    }
+                }
             }
         }
     }
@@ -235,20 +245,31 @@ struct BackgroundOptionButton: View {
         Button(action: action) {
             VStack(spacing: 8) {
                 ZStack {
-                    // Checkerboard for transparent
-                    if type == .transparent {
+                    // Checkerboard for transparent backgrounds
+                    if type == .transparent || type == .transparentWithLogoCutout {
                         CheckerboardPattern()
                             .frame(width: 50, height: 50)
                             .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
 
+                    // White fill for white background
+                    if type == .white {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white)
+                            .frame(width: 50, height: 50)
+                    }
+
+                    // Border
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(type == .white ? Color.white : Color.clear)
+                        .strokeBorder(.secondary.opacity(0.3), lineWidth: 1)
                         .frame(width: 50, height: 50)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .strokeBorder(.secondary.opacity(0.3), lineWidth: 1)
-                        )
+
+                    // White center for logo cutout
+                    if type == .transparentWithLogoCutout {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.white)
+                            .frame(width: 20, height: 20)
+                    }
 
                     if isSelected {
                         Image(systemName: "checkmark.circle.fill")
@@ -256,9 +277,7 @@ struct BackgroundOptionButton: View {
                     }
                 }
 
-                Text(type == .white
-                     ? String(localized: "background.white", defaultValue: "White")
-                     : String(localized: "background.transparent", defaultValue: "Transparent"))
+                Text(type.displayName)
                     .font(.caption)
                     .foregroundStyle(isSelected ? .primary : .secondary)
             }

@@ -261,31 +261,103 @@ extension DataTypeDetector {
             return nil
 
         case .vcard:
-            // Parse vCard for name
+            // Parse vCard for name, email, phone
+            var name: String?
+            var contactDetail: String?
+            var hasMoreData = false
+
+            // Try FN (formatted name) first
             if let fnMatch = trimmed.range(of: "FN:([^\r\n]+)", options: .regularExpression) {
-                let name = String(trimmed[fnMatch]).dropFirst(3)
-                return String(localized: "summary.vcard", defaultValue: "Contact: \(name)")
+                name = String(String(trimmed[fnMatch]).dropFirst(3)).trimmingCharacters(in: .whitespaces)
             }
-            if let nMatch = trimmed.range(of: "N:([^;]*);([^;]*)", options: .regularExpression) {
-                let parts = String(trimmed[nMatch]).dropFirst(2).split(separator: ";")
-                if parts.count >= 2 {
-                    let name = "\(parts[1]) \(parts[0])".trimmingCharacters(in: .whitespaces)
-                    if !name.isEmpty {
-                        return String(localized: "summary.vcard", defaultValue: "Contact: \(name)")
+
+            // Fall back to N (structured name)
+            if name == nil || name?.isEmpty == true {
+                if let nMatch = trimmed.range(of: "N:([^;]*);([^;]*)", options: .regularExpression) {
+                    let parts = String(trimmed[nMatch]).dropFirst(2).split(separator: ";")
+                    if parts.count >= 2 {
+                        let parsedName = "\(parts[1]) \(parts[0])".trimmingCharacters(in: .whitespaces)
+                        if !parsedName.isEmpty {
+                            name = parsedName
+                        }
                     }
                 }
+            }
+
+            // Look for email
+            if let emailMatch = trimmed.range(of: "EMAIL[^:]*:([^\r\n]+)", options: .regularExpression) {
+                let emailLine = String(trimmed[emailMatch])
+                if let colonIndex = emailLine.firstIndex(of: ":") {
+                    contactDetail = String(emailLine[emailLine.index(after: colonIndex)...]).trimmingCharacters(in: .whitespaces)
+                }
+            }
+
+            // If no email, look for phone
+            if contactDetail == nil {
+                if let telMatch = trimmed.range(of: "TEL[^:]*:([^\r\n]+)", options: .regularExpression) {
+                    let telLine = String(trimmed[telMatch])
+                    if let colonIndex = telLine.firstIndex(of: ":") {
+                        contactDetail = String(telLine[telLine.index(after: colonIndex)...]).trimmingCharacters(in: .whitespaces)
+                    }
+                }
+            }
+
+            // Check for additional data (ORG, TITLE, ADR, URL, etc.)
+            let additionalFields = ["ORG:", "TITLE:", "ADR:", "URL:", "NOTE:", "BDAY:"]
+            for field in additionalFields {
+                if trimmed.range(of: field, options: .caseInsensitive) != nil {
+                    hasMoreData = true
+                    break
+                }
+            }
+
+            // Also check for multiple emails or phones
+            let emailCount = trimmed.components(separatedBy: "EMAIL").count - 1
+            let telCount = trimmed.components(separatedBy: "TEL").count - 1
+            if emailCount > 1 || telCount > 1 {
+                hasMoreData = true
+            }
+
+            // Build the summary
+            if let name = name, !name.isEmpty {
+                var summary = name
+                if let detail = contactDetail {
+                    summary += " • \(detail)"
+                }
+                if hasMoreData {
+                    summary += " …"
+                }
+                return summary
             }
             return String(localized: "summary.vcard.generic", defaultValue: "Contact card")
 
         case .icalendar:
-            // Parse iCalendar for event summary
+            // Parse iCalendar for event summary and start date
+            var eventSummary: String?
+            var startDate: String?
+
+            // Get SUMMARY
             if let summaryMatch = trimmed.range(of: "SUMMARY:([^\r\n]+)", options: .regularExpression) {
-                let summary = String(trimmed[summaryMatch]).dropFirst(8)
-                return String(localized: "summary.event", defaultValue: "Event: \(summary)")
+                eventSummary = String(String(trimmed[summaryMatch]).dropFirst(8)).trimmingCharacters(in: .whitespaces)
             }
-            // Try to find DTSTART for date info
-            if trimmed.range(of: "DTSTART[^:]*:([^\r\n]+)", options: .regularExpression) != nil {
-                return String(localized: "summary.event.generic", defaultValue: "Calendar event")
+
+            // Get DTSTART - handles various formats like DTSTART:20240115T090000Z or DTSTART;VALUE=DATE:20240115
+            if let dtMatch = trimmed.range(of: "DTSTART[^:]*:([^\r\n]+)", options: .regularExpression) {
+                let dtLine = String(trimmed[dtMatch])
+                if let colonIndex = dtLine.firstIndex(of: ":") {
+                    let dateValue = String(dtLine[dtLine.index(after: colonIndex)...]).trimmingCharacters(in: .whitespaces)
+                    startDate = formatICalendarDate(dateValue)
+                }
+            }
+
+            // Build the summary
+            if let summary = eventSummary, !summary.isEmpty {
+                if let date = startDate {
+                    return "\(summary) • \(date)"
+                }
+                return summary
+            } else if let date = startDate {
+                return String(localized: "summary.event.dateOnly", defaultValue: "Event on \(date)")
             }
             return String(localized: "summary.event.generic", defaultValue: "Calendar event")
 
@@ -304,6 +376,46 @@ extension DataTypeDetector {
             }
             return "\(trimmed.prefix(47))..."
         }
+    }
+    /// Formats an iCalendar date string into a human-readable format
+    /// Handles formats like: 20240115, 20240115T090000, 20240115T090000Z
+    private static func formatICalendarDate(_ dateString: String) -> String? {
+        // Remove any timezone suffix (Z or +/-offset)
+        var cleanDate = dateString.replacingOccurrences(of: "Z", with: "")
+        if let plusIndex = cleanDate.firstIndex(of: "+") {
+            cleanDate = String(cleanDate[..<plusIndex])
+        }
+        if let minusIndex = cleanDate.lastIndex(of: "-"), cleanDate.distance(from: minusIndex, to: cleanDate.endIndex) <= 5 {
+            cleanDate = String(cleanDate[..<minusIndex])
+        }
+
+        // Remove time component if present (after T)
+        if let tIndex = cleanDate.firstIndex(of: "T") {
+            cleanDate = String(cleanDate[..<tIndex])
+        }
+
+        // Parse YYYYMMDD format
+        guard cleanDate.count == 8,
+              let year = Int(cleanDate.prefix(4)),
+              let month = Int(cleanDate.dropFirst(4).prefix(2)),
+              let day = Int(cleanDate.dropFirst(6).prefix(2)) else {
+            return nil
+        }
+
+        // Create date components and format
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = day
+
+        guard let date = Calendar.current.date(from: components) else {
+            return nil
+        }
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
     }
 }
 

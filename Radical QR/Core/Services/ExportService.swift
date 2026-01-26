@@ -175,7 +175,9 @@ final class ExportService: Sendable {
               <rect width="100%" height="100%" fill="white"/>
 
             """
-        case .transparent:
+        case .transparent, .transparentWithLogoCutout:
+            // For transparent backgrounds (including logo cutout), don't add background rect
+            // Logo cutout is handled when drawing the logo
             break
         }
 

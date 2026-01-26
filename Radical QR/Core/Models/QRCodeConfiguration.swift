@@ -87,12 +87,29 @@ struct GradientConfiguration: Codable, Hashable, Sendable {
 enum BackgroundType: Codable, Hashable, Sendable {
     case white
     case transparent
+    case transparentWithLogoCutout  // Transparent background but white cutout area for logo
 
     var color: Color {
         switch self {
         case .white: .white
-        case .transparent: .clear
+        case .transparent, .transparentWithLogoCutout: .clear
         }
+    }
+
+    var displayName: String {
+        switch self {
+        case .white:
+            String(localized: "background.white", defaultValue: "White")
+        case .transparent:
+            String(localized: "background.transparent", defaultValue: "Clear")
+        case .transparentWithLogoCutout:
+            String(localized: "background.logoCutout", defaultValue: "Logo Cutout")
+        }
+    }
+
+    /// Whether this background type requires a logo to be useful
+    var requiresLogo: Bool {
+        self == .transparentWithLogoCutout
     }
 }
 
