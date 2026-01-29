@@ -187,8 +187,23 @@ final class ExportService: Sendable {
             fillAttribute = "url(#g)"
         }
 
+        // Calculate logo exclusion rect if needed (for cutout mode)
+        // In SVG, coordinates are in module units (viewBox)
+        var exclusionRect: CGRect? = nil
+        if configuration.backgroundType == .transparentWithLogoCutout,
+           let logoData = configuration.logoData {
+            exclusionRect = calculateSVGLogoExclusionRect(
+                logoData: logoData,
+                matrixSize: matrix.size
+            )
+        }
+
         // Generate optimized path - using unit coordinates (1 unit = 1 module)
-        let pathData = generateOptimizedPath(matrix: matrix, roundness: configuration.roundness)
+        let pathData = generateOptimizedPath(
+            matrix: matrix,
+            roundness: configuration.roundness,
+            exclusionRect: exclusionRect
+        )
 
         svg += "\n<path fill=\"\(fillAttribute)\" d=\"\(pathData)\"/>"
 
@@ -212,7 +227,11 @@ final class ExportService: Sendable {
 
     /// Generates an optimized SVG path using horizontal run-length encoding
     /// Consecutive filled modules on the same row are merged into single rectangles
-    private func generateOptimizedPath(matrix: QRModuleMatrix, roundness: CGFloat) -> String {
+    private func generateOptimizedPath(
+        matrix: QRModuleMatrix,
+        roundness: CGFloat,
+        exclusionRect: CGRect? = nil
+    ) -> String {
         var pathCommands: [String] = []
 
         for row in 0..<matrix.size {
@@ -223,10 +242,21 @@ final class ExportService: Sendable {
                     continue
                 }
 
-                // Count consecutive filled modules
+                // Skip modules inside the exclusion rect (logo cutout area)
+                let moduleRect = CGRect(x: CGFloat(col), y: CGFloat(row), width: 1, height: 1)
+                if let exclusion = exclusionRect, exclusion.intersects(moduleRect) {
+                    col += 1
+                    continue
+                }
+
+                // Count consecutive filled modules (that are not in exclusion zone)
                 var runLength = 1
                 while col + runLength < matrix.size &&
                       matrix.isModuleFilled(row: row, column: col + runLength) {
+                    let nextModuleRect = CGRect(x: CGFloat(col + runLength), y: CGFloat(row), width: 1, height: 1)
+                    if let exclusion = exclusionRect, exclusion.intersects(nextModuleRect) {
+                        break
+                    }
                     runLength += 1
                 }
 
@@ -285,6 +315,37 @@ final class ExportService: Sendable {
         return String(format: "#%02x%02x%02x", r, g, b)
     }
 
+
+    /// Calculates the exclusion rect for logo cutout in SVG (module unit coordinates)
+    private func calculateSVGLogoExclusionRect(logoData: Data, matrixSize: Int) -> CGRect {
+        let imageSize = getImageSize(from: logoData)
+        let aspectRatio = imageSize.width / imageSize.height
+        let qrSize = CGFloat(matrixSize)
+
+        let maxLogoSize = qrSize * 0.25
+
+        let logoWidth: CGFloat
+        let logoHeight: CGFloat
+
+        if aspectRatio > 1 {
+            logoWidth = maxLogoSize
+            logoHeight = maxLogoSize / aspectRatio
+        } else {
+            logoHeight = maxLogoSize
+            logoWidth = maxLogoSize * aspectRatio
+        }
+
+        let padding = min(logoWidth, logoHeight) * 0.12
+
+        let logoRect = CGRect(
+            x: (qrSize - logoWidth) / 2,
+            y: (qrSize - logoHeight) / 2,
+            width: logoWidth,
+            height: logoHeight
+        )
+
+        return logoRect.insetBy(dx: -padding, dy: -padding)
+    }
 
     private func generateSVGLogoElement(logoData: Data, qrSize: CGFloat, withBackground: Bool = true) -> String {
         // qrSize is in module units (viewBox coordinates)

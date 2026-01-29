@@ -86,6 +86,18 @@ final class QRCodeRenderer: Sendable {
         // Draw background
         drawBackground(in: context, size: renderSize, type: configuration.backgroundType)
 
+        // Calculate logo exclusion rect if needed (for cutout mode)
+        var logoExclusionRect: CGRect? = nil
+        if configuration.backgroundType == .transparentWithLogoCutout,
+           let logoData = configuration.logoData {
+            logoExclusionRect = calculateLogoExclusionRect(
+                logoData: logoData,
+                renderSize: renderSize,
+                moduleSize: moduleSize,
+                offset: offset
+            )
+        }
+
         // Draw QR modules with proper offset for quiet zone
         drawModules(
             in: context,
@@ -94,7 +106,8 @@ final class QRCodeRenderer: Sendable {
             offset: offset,
             totalSize: renderSize,
             style: configuration.foregroundStyle,
-            roundness: configuration.roundness
+            roundness: configuration.roundness,
+            exclusionRect: logoExclusionRect
         )
 
         // Draw logo if present
@@ -163,7 +176,8 @@ final class QRCodeRenderer: Sendable {
         offset: CGFloat,
         totalSize: CGFloat,
         style: ForegroundStyle,
-        roundness: CGFloat
+        roundness: CGFloat,
+        exclusionRect: CGRect? = nil
     ) {
         // Build the module path
         let modulePath = CGMutablePath()
@@ -182,6 +196,11 @@ final class QRCodeRenderer: Sendable {
                     width: moduleSize - (inset * 2),
                     height: moduleSize - (inset * 2)
                 )
+
+                // Skip modules that fall within the exclusion rect (logo cutout area)
+                if let exclusion = exclusionRect, exclusion.intersects(rect) {
+                    continue
+                }
 
                 if roundness > 0 {
                     modulePath.addRoundedRect(
@@ -321,6 +340,57 @@ final class QRCodeRenderer: Sendable {
         let b = start.blue + (end.blue - start.blue) * progress
         let a = start.opacity + (end.opacity - start.opacity) * progress
         return CGColor(red: r, green: g, blue: b, alpha: a)
+    }
+
+    /// Calculates the exclusion rect for logo cutout (the area where QR modules should not be drawn)
+    private func calculateLogoExclusionRect(
+        logoData: Data,
+        renderSize: CGFloat,
+        moduleSize: CGFloat,
+        offset: CGFloat
+    ) -> CGRect {
+        #if os(macOS)
+        let imageSize: CGSize
+        if let nsImage = NSImage(data: logoData) {
+            imageSize = nsImage.size
+        } else {
+            imageSize = CGSize(width: 100, height: 100)
+        }
+        #else
+        let imageSize: CGSize
+        if let uiImage = UIImage(data: logoData) {
+            imageSize = uiImage.size
+        } else {
+            imageSize = CGSize(width: 100, height: 100)
+        }
+        #endif
+
+        let aspectRatio = imageSize.width / imageSize.height
+        let maxLogoSize = renderSize * 0.25
+
+        let logoWidth: CGFloat
+        let logoHeight: CGFloat
+
+        if aspectRatio > 1 {
+            logoWidth = maxLogoSize
+            logoHeight = maxLogoSize / aspectRatio
+        } else {
+            logoHeight = maxLogoSize
+            logoWidth = maxLogoSize * aspectRatio
+        }
+
+        // Add padding around logo for the cutout
+        let padding = min(logoWidth, logoHeight) * 0.12
+
+        let logoRect = CGRect(
+            x: (renderSize - logoWidth) / 2,
+            y: (renderSize - logoHeight) / 2,
+            width: logoWidth,
+            height: logoHeight
+        )
+
+        // Return the exclusion rect with padding
+        return logoRect.insetBy(dx: -padding, dy: -padding)
     }
 
     private func drawLogo(
