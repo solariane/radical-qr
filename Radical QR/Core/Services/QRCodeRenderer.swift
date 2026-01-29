@@ -370,11 +370,11 @@ final class QRCodeRenderer: Sendable {
             height: logoHeight
         )
 
-        // Draw white background behind logo based on background type:
-        // - white: always draw white background for logo visibility
+        // Draw white background behind logo only for .white background type
+        // - white: draw white background for logo visibility
         // - transparent: no background (preserve logo transparency)
-        // - transparentWithLogoCutout: draw white cutout area for logo
-        if backgroundType == .white || backgroundType == .transparentWithLogoCutout {
+        // - transparentWithLogoCutout: transparent cutout (no white, just the logo)
+        if backgroundType == .white {
             let padding: CGFloat = min(logoWidth, logoHeight) * 0.12
             let backgroundRect = logoRect.insetBy(dx: -padding, dy: -padding)
             context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
