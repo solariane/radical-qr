@@ -379,18 +379,18 @@ final class QRCodeRenderer: Sendable {
             logoWidth = maxLogoSize * aspectRatio
         }
 
-        // Add padding around logo for the cutout
-        let padding = min(logoWidth, logoHeight) * 0.12
+        // Use the larger dimension to make a SQUARE cutout
+        let cutoutBase = max(logoWidth, logoHeight)
+        let padding = cutoutBase * 0.12
+        let cutoutSize = cutoutBase + padding * 2
 
-        let logoRect = CGRect(
-            x: (renderSize - logoWidth) / 2,
-            y: (renderSize - logoHeight) / 2,
-            width: logoWidth,
-            height: logoHeight
+        // Return a centered square exclusion rect
+        return CGRect(
+            x: (renderSize - cutoutSize) / 2,
+            y: (renderSize - cutoutSize) / 2,
+            width: cutoutSize,
+            height: cutoutSize
         )
-
-        // Return the exclusion rect with padding
-        return logoRect.insetBy(dx: -padding, dy: -padding)
     }
 
     private func drawLogo(

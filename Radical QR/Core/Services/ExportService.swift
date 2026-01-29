@@ -317,6 +317,7 @@ final class ExportService: Sendable {
 
 
     /// Calculates the exclusion rect for logo cutout in SVG (module unit coordinates)
+    /// The cutout is always a SQUARE centered on the QR code
     private func calculateSVGLogoExclusionRect(logoData: Data, matrixSize: Int) -> CGRect {
         let imageSize = getImageSize(from: logoData)
         let aspectRatio = imageSize.width / imageSize.height
@@ -335,16 +336,18 @@ final class ExportService: Sendable {
             logoWidth = maxLogoSize * aspectRatio
         }
 
-        let padding = min(logoWidth, logoHeight) * 0.12
+        // Use the larger dimension to make a SQUARE cutout
+        let cutoutBase = max(logoWidth, logoHeight)
+        let padding = cutoutBase * 0.12
+        let cutoutSize = cutoutBase + padding * 2
 
-        let logoRect = CGRect(
-            x: (qrSize - logoWidth) / 2,
-            y: (qrSize - logoHeight) / 2,
-            width: logoWidth,
-            height: logoHeight
+        // Center the square cutout
+        return CGRect(
+            x: (qrSize - cutoutSize) / 2,
+            y: (qrSize - cutoutSize) / 2,
+            width: cutoutSize,
+            height: cutoutSize
         )
-
-        return logoRect.insetBy(dx: -padding, dy: -padding)
     }
 
     private func generateSVGLogoElement(logoData: Data, qrSize: CGFloat, withBackground: Bool = true) -> String {
@@ -375,16 +378,9 @@ final class ExportService: Sendable {
         let backgroundY = logoY - padding
         let cornerRadius = padding * 0.8
 
-        let base64 = logoData.base64EncodedString()
-
-        let imageType: String
-        if logoData.prefix(8).elementsEqual([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) {
-            imageType = "image/png"
-        } else if logoData.prefix(2).elementsEqual([0xFF, 0xD8]) {
-            imageType = "image/jpeg"
-        } else {
-            imageType = "image/png"
-        }
+        // Convert image to PNG for SVG embedding (handles TIFF, HEIC, etc.)
+        let (pngData, imageType) = convertToPNGForSVG(logoData)
+        let base64 = pngData.base64EncodedString()
 
         var result = ""
 
@@ -395,6 +391,38 @@ final class ExportService: Sendable {
         result += "\n<image x=\"\(fmt(logoX))\" y=\"\(fmt(logoY))\" width=\"\(fmt(logoWidth))\" height=\"\(fmt(logoHeight))\" href=\"data:\(imageType);base64,\(base64)\"/>"
 
         return result
+    }
+
+    /// Converts image data to PNG format for SVG embedding
+    /// Returns the PNG data and MIME type
+    private func convertToPNGForSVG(_ data: Data) -> (Data, String) {
+        // Check if already PNG
+        if data.prefix(8).elementsEqual([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) {
+            return (data, "image/png")
+        }
+
+        // Check if JPEG - use as-is (good compression)
+        if data.prefix(2).elementsEqual([0xFF, 0xD8]) {
+            return (data, "image/jpeg")
+        }
+
+        // For other formats (TIFF, HEIC, etc.), convert to PNG
+        #if os(macOS)
+        if let nsImage = NSImage(data: data),
+           let tiffData = nsImage.tiffRepresentation,
+           let bitmap = NSBitmapImageRep(data: tiffData),
+           let pngData = bitmap.representation(using: .png, properties: [.compressionFactor: 0.9]) {
+            return (pngData, "image/png")
+        }
+        #else
+        if let uiImage = UIImage(data: data),
+           let pngData = uiImage.pngData() {
+            return (pngData, "image/png")
+        }
+        #endif
+
+        // Fallback: return original data as PNG type
+        return (data, "image/png")
     }
 
     private func getImageSize(from data: Data) -> CGSize {
