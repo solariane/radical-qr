@@ -35,3 +35,4 @@ fastlane/test_output
 
 # translation expport / import
 *Localizations
+node_modules/

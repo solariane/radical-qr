@@ -6,6 +6,10 @@
 	objectVersion = 70;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		379B47CD2F2B7AB100E44971 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 373BBFAB2F23EA71008F72BF /* QRCode */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		373BBF862F23EA69008F72BF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -50,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				379B47CD2F2B7AB100E44971 /* QRCode in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,12 +204,12 @@
 				ja,
 			);
 			mainGroup = 000000000000000000000001;
-			productRefGroup = 000000000000000000000003 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
 			packageReferences = (
 				373BBFAA2F23EA70008F72BF /* XCRemoteSwiftPackageReference "QRCode" */,
 			);
+			productRefGroup = 000000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				373BBF742F23EA67008F72BF /* Radical QR */,
 				373BBF842F23EA69008F72BF /* Radical QRTests */,

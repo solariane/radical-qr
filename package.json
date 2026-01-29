@@ -1,0 +1,13 @@
+{
+  "name": "deepl-xcloc-translator",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "deepl-xcloc": "./deepl-xcloc-xliff12.mjs"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.8.10",
+    "xpath": "^0.0.34"
+  }
+}
