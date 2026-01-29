@@ -393,10 +393,10 @@ final class ExportService: Sendable {
         return result
     }
 
-    /// Converts image data to PNG format for SVG embedding
-    /// Returns the PNG data and MIME type
+    /// Converts image data to an efficient format for SVG embedding
+    /// Uses JPEG for opaque images (better compression), PNG only when alpha is needed
     private func convertToPNGForSVG(_ data: Data) -> (Data, String) {
-        // Check if already PNG
+        // Check if already PNG - use as-is (preserves transparency)
         if data.prefix(8).elementsEqual([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]) {
             return (data, "image/png")
         }
@@ -406,24 +406,73 @@ final class ExportService: Sendable {
             return (data, "image/jpeg")
         }
 
-        // For other formats (TIFF, HEIC, etc.), convert to PNG
+        // For other formats (TIFF, HEIC, etc.), convert to JPEG for better compression
+        // JPEG is much more efficient for photographic images
         #if os(macOS)
         if let nsImage = NSImage(data: data),
            let tiffData = nsImage.tiffRepresentation,
-           let bitmap = NSBitmapImageRep(data: tiffData),
-           let pngData = bitmap.representation(using: .png, properties: [.compressionFactor: 0.9]) {
-            return (pngData, "image/png")
+           let bitmap = NSBitmapImageRep(data: tiffData) {
+            // Check if image has alpha channel that's actually used
+            let hasAlpha = bitmap.hasAlpha && imageHasTransparency(bitmap)
+
+            if hasAlpha {
+                // Use PNG to preserve transparency
+                if let pngData = bitmap.representation(using: .png, properties: [:]) {
+                    return (pngData, "image/png")
+                }
+            } else {
+                // Use JPEG for better compression (photographic images)
+                if let jpegData = bitmap.representation(using: .jpeg, properties: [.compressionFactor: 0.85]) {
+                    return (jpegData, "image/jpeg")
+                }
+            }
         }
         #else
-        if let uiImage = UIImage(data: data),
-           let pngData = uiImage.pngData() {
-            return (pngData, "image/png")
+        if let uiImage = UIImage(data: data) {
+            // Check if image has alpha
+            let hasAlpha = uiImage.cgImage?.alphaInfo != .none &&
+                           uiImage.cgImage?.alphaInfo != .noneSkipLast &&
+                           uiImage.cgImage?.alphaInfo != .noneSkipFirst
+
+            if hasAlpha {
+                if let pngData = uiImage.pngData() {
+                    return (pngData, "image/png")
+                }
+            } else {
+                if let jpegData = uiImage.jpegData(compressionQuality: 0.85) {
+                    return (jpegData, "image/jpeg")
+                }
+            }
         }
         #endif
 
-        // Fallback: return original data as PNG type
+        // Fallback: return original data
         return (data, "image/png")
     }
+
+    #if os(macOS)
+    /// Checks if a bitmap actually uses its alpha channel (has non-opaque pixels)
+    private func imageHasTransparency(_ bitmap: NSBitmapImageRep) -> Bool {
+        guard bitmap.hasAlpha else { return false }
+
+        // Sample a few pixels to check for transparency (full check would be slow)
+        let width = bitmap.pixelsWide
+        let height = bitmap.pixelsHigh
+        let samplePoints = [
+            (0, 0), (width - 1, 0), (0, height - 1), (width - 1, height - 1),
+            (width / 2, height / 2)
+        ]
+
+        for (x, y) in samplePoints {
+            if let color = bitmap.colorAt(x: x, y: y),
+               color.alphaComponent < 1.0 {
+                return true
+            }
+        }
+
+        return false
+    }
+    #endif
 
     private func getImageSize(from data: Data) -> CGSize {
         #if os(macOS)
