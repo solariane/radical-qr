@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import UniformTypeIdentifiers
 
 #if os(macOS)
 import AppKit
@@ -782,43 +783,37 @@ struct GeneratorView: View {
     // MARK: - Compact Logo Section
 
     private var compactLogoSection: some View {
-        HStack {
-            Text(String(localized: "logo.title", defaultValue: "Logo"))
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(String(localized: "logo.title", defaultValue: "Logo"))
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
 
-            if !purchaseManager.isPro {
-                ProBadge()
+                if !purchaseManager.isPro {
+                    ProBadge()
+                }
+
+                Spacer()
+
+                if purchaseManager.isPro && viewModel.configuration.logoData != nil {
+                    Button(role: .destructive) {
+                        withAnimation {
+                            viewModel.configuration.logoData = nil
+                        }
+                    } label: {
+                        Label(
+                            String(localized: "logo.remove", defaultValue: "Remove"),
+                            systemImage: "trash"
+                        )
+                        .font(.caption)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                }
             }
 
-            Spacer()
-
             if purchaseManager.isPro {
-                if viewModel.configuration.logoData != nil {
-                    HStack(spacing: 8) {
-                        // Small logo preview
-                        if let data = viewModel.configuration.logoData,
-                           let image = platformImage(from: data) {
-                            image
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 24, height: 24)
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
-                        }
-
-                        Button(role: .destructive) {
-                            withAnimation {
-                                viewModel.configuration.logoData = nil
-                            }
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .foregroundStyle(.secondary)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                } else {
-                    CompactLogoButton(logoData: $viewModel.configuration.logoData)
-                }
+                CompactLogoDropZone(logoData: $viewModel.configuration.logoData)
             } else {
                 CompactProLockedButton(feature: .logoEmbedding)
             }
@@ -986,42 +981,91 @@ struct CompactBackgroundButton: View {
     }
 }
 
-// MARK: - Compact Logo Button
+// MARK: - Compact Logo Drop Zone
 
-struct CompactLogoButton: View {
+struct CompactLogoDropZone: View {
     @Binding var logoData: Data?
+    @State private var isTargeted = false
     @State private var showPhotoPicker = false
     @State private var showFilePicker = false
     @State private var selectedPhotoItem: PhotosPickerItem?
 
     var body: some View {
-        Menu {
-            Button {
-                showPhotoPicker = true
-            } label: {
-                Label(
-                    String(localized: "logo.fromPhotos", defaultValue: "From Photos"),
-                    systemImage: "photo.on.rectangle"
-                )
+        HStack(spacing: 12) {
+            // Current logo preview (if any)
+            if let logoData, let image = platformImage(from: logoData) {
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 44, height: 44)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .strokeBorder(.secondary.opacity(0.3), lineWidth: 1)
+                    )
             }
 
-            Button {
-                showFilePicker = true
-            } label: {
-                Label(
-                    String(localized: "logo.fromFiles", defaultValue: "From Files"),
-                    systemImage: "folder"
-                )
+            // Drop zone
+            ZStack {
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(
+                        style: StrokeStyle(lineWidth: 1.5, dash: [5, 3])
+                    )
+                    .foregroundStyle(isTargeted ? .accent : .secondary.opacity(0.4))
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(isTargeted ? Color.accentColor.opacity(0.1) : Color.secondary.opacity(0.05))
+                    )
+
+                HStack(spacing: 6) {
+                    Image(systemName: isTargeted ? "arrow.down.circle.fill" : "photo.badge.plus")
+                        .font(.caption)
+                        .foregroundStyle(isTargeted ? .accent : .secondary)
+                        .symbolEffect(.bounce, value: isTargeted)
+
+                    Text(isTargeted
+                         ? String(localized: "logo.release", defaultValue: "Release to add")
+                         : (logoData == nil
+                            ? String(localized: "logo.dropOrSelect", defaultValue: "Drop image or click to select")
+                            : String(localized: "logo.dropToReplace", defaultValue: "Drop to replace")))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 8)
             }
-        } label: {
-            Label(
-                String(localized: "logo.add", defaultValue: "Add"),
-                systemImage: "plus.circle"
-            )
-            .font(.caption)
+            .frame(height: 44)
+            .onDrop(of: [.image], isTargeted: $isTargeted) { providers in
+                handleImageDrop(providers: providers)
+            }
+            .onTapGesture {
+                #if os(macOS)
+                // On macOS, show file picker directly (more common workflow)
+                showFilePicker = true
+                #else
+                // On iOS, show photo picker (more common workflow)
+                showPhotoPicker = true
+                #endif
+            }
+            .contextMenu {
+                Button {
+                    showPhotoPicker = true
+                } label: {
+                    Label(
+                        String(localized: "logo.fromPhotos", defaultValue: "From Photos"),
+                        systemImage: "photo.on.rectangle"
+                    )
+                }
+
+                Button {
+                    showFilePicker = true
+                } label: {
+                    Label(
+                        String(localized: "logo.fromFiles", defaultValue: "From Files"),
+                        systemImage: "folder"
+                    )
+                }
+            }
         }
-        .menuStyle(.borderlessButton)
-        .fixedSize()
         .photosPicker(isPresented: $showPhotoPicker, selection: $selectedPhotoItem, matching: .images)
         .onChange(of: selectedPhotoItem) { _, newValue in
             Task {
@@ -1035,6 +1079,20 @@ struct CompactLogoButton: View {
         ) { result in
             handleFileImport(result)
         }
+    }
+
+    private func handleImageDrop(providers: [NSItemProvider]) -> Bool {
+        guard let provider = providers.first else { return false }
+
+        _ = provider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, _ in
+            if let data = data {
+                DispatchQueue.main.async {
+                    self.logoData = processImageData(data)
+                }
+            }
+        }
+
+        return true
     }
 
     private func handleFileImport(_ result: Result<[URL], Error>) {
@@ -1118,6 +1176,16 @@ struct CompactLogoButton: View {
         }
 
         return data
+        #endif
+    }
+
+    private func platformImage(from data: Data) -> Image? {
+        #if os(macOS)
+        guard let nsImage = NSImage(data: data) else { return nil }
+        return Image(nsImage: nsImage)
+        #else
+        guard let uiImage = UIImage(data: data) else { return nil }
+        return Image(uiImage: uiImage)
         #endif
     }
 }
