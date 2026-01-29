@@ -32,3 +32,6 @@ fastlane/test_output
 *.swp
 *.swo
 *~
+
+# translation expport / import
+*Localizations

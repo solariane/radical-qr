@@ -92,7 +92,7 @@ struct ExportSize: Hashable, Sendable {
     static let xxlarge = ExportSize(width: 4096, height: 4096)
 
     /// Maximum size for free tier (400px as per spec)
-    static let freeMax = ExportSize(width: 400, height: 400)
+    static let freeMax = medium; // ExportSize(width: 400, height: 400)
 
     /// All standard sizes
     static let allSizes: [ExportSize] = [.small, .medium, .large, .xlarge, .xxlarge]

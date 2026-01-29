@@ -1472,7 +1472,7 @@ END:VCARD
             type: "text",
             icon: "text.alignleft",
             title: String(localized: "help.text.title", defaultValue: "Plain Text"),
-            description: String(localized: "help.text.description", defaultValue: "Any text content that doesn't match other formats."),
+            description: String(localized: "help.text.description", defaultValue: "Any text content that doesn't match other formats. you'll need to handle this yourself"),
             examples: [
                 ("Message", "Hello, scan me!"),
                 ("Multiline", "Line 1\nLine 2\nLine 3")
