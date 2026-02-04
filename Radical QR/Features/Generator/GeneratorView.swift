@@ -135,12 +135,17 @@ struct GeneratorView: View {
             if viewModel.hasValidInput {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 8) {
-                        Image(systemName: viewModel.detectedDataType.iconName)
-                        Text(viewModel.detectedDataType.displayName)
+                        let metadata = viewModel.urlMetadata
+                        Image(systemName: metadata?.iconName ?? viewModel.detectedDataType.iconName)
+                        Text(metadata?.platform ?? viewModel.detectedDataType.displayName)
 
                         Spacer()
 
-                        Text(viewModel.detectedDataType.description)
+                        Text(metadata != nil
+                             ? (metadata?.category == .socialProfile
+                                ? String(localized: "dataType.url.social", defaultValue: "Social Profile")
+                                : String(localized: "dataType.url.deepLink", defaultValue: "App Link"))
+                             : viewModel.detectedDataType.description)
                             .foregroundStyle(.white.opacity(0.6))
                     }
                     .font(.caption)
@@ -350,7 +355,8 @@ struct GeneratorView: View {
                 try await viewModel.exportService.copyToClipboard(
                     input: QRInput(content: viewModel.inputText),
                     configuration: viewModel.configuration,
-                    size: CGFloat(selectedSize.width)
+                    size: CGFloat(selectedSize.width),
+                    captionText: viewModel.resolvedCaptionText
                 )
 
                 await MainActor.run {
@@ -453,6 +459,9 @@ struct GeneratorView: View {
 
                 // Logo Section (Pro) - Compacted
                 compactLogoSection
+
+                // Caption Section
+                compactCaptionSection
             }
             .padding(16)
         }
@@ -816,6 +825,70 @@ struct GeneratorView: View {
                 CompactLogoDropZone(logoData: $viewModel.configuration.logoData)
             } else {
                 CompactProLockedButton(feature: .logoEmbedding)
+            }
+        }
+    }
+
+    // MARK: - Compact Caption Section
+
+    private var compactCaptionSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text(String(localized: "caption.title", defaultValue: "Caption"))
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+
+                Toggle("", isOn: $viewModel.configuration.showCaption)
+                    .labelsHidden()
+                    .toggleStyle(.switch)
+                    .controlSize(.small)
+            }
+
+            if viewModel.configuration.showCaption {
+                let autoCaption = viewModel.currentInput.flatMap { CaptionGenerator.defaultCaption(for: $0) } ?? ""
+
+                TextField(
+                    autoCaption,
+                    text: Binding(
+                        get: { viewModel.configuration.captionText ?? "" },
+                        set: { viewModel.configuration.captionText = $0.isEmpty ? nil : $0 }
+                    )
+                )
+                .font(.caption)
+                .textFieldStyle(.roundedBorder)
+
+                // Size selector
+                HStack(spacing: 8) {
+                    Text(String(localized: "caption.size", defaultValue: "Size"))
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+
+                    ForEach(QRCodeConfiguration.CaptionSize.allCases, id: \.self) { size in
+                        Button {
+                            viewModel.configuration.captionSize = size
+                        } label: {
+                            Text(size.displayName)
+                                .font(.caption2)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(
+                                    Capsule()
+                                        .fill(viewModel.configuration.captionSize == size
+                                              ? Color.accentColor.opacity(0.2)
+                                              : Color.secondary.opacity(0.1))
+                                )
+                                .overlay(
+                                    Capsule()
+                                        .strokeBorder(viewModel.configuration.captionSize == size
+                                                      ? Color.accentColor : Color.clear, lineWidth: 1)
+                                )
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(viewModel.configuration.captionSize == size ? .primary : .secondary)
+                    }
+                }
             }
         }
     }
@@ -1398,6 +1471,29 @@ struct FormatExample: Identifiable {
             examples: [
                 ("Simple", "https://example.com"),
                 ("With path", "https://example.com/page?param=value")
+            ]
+        ),
+        FormatExample(
+            type: "social",
+            icon: "at",
+            title: String(localized: "help.social.title", defaultValue: "Social Profiles"),
+            description: String(localized: "help.social.description", defaultValue: "Links to social media profiles. The app auto-detects the platform and handle."),
+            examples: [
+                ("Instagram", "https://instagram.com/username"),
+                ("X (Twitter)", "https://x.com/username"),
+                ("LinkedIn", "https://linkedin.com/in/username"),
+                ("TikTok", "https://tiktok.com/@username")
+            ]
+        ),
+        FormatExample(
+            type: "deeplink",
+            icon: "app.badge",
+            title: String(localized: "help.deepLink.title", defaultValue: "App Links"),
+            description: String(localized: "help.deepLink.description", defaultValue: "Links that open directly in specific apps like Zoom, Spotify, or Teams."),
+            examples: [
+                ("Zoom Meeting", "https://zoom.us/j/1234567890"),
+                ("Spotify", "https://open.spotify.com/track/..."),
+                ("Google Meet", "https://meet.google.com/abc-defg-hij")
             ]
         ),
         FormatExample(

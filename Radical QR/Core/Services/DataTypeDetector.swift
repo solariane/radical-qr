@@ -225,7 +225,14 @@ extension DataTypeDetector {
 
         switch type {
         case .url:
-            // Extract domain from URL
+            // Check for enriched URL metadata (social profiles, deep links)
+            if let metadata = URLMetadataExtractor.extract(from: trimmed) {
+                if let handle = metadata.handle {
+                    return "\(metadata.platform) \(handle)"
+                }
+                return "\(metadata.platform) — \(metadata.displayLabel)"
+            }
+            // Fallback: extract domain from URL
             if let url = URL(string: trimmed.lowercased().hasPrefix("http") ? trimmed : "https://\(trimmed)"),
                let host = url.host {
                 let path = url.path

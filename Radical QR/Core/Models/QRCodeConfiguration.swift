@@ -8,6 +8,44 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
     var logoData: Data?
     var errorCorrectionLevel: ErrorCorrectionLevel = .medium
 
+    // Caption
+    var showCaption: Bool = false
+    var captionText: String? // nil = auto-generated from content
+    var captionSize: CaptionSize = .medium
+
+    /// Caption font size relative to QR code width
+    enum CaptionSize: String, Codable, Hashable, Sendable, CaseIterable {
+        case small
+        case medium
+        case large
+
+        var displayName: String {
+            switch self {
+            case .small: String(localized: "caption.size.small", defaultValue: "Small")
+            case .medium: String(localized: "caption.size.medium", defaultValue: "Medium")
+            case .large: String(localized: "caption.size.large", defaultValue: "Large")
+            }
+        }
+
+        /// Font size as a fraction of QR code width
+        var relativeFraction: CGFloat {
+            switch self {
+            case .small: 0.035
+            case .medium: 0.045
+            case .large: 0.06
+            }
+        }
+
+        /// Caption area height as a fraction of QR code width
+        var heightFraction: CGFloat {
+            switch self {
+            case .small: 0.08
+            case .medium: 0.10
+            case .large: 0.13
+            }
+        }
+    }
+
     /// Error correction level for QR codes
     /// Higher levels allow more data recovery but reduce capacity
     enum ErrorCorrectionLevel: String, Codable, Hashable, Sendable, CaseIterable {

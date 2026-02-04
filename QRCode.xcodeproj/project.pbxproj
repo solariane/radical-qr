@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3773F6412F33EE0600A5E6DC /* RadicalQRShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3773F6372F33EE0600A5E6DC /* RadicalQRShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		379B47CD2F2B7AB100E44971 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 373BBFAB2F23EA71008F72BF /* QRCode */; };
 /* End PBXBuildFile section */
 
@@ -25,12 +26,34 @@
 			remoteGlobalIDString = 373BBF742F23EA67008F72BF;
 			remoteInfo = "Radical QR";
 		};
+		3773F63F2F33EE0600A5E6DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3773F6362F33EE0600A5E6DC;
+			remoteInfo = RadicalQRShare;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3773F6422F33EE0600A5E6DC /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3773F6412F33EE0600A5E6DC /* RadicalQRShare.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		373BBF752F23EA67008F72BF /* Radical QR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Radical QR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		373BBF852F23EA69008F72BF /* Radical QRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Radical QRTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		373BBF8F2F23EA69008F72BF /* Radical QRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Radical QRUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3773F6372F33EE0600A5E6DC /* RadicalQRShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RadicalQRShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -41,12 +64,35 @@
 			);
 			target = 373BBF742F23EA67008F72BF /* Radical QR */;
 		};
+		3773F6462F33EE0600A5E6DC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3773F6362F33EE0600A5E6DC /* RadicalQRShare */;
+		};
+		3773F64A2F33EFE800A5E6DC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Core/Models/DataType.swift,
+				Core/Models/ExportFormat.swift,
+				Core/Models/QRCodeConfiguration.swift,
+				Core/Models/URLMetadata.swift,
+				Core/Services/CaptionGenerator.swift,
+				Core/Services/DataTypeDetector.swift,
+				Core/Services/ExportService.swift,
+				Core/Services/QRCodeGenerator.swift,
+				Core/Services/QRCodeRenderer.swift,
+			);
+			target = 3773F6362F33EE0600A5E6DC /* RadicalQRShare */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		373BBF762F23EA67008F72BF /* Radical QR */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (373BBF9D2F23EA69008F72BF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Radical QR"; sourceTree = "<group>"; };
+		373BBF762F23EA67008F72BF /* Radical QR */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (373BBF9D2F23EA69008F72BF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 3773F64A2F33EFE800A5E6DC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Radical QR"; sourceTree = "<group>"; };
 		373BBF882F23EA69008F72BF /* Radical QRTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Radical QRTests"; sourceTree = "<group>"; };
 		373BBF922F23EA69008F72BF /* Radical QRUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "Radical QRUITests"; sourceTree = "<group>"; };
+		3773F6382F33EE0600A5E6DC /* RadicalQRShare */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (3773F6462F33EE0600A5E6DC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = RadicalQRShare; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +118,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3773F6342F33EE0600A5E6DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,6 +134,7 @@
 				373BBF762F23EA67008F72BF /* Radical QR */,
 				373BBF882F23EA69008F72BF /* Radical QRTests */,
 				373BBF922F23EA69008F72BF /* Radical QRUITests */,
+				3773F6382F33EE0600A5E6DC /* RadicalQRShare */,
 				000000000000000000000003 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,6 +145,7 @@
 				373BBF752F23EA67008F72BF /* Radical QR.app */,
 				373BBF852F23EA69008F72BF /* Radical QRTests.xctest */,
 				373BBF8F2F23EA69008F72BF /* Radical QRUITests.xctest */,
+				3773F6372F33EE0600A5E6DC /* RadicalQRShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,10 +160,12 @@
 				373BBF712F23EA67008F72BF /* Sources */,
 				373BBF722F23EA67008F72BF /* Frameworks */,
 				373BBF732F23EA67008F72BF /* Resources */,
+				3773F6422F33EE0600A5E6DC /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3773F6402F33EE0600A5E6DC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				373BBF762F23EA67008F72BF /* Radical QR */,
@@ -167,6 +224,28 @@
 			productReference = 373BBF8F2F23EA69008F72BF /* Radical QRUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		3773F6362F33EE0600A5E6DC /* RadicalQRShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3773F6452F33EE0600A5E6DC /* Build configuration list for PBXNativeTarget "RadicalQRShare" */;
+			buildPhases = (
+				3773F6332F33EE0600A5E6DC /* Sources */,
+				3773F6342F33EE0600A5E6DC /* Frameworks */,
+				3773F6352F33EE0600A5E6DC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3773F6382F33EE0600A5E6DC /* RadicalQRShare */,
+			);
+			name = RadicalQRShare;
+			packageProductDependencies = (
+			);
+			productName = RadicalQRShare;
+			productReference = 3773F6372F33EE0600A5E6DC /* RadicalQRShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -188,6 +267,9 @@
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = 373BBF742F23EA67008F72BF;
 					};
+					3773F6362F33EE0600A5E6DC = {
+						CreatedOnToolsVersion = 26.2;
+					};
 				};
 			};
 			buildConfigurationList = 000000000000000000000100 /* Build configuration list for PBXProject "QRCode" */;
@@ -202,6 +284,7 @@
 				it,
 				"pt-BR",
 				ja,
+				Base,
 			);
 			mainGroup = 000000000000000000000001;
 			packageReferences = (
@@ -214,6 +297,7 @@
 				373BBF742F23EA67008F72BF /* Radical QR */,
 				373BBF842F23EA69008F72BF /* Radical QRTests */,
 				373BBF8E2F23EA69008F72BF /* Radical QRUITests */,
+				3773F6362F33EE0600A5E6DC /* RadicalQRShare */,
 			);
 		};
 /* End PBXProject section */
@@ -234,6 +318,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		373BBF8D2F23EA69008F72BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3773F6352F33EE0600A5E6DC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -264,6 +355,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3773F6332F33EE0600A5E6DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -276,6 +374,11 @@
 			isa = PBXTargetDependency;
 			target = 373BBF742F23EA67008F72BF /* Radical QR */;
 			targetProxy = 373BBF902F23EA69008F72BF /* PBXContainerItemProxy */;
+		};
+		3773F6402F33EE0600A5E6DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3773F6362F33EE0600A5E6DC /* RadicalQRShare */;
+			targetProxy = 3773F63F2F33EE0600A5E6DC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -590,6 +693,67 @@
 			};
 			name = Release;
 		};
+		3773F6432F33EE0600A5E6DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NQWAG54N64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RadicalQRShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RadicalQRShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "radicalsolution.com.Radical-QR.RadicalQRShare";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3773F6442F33EE0600A5E6DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NQWAG54N64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RadicalQRShare/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = RadicalQRShare;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "radicalsolution.com.Radical-QR.RadicalQRShare";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -625,6 +789,15 @@
 			buildConfigurations = (
 				373BBF9B2F23EA69008F72BF /* Debug */,
 				373BBF9C2F23EA69008F72BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3773F6452F33EE0600A5E6DC /* Build configuration list for PBXNativeTarget "RadicalQRShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3773F6432F33EE0600A5E6DC /* Debug */,
+				3773F6442F33EE0600A5E6DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

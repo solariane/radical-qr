@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreGraphics
+import CoreText
 
 /// Service for rendering QR codes with custom styling (colors, gradients, roundness, logos)
 final class QRCodeRenderer: Sendable {
@@ -14,18 +15,23 @@ final class QRCodeRenderer: Sendable {
     func render(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        size: CGFloat
+        size: CGFloat,
+        captionText: String? = nil
     ) -> Image? {
         guard let cgImage = renderToCGImage(
             input: input,
             configuration: configuration,
-            size: size
+            size: size,
+            captionText: captionText
         ) else {
             return nil
         }
 
+        let imageWidth = CGFloat(cgImage.width)
+        let imageHeight = CGFloat(cgImage.height)
+
         #if os(macOS)
-        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: size, height: size))
+        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: imageWidth, height: imageHeight))
         return Image(nsImage: nsImage)
         #else
         let uiImage = UIImage(cgImage: cgImage)
@@ -34,10 +40,14 @@ final class QRCodeRenderer: Sendable {
     }
 
     /// Renders a QR code to a CGImage
+    /// - Parameters:
+    ///   - size: The width of the QR code. If caption is provided, the height will be taller.
+    ///   - captionText: Optional text to render below the QR code
     func renderToCGImage(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        size: CGFloat
+        size: CGFloat,
+        captionText: String? = nil
     ) -> CGImage? {
         guard let modules = generator.extractModules(
             from: input.encodedContent,
@@ -50,7 +60,15 @@ final class QRCodeRenderer: Sendable {
         // Use 2x scale for smoother rendering, then downscale
         let scale: CGFloat = 2.0
         let renderSize = size * scale
-        let intSize = Int(renderSize)
+
+        // Calculate caption height
+        let captionHeight: CGFloat = (captionText != nil)
+            ? renderSize * configuration.captionSize.heightFraction
+            : 0
+        let totalRenderHeight = renderSize + captionHeight
+
+        let intWidth = Int(renderSize)
+        let intHeight = Int(totalRenderHeight)
 
         // Calculate module size with proper quiet zone (1 module padding)
         let quietZone: CGFloat = 1
@@ -64,10 +82,10 @@ final class QRCodeRenderer: Sendable {
 
         guard let context = CGContext(
             data: nil,
-            width: intSize,
-            height: intSize,
+            width: intWidth,
+            height: intHeight,
             bitsPerComponent: 8,
-            bytesPerRow: intSize * 4,
+            bytesPerRow: intWidth * 4,
             space: colorSpace,
             bitmapInfo: bitmapInfo.rawValue
         ) else {
@@ -79,12 +97,19 @@ final class QRCodeRenderer: Sendable {
         context.setShouldAntialias(true)
         context.interpolationQuality = .high
 
-        // Flip coordinate system
-        context.translateBy(x: 0, y: renderSize)
+        // Flip coordinate system (flip the entire height including caption)
+        context.translateBy(x: 0, y: totalRenderHeight)
         context.scaleBy(x: 1, y: -1)
 
-        // Draw background
+        // Draw background (only for the QR code area)
         drawBackground(in: context, size: renderSize, type: configuration.backgroundType)
+
+        // If we have a caption area and background is white, fill caption area too
+        if captionHeight > 0 && configuration.backgroundType == .white {
+            let captionRect = CGRect(x: 0, y: renderSize, width: renderSize, height: captionHeight)
+            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+            context.fill(captionRect)
+        }
 
         // Calculate logo exclusion rect if needed (for cutout mode)
         var logoExclusionRect: CGRect? = nil
@@ -116,27 +141,43 @@ final class QRCodeRenderer: Sendable {
                 in: context,
                 logoData: logoData,
                 size: renderSize,
-                backgroundType: configuration.backgroundType
+                backgroundType: configuration.backgroundType,
+                totalHeight: totalRenderHeight
+            )
+        }
+
+        // Draw caption text below QR code
+        if let text = captionText {
+            drawCaption(
+                in: context,
+                text: text,
+                qrSize: renderSize,
+                captionHeight: captionHeight,
+                totalHeight: totalRenderHeight,
+                style: configuration.foregroundStyle,
+                fontSize: configuration.captionSize
             )
         }
 
         // Create the high-res image and downscale for smoother result
         guard let highResImage = context.makeImage() else { return nil }
-        return downsample(image: highResImage, to: Int(size))
+        let targetWidth = Int(size)
+        let targetHeight = Int(size + (captionText != nil ? size * configuration.captionSize.heightFraction : 0))
+        return downsample(image: highResImage, toWidth: targetWidth, height: targetHeight)
     }
 
     // MARK: - Downsampling
 
-    private func downsample(image: CGImage, to targetSize: Int) -> CGImage? {
+    private func downsample(image: CGImage, toWidth targetWidth: Int, height targetHeight: Int) -> CGImage? {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
 
         guard let context = CGContext(
             data: nil,
-            width: targetSize,
-            height: targetSize,
+            width: targetWidth,
+            height: targetHeight,
             bitsPerComponent: 8,
-            bytesPerRow: targetSize * 4,
+            bytesPerRow: targetWidth * 4,
             space: colorSpace,
             bitmapInfo: bitmapInfo.rawValue
         ) else {
@@ -144,7 +185,7 @@ final class QRCodeRenderer: Sendable {
         }
 
         context.interpolationQuality = .high
-        context.draw(image, in: CGRect(x: 0, y: 0, width: targetSize, height: targetSize))
+        context.draw(image, in: CGRect(x: 0, y: 0, width: targetWidth, height: targetHeight))
 
         return context.makeImage()
     }
@@ -397,8 +438,10 @@ final class QRCodeRenderer: Sendable {
         in context: CGContext,
         logoData: Data,
         size: CGFloat,
-        backgroundType: BackgroundType
+        backgroundType: BackgroundType,
+        totalHeight: CGFloat? = nil
     ) {
+        let canvasHeight = totalHeight ?? size
         #if os(macOS)
         guard let nsImage = NSImage(data: logoData),
               let cgImage = nsImage.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
@@ -464,22 +507,89 @@ final class QRCodeRenderer: Sendable {
         context.saveGState()
 
         // Un-flip the coordinate system for drawing the logo correctly
-        // The context was flipped with translateBy(0, size) and scaleBy(1, -1)
+        // The context was flipped with translateBy(0, canvasHeight) and scaleBy(1, -1)
         // We need to reverse this transformation for the logo
-        context.translateBy(x: 0, y: size)
+        context.translateBy(x: 0, y: canvasHeight)
         context.scaleBy(x: 1, y: -1)
 
         // Now draw the logo in the un-flipped coordinate system
         // The logoRect y-coordinate needs to be adjusted for the un-flipped system
         let flippedLogoRect = CGRect(
             x: logoRect.origin.x,
-            y: size - logoRect.origin.y - logoRect.height,
+            y: canvasHeight - logoRect.origin.y - logoRect.height,
             width: logoRect.width,
             height: logoRect.height
         )
         context.draw(cgImage, in: flippedLogoRect)
 
         // Restore the flipped state for any subsequent drawing
+        context.restoreGState()
+    }
+
+    // MARK: - Caption Drawing
+
+    private func drawCaption(
+        in context: CGContext,
+        text: String,
+        qrSize: CGFloat,
+        captionHeight: CGFloat,
+        totalHeight: CGFloat,
+        style: ForegroundStyle,
+        fontSize: QRCodeConfiguration.CaptionSize
+    ) {
+        let fontSizePoints = qrSize * fontSize.relativeFraction
+        let font = CTFontCreateWithName("Helvetica" as CFString, fontSizePoints, nil)
+
+        let color: CGColor
+        switch style {
+        case .solid(let c):
+            color = c.cgColor
+        case .gradient(let g):
+            // Use the start color of the gradient for the caption
+            color = g.startColor.cgColor
+        }
+
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: color
+        ]
+        let attrString = NSAttributedString(string: text, attributes: attributes)
+        let line = CTLineCreateWithAttributedString(attrString)
+        let lineRect = CTLineGetBoundsWithOptions(line, .useOpticalBounds)
+
+        // Truncate if text is wider than QR code
+        let maxWidth = qrSize * 0.9
+        let displayLine: CTLine
+        if lineRect.width > maxWidth {
+            let truncationToken = NSAttributedString(string: "...", attributes: attributes)
+            let tokenLine = CTLineCreateWithAttributedString(truncationToken)
+            if let truncated = CTLineCreateTruncatedLine(line, maxWidth, .end, tokenLine) {
+                displayLine = truncated
+            } else {
+                displayLine = line
+            }
+        } else {
+            displayLine = line
+        }
+
+        let displayRect = CTLineGetBoundsWithOptions(displayLine, .useOpticalBounds)
+
+        // Center horizontally, position in caption area below QR code
+        let x = (qrSize - displayRect.width) / 2 - displayRect.origin.x
+        let captionAreaY = qrSize
+        let y = captionAreaY + (captionHeight - displayRect.height) / 2
+
+        // CoreText uses unflipped coordinates, but our context is flipped.
+        // We need to un-flip for text drawing.
+        context.saveGState()
+        context.translateBy(x: 0, y: totalHeight)
+        context.scaleBy(x: 1, y: -1)
+
+        // In unflipped coordinates, the caption area is at the bottom (lower y values)
+        let unflippedY = totalHeight - y - displayRect.height - displayRect.origin.y
+        context.textPosition = CGPoint(x: x, y: unflippedY)
+        CTLineDraw(displayLine, context)
+
         context.restoreGState()
     }
 }
@@ -492,8 +602,9 @@ extension QRCodeRenderer {
     func preview(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        previewSize: CGFloat = 300
+        previewSize: CGFloat = 300,
+        captionText: String? = nil
     ) -> Image? {
-        render(input: input, configuration: configuration, size: previewSize)
+        render(input: input, configuration: configuration, size: previewSize, captionText: captionText)
     }
 }

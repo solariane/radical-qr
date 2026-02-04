@@ -56,6 +56,21 @@ final class GeneratorViewModel: ObservableObject {
         currentInput != nil
     }
 
+    /// Enriched URL metadata (social profiles, deep links) for the current input
+    var urlMetadata: URLMetadata? {
+        guard detectedDataType == .url else { return nil }
+        return URLMetadataExtractor.extract(from: inputText)
+    }
+
+    /// Resolved caption text: user override or auto-generated from content
+    var resolvedCaptionText: String? {
+        guard configuration.showCaption, let input = currentInput else { return nil }
+        if let custom = configuration.captionText, !custom.isEmpty {
+            return custom
+        }
+        return CaptionGenerator.defaultCaption(for: input)
+    }
+
     // MARK: - Initialization
 
     init() {
@@ -117,7 +132,8 @@ final class GeneratorViewModel: ObservableObject {
             let image = self.renderer.preview(
                 input: input,
                 configuration: self.configuration,
-                previewSize: self.previewSize
+                previewSize: self.previewSize,
+                captionText: self.resolvedCaptionText
             )
 
             guard !Task.isCancelled else { return }
@@ -137,7 +153,8 @@ final class GeneratorViewModel: ObservableObject {
             try await exportService.copyToClipboard(
                 input: input,
                 configuration: configuration,
-                size: 512
+                size: 512,
+                captionText: resolvedCaptionText
             )
         } catch {
             self.error = .exportFailed(error.localizedDescription)
@@ -153,7 +170,8 @@ final class GeneratorViewModel: ObservableObject {
         return try await exportService.export(
             input: input,
             configuration: configuration,
-            exportConfig: config
+            exportConfig: config,
+            captionText: resolvedCaptionText
         )
     }
 

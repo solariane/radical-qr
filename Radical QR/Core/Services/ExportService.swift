@@ -17,18 +17,20 @@ final class ExportService: Sendable {
     }
 
     /// Exports a QR code to the specified format
+    /// - Parameter captionText: Optional resolved caption text to render below the QR code
     func export(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        exportConfig: ExportConfiguration
+        exportConfig: ExportConfiguration,
+        captionText: String? = nil
     ) async throws -> Data {
         switch exportConfig.format {
         case .svg:
-            return try await exportSVG(input: input, configuration: configuration, size: exportConfig.size)
+            return try await exportSVG(input: input, configuration: configuration, size: exportConfig.size, captionText: captionText)
         case .pdf:
-            return try await exportPDF(input: input, configuration: configuration, size: exportConfig.size)
+            return try await exportPDF(input: input, configuration: configuration, size: exportConfig.size, captionText: captionText)
         default:
-            return try await exportRaster(input: input, configuration: configuration, exportConfig: exportConfig)
+            return try await exportRaster(input: input, configuration: configuration, exportConfig: exportConfig, captionText: captionText)
         }
     }
 
@@ -37,20 +39,25 @@ final class ExportService: Sendable {
     private func exportRaster(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        exportConfig: ExportConfiguration
+        exportConfig: ExportConfiguration,
+        captionText: String? = nil
     ) async throws -> Data {
         let size = CGFloat(exportConfig.size.width)
 
         guard let cgImage = renderer.renderToCGImage(
             input: input,
             configuration: configuration,
-            size: size
+            size: size,
+            captionText: captionText
         ) else {
             throw ExportError.renderingFailed
         }
 
+        let imageWidth = CGFloat(cgImage.width)
+        let imageHeight = CGFloat(cgImage.height)
+
         #if os(macOS)
-        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: size, height: size))
+        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: imageWidth, height: imageHeight))
         guard let tiffData = nsImage.tiffRepresentation,
               let bitmap = NSBitmapImageRep(data: tiffData) else {
             throw ExportError.conversionFailed
@@ -99,10 +106,12 @@ final class ExportService: Sendable {
     private func exportPDF(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        size: ExportSize
+        size: ExportSize,
+        captionText: String? = nil
     ) async throws -> Data {
         let width = CGFloat(size.width)
-        let height = CGFloat(size.height)
+        let captionExtra: CGFloat = (captionText != nil) ? width * configuration.captionSize.heightFraction : 0
+        let height = CGFloat(size.height) + captionExtra
         let rect = CGRect(origin: .zero, size: CGSize(width: width, height: height))
 
         let pdfData = NSMutableData()
@@ -128,7 +137,8 @@ final class ExportService: Sendable {
         if let cgImage = renderer.renderToCGImage(
             input: input,
             configuration: configuration,
-            size: width
+            size: width,
+            captionText: captionText
         ) {
             context.draw(cgImage, in: rect)
         }
@@ -150,7 +160,8 @@ final class ExportService: Sendable {
     private func exportSVG(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        size: ExportSize
+        size: ExportSize,
+        captionText: String? = nil
     ) async throws -> Data {
         let generator = QRCodeGenerator()
 
@@ -163,16 +174,21 @@ final class ExportService: Sendable {
         }
 
         let svgSize = CGFloat(size.width)
+        let captionModuleHeight: CGFloat = (captionText != nil)
+            ? CGFloat(matrix.size) * configuration.captionSize.heightFraction
+            : 0
+        let totalViewBoxHeight = CGFloat(matrix.size) + captionModuleHeight
+        let totalPixelHeight = svgSize * (totalViewBoxHeight / CGFloat(matrix.size))
 
         var svg = """
         <?xml version="1.0" encoding="UTF-8"?>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \(matrix.size) \(matrix.size)" width="\(Int(svgSize))" height="\(Int(svgSize))" shape-rendering="crispEdges">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \(matrix.size) \(fmt(totalViewBoxHeight))" width="\(Int(svgSize))" height="\(Int(totalPixelHeight))" shape-rendering="crispEdges">
         """
 
         // Background
         switch configuration.backgroundType {
         case .white:
-            svg += "\n<rect width=\"\(matrix.size)\" height=\"\(matrix.size)\" fill=\"#fff\"/>"
+            svg += "\n<rect width=\"\(matrix.size)\" height=\"\(fmt(totalViewBoxHeight))\" fill=\"#fff\"/>"
         case .transparent, .transparentWithLogoCutout:
             break
         }
@@ -214,6 +230,29 @@ final class ExportService: Sendable {
                 qrSize: CGFloat(matrix.size),
                 withBackground: configuration.backgroundType == .white
             )
+        }
+
+        // Caption text below QR code
+        if let text = captionText {
+            let fontSize = CGFloat(matrix.size) * configuration.captionSize.relativeFraction
+            let centerX = CGFloat(matrix.size) / 2
+            let captionY = CGFloat(matrix.size) + captionModuleHeight * 0.65
+
+            // Determine fill color for caption
+            let captionFill: String
+            switch configuration.foregroundStyle {
+            case .solid(let color):
+                captionFill = colorToHex(color)
+            case .gradient:
+                captionFill = fillAttribute
+            }
+
+            let escapedText = text
+                .replacingOccurrences(of: "&", with: "&amp;")
+                .replacingOccurrences(of: "<", with: "&lt;")
+                .replacingOccurrences(of: ">", with: "&gt;")
+
+            svg += "\n<text x=\"\(fmt(centerX))\" y=\"\(fmt(captionY))\" text-anchor=\"middle\" font-family=\"system-ui, -apple-system, Helvetica, sans-serif\" font-size=\"\(fmt(fontSize))\" fill=\"\(captionFill)\">\(escapedText)</text>"
         }
 
         svg += "\n</svg>"
@@ -510,18 +549,23 @@ extension ExportService {
     func copyToClipboard(
         input: QRInput,
         configuration: QRCodeConfiguration,
-        size: CGFloat = 512
+        size: CGFloat = 512,
+        captionText: String? = nil
     ) async throws {
         guard let cgImage = renderer.renderToCGImage(
             input: input,
             configuration: configuration,
-            size: size
+            size: size,
+            captionText: captionText
         ) else {
             throw ExportError.renderingFailed
         }
 
+        let imageWidth = CGFloat(cgImage.width)
+        let imageHeight = CGFloat(cgImage.height)
+
         #if os(macOS)
-        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: size, height: size))
+        let nsImage = NSImage(cgImage: cgImage, size: NSSize(width: imageWidth, height: imageHeight))
         NSPasteboard.general.clearContents()
         NSPasteboard.general.writeObjects([nsImage])
         #else
