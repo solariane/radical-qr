@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(DeepLinkHandler.self) private var deepLinkHandler
     @State private var showingHistory = false
     @State private var showingSettings = false
 
@@ -23,6 +24,9 @@ struct ContentView: View {
                     SettingsView()
                 }
         }
+        .onOpenURL { url in
+            deepLinkHandler.handle(url)
+        }
         #else
         NavigationSplitView {
             sidebarContent
@@ -35,6 +39,9 @@ struct ContentView: View {
             } else {
                 PaywallView(feature: .history)
             }
+        }
+        .onOpenURL { url in
+            deepLinkHandler.handle(url)
         }
         #endif
     }
@@ -95,4 +102,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environmentObject(PurchaseManager.shared)
+        .environment(DeepLinkHandler())
 }

@@ -12,6 +12,7 @@ import UIKit
 struct GeneratorView: View {
     @StateObject private var viewModel = GeneratorViewModel()
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(DeepLinkHandler.self) private var deepLinkHandler
 
     @State private var copiedFeedback = false
     @State private var showHelpSheet = false
@@ -60,7 +61,16 @@ struct GeneratorView: View {
                 }
                 .padding()
             }
+            #if os(iOS)
+            .scrollDismissesKeyboard(.interactively)
+            #endif
         }
+        #if os(iOS)
+        .onTapGesture {
+            // Dismiss keyboard when tapping outside text fields
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        #endif
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showShareSheet) {
@@ -78,6 +88,19 @@ struct GeneratorView: View {
                 message: Text(error.localizedDescription),
                 dismissButton: .default(Text(String(localized: "error.dismiss", defaultValue: "OK")))
             )
+        }
+        .onChange(of: deepLinkHandler.pendingContent) { _, newContent in
+            if let content = newContent {
+                viewModel.inputText = content
+                deepLinkHandler.clearPendingContent()
+            }
+        }
+        .onAppear {
+            // Handle any pending content on appear (for cold launch)
+            if let content = deepLinkHandler.pendingContent {
+                viewModel.inputText = content
+                deepLinkHandler.clearPendingContent()
+            }
         }
     }
 
@@ -1677,6 +1700,7 @@ struct ShareSheet: UIViewControllerRepresentable {
 #Preview {
     GeneratorView()
         .environmentObject(PurchaseManager.shared)
+        .environment(DeepLinkHandler())
 }
 
 #Preview("Help Sheet") {

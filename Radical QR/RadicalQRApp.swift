@@ -4,6 +4,7 @@ import SwiftData
 @main
 struct RadicalQRApp: App {
     @StateObject private var purchaseManager = PurchaseManager.shared
+    @State private var deepLinkHandler = DeepLinkHandler()
 
     init() {
         #if DEBUG
@@ -33,8 +34,10 @@ struct RadicalQRApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(purchaseManager)
+                .environment(deepLinkHandler)
         }
         .modelContainer(sharedModelContainer)
+        .handlesExternalEvents(matching: Set(["*"]))
         #if os(macOS)
         .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 900, height: 700)

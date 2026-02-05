@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 /// SwiftUI view for the Share Extension
 struct ShareExtensionView: View {
     let extensionContext: NSExtensionContext?
+    var openURL: ((URL) -> Void)?
 
     @State private var inputText = ""
     @State private var detectedType: DataType = .text
@@ -13,6 +14,11 @@ struct ShareExtensionView: View {
 
     private let renderer = QRCodeRenderer()
     private let configuration = QRCodeConfiguration.default
+
+    /// Smart summary of the content (name for vCard, handle for social, etc.)
+    private var contentSummary: String? {
+        DataTypeDetector.summarize(inputText, for: detectedType)
+    }
 
     var body: some View {
         NavigationStack {
@@ -38,31 +44,48 @@ struct ShareExtensionView: View {
                             )
                     }
 
-                    // Input preview
-                    Text(String(inputText.prefix(120)) + (inputText.count > 120 ? "..." : ""))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    // Smart content summary (or truncated raw text as fallback)
+                    Text(contentSummary ?? String(inputText.prefix(120)) + (inputText.count > 120 && contentSummary == nil ? "..." : ""))
+                        .font(.subheadline)
+                        .fontWeight(contentSummary != nil ? .medium : .regular)
+                        .foregroundStyle(contentSummary != nil ? .primary : .secondary)
                         .lineLimit(3)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.horizontal)
 
                     Spacer()
 
-                    // Copy button
-                    Button {
-                        Task { await copyToClipboard() }
-                    } label: {
-                        HStack {
-                            Image(systemName: copiedFeedback ? "checkmark" : "doc.on.doc")
-                            Text(copiedFeedback
-                                 ? String(localized: "share.copied", defaultValue: "Copied!")
-                                 : String(localized: "share.copy", defaultValue: "Copy QR Code"))
+                    // Action buttons
+                    VStack(spacing: 12) {
+                        // Copy button
+                        Button {
+                            Task { await copyToClipboard() }
+                        } label: {
+                            HStack {
+                                Image(systemName: copiedFeedback ? "checkmark" : "doc.on.doc")
+                                Text(copiedFeedback
+                                     ? String(localized: "share.copied", defaultValue: "Copied!")
+                                     : String(localized: "share.copy", defaultValue: "Copy QR Code"))
+                            }
+                            .frame(maxWidth: .infinity)
                         }
-                        .frame(maxWidth: .infinity)
+                        .buttonStyle(.borderedProminent)
+                        .tint(copiedFeedback ? .green : .accentColor)
+                        .controlSize(.large)
+
+                        // Open in app button
+                        Button {
+                            openInApp()
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.up.forward.app")
+                                Text(String(localized: "share.openInApp", defaultValue: "Open in Radical QR"))
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.bordered)
+                        .controlSize(.large)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .tint(copiedFeedback ? .green : .accentColor)
-                    .controlSize(.large)
                     .padding(.horizontal)
                 } else {
                     Spacer()
@@ -171,5 +194,24 @@ struct ShareExtensionView: View {
         withAnimation { copiedFeedback = true }
         try? await Task.sleep(nanoseconds: 2_000_000_000)
         withAnimation { copiedFeedback = false }
+    }
+
+    // MARK: - Open in Main App
+
+    private func openInApp() {
+        // Encode the content for URL - use a custom character set that's safe for URL query values
+        var allowedCharacters = CharacterSet.urlQueryAllowed
+        allowedCharacters.remove(charactersIn: "&=+")
+
+        guard let encoded = inputText.addingPercentEncoding(withAllowedCharacters: allowedCharacters),
+              let url = URL(string: "radicalqr://create?content=\(encoded)") else {
+            return
+        }
+
+        // Use the injected openURL handler from ShareViewController
+        openURL?(url)
+
+        // Close the extension
+        extensionContext?.completeRequest(returningItems: nil)
     }
 }

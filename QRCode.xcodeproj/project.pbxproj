@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3773F6412F33EE0600A5E6DC /* RadicalQRShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3773F6372F33EE0600A5E6DC /* RadicalQRShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3773F6412F33EE0600A5E6DC /* RadicalQRShare.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3773F6372F33EE0600A5E6DC /* RadicalQRShare.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		379B47CD2F2B7AB100E44971 /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = 373BBFAB2F23EA71008F72BF /* QRCode */; };
 /* End PBXBuildFile section */
 
@@ -377,6 +377,7 @@
 		};
 		3773F6402F33EE0600A5E6DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 3773F6362F33EE0600A5E6DC /* RadicalQRShare */;
 			targetProxy = 3773F63F2F33EE0600A5E6DC /* PBXContainerItemProxy */;
 		};

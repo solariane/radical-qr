@@ -7,7 +7,10 @@ class ShareViewController: UIViewController {
 
         let hostingController = UIHostingController(
             rootView: ShareExtensionView(
-                extensionContext: extensionContext
+                extensionContext: extensionContext,
+                openURL: { [weak self] url in
+                    self?.openURLInHostApp(url)
+                }
             )
         )
 
@@ -23,5 +26,20 @@ class ShareViewController: UIViewController {
         ])
 
         hostingController.didMove(toParent: self)
+    }
+
+    /// Opens a URL using the responder chain - standard workaround for Share Extensions
+    private func openURLInHostApp(_ url: URL) {
+        // Walk up the responder chain to find something that can open URLs
+        var responder: UIResponder? = self
+        let selector = sel_registerName("openURL:")
+
+        while let current = responder {
+            if current.responds(to: selector) {
+                current.perform(selector, with: url)
+                return
+            }
+            responder = current.next
+        }
     }
 }
