@@ -33,6 +33,7 @@ struct ContentView: View {
         } detail: {
             GeneratorView()
         }
+        .frame(minWidth: 780, minHeight: 620)
         .sheet(isPresented: $showingHistory) {
             if purchaseManager.isPro {
                 HistoryView()

@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import SwiftData
 
 /// ViewModel for the main QR code generator
 @MainActor
@@ -60,6 +61,27 @@ final class GeneratorViewModel: ObservableObject {
     var urlMetadata: URLMetadata? {
         guard detectedDataType == .url else { return nil }
         return URLMetadataExtractor.extract(from: inputText)
+    }
+
+    /// Complex data types where raw content shouldn't be displayed in the text field
+    /// (e.g. vCard, iCal and Wi-Fi blobs are unreadable).
+    private static let complexTypesForSummaryOverride: Set<DataType> = [.vcard, .icalendar, .wifi]
+
+    /// When the input is a complex type, returns a clean summary to show in place
+    /// of the raw text. Returns `nil` for simple types (URL, email, phone, etc.),
+    /// letting the text field display the content normally.
+    var inputSummaryOverride: InputSummary? {
+        guard hasValidInput,
+              Self.complexTypesForSummaryOverride.contains(detectedDataType) else {
+            return nil
+        }
+        let title = detectedDataType.displayName
+        let detail = DataTypeDetector.summarize(inputText, for: detectedDataType)
+        return InputSummary(
+            iconName: detectedDataType.iconName,
+            title: title,
+            detail: detail
+        )
     }
 
     /// Resolved caption text: user override or auto-generated from content
@@ -224,6 +246,61 @@ final class GeneratorViewModel: ObservableObject {
         inputText = ""
         previewImage = nil
     }
+
+    // MARK: - History
+
+    /// Records a history entry for the current input & configuration. De-duplicates
+    /// by content: if an entry with the same content already exists, its config is
+    /// refreshed and usage count bumped instead of inserting a duplicate.
+    /// Enforces `FeatureLimit.maxHistoryItems` by pruning the oldest entries.
+    func recordHistory(in context: ModelContext) {
+        guard let input = currentInput else { return }
+        let content = input.content
+
+        let descriptor = FetchDescriptor<HistoryItem>(
+            sortBy: [SortDescriptor(\.lastUsedAt, order: .reverse)]
+        )
+        let items = (try? context.fetch(descriptor)) ?? []
+
+        if let existing = items.first(where: { $0.content == content }) {
+            existing.setConfiguration(configuration)
+            existing.markUsed()
+        } else {
+            let newItem = HistoryItem(
+                content: content,
+                dataType: detectedDataType,
+                configuration: configuration
+            )
+            context.insert(newItem)
+
+            // Prune anything beyond the cap (oldest first).
+            let overflow = items.count + 1 - FeatureLimit.maxHistoryItems
+            if overflow > 0 {
+                let toDelete = items.suffix(overflow)
+                for item in toDelete {
+                    context.delete(item)
+                }
+            }
+        }
+    }
+
+    /// Loads a history item into the generator, replacing both the current input
+    /// and configuration. Bumps the item's usage count.
+    func loadFromHistory(_ item: HistoryItem) {
+        configuration = item.getConfiguration()
+        inputText = item.content
+        item.markUsed()
+    }
+}
+
+// MARK: - Input Summary
+
+/// Compact summary shown in place of raw input when the content is a complex
+/// format (vCard, iCal, Wi-Fi) where the raw blob isn't useful to the user.
+struct InputSummary: Equatable {
+    let iconName: String
+    let title: String
+    let detail: String?
 }
 
 // MARK: - Errors

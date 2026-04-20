@@ -6,8 +6,12 @@ import UniformTypeIdentifiers
 /// - iPadOS/macOS: Text field + file browser button + drag & drop
 struct InputZone: View {
     @Binding var text: String
+    var summaryOverride: InputSummary? = nil
     var onFileSelected: ((URL) -> Void)?
     var placeholder: String
+    /// Optional id placed on the text-field (or summary) row so a parent
+    /// ScrollViewReader can scroll the "free" input into view precisely.
+    var textFieldAnchorID: AnyHashable? = nil
 
     @State private var isTargeted = false
     @State private var showFilePicker = false
@@ -37,59 +41,73 @@ struct InputZone: View {
     #if !os(macOS)
     private var iOSInputArea: some View {
         VStack(spacing: 12) {
-            // Text input with integrated file picker button
-            HStack(spacing: 0) {
-                TextField(placeholder, text: $text, axis: .vertical)
-                    .textFieldStyle(.plain)
-                    .padding(.leading, 16)
-                    .padding(.vertical, 14)
-                    .focused($isTextFieldFocused)
-                    .lineLimit(1...3)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(.URL)
-                    .autocorrectionDisabled()
-
-                // Action buttons
-                HStack(spacing: 8) {
-                    if !text.isEmpty {
-                        Button {
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                text = ""
-                            }
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.title3)
-                                .foregroundStyle(.secondary)
+            Group {
+                if let summary = summaryOverride {
+                    InputSummaryChip(summary: summary) {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            text = ""
                         }
-                        .buttonStyle(.plain)
-                        .transition(.scale.combined(with: .opacity))
                     }
-
-                    // File picker button
-                    Button {
-                        showFilePicker = true
-                    } label: {
-                        Image(systemName: "folder")
-                            .font(.title3)
-                            .foregroundStyle(Color.accentColor)
-                    }
-                    .buttonStyle(.plain)
+                } else {
+                    iOSTextInputRow
                 }
-                .padding(.trailing, 12)
             }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(.background)
-                    .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
-            )
+            .modifier(OptionalID(id: textFieldAnchorID))
 
             // Helper text
-            if text.isEmpty {
+            if text.isEmpty && summaryOverride == nil {
                 Text(String(localized: "input.hint.ios", defaultValue: "Type URL, text, email, phone..."))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.7))
             }
         }
+    }
+
+    private var iOSTextInputRow: some View {
+        HStack(spacing: 0) {
+            TextField(placeholder, text: $text, axis: .vertical)
+                .textFieldStyle(.plain)
+                .padding(.leading, 16)
+                .padding(.vertical, 14)
+                .focused($isTextFieldFocused)
+                .lineLimit(1...3)
+                .textInputAutocapitalization(.never)
+                .keyboardType(.URL)
+                .autocorrectionDisabled()
+
+            // Action buttons
+            HStack(spacing: 8) {
+                if !text.isEmpty {
+                    Button {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            text = ""
+                        }
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .transition(.scale.combined(with: .opacity))
+                }
+
+                // File picker button
+                Button {
+                    showFilePicker = true
+                } label: {
+                    Image(systemName: "folder")
+                        .font(.title3)
+                        .foregroundStyle(Color.accentColor)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.trailing, 12)
+        }
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.background)
+                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+        )
     }
     #endif
 
@@ -128,38 +146,54 @@ struct InputZone: View {
                     .frame(height: 1)
             }
 
-            // Text input field
-            HStack(spacing: 12) {
-                TextField(placeholder, text: $text, axis: .vertical)
-                    .textFieldStyle(.plain)
-                    .padding(12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(.white)
-                    )
-                    .focused($isTextFieldFocused)
-                    .lineLimit(1...3)
+            // Input area: either a summary chip (complex content) or a text field
+            macOSInputFieldRow
+                .modifier(OptionalID(id: textFieldAnchorID))
+        }
+    }
 
-                if !text.isEmpty {
-                    Button {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            text = ""
-                        }
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.title2)
-                            .foregroundStyle(.white.opacity(0.7))
-                    }
-                    .buttonStyle(.plain)
-                    .transition(.scale.combined(with: .opacity))
+    @ViewBuilder
+    private var macOSInputFieldRow: some View {
+        if let summary = summaryOverride {
+            InputSummaryChip(summary: summary) {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    text = ""
                 }
             }
+        } else {
+            VStack(spacing: 8) {
+                HStack(spacing: 12) {
+                    TextField(placeholder, text: $text, axis: .vertical)
+                        .textFieldStyle(.plain)
+                        .padding(12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(.white)
+                        )
+                        .focused($isTextFieldFocused)
+                        .lineLimit(1...3)
 
-            // Hint text
-            if text.isEmpty {
-                Text(String(localized: "input.hint.mac", defaultValue: "Drop a text file to read its content, or type directly"))
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.7))
+                    if !text.isEmpty {
+                        Button {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                text = ""
+                            }
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.title2)
+                                .foregroundStyle(.white.opacity(0.7))
+                        }
+                        .buttonStyle(.plain)
+                        .transition(.scale.combined(with: .opacity))
+                    }
+                }
+
+                if text.isEmpty {
+                    Text(String(localized: "input.hint.mac", defaultValue: "Drop a text file to read its content, or type directly"))
+                        .font(.caption)
+                        .foregroundStyle(.white.opacity(0.7))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
         }
     }
@@ -210,6 +244,68 @@ struct InputZone: View {
             // Handle error silently or show alert
             break
         }
+    }
+}
+
+// MARK: - Optional ID modifier
+
+/// Applies `.id(...)` only when an id is provided. Used so the parent can
+/// scroll a specific sub-view of InputZone into focus.
+private struct OptionalID: ViewModifier {
+    let id: AnyHashable?
+
+    func body(content: Content) -> some View {
+        if let id {
+            content.id(id)
+        } else {
+            content
+        }
+    }
+}
+
+// MARK: - Input Summary Chip (shown in place of raw text for complex content)
+
+struct InputSummaryChip: View {
+    let summary: InputSummary
+    let onClear: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: summary.iconName)
+                .font(.title3)
+                .foregroundStyle(Color.accentColor)
+                .frame(width: 28)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(summary.title)
+                    .font(.callout.weight(.medium))
+                    .foregroundStyle(.primary)
+
+                if let detail = summary.detail, !detail.isEmpty {
+                    Text(detail)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
+            }
+
+            Spacer(minLength: 0)
+
+            Button(action: onClear) {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.white)
+        )
+        .transition(.opacity.combined(with: .scale(scale: 0.98)))
     }
 }
 

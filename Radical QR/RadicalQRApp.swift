@@ -6,6 +6,10 @@ struct RadicalQRApp: App {
     @StateObject private var purchaseManager = PurchaseManager.shared
     @State private var deepLinkHandler = DeepLinkHandler()
 
+    #if os(macOS)
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    #endif
+
     init() {
         #if DEBUG
         // Uncomment to test Pro features during development
@@ -40,7 +44,8 @@ struct RadicalQRApp: App {
         .handlesExternalEvents(matching: Set(["*"]))
         #if os(macOS)
         .windowStyle(.hiddenTitleBar)
-        .defaultSize(width: 900, height: 700)
+        .windowResizability(.contentMinSize)
+        .defaultSize(width: 1000, height: 900)
         #endif
 
         #if os(macOS)

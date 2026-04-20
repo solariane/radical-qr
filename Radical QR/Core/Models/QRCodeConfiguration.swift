@@ -5,6 +5,13 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
     var foregroundStyle: ForegroundStyle = .solid(.black)
     var backgroundType: BackgroundType = .white
     var roundness: CGFloat = 0.0
+    /// Independent roundness for the 3 finder-pattern "eyes" (0 = square, 1 = fully circular).
+    /// Controls both the outer ring and the inner pupil of each eye.
+    var eyeRoundness: CGFloat = 0.0
+    /// Scale factor applied to the drawn eye inside its 7-module slot.
+    /// 1.0 = fills the slot (standard), <1.0 = shrunk with white margin.
+    /// The finder-pattern slot itself always stays 7×7 modules for scannability.
+    var eyeScale: CGFloat = 1.0
     var logoData: Data?
     var errorCorrectionLevel: ErrorCorrectionLevel = .medium
 
@@ -67,6 +74,26 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
     /// Automatically adjusts error correction when logo is present
     var effectiveErrorCorrectionLevel: ErrorCorrectionLevel {
         logoData != nil ? .high : errorCorrectionLevel
+    }
+}
+
+// MARK: - Codable (graceful decoding for forward-compat)
+
+extension QRCodeConfiguration {
+    /// Custom decoder so adding a new field (e.g. `eyeRoundness`) doesn't
+    /// invalidate presets/history items encoded before the field existed.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.foregroundStyle = try c.decodeIfPresent(ForegroundStyle.self, forKey: .foregroundStyle) ?? .solid(.black)
+        self.backgroundType = try c.decodeIfPresent(BackgroundType.self, forKey: .backgroundType) ?? .white
+        self.roundness = try c.decodeIfPresent(CGFloat.self, forKey: .roundness) ?? 0.0
+        self.eyeRoundness = try c.decodeIfPresent(CGFloat.self, forKey: .eyeRoundness) ?? 0.0
+        self.eyeScale = try c.decodeIfPresent(CGFloat.self, forKey: .eyeScale) ?? 1.0
+        self.logoData = try c.decodeIfPresent(Data.self, forKey: .logoData)
+        self.errorCorrectionLevel = try c.decodeIfPresent(ErrorCorrectionLevel.self, forKey: .errorCorrectionLevel) ?? .medium
+        self.showCaption = try c.decodeIfPresent(Bool.self, forKey: .showCaption) ?? false
+        self.captionText = try c.decodeIfPresent(String.self, forKey: .captionText)
+        self.captionSize = try c.decodeIfPresent(CaptionSize.self, forKey: .captionSize) ?? .medium
     }
 }
 

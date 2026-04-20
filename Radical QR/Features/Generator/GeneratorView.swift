@@ -13,15 +13,18 @@ struct GeneratorView: View {
     @StateObject private var viewModel = GeneratorViewModel()
     @EnvironmentObject private var purchaseManager: PurchaseManager
     @Environment(DeepLinkHandler.self) private var deepLinkHandler
+    @Environment(\.modelContext) private var modelContext
 
     @State private var copiedFeedback = false
     @State private var showHelpSheet = false
-    @State private var exportMode: ExportMode = .copy
+    @State private var exportMode: ExportMode = .export
     @State private var selectedFormat: ExportFormat = .png
     @State private var selectedSize: ExportSize = .medium
     @State private var isExporting = false
     @State private var showShareSheet = false
     @State private var exportedFileURL: URL?
+
+    private let inputAnchorID = "input-section"
 
     enum ExportMode: String, CaseIterable {
         case copy
@@ -39,27 +42,46 @@ struct GeneratorView: View {
         ZStack {
             GradientBackground()
 
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Header
-                    headerSection
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Header
+                        headerSection
 
-                    // Input zone
-                    inputSection
+                        // Input zone
+                        inputSection
 
-                    // QR Preview + Inline Customization
-                    if viewModel.hasValidInput {
-                        VStack(spacing: 0) {
-                            // QR Preview Card
-                            previewCard
+                        // QR Preview + Inline Customization
+                        if viewModel.hasValidInput {
+                            VStack(spacing: 0) {
+                                // QR Preview Card
+                                previewCard
 
-                            // Inline Customization (always visible)
-                            inlineCustomization
+                                // Inline Customization (always visible)
+                                inlineCustomization
+                            }
+                            .cardStyle()
                         }
-                        .cardStyle()
+
+                        // Recent history (Pro) — quick reload for variants
+                        if purchaseManager.isPro {
+                            RecentHistoryStrip { item in
+                                viewModel.loadFromHistory(item)
+                            }
+                        }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 12)
+                    .padding(.bottom, 16)
                 }
-                .padding()
+                .onChange(of: viewModel.hasValidInput) { _, hasInput in
+                    guard hasInput else { return }
+                    scrollInputToTop(proxy: proxy)
+                }
+                .onChange(of: viewModel.previewImage != nil) { _, hasPreview in
+                    guard hasPreview else { return }
+                    scrollInputToTop(proxy: proxy)
+                }
             }
             #if os(iOS)
             .scrollDismissesKeyboard(.interactively)
@@ -90,16 +112,39 @@ struct GeneratorView: View {
             )
         }
         .onChange(of: deepLinkHandler.pendingContent) { _, newContent in
-            if let content = newContent {
+            guard let content = newContent else { return }
+            Task { @MainActor in
                 viewModel.inputText = content
                 deepLinkHandler.clearPendingContent()
             }
         }
         .onAppear {
             // Handle any pending content on appear (for cold launch)
-            if let content = deepLinkHandler.pendingContent {
+            guard let content = deepLinkHandler.pendingContent else { return }
+            Task { @MainActor in
                 viewModel.inputText = content
                 deepLinkHandler.clearPendingContent()
+            }
+        }
+        #if os(macOS)
+        .onReceive(NotificationCenter.default.publisher(for: ServicesProvider.contentReceived)) { note in
+            guard let content = note.userInfo?["content"] as? String else { return }
+            Task { @MainActor in
+                viewModel.inputText = content
+            }
+        }
+        #endif
+    }
+
+    // MARK: - Scroll Helpers
+
+    private func scrollInputToTop(proxy: ScrollViewProxy) {
+        // Dispatch to next runloop so SwiftUI finishes laying out the newly
+        // inserted preview/customization before we scroll.
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(50))
+            withAnimation(.easeInOut(duration: 0.35)) {
+                proxy.scrollTo(inputAnchorID, anchor: .top)
             }
         }
     }
@@ -107,91 +152,91 @@ struct GeneratorView: View {
     // MARK: - Header Section
 
     private var headerSection: some View {
-        VStack(spacing: 8) {
-            HStack {
-                Spacer()
-
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(String(localized: "generator.title", defaultValue: "QR Code Generator"))
-                    .font(.largeTitle.weight(.bold))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.white, .white.opacity(0.8)],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(.white)
 
-                Spacer()
-
-                // Help button
-                Button {
-                    showHelpSheet = true
-                } label: {
-                    Image(systemName: "questionmark.circle")
-                        .font(.title2)
-                        .foregroundStyle(.white.opacity(0.8))
-                }
-                .buttonStyle(.plain)
+                Text(String(localized: "generator.subtitle", defaultValue: "No tracking. No storage. Just ephemeral QR codes."))
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.75))
             }
 
-            Text(String(localized: "generator.subtitle", defaultValue: "No tracking. No storage. Just ephemeral QR codes."))
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.8))
+            Spacer()
+
+            Button {
+                showHelpSheet = true
+            } label: {
+                Image(systemName: "questionmark.circle")
+                    .font(.title3)
+                    .foregroundStyle(.white.opacity(0.8))
+            }
+            .buttonStyle(.plain)
         }
-        .multilineTextAlignment(.center)
-        .padding(.top, 20)
     }
 
     // MARK: - Input Section
 
     private var inputSection: some View {
-        VStack(spacing: 0) {
-            InputZone(
-                text: $viewModel.inputText,
-                onFileSelected: { url in
-                    viewModel.handleFileDrop(url)
-                },
-                placeholder: String(localized: "generator.input.placeholder", defaultValue: "Enter URL, text, or drop a file...")
-            )
+        InputZone(
+            text: $viewModel.inputText,
+            summaryOverride: viewModel.inputSummaryOverride,
+            onFileSelected: { url in
+                viewModel.handleFileDrop(url)
+            },
+            placeholder: String(localized: "generator.input.placeholder", defaultValue: "Enter URL, text, or drop a file..."),
+            textFieldAnchorID: AnyHashable(inputAnchorID)
+        )
+    }
 
-            // Data type indicator with summary
-            if viewModel.hasValidInput {
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 8) {
-                        let metadata = viewModel.urlMetadata
-                        Image(systemName: metadata?.iconName ?? viewModel.detectedDataType.iconName)
-                        Text(metadata?.platform ?? viewModel.detectedDataType.displayName)
+    // MARK: - Data Type Summary (shown above QR preview)
 
-                        Spacer()
+    private var dataTypeSummary: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
+                let metadata = viewModel.urlMetadata
+                Image(systemName: metadata?.iconName ?? viewModel.detectedDataType.iconName)
+                Text(metadata?.platform ?? viewModel.detectedDataType.displayName)
+                    .fontWeight(.medium)
 
-                        Text(metadata != nil
-                             ? (metadata?.category == .socialProfile
-                                ? String(localized: "dataType.url.social", defaultValue: "Social Profile")
-                                : String(localized: "dataType.url.deepLink", defaultValue: "App Link"))
-                             : viewModel.detectedDataType.description)
-                            .foregroundStyle(.white.opacity(0.6))
-                    }
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.8))
+                Spacer()
 
-                    // Show parsed summary for recognized types
-                    if let summary = DataTypeDetector.summarize(viewModel.inputText, for: viewModel.detectedDataType) {
-                        Text(summary)
-                            .font(.caption2)
-                            .foregroundStyle(.white.opacity(0.6))
-                            .lineLimit(2)
-                    }
-                }
-                .padding(.horizontal, 4)
-                .padding(.top, 12)
+                Text(metadata != nil
+                     ? (metadata?.category == .socialProfile
+                        ? String(localized: "dataType.url.social", defaultValue: "Social Profile")
+                        : String(localized: "dataType.url.deepLink", defaultValue: "App Link"))
+                     : viewModel.detectedDataType.description)
+                    .foregroundStyle(.secondary)
+            }
+            .font(.caption)
+
+            if let summary = DataTypeDetector.summarize(viewModel.inputText, for: viewModel.detectedDataType) {
+                Text(summary)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color.secondary.opacity(0.08))
+        )
     }
 
     // MARK: - Preview Card
 
     private var previewCard: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
+            // Data type summary above the QR
+            dataTypeSummary
+                .padding(.horizontal, 16)
+                .padding(.top, 16)
+
             // QR Code Image with background to show transparency
             ZStack {
                 // Light gray background to visualize QR transparency
@@ -217,7 +262,6 @@ struct GeneratorView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: viewModel.previewImage != nil)
-            .padding(.top, 16)
 
             // Export section
             exportSection
@@ -238,13 +282,18 @@ struct GeneratorView: View {
             }
             .pickerStyle(.segmented)
 
-            // Size selection
-            sizeSelector
+            // Size + Format selection (format only in export mode)
+            HStack(alignment: .top, spacing: 16) {
+                sizeSelector
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Format selection (only for export mode)
-            if exportMode == .export {
-                formatSelector
+                if exportMode == .export {
+                    formatSelector
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .transition(.opacity.combined(with: .move(edge: .trailing)))
+                }
             }
+            .animation(.easeInOut(duration: 0.2), value: exportMode)
 
             // Action button
             actionButton
@@ -383,6 +432,7 @@ struct GeneratorView: View {
                 )
 
                 await MainActor.run {
+                    recordHistoryIfEligible()
                     withAnimation {
                         copiedFeedback = true
                     }
@@ -404,6 +454,8 @@ struct GeneratorView: View {
 
                 let url = try await viewModel.saveToFile(config: config)
 
+                await MainActor.run { recordHistoryIfEligible() }
+
                 #if os(macOS)
                 NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
                 #else
@@ -424,6 +476,12 @@ struct GeneratorView: View {
         }
     }
 
+    @MainActor
+    private func recordHistoryIfEligible() {
+        guard purchaseManager.isPro else { return }
+        viewModel.recordHistory(in: modelContext)
+    }
+
     private func performShare() async {
         isExporting = true
 
@@ -435,6 +493,8 @@ struct GeneratorView: View {
             )
 
             let url = try await viewModel.saveToFile(config: config)
+
+            await MainActor.run { recordHistoryIfEligible() }
 
             #if os(macOS)
             await MainActor.run {
@@ -720,25 +780,62 @@ struct GeneratorView: View {
     // MARK: - Compact Roundness Section
 
     private var compactRoundnessSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(String(localized: "roundness.title", defaultValue: "Roundness"))
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 12) {
+            Text(String(localized: "shape.title", defaultValue: "Shape"))
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.secondary)
 
-                Spacer()
+            presetRow(
+                label: String(localized: "roundness.modules", defaultValue: "Modules"),
+                presets: roundnessPresets,
+                value: viewModel.configuration.roundness,
+                formatValue: { "\(Int($0 * 100))%" },
+                onChange: { value in
+                    viewModel.configuration.roundness = value
+                }
+            )
 
-                Text("\(Int(viewModel.configuration.roundness * 100))%")
-                    .font(.caption.monospacedDigit())
-                    .foregroundStyle(.secondary)
-            }
+            presetRow(
+                label: String(localized: "roundness.eyes", defaultValue: "Eyes"),
+                presets: roundnessPresets,
+                value: viewModel.configuration.eyeRoundness,
+                formatValue: { "\(Int($0 * 100))%" },
+                onChange: { value in
+                    viewModel.configuration.eyeRoundness = value
+                }
+            )
 
-            HStack(spacing: 8) {
-                // Quick presets
-                ForEach(roundnessPresets, id: \.value) { preset in
+            presetRow(
+                label: String(localized: "eye.size.label", defaultValue: "Eye Size"),
+                presets: eyeSizePresets,
+                value: viewModel.configuration.eyeScale,
+                formatValue: { "\(Int($0 * 100))%" },
+                onChange: { value in
+                    viewModel.configuration.eyeScale = value
+                }
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func presetRow(
+        label: String,
+        presets: [(label: String, value: CGFloat)],
+        value: CGFloat,
+        formatValue: (CGFloat) -> String,
+        onChange: @escaping (CGFloat) -> Void
+    ) -> some View {
+        HStack(spacing: 12) {
+            Text(label)
+                .font(.caption2.weight(.medium))
+                .foregroundStyle(.secondary)
+                .frame(width: 72, alignment: .leading)
+
+            HStack(spacing: 6) {
+                ForEach(presets, id: \.value) { preset in
                     Button {
                         withAnimation(.easeInOut(duration: 0.2)) {
-                            viewModel.configuration.roundness = preset.value
+                            onChange(preset.value)
                         }
                     } label: {
                         Text(preset.label)
@@ -747,17 +844,32 @@ struct GeneratorView: View {
                             .padding(.vertical, 4)
                             .background(
                                 Capsule()
-                                    .fill(isRoundnessSelected(preset.value) ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
+                                    .fill(isPresetSelected(value, preset: preset.value)
+                                          ? Color.accentColor.opacity(0.2)
+                                          : Color.secondary.opacity(0.1))
                             )
                             .overlay(
                                 Capsule()
-                                    .strokeBorder(isRoundnessSelected(preset.value) ? Color.accentColor : Color.clear, lineWidth: 1)
+                                    .strokeBorder(
+                                        isPresetSelected(value, preset: preset.value)
+                                            ? Color.accentColor : Color.clear,
+                                        lineWidth: 1
+                                    )
                             )
                     }
                     .buttonStyle(.plain)
-                    .foregroundStyle(isRoundnessSelected(preset.value) ? .primary : .secondary)
+                    .foregroundStyle(
+                        isPresetSelected(value, preset: preset.value) ? .primary : .secondary
+                    )
                 }
             }
+
+            Spacer()
+
+            Text(formatValue(value))
+                .font(.caption2.monospacedDigit())
+                .foregroundStyle(.secondary)
+                .frame(width: 36, alignment: .trailing)
         }
     }
 
@@ -770,8 +882,16 @@ struct GeneratorView: View {
         ]
     }
 
-    private func isRoundnessSelected(_ value: CGFloat) -> Bool {
-        abs(viewModel.configuration.roundness - value) < 0.05
+    private var eyeSizePresets: [(label: String, value: CGFloat)] {
+        [
+            (String(localized: "eye.size.compact", defaultValue: "Compact"), 0.75),
+            (String(localized: "eye.size.medium", defaultValue: "Medium"), 0.9),
+            (String(localized: "eye.size.full", defaultValue: "Full"), 1.0)
+        ]
+    }
+
+    private func isPresetSelected(_ current: CGFloat, preset: CGFloat) -> Bool {
+        abs(current - preset) < 0.05
     }
 
     // MARK: - Compact Background Section

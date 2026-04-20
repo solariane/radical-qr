@@ -182,8 +182,8 @@ struct HistoryItemRow: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                // Title or content preview
-                Text(item.title ?? item.content.prefix(50).description)
+                // Title, or human-readable summary for complex types, else truncated content
+                Text(displayTitle)
                     .font(.subheadline.weight(.medium))
                     .lineLimit(1)
 
@@ -211,6 +211,15 @@ struct HistoryItemRow: View {
         }
     }
 
+    private var displayTitle: String {
+        if let title = item.title, !title.isEmpty { return title }
+        if let summary = DataTypeDetector.summarize(item.content, for: item.parsedDataType),
+           !summary.isEmpty {
+            return summary
+        }
+        return String(item.content.prefix(50))
+    }
+
     @MainActor
     private func generatePreview() async {
         let input = QRInput(content: item.content)
@@ -233,6 +242,10 @@ struct HistoryDetailView: View {
     @State private var previewImage: Image?
     @State private var showExport = false
     @State private var copiedFeedback = false
+
+    // Owned by this view so the sheet's ExportView always observes a populated,
+    // stable instance. Populated from `item` on appear.
+    @StateObject private var exportViewModel = GeneratorViewModel()
 
     private let renderer = QRCodeRenderer()
     private let exportService = ExportService()
@@ -257,6 +270,15 @@ struct HistoryDetailView: View {
 
                     // Content info
                     VStack(spacing: 12) {
+                        if let summary = DataTypeDetector.summarize(item.content, for: item.parsedDataType),
+                           !summary.isEmpty,
+                           summary != item.content {
+                            InfoRow(
+                                label: String(localized: "history.detail.summary", defaultValue: "Summary"),
+                                value: summary
+                            )
+                        }
+
                         InfoRow(
                             label: String(localized: "history.detail.content", defaultValue: "Content"),
                             value: item.content
@@ -330,15 +352,13 @@ struct HistoryDetailView: View {
             }
             .task {
                 await generatePreview()
+                // Pre-populate the export VM so the sheet's buttons aren't
+                // disabled waiting for input.
+                exportViewModel.inputText = item.content
+                exportViewModel.configuration = item.getConfiguration()
             }
             .sheet(isPresented: $showExport) {
-                // Create a temporary view model for export
-                let vm = GeneratorViewModel()
-                ExportView(viewModel: vm)
-                    .onAppear {
-                        vm.inputText = item.content
-                        vm.configuration = item.getConfiguration()
-                    }
+                ExportView(viewModel: exportViewModel)
             }
         }
     }

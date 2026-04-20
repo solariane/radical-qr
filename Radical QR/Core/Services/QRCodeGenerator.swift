@@ -102,7 +102,45 @@ final class QRCodeGenerator: Sendable {
             }
         }
 
-        return modules
+        // CIFilter.qrCodeGenerator includes a 1-module quiet zone around the QR.
+        // Strip it so the returned matrix's (0, 0) is the top-left of the actual
+        // finder pattern — callers can then use `matrix.finderPatternRegions`
+        // directly without accounting for the border.
+        return Self.strippingQuietZone(modules)
+    }
+
+    /// Detects a uniform all-white border (quiet zone) on the outside of the
+    /// module matrix and returns the matrix without it. If no quiet zone is
+    /// found, the input is returned unchanged.
+    private static func strippingQuietZone(_ modules: [[Bool]]) -> [[Bool]] {
+        let size = modules.count
+        guard size > 0, modules[0].count == size else { return modules }
+
+        // Find the first row that contains any filled module.
+        var border = 0
+        for row in 0..<size {
+            if modules[row].contains(true) { border = row; break }
+        }
+        guard border > 0, border * 2 < size else { return modules }
+
+        // Sanity check: the same border should exist on all 4 sides.
+        // (Otherwise we'd be cropping actual data.)
+        let inner = size - 2 * border
+        let bottomStart = size - border
+        for row in bottomStart..<size where modules[row].contains(true) {
+            return modules
+        }
+        for row in border..<bottomStart {
+            if modules[row][0..<border].contains(true) { return modules }
+            if modules[row][(size - border)..<size].contains(true) { return modules }
+        }
+
+        var stripped: [[Bool]] = []
+        stripped.reserveCapacity(inner)
+        for row in border..<(border + inner) {
+            stripped.append(Array(modules[row][border..<(border + inner)]))
+        }
+        return stripped
     }
 
     /// Calculates the optimal size for the QR code based on content length

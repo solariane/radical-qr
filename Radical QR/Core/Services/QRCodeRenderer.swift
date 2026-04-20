@@ -132,6 +132,8 @@ final class QRCodeRenderer: Sendable {
             totalSize: renderSize,
             style: configuration.foregroundStyle,
             roundness: configuration.roundness,
+            eyeRoundness: configuration.eyeRoundness,
+            eyeScale: configuration.eyeScale,
             exclusionRect: logoExclusionRect
         )
 
@@ -218,18 +220,25 @@ final class QRCodeRenderer: Sendable {
         totalSize: CGFloat,
         style: ForegroundStyle,
         roundness: CGFloat,
+        eyeRoundness: CGFloat,
+        eyeScale: CGFloat,
         exclusionRect: CGRect? = nil
     ) {
-        // Build the module path
-        let modulePath = CGMutablePath()
         let cornerRadius = moduleSize * roundness * 0.5
-
-        // Small inset to prevent touching modules from creating visual artifacts
         let inset: CGFloat = moduleSize * 0.02
+        let patternSize = 7
+        let size = matrix.size
 
-        for row in 0..<matrix.size {
-            for col in 0..<matrix.size {
+        // Data modules path — skips the 7×7 finder-pattern corners (drawn separately)
+        let dataPath = CGMutablePath()
+        for row in 0..<size {
+            for col in 0..<size {
                 guard matrix.isModuleFilled(row: row, column: col) else { continue }
+
+                // Skip any module that lives inside one of the three finder patterns.
+                if isInFinderPattern(row: row, col: col, size: size, patternSize: patternSize) {
+                    continue
+                }
 
                 let rect = CGRect(
                     x: offset + CGFloat(col) * moduleSize + inset,
@@ -238,40 +247,119 @@ final class QRCodeRenderer: Sendable {
                     height: moduleSize - (inset * 2)
                 )
 
-                // Skip modules that fall within the exclusion rect (logo cutout area)
-                if let exclusion = exclusionRect, exclusion.intersects(rect) {
-                    continue
-                }
+                if let exclusion = exclusionRect, exclusion.intersects(rect) { continue }
 
                 if roundness > 0 {
-                    modulePath.addRoundedRect(
-                        in: rect,
-                        cornerWidth: cornerRadius,
-                        cornerHeight: cornerRadius
-                    )
+                    dataPath.addRoundedRect(in: rect, cornerWidth: cornerRadius, cornerHeight: cornerRadius)
                 } else {
-                    modulePath.addRect(rect)
+                    dataPath.addRect(rect)
                 }
             }
         }
 
-        // Fill with the appropriate style
-        context.saveGState()
-        context.addPath(modulePath)
-        context.clip()
+        // Eyes path — the three finder patterns, drawn as (outer + cutout + pupil)
+        // with even-odd fill so `eyeRoundness` acts independently of data roundness.
+        let eyesPath = CGMutablePath()
+        for region in matrix.finderPatternRegions {
+            addEyeSubpath(
+                to: eyesPath,
+                region: region,
+                moduleSize: moduleSize,
+                offset: offset,
+                roundness: eyeRoundness,
+                scale: eyeScale,
+                exclusionRect: exclusionRect
+            )
+        }
 
         let fillRect = CGRect(origin: .zero, size: CGSize(width: totalSize, height: totalSize))
 
+        // Pass 1 — data modules (non-overlapping; winding fill is fine)
+        context.saveGState()
+        context.addPath(dataPath)
+        context.clip()
+        applyFill(style: style, in: context, fillRect: fillRect, size: totalSize)
+        context.restoreGState()
+
+        // Pass 2 — eyes (nested shapes; must use even-odd to carve out the ring/pupil)
+        context.saveGState()
+        context.addPath(eyesPath)
+        context.clip(using: .evenOdd)
+        applyFill(style: style, in: context, fillRect: fillRect, size: totalSize)
+        context.restoreGState()
+    }
+
+    /// Returns true if the given module coordinate is inside any of the three
+    /// finder-pattern (eye) regions. Uses explicit integer bounds to avoid any
+    /// floating-point edge case from CGRect.contains.
+    private func isInFinderPattern(row: Int, col: Int, size: Int, patternSize: Int) -> Bool {
+        // Top-left
+        if row < patternSize && col < patternSize { return true }
+        // Top-right
+        if row < patternSize && col >= size - patternSize { return true }
+        // Bottom-left
+        if row >= size - patternSize && col < patternSize { return true }
+        return false
+    }
+
+    private func applyFill(
+        style: ForegroundStyle,
+        in context: CGContext,
+        fillRect: CGRect,
+        size: CGFloat
+    ) {
         switch style {
         case .solid(let color):
             context.setFillColor(color.cgColor)
             context.fill(fillRect)
-
         case .gradient(let config):
-            drawGradient(in: context, config: config, size: totalSize)
+            drawGradient(in: context, config: config, size: size)
         }
+    }
 
-        context.restoreGState()
+    /// Adds a single finder-pattern eye (outer ring + inner pupil) to the given path.
+    /// Even-odd fill with `outer + cutout + pupil` keeps the 1-module-thick frame
+    /// AND the pupil filled while leaving the white ring between them.
+    private func addEyeSubpath(
+        to path: CGMutablePath,
+        region: CGRect,
+        moduleSize: CGFloat,
+        offset: CGFloat,
+        roundness: CGFloat,
+        scale: CGFloat,
+        exclusionRect: CGRect?
+    ) {
+        // Full 7×7 slot, then contract around its center by (1 - scale) to shrink
+        // the drawn eye while keeping it centered in the slot.
+        let slotRect = CGRect(
+            x: offset + region.minX * moduleSize,
+            y: offset + region.minY * moduleSize,
+            width: region.width * moduleSize,
+            height: region.height * moduleSize
+        )
+        let clampedScale = max(0.3, min(scale, 1.15))
+        let shrink = slotRect.width * (1 - clampedScale) / 2
+        let outerRect = slotRect.insetBy(dx: shrink, dy: shrink)
+
+        if let exclusion = exclusionRect, exclusion.intersects(outerRect) { return }
+
+        // Ring thickness + pupil inset scale with the eye so proportions hold.
+        let ringThickness = moduleSize * clampedScale
+        let innerCutout = outerRect.insetBy(dx: ringThickness, dy: ringThickness)
+        let pupilRect = outerRect.insetBy(dx: ringThickness * 2, dy: ringThickness * 2)
+
+        if roundness > 0 {
+            let outerRadius = (outerRect.width / 2) * roundness
+            let innerRadius = (innerCutout.width / 2) * roundness
+            let pupilRadius = (pupilRect.width / 2) * roundness
+            path.addRoundedRect(in: outerRect, cornerWidth: outerRadius, cornerHeight: outerRadius)
+            path.addRoundedRect(in: innerCutout, cornerWidth: innerRadius, cornerHeight: innerRadius)
+            path.addRoundedRect(in: pupilRect, cornerWidth: pupilRadius, cornerHeight: pupilRadius)
+        } else {
+            path.addRect(outerRect)
+            path.addRect(innerCutout)
+            path.addRect(pupilRect)
+        }
     }
 
     private func drawGradient(
