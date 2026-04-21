@@ -120,17 +120,30 @@ struct GeneratorView: View {
         }
         .onAppear {
             // Handle any pending content on appear (for cold launch)
-            guard let content = deepLinkHandler.pendingContent else { return }
-            Task { @MainActor in
-                viewModel.inputText = content
-                deepLinkHandler.clearPendingContent()
+            if let content = deepLinkHandler.pendingContent {
+                Task { @MainActor in
+                    viewModel.inputText = content
+                    deepLinkHandler.clearPendingContent()
+                }
+                return
             }
+            #if os(macOS)
+            // Cold-launch via macOS Service: the notification may have fired
+            // before this view existed, so check the stored pending content.
+            if let content = ServicesProvider.shared.pendingContent {
+                Task { @MainActor in
+                    viewModel.inputText = content
+                    ServicesProvider.shared.pendingContent = nil
+                }
+            }
+            #endif
         }
         #if os(macOS)
         .onReceive(NotificationCenter.default.publisher(for: ServicesProvider.contentReceived)) { note in
             guard let content = note.userInfo?["content"] as? String else { return }
             Task { @MainActor in
                 viewModel.inputText = content
+                ServicesProvider.shared.pendingContent = nil
             }
         }
         #endif

@@ -339,20 +339,31 @@ extension DataTypeDetector {
             return String(localized: "summary.vcard.generic", defaultValue: "Contact card")
 
         case .icalendar:
-            // Parse iCalendar for event summary and start date
+            // Parse iCalendar for event summary and start date.
+            // Important: search only inside the VEVENT block — the full
+            // VCALENDAR often contains VTIMEZONE sections with their own
+            // DTSTART (timezone rule origin dates, e.g. 1981) that must
+            // not be confused with the event's start date.
             var eventSummary: String?
             var startDate: String?
 
-            // Get SUMMARY
-            if let summaryMatch = trimmed.range(of: "SUMMARY:([^\r\n]+)", options: .regularExpression) {
-                eventSummary = String(String(trimmed[summaryMatch]).dropFirst(8)).trimmingCharacters(in: .whitespaces)
+            // Extract the first VEVENT block to scope our search.
+            let fullText: String
+            if let veventStart = trimmed.range(of: "BEGIN:VEVENT"),
+               let veventEnd = trimmed.range(of: "END:VEVENT") {
+                fullText = String(trimmed[veventStart.lowerBound..<veventEnd.upperBound])
+            } else {
+                fullText = trimmed
             }
 
-            // Get DTSTART - handles various formats like DTSTART:20240115T090000Z or DTSTART;VALUE=DATE:20240115
-            if let dtMatch = trimmed.range(of: "DTSTART[^:]*:([^\r\n]+)", options: .regularExpression) {
-                let dtLine = String(trimmed[dtMatch])
-                if let colonIndex = dtLine.firstIndex(of: ":") {
-                    let dateValue = String(dtLine[dtLine.index(after: colonIndex)...]).trimmingCharacters(in: .whitespaces)
+            // Parse line-by-line (more reliable than regex with literal
+            // control characters in NSRegularExpression character classes).
+            for line in fullText.components(separatedBy: .newlines) {
+                let l = line.trimmingCharacters(in: .whitespaces)
+                if l.hasPrefix("SUMMARY:") {
+                    eventSummary = String(l.dropFirst(8)).trimmingCharacters(in: .whitespaces)
+                } else if l.hasPrefix("DTSTART"), let colonIdx = l.firstIndex(of: ":") {
+                    let dateValue = String(l[l.index(after: colonIdx)...]).trimmingCharacters(in: .whitespaces)
                     startDate = formatICalendarDate(dateValue)
                 }
             }

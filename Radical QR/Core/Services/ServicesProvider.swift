@@ -15,9 +15,19 @@ final class ServicesProvider: NSObject {
     /// `userInfo["content"]` contains the string ready for the generator.
     static let contentReceived = Notification.Name("RadicalQRServiceContentReceived")
 
+    /// Content stored for cold-launch scenarios where the notification fires
+    /// before GeneratorView has mounted. The view checks this on `onAppear`.
+    var pendingContent: String?
+
     // Declared here so we can reference them uniformly.
     private static let vcardType = NSPasteboard.PasteboardType("public.vcard")
     private static let icalType = NSPasteboard.PasteboardType("com.apple.ical.ics")
+
+    /// File extensions whose content should be read from disk rather than
+    /// treated as a URL when received via the Services pasteboard.
+    private static let contentFileExtensions: Set<String> = [
+        "vcf", "vcard", "ics", "ical", "txt", "text", "md"
+    ]
 
     // MARK: - Service entry points
     //
@@ -42,12 +52,21 @@ final class ServicesProvider: NSObject {
     // MARK: - Pasteboard extraction
 
     /// Picks the most useful content from the pasteboard, in priority order:
-    /// URL → vCard → iCal → plain text.
+    /// file URL (read content) → vCard data → iCal data → web URL → plain text.
     private func extractBestContent(from pasteboard: NSPasteboard) -> String? {
-        // URL (most specific — gives us a clean string)
+        // URL — but if it's a file:// URL pointing to a known content file
+        // (vcf, ics, …), read the file content instead of returning the path.
         if let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: nil) as? [URL],
            let url = urls.first {
-            return url.absoluteString
+            if url.isFileURL {
+                // Try to read meaningful content from the file.
+                if let content = DataTypeDetector.extractContent(from: url) {
+                    return content
+                }
+                // Unknown binary file — fall through to other pasteboard types.
+            } else {
+                return url.absoluteString
+            }
         }
 
         // vCard — comes as a UTF-8 data blob on the pasteboard
@@ -72,16 +91,44 @@ final class ServicesProvider: NSObject {
     }
 
     private func deliver(_ content: String) {
-        // Bring the app to the front so the generator view is visible.
-        NSApp.activate(ignoringOtherApps: true)
+        // Store for cold-launch: GeneratorView.onAppear will pick this up if
+        // the notification fires before the view has subscribed.
+        pendingContent = content
 
-        // Post on the main queue — SwiftUI observers run on MainActor.
+        // Ensure the app is a regular (Dock-visible) process — Services can
+        // launch an app in an accessory/background mode where windows never
+        // appear even after calling activate().
+        NSApp.setActivationPolicy(.regular)
+
+        // Bring the app to the front so the generator view is visible.
         DispatchQueue.main.async {
+            self.activateApp()
+
             NotificationCenter.default.post(
                 name: Self.contentReceived,
                 object: nil,
                 userInfo: ["content": content]
             )
+        }
+
+        // On cold launch the window may not exist yet when the first activate
+        // fires. Retry several times with increasing delays to cover the
+        // SwiftUI window creation timeline.
+        for delay in [0.3, 0.7, 1.2] {
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                self.activateApp()
+            }
+        }
+    }
+
+    func activateApp() {
+        NSApp.activate(ignoringOtherApps: true)
+
+        // Ensure the key window is ordered front (covers the case where the
+        // window exists but was never made visible).
+        if let window = NSApp.windows.first(where: { $0.canBecomeKey }) {
+            window.makeKeyAndOrderFront(nil)
+            window.orderFrontRegardless()
         }
     }
 }

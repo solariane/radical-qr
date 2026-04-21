@@ -348,9 +348,11 @@ final class ExportService: Sendable {
     }
 
     private func colorToHex(_ color: SerializableColor) -> String {
-        let r = Int(color.red * 255)
-        let g = Int(color.green * 255)
-        let b = Int(color.blue * 255)
+        // Clamp to sRGB range — extended color spaces (Display P3) can
+        // produce components outside 0…1 which break hex formatting.
+        let r = Int((min(max(color.red, 0), 1) * 255).rounded())
+        let g = Int((min(max(color.green, 0), 1) * 255).rounded())
+        let b = Int((min(max(color.blue, 0), 1) * 255).rounded())
         return String(format: "#%02x%02x%02x", r, g, b)
     }
 

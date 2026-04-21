@@ -21,93 +21,120 @@ struct ShareExtensionView: View {
     }
 
     var body: some View {
+        #if os(macOS)
+        mainContent
+            .frame(width: 320, height: 460)
+            .task { await extractSharedContent() }
+        #else
         NavigationStack {
-            VStack(spacing: 16) {
-                if isLoading {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                } else if !inputText.isEmpty {
-                    // Data type badge
-                    dataTypeBadge
-
-                    // QR Preview
-                    if let image = previewImage {
-                        image
-                            .interpolation(.none)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: 220, maxHeight: 220)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color(white: 0.95))
-                            )
-                    }
-
-                    // Smart content summary (or truncated raw text as fallback)
-                    Text(contentSummary ?? String(inputText.prefix(120)) + (inputText.count > 120 && contentSummary == nil ? "..." : ""))
-                        .font(.subheadline)
-                        .fontWeight(contentSummary != nil ? .medium : .regular)
-                        .foregroundStyle(contentSummary != nil ? .primary : .secondary)
-                        .lineLimit(3)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.horizontal)
-
-                    Spacer()
-
-                    // Action buttons
-                    VStack(spacing: 12) {
-                        // Copy button
-                        Button {
-                            Task { await copyToClipboard() }
-                        } label: {
-                            HStack {
-                                Image(systemName: copiedFeedback ? "checkmark" : "doc.on.doc")
-                                Text(copiedFeedback
-                                     ? String(localized: "share.copied", defaultValue: "Copied!")
-                                     : String(localized: "share.copy", defaultValue: "Copy QR Code"))
-                            }
-                            .frame(maxWidth: .infinity)
+            mainContent
+                .navigationTitle(String(localized: "share.title", defaultValue: "Radical QR"))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(String(localized: "action.done", defaultValue: "Done")) {
+                            extensionContext?.completeRequest(returningItems: nil)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .tint(copiedFeedback ? .green : .accentColor)
-                        .controlSize(.large)
-
-                        // Open in app button
-                        Button {
-                            openInApp()
-                        } label: {
-                            HStack {
-                                Image(systemName: "arrow.up.forward.app")
-                                Text(String(localized: "share.openInApp", defaultValue: "Open in Radical QR"))
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.bordered)
-                        .controlSize(.large)
                     }
+                }
+        }
+        .task { await extractSharedContent() }
+        #endif
+    }
+
+    // MARK: - Main Content
+
+    private var mainContent: some View {
+        VStack(spacing: 16) {
+            #if os(macOS)
+            // Simple title bar for macOS popover
+            HStack {
+                Text(String(localized: "share.title", defaultValue: "Radical QR"))
+                    .font(.headline)
+                Spacer()
+                Button(String(localized: "action.done", defaultValue: "Done")) {
+                    extensionContext?.completeRequest(returningItems: nil)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+            }
+            .padding(.horizontal)
+
+            Divider()
+            #endif
+
+            if isLoading {
+                Spacer()
+                ProgressView()
+                Spacer()
+            } else if !inputText.isEmpty {
+                // Data type badge
+                dataTypeBadge
+
+                // QR Preview
+                if let image = previewImage {
+                    image
+                        .interpolation(.none)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 220, maxHeight: 220)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(white: 0.95))
+                        )
+                }
+
+                // Smart content summary (or truncated raw text as fallback)
+                Text(contentSummary ?? String(inputText.prefix(120)) + (inputText.count > 120 && contentSummary == nil ? "..." : ""))
+                    .font(.subheadline)
+                    .fontWeight(contentSummary != nil ? .medium : .regular)
+                    .foregroundStyle(contentSummary != nil ? .primary : .secondary)
+                    .lineLimit(3)
+                    .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.horizontal)
-                } else {
-                    Spacer()
-                    Text(String(localized: "share.noContent", defaultValue: "No content to encode"))
-                        .foregroundStyle(.secondary)
-                    Spacer()
-                }
-            }
-            .padding(.vertical)
-            .navigationTitle(String(localized: "share.title", defaultValue: "Radical QR"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "action.done", defaultValue: "Done")) {
-                        extensionContext?.completeRequest(returningItems: nil)
+
+                Spacer()
+
+                // Action buttons
+                VStack(spacing: 12) {
+                    // Copy button
+                    Button {
+                        Task { await copyToClipboard() }
+                    } label: {
+                        HStack {
+                            Image(systemName: copiedFeedback ? "checkmark" : "doc.on.doc")
+                            Text(copiedFeedback
+                                 ? String(localized: "share.copied", defaultValue: "Copied!")
+                                 : String(localized: "share.copy", defaultValue: "Copy QR Code"))
+                        }
+                        .frame(maxWidth: .infinity)
                     }
+                    .buttonStyle(.borderedProminent)
+                    .tint(copiedFeedback ? .green : .accentColor)
+                    .controlSize(.large)
+
+                    // Open in app button
+                    Button {
+                        openInApp()
+                    } label: {
+                        HStack {
+                            Image(systemName: "arrow.up.forward.app")
+                            Text(String(localized: "share.openInApp", defaultValue: "Open in Radical QR"))
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
                 }
+                .padding(.horizontal)
+            } else {
+                Spacer()
+                Text(String(localized: "share.noContent", defaultValue: "No content to encode"))
+                    .foregroundStyle(.secondary)
+                Spacer()
             }
         }
-        .task {
-            await extractSharedContent()
-        }
+        .padding(.vertical)
     }
 
     // MARK: - Data Type Badge
@@ -146,16 +173,6 @@ struct ShareExtensionView: View {
                     }
                 }
 
-                // Try plain text
-                if attachment.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) {
-                    if let text = try? await attachment.loadItem(
-                        forTypeIdentifier: UTType.plainText.identifier
-                    ) as? String {
-                        inputText = text
-                        break
-                    }
-                }
-
                 // Try vCard (contacts)
                 if attachment.hasItemConformingToTypeIdentifier(UTType.vCard.identifier) {
                     if let data = try? await attachment.loadItem(
@@ -163,6 +180,28 @@ struct ShareExtensionView: View {
                     ) as? Data,
                        let vcardString = String(data: data, encoding: .utf8) {
                         inputText = vcardString
+                        break
+                    }
+                }
+
+                // Try calendar event (iCal/ICS)
+                if attachment.hasItemConformingToTypeIdentifier(UTType.calendarEvent.identifier) {
+                    if let data = try? await attachment.loadItem(
+                        forTypeIdentifier: UTType.calendarEvent.identifier
+                    ) as? Data,
+                       let icsString = String(data: data, encoding: .utf8) {
+                        inputText = icsString
+                        break
+                    }
+                }
+
+                // Try plain text (fallback — must be last since vCard/iCal
+                // data can also match public.plain-text)
+                if attachment.hasItemConformingToTypeIdentifier(UTType.plainText.identifier) {
+                    if let text = try? await attachment.loadItem(
+                        forTypeIdentifier: UTType.plainText.identifier
+                    ) as? String {
+                        inputText = text
                         break
                     }
                 }
@@ -199,19 +238,31 @@ struct ShareExtensionView: View {
     // MARK: - Open in Main App
 
     private func openInApp() {
-        // Encode the content for URL - use a custom character set that's safe for URL query values
-        var allowedCharacters = CharacterSet.urlQueryAllowed
-        allowedCharacters.remove(charactersIn: "&=+")
+        #if os(macOS)
+        // On macOS, pass the content via a dedicated pasteboard to avoid
+        // URL-encoding issues with large/complex data (vCard, iCal) and
+        // prevent SwiftUI from opening a second window.
+        let pb = NSPasteboard(name: NSPasteboard.Name("com.radicalsolution.radicalqr.share"))
+        pb.clearContents()
+        pb.setString(inputText, forType: .string)
 
-        guard let encoded = inputText.addingPercentEncoding(withAllowedCharacters: allowedCharacters),
-              let url = URL(string: "radicalqr://create?content=\(encoded)") else {
-            return
+        // Simple URL without content — the main app reads from the pasteboard
+        if let url = URL(string: "radicalqr://paste") {
+            openURL?(url)
         }
+        #else
+        // On iOS, use URLComponents for correct percent-encoding of all
+        // characters (including #, newlines, etc.)
+        var components = URLComponents()
+        components.scheme = "radicalqr"
+        components.host = "create"
+        components.queryItems = [URLQueryItem(name: "content", value: inputText)]
 
-        // Use the injected openURL handler from ShareViewController
-        openURL?(url)
+        if let url = components.url {
+            openURL?(url)
+        }
+        #endif
 
-        // Close the extension
         extensionContext?.completeRequest(returningItems: nil)
     }
 }
