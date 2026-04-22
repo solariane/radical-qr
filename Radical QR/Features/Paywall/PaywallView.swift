@@ -221,19 +221,36 @@ struct PaywallView: View {
 
     // MARK: - Legal Section
 
+    /// Website language path based on the user's preferred language
+    private var websiteLang: String {
+        let code = Locale.current.language.languageCode?.identifier ?? "en"
+        switch code {
+        case "fr": return "fr"
+        case "de": return "de"
+        case "es": return "es"
+        case "it": return "it"
+        case "pt": return "pt-br"
+        case "ja": return "ja"
+        case "ar": return "ar"
+        case "hi": return "hi"
+        case "zh": return "zh-hans"
+        default: return "en"
+        }
+    }
+
     private var legalSection: some View {
         VStack(spacing: 8) {
             HStack(spacing: 16) {
                 Link(
                     String(localized: "paywall.terms", defaultValue: "Terms"),
-                    destination: URL(string: "https://radicalsolution.com/terms")!
+                    destination: URL(string: "https://radicalsolution.com/\(websiteLang)/radical-qr/legal/")!
                 )
 
                 Text("•")
 
                 Link(
                     String(localized: "paywall.privacy", defaultValue: "Privacy"),
-                    destination: URL(string: "https://radicalsolution.com/privacy")!
+                    destination: URL(string: "https://radicalsolution.com/\(websiteLang)/privacy/")!
                 )
             }
             .font(.caption)
