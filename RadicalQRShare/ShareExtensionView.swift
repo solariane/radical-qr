@@ -1,5 +1,8 @@
 import SwiftUI
 import UniformTypeIdentifiers
+#if os(iOS)
+import UIKit
+#endif
 
 /// SwiftUI view for the Share Extension
 struct ShareExtensionView: View {
@@ -11,6 +14,7 @@ struct ShareExtensionView: View {
     @State private var previewImage: Image?
     @State private var isLoading = true
     @State private var copiedFeedback = false
+    @State private var openAppFeedback = false
 
     private let renderer = QRCodeRenderer()
     private let configuration = QRCodeConfiguration.default
@@ -114,6 +118,7 @@ struct ShareExtensionView: View {
                     .controlSize(.large)
 
                     // Open in app button
+                    #if os(macOS)
                     Button {
                         openInApp()
                     } label: {
@@ -125,6 +130,25 @@ struct ShareExtensionView: View {
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.large)
+                    #else
+                    // iOS: Share Extensions cannot open other apps directly.
+                    // Copy source content to clipboard so user can paste in main app.
+                    Button {
+                        openInApp()
+                    } label: {
+                        HStack {
+                            Image(systemName: openAppFeedback ? "checkmark.circle" : "doc.on.clipboard")
+                            Text(openAppFeedback
+                                 ? String(localized: "share.contentCopied", defaultValue: "Copied! Open Radical QR and paste")
+                                 : String(localized: "share.useInApp", defaultValue: "Use in Radical QR"))
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(openAppFeedback ? .green : nil)
+                    .controlSize(.large)
+                    .disabled(openAppFeedback)
+                    #endif
                 }
                 .padding(.horizontal)
             } else {
@@ -250,19 +274,18 @@ struct ShareExtensionView: View {
         if let url = URL(string: "radicalqr://paste") {
             openURL?(url)
         }
-        #else
-        // On iOS, use URLComponents for correct percent-encoding of all
-        // characters (including #, newlines, etc.)
-        var components = URLComponents()
-        components.scheme = "radicalqr"
-        components.host = "create"
-        components.queryItems = [URLQueryItem(name: "content", value: inputText)]
-
-        if let url = components.url {
-            openURL?(url)
-        }
-        #endif
 
         extensionContext?.completeRequest(returningItems: nil)
+        #else
+        // iOS: Share Extensions cannot open other apps. Copy the source
+        // content to clipboard so the user can paste it in the main app.
+        UIPasteboard.general.string = inputText
+        withAnimation { openAppFeedback = true }
+
+        // Auto-dismiss after giving the user time to read the feedback
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.extensionContext?.completeRequest(returningItems: nil)
+        }
+        #endif
     }
 }

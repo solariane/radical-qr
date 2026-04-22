@@ -34,20 +34,25 @@ A native iOS/macOS QR code generator app with a freemium business model. The app
 Radical QR/
 ├── RadicalQRApp.swift                   # App entry point (@main)
 ├── ContentView.swift                    # Root navigation view
-├── Info.plist                           # App configuration
+├── Info.plist                           # App config + NSServices declaration
 ├── Assets.xcassets/                     # App icons, colors
 ├── Core/
 │   ├── Models/
 │   │   ├── QRCodeConfiguration.swift    # QR code settings model
 │   │   ├── DataType.swift               # Data type detection enum
 │   │   ├── ExportFormat.swift           # Export format enum
+│   │   ├── URLMetadata.swift            # URL/social profile metadata
 │   │   └── HistoryItem.swift            # SwiftData model for history
 │   └── Services/
 │       ├── QRCodeGenerator.swift        # Core QR generation (Core Image)
 │       ├── QRCodeRenderer.swift         # Custom rendering with styles
-│       ├── DataTypeDetector.swift       # Auto-detect input type
-│       ├── ExportService.swift          # Export to various formats
-│       └── PurchaseManager.swift        # StoreKit 2 wrapper
+│       ├── DataTypeDetector.swift       # Auto-detect input type + summarize
+│       ├── ExportService.swift          # Export to various formats (incl. SVG)
+│       ├── PurchaseManager.swift        # StoreKit 2 wrapper
+│       ├── CaptionGenerator.swift       # Auto-caption from QR content
+│       ├── AppDelegate.swift            # macOS: Services registration + URL interception
+│       ├── ServicesProvider.swift        # macOS: right-click Services handler
+│       └── DeepLinkHandler.swift        # radicalqr:// URL scheme handler
 ├── Features/
 │   ├── Generator/
 │   │   ├── GeneratorView.swift          # Main generation interface
@@ -56,7 +61,8 @@ Radical QR/
 │   ├── Export/
 │   │   └── ExportView.swift             # Export options sheet
 │   ├── History/
-│   │   └── HistoryView.swift            # Pro: history list
+│   │   ├── HistoryView.swift            # Pro: history list
+│   │   └── RecentHistoryStrip.swift     # Recent items horizontal strip
 │   ├── Settings/
 │   │   └── SettingsView.swift           # Preferences & style presets
 │   └── Paywall/
@@ -64,14 +70,21 @@ Radical QR/
 ├── Shared/
 │   ├── Components/
 │   │   ├── GradientBackground.swift     # App background
-│   │   ├── DropZone.swift               # Drag & drop / text input
+│   │   ├── DropZone.swift               # Drag & drop target
+│   │   ├── InputZone.swift              # Text input area
 │   │   ├── ColorPickerView.swift        # Color selection
 │   │   ├── RoundnessSlider.swift        # QR element roundness
 │   │   └── LogoDropZone.swift           # Logo embedding (Pro)
 │   └── Modifiers/
 │       └── CardStyle.swift              # Consistent card styling
 └── Resources/
-    └── Localizable.xcstrings            # 7 languages
+    ├── Localizable.xcstrings            # 7 languages
+    └── InfoPlist.xcstrings              # Plist display name translations
+
+RadicalQRShare/                          # Share Extension (iOS + macOS)
+├── Info.plist                           # Activation rule (text, URL, vCard, iCal)
+├── ShareViewController.swift            # Platform-split: NSViewController / UIViewController
+└── ShareExtensionView.swift             # SwiftUI share UI (preview + copy + open in app)
 ```
 
 ---
@@ -123,6 +136,7 @@ The app automatically detects and optimizes QR encoding for:
 | SMS | `sms:` or `smsto:` | SMS encoding |
 | WiFi | `WIFI:` prefix | WiFi config format |
 | vCard | `BEGIN:VCARD` | Contact encoding |
+| iCalendar | `BEGIN:VCALENDAR` / `BEGIN:VEVENT` | Calendar event encoding |
 | Geographic | `geo:` or coordinates | Geo URI |
 | Plain Text | Fallback | Alphanumeric/byte encoding |
 
@@ -141,13 +155,16 @@ The app automatically detects and optimizes QR encoding for:
 | `it` | Italian |
 | `pt-BR` | Portuguese (Brazil) |
 | `ja` | Japanese |
+| `ar` | Arabic |
+| `hi` | Hindi |
+| `zh-Hans` | Chinese (Simplified) |
 
 ### Localization Guidelines
 
 - Use `String(localized:)` for all user-facing strings
 - Keys follow pattern: `feature.component.element` (e.g., `generator.input.placeholder`)
 - Include pluralization rules where applicable
-- Right-to-left support not required for initial languages
+- Arabic requires right-to-left (RTL) layout support
 - Japanese requires careful character width consideration in UI
 
 ---
@@ -352,6 +369,50 @@ Focus on: QR code, generator, creator, privacy, no tracking, custom, logo, expor
 
 ---
 
+## macOS Integration
+
+### Services (right-click menu)
+
+Declared in `Info.plist` under `NSServices`. The `ServicesProvider` class handles
+the `generateQR` selector. Supported pasteboard types:
+- `public.url`, `public.plain-text`, `public.utf8-plain-text`
+- `public.vcard`, `com.apple.ical.ics`
+
+When a `file://` URL is received (e.g. right-clicking a .vcf/.ics file in Finder),
+`DataTypeDetector.extractContent(from:)` reads the file content instead of using
+the file path.
+
+**Cold-launch handling**: `ServicesProvider.pendingContent` stores content for
+views that haven't mounted yet. `activateApp()` retries with delays + forces
+`NSApp.setActivationPolicy(.regular)` + `window.orderFrontRegardless()`.
+
+### Share Extension (Share menu)
+
+`RadicalQRShare` target — multi-platform (iOS + macOS). Activation rule supports:
+`public.plain-text`, `public.url`, `public.vcard`, `public.calendar-event`.
+
+| Platform | View Controller | Content passing to main app |
+|----------|----------------|---------------------------|
+| macOS | `NSViewController` + `NSHostingController` | Dedicated `NSPasteboard` + `radicalqr://paste` URL |
+| iOS | `UIViewController` + `UIHostingController` | `radicalqr://create?content=…` via `URLComponents` |
+
+On macOS, the `AppDelegate.application(_:open:)` intercepts URLs to prevent
+SwiftUI from creating a second window, reads content from the pasteboard, and
+delivers via `ServicesProvider.contentReceived` notification.
+
+### Deep Link URL scheme
+
+`radicalqr://create?content=<encoded>` — standard deep link (iOS + macOS)
+`radicalqr://paste` — macOS only, reads from pasteboard `com.radicalsolution.radicalqr.share`
+
+### SVG Export
+
+`ExportService.exportSVG()` generates optimized SVG with run-length encoded paths.
+**Important**: `colorToHex()` must clamp color components to 0…1 before hex
+conversion — extended color spaces (Display P3) can produce out-of-range values.
+
+---
+
 ## Commands Reference
 
 ```bash
@@ -361,8 +422,21 @@ xcodebuild -scheme "Radical QR" -configuration Debug build
 # Test
 xcodebuild -scheme "Radical QR" -configuration Debug test
 
-# Localization export
+# Localization — export .xcloc files
 xcodebuild -exportLocalizations -localizationPath ./Localizations -project QRCode.xcodeproj
+
+# Localization — auto-translate all languages with DeepL
+# Requires: DEEPL_AUTH_KEY env var, npm packages @xmldom/xmldom xpath p-limit
+# Translates only empty <target> entries (won't overwrite existing translations)
+DEEPL_AUTH_KEY=<key> node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
+
+# Localization — import translated .xcloc files back into Xcode
+xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc -project QRCode.xcodeproj
+
+# Full localization workflow:
+#   1. xcodebuild -exportLocalizations ...
+#   2. DEEPL_AUTH_KEY=... node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
+#   3. For each language: xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc ...
 
 # Generate app icon (requires source 1024x1024)
 # Use Asset Catalog for automatic generation

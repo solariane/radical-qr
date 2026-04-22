@@ -23,6 +23,9 @@ struct GeneratorView: View {
     @State private var isExporting = false
     @State private var showShareSheet = false
     @State private var exportedFileURL: URL?
+    #if os(macOS)
+    @State private var isGlobalDropTargeted = false
+    #endif
 
     private let inputAnchorID = "input-section"
 
@@ -78,15 +81,51 @@ struct GeneratorView: View {
                     guard hasInput else { return }
                     scrollInputToTop(proxy: proxy)
                 }
-                .onChange(of: viewModel.previewImage != nil) { _, hasPreview in
-                    guard hasPreview else { return }
-                    scrollInputToTop(proxy: proxy)
+                .onChange(of: viewModel.inputText) { oldValue, newValue in
+                    // Scroll when new content arrives (e.g. D&D, Services, Share)
+                    // but not on every keystroke (only when transitioning from empty
+                    // or when the change is large, indicating external input)
+                    guard !newValue.isEmpty else { return }
+                    let isExternalInput = oldValue.isEmpty || abs(newValue.count - oldValue.count) > 5
+                    if isExternalInput {
+                        scrollInputToTop(proxy: proxy)
+                    }
                 }
             }
             #if os(iOS)
             .scrollDismissesKeyboard(.interactively)
             #endif
         }
+        #if os(macOS)
+        .background(
+            GlobalDropTargetView(
+                isTargeted: $isGlobalDropTargeted,
+                onFileDrop: { url in
+                    if let content = DataTypeDetector.extractContent(from: url) {
+                        viewModel.inputText = content
+                    } else {
+                        viewModel.inputText = url.absoluteString
+                    }
+                },
+                onTextDrop: { text in
+                    viewModel.inputText = text
+                }
+            )
+        )
+        .overlay {
+            if isGlobalDropTargeted {
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(.white, lineWidth: 3)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.white.opacity(0.08))
+                    )
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+                    .animation(.easeInOut(duration: 0.2), value: isGlobalDropTargeted)
+            }
+        }
+        #endif
         #if os(iOS)
         .onTapGesture {
             // Dismiss keyboard when tapping outside text fields
@@ -877,12 +916,14 @@ struct GeneratorView: View {
                 }
             }
 
+            #if os(macOS)
             Spacer()
 
             Text(formatValue(value))
                 .font(.caption2.monospacedDigit())
                 .foregroundStyle(.secondary)
                 .frame(width: 36, alignment: .trailing)
+            #endif
         }
     }
 
@@ -1058,6 +1099,8 @@ struct GeneratorView: View {
         return Image(uiImage: uiImage)
         #endif
     }
+
+
 }
 
 // MARK: - Compact Color Swatch
@@ -1582,30 +1625,14 @@ struct FormatHelpView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    // Introduction
-                    Text(String(localized: "help.intro", defaultValue: "QR codes can encode different types of data. The app automatically detects and optimizes the format for you."))
-                        .foregroundStyle(.secondary)
-
-                    // Format sections
-                    ForEach(FormatExample.allExamples, id: \.type) { example in
-                        FormatExampleCard(example: example)
+            FormatHelpContent()
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button(String(localized: "action.done", defaultValue: "Done")) {
+                            dismiss()
+                        }
                     }
                 }
-                .padding()
-            }
-            .navigationTitle(String(localized: "help.title", defaultValue: "Supported Formats"))
-            #if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-            #endif
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized: "action.done", defaultValue: "Done")) {
-                        dismiss()
-                    }
-                }
-            }
         }
     }
 }

@@ -1,5 +1,8 @@
 import Foundation
 import Observation
+#if os(macOS)
+import AppKit
+#endif
 
 /// Handles deep links from Share Extension and other sources
 /// URL format: radicalqr://create?content=<encoded_content>
@@ -27,6 +30,19 @@ final class DeepLinkHandler {
                 return true
             }
             return false
+
+        #if os(macOS)
+        case "paste":
+            // macOS Share Extension passes content via a dedicated pasteboard
+            // to avoid URL-encoding issues with large data (vCard, iCal)
+            let pb = NSPasteboard(name: NSPasteboard.Name("com.radicalsolution.radicalqr.share"))
+            if let content = pb.string(forType: .string), !content.isEmpty {
+                pb.clearContents()
+                pendingContent = content
+                return true
+            }
+            return false
+        #endif
 
         default:
             return false

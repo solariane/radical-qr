@@ -149,6 +149,16 @@ struct SettingsView: View {
 
     private var aboutSection: some View {
         Section {
+            // Help & Tips
+            NavigationLink {
+                HelpView()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "questionmark.circle")
+                    Text(String(localized: "settings.help", defaultValue: "Help & Tips"))
+                }
+            }
+
             // Version
             HStack {
                 Text(String(localized: "settings.version", defaultValue: "Version"))

@@ -485,6 +485,105 @@ class DropZoneNSView: NSView {
         return false
     }
 }
+
+// MARK: - Global Drop Target (background, lower priority than DropZoneNSView)
+
+/// A transparent NSView that covers the entire parent frame and accepts drops.
+/// Because it sits behind DropZoneNSView in the view hierarchy, the InputZone's
+/// drop handler gets priority for drops within its bounds. This catches drops
+/// that land elsewhere in the window.
+struct GlobalDropTargetView: NSViewRepresentable {
+    @Binding var isTargeted: Bool
+    var onFileDrop: (URL) -> Void
+    var onTextDrop: (String) -> Void
+
+    func makeNSView(context: Context) -> GlobalDropTargetNSView {
+        let view = GlobalDropTargetNSView()
+        view.onFileDrop = onFileDrop
+        view.onTextDrop = onTextDrop
+        view.onTargetChanged = { targeted in
+            Task { @MainActor in
+                self.isTargeted = targeted
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: GlobalDropTargetNSView, context: Context) {
+        nsView.onFileDrop = onFileDrop
+        nsView.onTextDrop = onTextDrop
+    }
+}
+
+class GlobalDropTargetNSView: NSView {
+    var onFileDrop: ((URL) -> Void)?
+    var onTextDrop: ((String) -> Void)?
+    var onTargetChanged: ((Bool) -> Void)?
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        registerForDraggedTypes([
+            .fileURL,
+            .URL,
+            .string,
+            NSPasteboard.PasteboardType("public.file-url"),
+            NSPasteboard.PasteboardType("public.url")
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
+        onTargetChanged?(true)
+        return .copy
+    }
+
+    override func draggingExited(_ sender: NSDraggingInfo?) {
+        onTargetChanged?(false)
+    }
+
+    override func draggingEnded(_ sender: NSDraggingInfo) {
+        onTargetChanged?(false)
+    }
+
+    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
+        let pasteboard = sender.draggingPasteboard
+
+        // Try file URLs first
+        if let urls = pasteboard.readObjects(forClasses: [NSURL.self],
+                                              options: [.urlReadingFileURLsOnly: true]) as? [URL],
+           let url = urls.first {
+            Task { @MainActor in
+                self.onFileDrop?(url)
+            }
+            return true
+        }
+
+        // Try web URLs
+        if let urls = pasteboard.readObjects(forClasses: [NSURL.self],
+                                              options: nil) as? [URL],
+           let url = urls.first {
+            Task { @MainActor in
+                self.onTextDrop?(url.absoluteString)
+            }
+            return true
+        }
+
+        // Try plain text
+        if let strings = pasteboard.readObjects(forClasses: [NSString.self],
+                                                 options: nil) as? [String],
+           let string = strings.first {
+            Task { @MainActor in
+                self.onTextDrop?(string)
+            }
+            return true
+        }
+
+        return false
+    }
+}
 #endif
 
 // MARK: - Preview

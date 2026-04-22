@@ -5,6 +5,7 @@ struct ContentView: View {
     @Environment(DeepLinkHandler.self) private var deepLinkHandler
     @State private var showingHistory = false
     @State private var showingSettings = false
+    @State private var showingHelp = false
 
     var body: some View {
         #if os(iOS)
@@ -22,6 +23,9 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showingSettings) {
                     SettingsView()
+                }
+                .sheet(isPresented: $showingHelp) {
+                    HelpView()
                 }
         }
         .onOpenURL { url in
@@ -60,6 +64,12 @@ struct ContentView: View {
                 Divider()
 
                 Button {
+                    showingHelp = true
+                } label: {
+                    Label(String(localized: "toolbar.help", defaultValue: "Help & Tips"), systemImage: "questionmark.circle")
+                }
+
+                Button {
                     showingSettings = true
                 } label: {
                     Label(String(localized: "toolbar.settings", defaultValue: "Settings"), systemImage: "gear")
@@ -92,6 +102,14 @@ struct ContentView: View {
                     Label(String(localized: "sidebar.history", defaultValue: "History"), systemImage: "clock.arrow.circlepath")
                 }
                 .buttonStyle(.plain)
+            }
+
+            Section {
+                NavigationLink {
+                    HelpView()
+                } label: {
+                    Label(String(localized: "sidebar.help", defaultValue: "Help"), systemImage: "questionmark.circle")
+                }
             }
         }
         .navigationTitle(String(localized: "app.name", defaultValue: "Radical QR"))
