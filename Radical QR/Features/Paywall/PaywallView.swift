@@ -334,7 +334,7 @@ struct FeatureComparisonView: View {
                 )
 
                 ComparisonRow(
-                    feature: String(localized: "comparison.svgExport", defaultValue: "SVG Export"),
+                    feature: String(localized: "comparison.vectorExport", defaultValue: "PDF & SVG Export"),
                     free: nil,
                     pro: "check"
                 )

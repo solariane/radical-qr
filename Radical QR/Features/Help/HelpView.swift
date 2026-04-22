@@ -116,7 +116,7 @@ struct HelpView: View {
             HelpRow(
                 icon: "doc.richtext",
                 title: String(localized: "help.formats.title", defaultValue: "Export Formats"),
-                detail: String(localized: "help.formats.detail", defaultValue: "Export as PNG, JPEG, PDF, or WebP. Pro users also get SVG for perfect scaling at any size.")
+                detail: String(localized: "help.formats.detail", defaultValue: "Export as PNG, JPEG, or WebP. Pro users also get PDF and SVG vector formats for perfect scaling at any size.")
             )
             HelpRow(
                 icon: "arrow.up.left.and.arrow.down.right",

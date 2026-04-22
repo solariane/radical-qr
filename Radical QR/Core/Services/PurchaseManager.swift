@@ -212,7 +212,7 @@ extension PurchaseManager {
 enum ProFeature: CaseIterable {
     case fullColorPicker
     case allGradientTypes
-    case svgExport
+    case vectorExport
     case unlimitedExportSize
     case logoEmbedding
     case history
@@ -225,8 +225,8 @@ enum ProFeature: CaseIterable {
             String(localized: "feature.fullColorPicker", defaultValue: "Full Color Picker")
         case .allGradientTypes:
             String(localized: "feature.allGradientTypes", defaultValue: "All Gradient Types")
-        case .svgExport:
-            String(localized: "feature.svgExport", defaultValue: "SVG Export")
+        case .vectorExport:
+            String(localized: "feature.vectorExport", defaultValue: "Vector Export")
         case .unlimitedExportSize:
             String(localized: "feature.unlimitedExportSize", defaultValue: "Unlimited Export Size")
         case .logoEmbedding:
@@ -246,8 +246,8 @@ enum ProFeature: CaseIterable {
             String(localized: "feature.fullColorPicker.description", defaultValue: "Choose any color for your QR codes")
         case .allGradientTypes:
             String(localized: "feature.allGradientTypes.description", defaultValue: "Linear, radial, angular, and diamond gradients")
-        case .svgExport:
-            String(localized: "feature.svgExport.description", defaultValue: "Export vector graphics for perfect scaling")
+        case .vectorExport:
+            String(localized: "feature.vectorExport.description", defaultValue: "Export PDF & SVG vector graphics for perfect scaling")
         case .unlimitedExportSize:
             String(localized: "feature.unlimitedExportSize.description", defaultValue: "Export up to 4096×4096 pixels")
         case .logoEmbedding:
@@ -265,7 +265,7 @@ enum ProFeature: CaseIterable {
         switch self {
         case .fullColorPicker: "paintpalette"
         case .allGradientTypes: "square.stack.3d.up"
-        case .svgExport: "square.and.arrow.up"
+        case .vectorExport: "square.and.arrow.up"
         case .unlimitedExportSize: "arrow.up.left.and.arrow.down.right"
         case .logoEmbedding: "photo"
         case .history: "clock.arrow.circlepath"

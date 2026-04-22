@@ -315,7 +315,7 @@ struct FormatButton: View {
         .buttonStyle(.plain)
         .foregroundStyle(isLocked ? .secondary : (isSelected ? .primary : .secondary))
         .sheet(isPresented: $showPaywall) {
-            PaywallView(feature: .svgExport)
+            PaywallView(feature: .vectorExport)
         }
     }
 }

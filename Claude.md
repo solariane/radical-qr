@@ -99,7 +99,7 @@ RadicalQRShare/                          # Share Extension (iOS + macOS)
 | **Gradients** | 3 color gradients: Purple-Violet, Blue-Cyan, Orange-Pink |
 | **Gradient Types** | 2 types: Linear (diagonal), Radial |
 | **Background** | White or Transparent |
-| **Export Formats** | PNG, JPEG, PDF, WebP |
+| **Export Formats** | PNG, JPEG, WebP |
 | **Export Size** | Maximum 400px |
 | **Logo Embedding** | No |
 | **History** | No |
@@ -113,7 +113,7 @@ RadicalQRShare/                          # Share Extension (iOS + macOS)
 | **Gradients** | Full color picker for gradient stops |
 | **Gradient Types** | Linear (all angles), Radial, Angular, Diamond |
 | **Background** | White or Transparent |
-| **Export Formats** | PNG, JPEG, PDF, WebP, **SVG** |
+| **Export Formats** | PNG, JPEG, WebP, **PDF**, **SVG** |
 | **Export Size** | Unlimited (up to 4096px) |
 | **Logo Embedding** | Yes (centered, with automatic quiet zone) |
 | **History** | Yes (last 100 items, iCloud sync) |

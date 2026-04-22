@@ -61,7 +61,7 @@ enum ExportFormat: String, CaseIterable, Identifiable, Sendable {
 
     /// Whether this format requires Pro subscription
     var requiresPro: Bool {
-        self == .svg
+        self == .svg || self == .pdf
     }
 
     /// Formats available in free tier
