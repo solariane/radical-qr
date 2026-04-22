@@ -22,9 +22,14 @@ struct RadicalQRApp: App {
             HistoryItem.self,
             StylePreset.self
         ])
+        // Private CloudKit database so Pro history + style presets sync across
+        // the user's devices. Requires the iCloud capability (+ CloudKit
+        // service) with the container `iCloud.radicalsolution.com.Radical-QR`
+        // declared in the target's Signing & Capabilities.
         let modelConfiguration = ModelConfiguration(
             schema: schema,
-            isStoredInMemoryOnly: false
+            isStoredInMemoryOnly: false,
+            cloudKitDatabase: .private("iCloud.radicalsolution.com.Radical-QR")
         )
 
         do {

@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@xmldom/xmldom": "^0.8.10",
+    "qrcode-generator": "^2.0.4",
     "xpath": "^0.0.34"
   }
 }

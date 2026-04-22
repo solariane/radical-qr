@@ -1,23 +1,26 @@
 import Foundation
 import SwiftData
 
-/// Represents a saved QR code in history (Pro feature)
+/// Represents a saved QR code in history (Pro feature).
+///
+/// All stored properties have defaults so SwiftData can hydrate instances
+/// during CloudKit merges without needing a MainActor-isolated init
+/// (a CloudKit+SwiftData requirement).
 @Model
 final class HistoryItem {
-    var id: UUID
-    var content: String
-    var dataType: String
-    var configurationData: Data
-    var createdAt: Date
-    var lastUsedAt: Date
-    var usageCount: Int
+    var id: UUID = UUID()
+    var content: String = ""
+    var dataType: String = DataType.text.rawValue
+    var configurationData: Data = Data()
+    var createdAt: Date = Date()
+    var lastUsedAt: Date = Date()
+    var usageCount: Int = 1
     var title: String?
 
-    @MainActor
     init(
-        content: String,
-        dataType: DataType,
-        configuration: QRCodeConfiguration,
+        content: String = "",
+        dataType: DataType = .text,
+        configuration: QRCodeConfiguration = .default,
         title: String? = nil
     ) {
         self.id = UUID()
@@ -34,26 +37,24 @@ final class HistoryItem {
         DataType(rawValue: dataType) ?? .text
     }
 
-    /// Gets the decoded configuration (must be called from MainActor)
-    @MainActor
+    /// Gets the decoded configuration.
     func getConfiguration() -> QRCodeConfiguration {
         (try? JSONDecoder().decode(QRCodeConfiguration.self, from: configurationData)) ?? .default
     }
 
-    /// Sets the configuration by encoding it (must be called from MainActor)
-    @MainActor
+    /// Sets the configuration by encoding it.
     func setConfiguration(_ configuration: QRCodeConfiguration) {
         configurationData = (try? JSONEncoder().encode(configuration)) ?? Data()
     }
 
-    /// Updates the last used timestamp and increments usage count
+    /// Updates the last used timestamp and increments usage count.
     func markUsed() {
         lastUsedAt = Date()
         usageCount += 1
     }
 
-    /// Creates a duplicate of this history item
-    @MainActor func duplicate() -> HistoryItem {
+    /// Creates a duplicate of this history item.
+    func duplicate() -> HistoryItem {
         HistoryItem(
             content: content,
             dataType: parsedDataType,
@@ -65,17 +66,17 @@ final class HistoryItem {
 
 // MARK: - Style Preset
 
-/// Saved style configuration (Pro feature)
+/// Saved style configuration (Pro feature).
+/// All properties default-initialized so CloudKit can hydrate instances.
 @Model
 final class StylePreset {
-    var id: UUID
-    var name: String
-    var configurationData: Data
-    var createdAt: Date
-    var isDefault: Bool
+    var id: UUID = UUID()
+    var name: String = ""
+    var configurationData: Data = Data()
+    var createdAt: Date = Date()
+    var isDefault: Bool = false
 
-    @MainActor
-    init(name: String, configuration: QRCodeConfiguration, isDefault: Bool = false) {
+    init(name: String = "", configuration: QRCodeConfiguration = .default, isDefault: Bool = false) {
         self.id = UUID()
         self.name = name
         self.configurationData = (try? JSONEncoder().encode(configuration)) ?? Data()
@@ -83,14 +84,10 @@ final class StylePreset {
         self.isDefault = isDefault
     }
 
-    /// Gets the decoded configuration (must be called from MainActor)
-    @MainActor
     func getConfiguration() -> QRCodeConfiguration {
         (try? JSONDecoder().decode(QRCodeConfiguration.self, from: configurationData)) ?? .default
     }
 
-    /// Sets the configuration by encoding it (must be called from MainActor)
-    @MainActor
     func setConfiguration(_ configuration: QRCodeConfiguration) {
         configurationData = (try? JSONEncoder().encode(configuration)) ?? Data()
     }

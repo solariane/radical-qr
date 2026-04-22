@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1290 2796" width="1290" height="2796">
+  <defs>
+    <linearGradient id="bgG" x1="0" y1="0" x2="1290" y2="2796" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#667eea"/>
+      <stop offset="1" stop-color="#764ba2"/>
+    </linearGradient>
+    <linearGradient id="screenG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7b8fef"/>
+      <stop offset="1" stop-color="#8a5fb8"/>
+    </linearGradient>
+    <linearGradient id="ctaG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4D33D9"/>
+      <stop offset="1" stop-color="#8C3BBF"/>
+    </linearGradient>
+    <filter id="phoneShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="20"/>
+      <feOffset dx="0" dy="16" result="o"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+      <feOffset dx="0" dy="10" result="o"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="1290" height="2796" fill="url(#bgG)"/>
+  
+  
+    <g filter="url(#phoneShadow)">
+      <rect x="235" y="700" width="820" height="1680" rx="110" ry="110" fill="#0f0f18"/>
+      <rect x="253" y="718" width="784" height="1644" rx="92" ry="92" fill="url(#screenG)"/>
+    </g>
+    <rect x="555" y="750" width="180" height="42" rx="21" ry="21" fill="#0a0a12"/>
+  
+
+  <!-- Big lock icon -->
+  <g>
+    <circle cx="645" cy="1048" r="110" fill="#ffffff" opacity="0.18"/>
+    <circle cx="645" cy="1048" r="94" fill="#ffffff"/>
+    <!-- Lock shackle (arch) -->
+    <path d="M 615 1038
+             V 1012
+             a 30 30 0 0 1 60 0
+             V 1038"
+          stroke="#4D33D9" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <!-- Lock body -->
+    <rect x="603" y="1040" width="84" height="64" rx="14" ry="14" fill="#4D33D9"/>
+    <!-- Keyhole -->
+    <circle cx="645" cy="1066" r="6" fill="#ffffff"/>
+    <rect x="642" y="1066" width="6" height="16" fill="#ffffff"/>
+  </g>
+
+  <!-- Statement right under the lock -->
+  <g text-anchor="middle" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" fill="#ffffff">
+    <text x="645" y="1218" font-size="38" font-weight="700">100% local. 100% private.</text>
+  </g>
+
+  <!-- Promise cards -->
+  
+    <rect x="299" y="1338" width="692" height="190" rx="26" ry="26" fill="#ffffff" opacity="0.18"/>
+    <circle cx="379" cy="1433" r="50" fill="#ffffff"/>
+    
+        <path d="M 352 1433 Q 379 1411.4 406 1433 Q 379 1454.6 352 1433 Z" stroke="#34d399" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="379" cy="1433" r="9.45" stroke="#34d399" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="344" y1="1410" x2="414" y2="1456" stroke="#34d399" stroke-width="6" stroke-linecap="round"/>
+      
+    <text x="469" y="1414" font-size="32" font-weight="700" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">No analytics</text>
+    <text x="469" y="1458" font-size="24" fill="#ffffff" opacity="0.85" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">No SDKs, no telemetry.</text>
+  
+    <rect x="299" y="1560" width="692" height="190" rx="26" ry="26" fill="#ffffff" opacity="0.18"/>
+    <circle cx="379" cy="1655" r="50" fill="#ffffff"/>
+    
+        <rect x="352" y="1636.1" width="54" height="37.8" rx="4.859999999999999" ry="4.859999999999999" stroke="#60a5fa" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="379" cy="1655" r="8.64" stroke="#60a5fa" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="344" y1="1632" x2="414" y2="1678" stroke="#60a5fa" stroke-width="6" stroke-linecap="round"/>
+      
+    <text x="469" y="1636" font-size="32" font-weight="700" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">No storage</text>
+    <text x="469" y="1680" font-size="24" fill="#ffffff" opacity="0.85" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">Ephemeral by default.</text>
+  
+    <rect x="299" y="1782" width="692" height="190" rx="26" ry="26" fill="#ffffff" opacity="0.18"/>
+    <circle cx="379" cy="1877" r="50" fill="#ffffff"/>
+    
+        <path d="M 354.7 1883.75 Q 350.65 1872.95 365.5 1868.9 Q 370.9 1856.75 381.7 1862.15 Q 395.2 1856.75 401.95 1870.25 Q 407.35 1883.75 395.2 1886.45 L 360.1 1886.45 Z" stroke="#f472b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="373.6" y="1874.3" width="10.8" height="9.45" rx="4" ry="4" fill="#f472b6"/>
+      
+    <text x="469" y="1858" font-size="32" font-weight="700" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">Private iCloud</text>
+    <text x="469" y="1902" font-size="24" fill="#ffffff" opacity="0.85" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">Your container, not ours.</text>
+  
+
+  
+    <g text-anchor="middle" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+      <text x="645" y="280" font-size="140" font-weight="700" letter-spacing="-3">Zero tracking.</text>
+      <text x="645" y="460" font-size="140" font-weight="700" letter-spacing="-3" opacity="0.92">Zero servers.</text>
+    </g>
+  
+  
+    <g text-anchor="middle" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" fill="#ffffff">
+      <text x="645" y="2540" font-size="56" font-weight="500" opacity="0.95">Your content never leaves your device.</text>
+    </g>
+  
+
+</svg>
