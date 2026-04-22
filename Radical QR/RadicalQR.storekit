@@ -1,0 +1,86 @@
+{
+  "identifier" : "A18E1B00-1F92-4ED2-BF38-B4526BA616D8",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "8162CF6A-6D61-48FA-A9AD-D1584FB56E3B",
+      "localizations" : [
+        {
+          "description" : "Unlock the full color picker, SVG export, unlimited sizes, logo embedding, iCloud history sync, and more.",
+          "displayName" : "Radical QR Pro",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Débloquez la palette de couleurs complète, l'export SVG, les tailles illimitées, l'ajout de logo, la synchronisation iCloud de l'historique, et plus.",
+          "displayName" : "Radical QR Pro",
+          "locale" : "fr_FR"
+        }
+      ],
+      "productID" : "com.radicalsolution.radicalqr.pro",
+      "referenceName" : "Radical QR Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "0000000000",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 0,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

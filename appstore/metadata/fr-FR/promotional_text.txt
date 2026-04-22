@@ -1,0 +1,1 @@
+Nouveau : personnalisation indépendante des yeux, intégration macOS Services étendue, export vectoriel SVG et PDF. Achat unique, pas d'abonnement.

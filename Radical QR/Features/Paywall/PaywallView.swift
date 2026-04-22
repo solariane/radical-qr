@@ -34,6 +34,9 @@ struct PaywallView: View {
                         // All features list
                         featuresSection
 
+                        // Side-by-side comparison with Free tier
+                        comparisonSection
+
                         // Price and purchase button
                         purchaseSection
 
@@ -146,6 +149,18 @@ struct PaywallView: View {
         )
     }
 
+    // MARK: - Comparison Section
+
+    private var comparisonSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(String(localized: "paywall.comparison.title", defaultValue: "Free vs Pro"))
+                .font(.headline)
+                .foregroundStyle(.white)
+
+            FeatureComparisonView()
+        }
+    }
+
     // MARK: - Purchase Section
 
     private var purchaseSection: some View {
@@ -166,7 +181,10 @@ struct PaywallView: View {
                     .tint(.white)
             }
 
-            // Purchase button
+            // Purchase button — deeper, more saturated version of the app's
+            // signature gradient + glossy highlight + strong shadow so it
+            // visually "lifts" off the lighter page background AND the white
+            // comparison table.
             Button {
                 Task {
                     await purchase()
@@ -175,29 +193,53 @@ struct PaywallView: View {
                 HStack {
                     if isPurchasing {
                         ProgressView()
-                            .tint(.purple)
+                            .tint(.white)
                     } else {
                         Text(String(localized: "paywall.purchase", defaultValue: "Get Pro"))
-                            .font(.headline)
+                            .font(.headline.weight(.semibold))
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
+                .padding(.vertical, 18)
                 .background(
+                    ZStack {
+                        // Rich, saturated diagonal gradient
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 0.30, green: 0.20, blue: 0.85), // deep indigo
+                                        Color(red: 0.55, green: 0.22, blue: 0.75)  // deep violet
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                        // Soft top-to-mid highlight → gives the button some depth
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        .white.opacity(0.22),
+                                        .white.opacity(0.0)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .center
+                                )
+                            )
+                    }
+                )
+                .overlay(
+                    // Thin bright border to sharpen the edges
                     RoundedRectangle(cornerRadius: 14)
-                        .fill(.white)
+                        .strokeBorder(.white.opacity(0.35), lineWidth: 1)
                 )
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.4, green: 0.494, blue: 0.918),
-                            Color(red: 0.463, green: 0.294, blue: 0.635)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .foregroundStyle(.white)
+                // Two shadows: a crisp near-shadow + a wider soft glow
+                .shadow(color: .black.opacity(0.35), radius: 10, y: 6)
+                .shadow(color: .white.opacity(0.15), radius: 24, y: 0)
             }
+            .buttonStyle(.plain)
             .disabled(isPurchasing || purchaseManager.proProduct == nil)
         }
     }
@@ -346,7 +388,7 @@ struct FeatureComparisonView: View {
 
                 ComparisonRow(
                     feature: String(localized: "comparison.exportSize", defaultValue: "Export Size"),
-                    free: "400px",
+                    free: "512px",
                     pro: "4096px"
                 )
 

@@ -1,0 +1,44 @@
+Elegant QR codes. Auto-detection. Zero tracking. No subscription.
+
+Radical QR generates every code — links, contacts, Wi-Fi, events — entirely on your device. Paste anything, the app recognizes what it is and produces the right QR. Nothing is sent to a server. Nothing is stored without your consent.
+
+Built for the people who use QR codes every day — freelancers, restaurants, associations, entrepreneurs — and who want something beautiful, fast, and respectful of their privacy.
+
+
+WHY RADICAL QR
+
+• Auto-detect: paste a URL, a phone number, an email, a vCard, an iCalendar event, a Wi-Fi network — the app understands and produces the right QR, with the right encoding.
+• Deep customization: round modules and eyes independently, scale the eyes, pick solid colors or gradients.
+• Clean export: PNG, JPEG, WebP for free; PDF and SVG vector in Pro, up to 4096 px.
+• macOS integration: right-click any URL, contact, or event in Safari, Contacts, or Calendar → "Generate QR Code". Instant.
+• Drag & drop: drop a text file, a vCard, or an .ics directly into the app.
+• 10 languages: English, French, German, Spanish, Italian, Portuguese, Japanese, Arabic, Hindi, Chinese.
+
+
+FREE
+
+Everything essential: auto-detection, roundness customization, 6 preset colors and 3 preset gradients, PNG / JPEG / WebP export up to 512 px, system sharing.
+
+
+PRO (one-time purchase, lifetime)
+
+• Vector PDF and SVG export for print and large-scale use
+• Custom logo embedding with automatic quiet zone
+• Export size up to 4096 px
+• History with iCloud sync across your devices
+• Full color picker and custom gradients (linear, radial, angular, diamond)
+• Favorite style saved for reuse
+
+One purchase. Lifetime access. No subscription.
+
+
+OUR PRIVACY COMMITMENT
+
+• No analytics, no tracking
+• No logs, no telemetry
+• Your content never leaves your device
+• Pro history lives in your private iCloud container — never on our servers
+• We don't need to see what you encode — and we never will.
+
+
+Made by Radical Solution. Questions, feedback: contact@radicalsolution.com

@@ -1,0 +1,35 @@
+{
+  "sourceLocale": "en-US",
+  "bundleID": "radicalsolution.com.Radical-QR",
+  "deeplSourceLang": "EN",
+  "targetLocales": [
+    { "dir": "fr-FR",   "deepl": "FR",    "isHandWritten": true,  "note": "Hand-written; not auto-translated" },
+    { "dir": "de-DE",   "deepl": "DE",    "isHandWritten": false },
+    { "dir": "es-ES",   "deepl": "ES",    "isHandWritten": false },
+    { "dir": "it",      "deepl": "IT",    "isHandWritten": false },
+    { "dir": "pt-BR",   "deepl": "PT-BR", "isHandWritten": false },
+    { "dir": "ja",      "deepl": "JA",    "isHandWritten": false },
+    { "dir": "ar-SA",   "deepl": "AR",    "isHandWritten": false },
+    { "dir": "hi",      "deepl": "HI",    "isHandWritten": false },
+    { "dir": "zh-Hans", "deepl": "ZH",    "isHandWritten": false }
+  ],
+  "fieldLimits": {
+    "name": 30,
+    "subtitle": 30,
+    "description": 4000,
+    "keywords": 100,
+    "promotional_text": 170
+  },
+  "translatableFields": [
+    "name",
+    "subtitle",
+    "description",
+    "keywords",
+    "promotional_text"
+  ],
+  "copyAsIsFields": [
+    "support_url",
+    "marketing_url",
+    "privacy_url"
+  ]
+}

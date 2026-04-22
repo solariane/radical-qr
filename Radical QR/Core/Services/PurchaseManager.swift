@@ -210,12 +210,14 @@ extension PurchaseManager {
 // MARK: - Pro Features
 
 enum ProFeature: CaseIterable {
+    // Order matters — drives the display order in the paywall features list.
+    // Most visually tangible / marketing-heavy features first.
+    case vectorExport
+    case logoEmbedding
+    case unlimitedExportSize
+    case history
     case fullColorPicker
     case allGradientTypes
-    case vectorExport
-    case unlimitedExportSize
-    case logoEmbedding
-    case history
     case stylePreset
     case duplication
 
