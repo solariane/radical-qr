@@ -1,0 +1,44 @@
+Elegante QR-Codes. Automatische Erkennung. Keine Verfolgung. Kein Abonnement.
+
+Radical QR generiert jeden Code - Links, Kontakte, Wi-Fi, Events - komplett auf deinem Gerät. Füge irgendetwas ein, die App erkennt, was es ist und erzeugt den richtigen QR. Nichts wird an einen Server gesendet. Nichts wird ohne Ihre Zustimmung gespeichert.
+
+Entwickelt für Menschen, die jeden Tag QR-Codes verwenden - Freiberufler, Restaurants, Vereine, Unternehmer - und die etwas Schönes, Schnelles und Respektvolles für ihre Privatsphäre wollen.
+
+
+WARUM RADICAL QR
+
+- Automatische Erkennung: Fügen Sie eine URL, eine Telefonnummer, eine E-Mail, eine vCard, ein iCalendar-Ereignis, ein Wi-Fi-Netzwerk ein - die App versteht und erzeugt den richtigen QR mit der richtigen Kodierung.
+- Umfangreiche Anpassungsmöglichkeiten: runde Module und Augen unabhängig voneinander, Skalierung der Augen, Auswahl von Volltonfarben oder Farbverläufen.
+- Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG Vektor in Pro, bis zu 4096 px.
+- macOS-Integration: Rechtsklick auf eine URL, einen Kontakt oder ein Ereignis in Safari, Kontakte oder Kalender → "QR-Code generieren". Sofort.
+- Drag & Drop: Ziehen Sie eine Textdatei, eine vCard oder eine .ics direkt in die App.
+- 10 Sprachen: Englisch, Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Japanisch, Arabisch, Hindi, Chinesisch.
+
+
+KOSTENLOS
+
+Alles Wesentliche: automatische Erkennung, Anpassung der Rundheit, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, PNG / JPEG / WebP Export bis zu 512 px, Systemfreigabe.
+
+
+PRO (einmaliger Kauf, lebenslang)
+
+- Vektor-PDF- und SVG-Export für den Druck und die großflächige Verwendung
+- Benutzerdefinierte Logoeinbettung mit automatischer Ruhezone
+- Exportgröße bis zu 4096 px
+- Historie mit iCloud-Synchronisierung auf allen Ihren Geräten
+- Vollständige Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, eckig, rautenförmig)
+- Favorisierter Stil zur Wiederverwendung gespeichert
+
+Ein Kauf. Lebenslanger Zugriff. Kein Abonnement.
+
+
+UNSERE VERPFLICHTUNG ZUM DATENSCHUTZ
+
+- Keine Analytik, kein Tracking
+- Keine Protokolle, keine Telemetrie
+- Ihre Inhalte verlassen niemals Ihr Gerät
+- Der Pro-Verlauf wird in Ihrem privaten iCloud-Container gespeichert - niemals auf unseren Servern
+- Wir müssen nicht sehen, was du verschlüsselst - und wir werden es auch nie sehen.
+
+
+Hergestellt von Radical Solution. Fragen, Feedback: contact@radicalsolution.com

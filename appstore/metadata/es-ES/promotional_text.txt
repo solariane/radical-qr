@@ -1,0 +1,1 @@
+Nuevo: estilo de ojos independiente, servicios ampliados para macOS, exportación de vectores SVG y PDF. Compra única, sin suscripción.

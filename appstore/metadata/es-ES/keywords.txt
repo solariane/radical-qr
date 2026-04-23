@@ -1,0 +1,1 @@
+codigo qr,generador,vcard,wifi,svg,pdf,logo,contacto,menu,privacidad,evento,ical,compartir

@@ -5,10 +5,16 @@
       "comment" : "Bundle display name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الاستجابة السريعة الجذرية"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Radikal QR"
+            "value" : "Radikale QR"
           }
         },
         "en" : {
@@ -29,6 +35,12 @@
             "value" : "Radical QR"
           }
         },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रैडिकल क्यूआर"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44,7 +56,13 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR Radical"
+            "value" : "Radical QR"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "激进的 QR"
           }
         }
       }
@@ -53,10 +71,16 @@
       "comment" : "Bundle name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الاستجابة السريعة الجذرية"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Radikal QR"
+            "value" : "Radikale QR"
           }
         },
         "en" : {
@@ -77,6 +101,12 @@
             "value" : "Radical QR"
           }
         },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रैडिकल क्यूआर"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92,7 +122,13 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR Radical"
+            "value" : "Radical QR"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "激进的 QR"
           }
         }
       }
@@ -101,6 +137,12 @@
       "comment" : "Privacy - Photo Library Usage Description",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حدد الصور لتضمينها كشعارات في رموز QR الخاصة بك."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125,6 +167,12 @@
             "value" : "Sélectionnez les images à intégrer comme logos dans vos codes QR."
           }
         },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपने QR कोड में लोगो के रूप में एम्बेड करने के लिए छवियाँ चुनें।"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141,6 +189,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selecione imagens para incorporar como logótipos nos seus códigos QR."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择图像，作为徽标嵌入 QR 代码。"
           }
         }
       }

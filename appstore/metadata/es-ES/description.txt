@@ -1,0 +1,44 @@
+Códigos QR elegantes. Detección automática. Sin seguimiento. Sin suscripción.
+
+Radical QR genera cada código - enlaces, contactos, Wi-Fi, eventos - completamente en tu dispositivo. Pega cualquier cosa, la aplicación reconoce lo que es y produce el QR correcto. Nada se envía a un servidor. Nada se almacena sin su consentimiento.
+
+Creada para las personas que utilizan códigos QR cada día - autónomos, restaurantes, asociaciones, empresarios - y que quieren algo bonito, rápido y respetuoso con su privacidad.
+
+
+POR QUÉ RADICAL QR
+
+- Auto-detección: pegar una URL, un número de teléfono, un correo electrónico, una vCard, un evento de iCalendar, una red Wi-Fi - la aplicación entiende y produce el QR correcto, con la codificación correcta.
+- Personalización profunda: redondea módulos y ojos de forma independiente, escala los ojos, elige colores sólidos o degradados.
+- Exportación limpia: PNG, JPEG, WebP gratis; PDF y SVG vectorial en Pro, hasta 4096 px.
+- Integración con macOS: haz clic con el botón derecho en cualquier URL, contacto o evento en Safari, Contactos o Calendario → "Generar código QR". Al instante.
+- Arrastrar y soltar: suelta un archivo de texto, una vCard o un .ics directamente en la app.
+- 10 idiomas: Inglés, francés, alemán, español, italiano, portugués, japonés, árabe, hindi y chino.
+
+
+GRATIS
+
+Todo lo esencial: autodetección, personalización de la redondez, 6 colores preestablecidos y 3 degradados preestablecidos, exportación PNG / JPEG / WebP de hasta 512 px, uso compartido del sistema.
+
+
+PRO (compra única, de por vida)
+
+- Exportación vectorial a PDF y SVG para impresión y uso a gran escala
+- Inserción de logotipos personalizados con zona de silencio automática
+- Tamaño de exportación de hasta 4096 px
+- Historial con sincronización iCloud en todos tus dispositivos
+- Selector de color y degradados personalizados (lineal, radial, angular, diamante)
+- Guarda tu estilo favorito para reutilizarlo
+
+Una compra. Acceso de por vida. Sin suscripción.
+
+
+NUESTRO COMPROMISO DE PRIVACIDAD
+
+- Sin análisis, sin seguimiento
+- Sin registros ni telemetría
+- Tu contenido nunca sale de tu dispositivo
+- El historial Pro vive en tu contenedor privado de iCloud, nunca en nuestros servidores
+- No necesitamos ver lo que codificas - y nunca lo haremos.
+
+
+Hecho por Radical Solution. Preguntas, comentarios: contact@radicalsolution.com

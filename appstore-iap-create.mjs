@@ -28,6 +28,7 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { deeplApiBaseForKey, deeplSupportedTargets, deeplTranslate } from "./appstore/lib/deepl.mjs";
 
 // --- CLI ------------------------------------------------------------------
 
@@ -42,6 +43,22 @@ const args = Object.fromEntries(
 );
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+
+function sha256(s) {
+  return crypto.createHash("sha256").update(s, "utf8").digest("hex");
+}
+
+function loadJSON(p, fallback) {
+  try { return JSON.parse(fs.readFileSync(p, "utf8")); }
+  catch (e) {
+    if (e.code === "ENOENT") return fallback;
+    throw e;
+  }
+}
+
+function saveJSON(p, obj) {
+  fs.writeFileSync(p, JSON.stringify(obj, null, 2) + "\n", "utf8");
+}
 const IAP_PATH = args.iap
   ? path.resolve(args.iap)
   : path.join(SCRIPT_DIR, "appstore", "iap", "pro.json");
@@ -50,6 +67,12 @@ const iap = JSON.parse(fs.readFileSync(IAP_PATH, "utf8"));
 const appConfig = JSON.parse(fs.readFileSync(path.join(SCRIPT_DIR, "appstore", "config.json"), "utf8"));
 const BUNDLE_ID = args["bundle-id"] || appConfig.bundleID;
 const DRY_RUN = Boolean(args["dry-run"]);
+const SKIP_TRANSLATE = Boolean(args["no-translate"]);
+const SIGS_PATH = path.join(SCRIPT_DIR, "appstore", "iap", ".iap-signatures.json");
+
+// Apple's hard limits for IAP localization fields (as of 2025).
+const IAP_NAME_LIMIT = 30;
+const IAP_DESC_LIMIT = 55;
 
 const ISSUER_ID = process.env.ASC_ISSUER_ID;
 const KEY_ID = process.env.ASC_KEY_ID;
@@ -123,9 +146,106 @@ async function asc(pathname, { method = "GET", body = null } = {}) {
   return json;
 }
 
+// --- DeepL translation pass ------------------------------------------------
+
+/**
+ * Populates `iap.localizations` in-place with auto-translated entries for any
+ * target locale declared in config.json that isn't already present. Uses
+ * `.iap-signatures.json` as a hash-based cache so translations only re-run
+ * when the en-US source text changes.
+ */
+async function expandLocalizationsViaDeepL() {
+  if (SKIP_TRANSLATE) {
+    info("--no-translate set, skipping DeepL expansion");
+    return;
+  }
+  const authKey = process.env.DEEPL_AUTH_KEY || process.env.DEEPL_API_KEY;
+  if (!authKey) {
+    warn("DEEPL_AUTH_KEY not set — only hand-written locales will be pushed");
+    return;
+  }
+
+  const source = iap.localizations["en-US"];
+  if (!source) {
+    warn("No en-US localization in pro.json — skipping translation pass");
+    return;
+  }
+  const sourceHash = sha256(`${source.name}\n${source.description}`);
+
+  const sigs = loadJSON(SIGS_PATH, {}); // { "<ascLocale>": { hash, name, description } }
+  const apiBase = deeplApiBaseForKey(authKey);
+
+  // Locales in config.json that need translation (not already in pro.json, not hand-written)
+  const toTranslate = appConfig.targetLocales.filter((loc) => {
+    if (loc.isHandWritten) return false;
+    if (iap.localizations[loc.dir]) return false;
+    return true;
+  });
+
+  if (toTranslate.length === 0) {
+    info("All target locales already covered, no DeepL work needed");
+    return;
+  }
+
+  let supported;
+  try {
+    supported = await deeplSupportedTargets(apiBase, authKey);
+  } catch (e) {
+    fail(`${e.message} — can't translate missing IAP locales`);
+  }
+
+  step(`Expanding IAP localizations via DeepL (${toTranslate.length} locale(s))...`);
+
+  for (const loc of toTranslate) {
+    const cached = sigs[loc.dir];
+    if (cached?.hash === sourceHash && cached.name && cached.description) {
+      dim(`${loc.dir}: using cached translation`);
+      iap.localizations[loc.dir] = { name: cached.name, description: cached.description };
+      continue;
+    }
+    if (!supported.has(loc.deepl)) {
+      warn(`${loc.dir}: DeepL doesn't support target "${loc.deepl}", skipping`);
+      continue;
+    }
+
+    process.stdout.write(`  ${COL.cyan}→${COL.reset} ${loc.dir} (DeepL ${loc.deepl})... `);
+    try {
+      // Keep the source product name across locales — it's a brand. Only the
+      // description goes through DeepL. Per-locale name overrides can still be
+      // set manually in pro.json.
+      const description = await deeplTranslate({
+        apiBase, authKey, text: source.description, targetLang: loc.deepl, sourceLang: "EN",
+      });
+      const name = source.name;
+      iap.localizations[loc.dir] = { name, description };
+      sigs[loc.dir] = { hash: sourceHash, name, description };
+      // Apple caps the IAP localization description at 55 chars (it shows in
+      // the purchase confirmation sheet). Warn rather than truncate so the
+      // developer can hand-rewrite in pro.json.
+      if (description.length > IAP_DESC_LIMIT) {
+        process.stdout.write(`${COL.yellow}warn${COL.reset}\n`);
+        warn(`${loc.dir}: description is ${description.length} chars (limit ${IAP_DESC_LIMIT}) — ASC will reject. Add a shorter override in pro.json.`);
+      } else {
+        process.stdout.write(`${COL.green}done${COL.reset} (${description.length} chars)\n`);
+      }
+    } catch (e) {
+      process.stdout.write(`${COL.red}failed${COL.reset}\n`);
+      warn(`${loc.dir}: ${e.message}`);
+    }
+  }
+
+  if (!DRY_RUN) {
+    saveJSON(SIGS_PATH, sigs);
+    ok(`Saved IAP translation signatures → ${path.relative(SCRIPT_DIR, SIGS_PATH)}`);
+  }
+}
+
 // --- Main -----------------------------------------------------------------
 
 async function main() {
+  // Translate missing locales via DeepL (hash-cached)
+  await expandLocalizationsViaDeepL();
+
   step(`Fetching app record for bundle id: ${BUNDLE_ID}`);
   const appRes = await asc(`/v1/apps?filter[bundleId]=${encodeURIComponent(BUNDLE_ID)}&limit=1`);
   const app = appRes?.data?.[0];
@@ -143,7 +263,10 @@ async function main() {
     iapId = existing.id;
     info(`Found existing IAP (${iap.productId}) → id: ${iapId}, state: ${existing.attributes?.state}`);
 
-    // Patch metadata in case name/review note changed
+    // Patch metadata in case name/review note changed.
+    // Note: `familyShareable` is NOT included — Apple's ASC API rejects it as
+    // "unknown attribute" despite their docs listing it. Set it in the web UI
+    // (In-App Purchases → Pro → "Family Sharing" toggle).
     if (!DRY_RUN) {
       await asc(`/v2/inAppPurchases/${iapId}`, {
         method: "PATCH",
@@ -153,7 +276,6 @@ async function main() {
             id: iapId,
             attributes: {
               name: iap.referenceName,
-              familyShareable: Boolean(iap.familyShareable),
               reviewNote: iap.reviewNote ?? "",
             },
           },
@@ -177,8 +299,9 @@ async function main() {
               name: iap.referenceName,
               productId: iap.productId,
               inAppPurchaseType: iap.type,  // e.g. NON_CONSUMABLE
-              familyShareable: Boolean(iap.familyShareable),
               reviewNote: iap.reviewNote ?? "",
+              // familyShareable is set via the web UI — Apple's ASC API
+              // currently rejects it as an unknown attribute here.
             },
             relationships: {
               app: { data: { type: "apps", id: appId } },
@@ -253,11 +376,15 @@ async function main() {
      App Store Connect → My Apps → Radical QR → In-App Purchases → ${iap.productId} → Pricing
      Suggested: Tier 5 (≈ 4.99 €)
 
-  ${COL.cyan}2. Review screenshot${COL.reset}
+  ${COL.cyan}2. Family Sharing${COL.reset}${iap.familyShareable ? "  (pro.json flags this ON)" : ""}
+     Same page → "Family Sharing" toggle.
+     Apple's API rejects this attribute, so it has to be clicked manually.
+
+  ${COL.cyan}3. Review screenshot${COL.reset}
      Upload a screenshot of the paywall screen under "App Review Information"
      for this IAP. The app screenshot showing the "Get Pro" button is perfect.
 
-  ${COL.cyan}3. Submit${COL.reset}
+  ${COL.cyan}4. Submit${COL.reset}
      The IAP goes through review together with the app version. No separate
      submission step — just make sure it's attached to v1.0.
   `);

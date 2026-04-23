@@ -154,26 +154,21 @@ async function main() {
   const appId = app.id;
   ok(`App id: ${appId}`);
 
-  step("Looking up the editable App Store version...");
+  // Universal apps have one appStoreVersion per platform (IOS, MAC_OS, TV_OS).
+  // Per-version metadata (description, keywords, …) must be pushed to EACH.
+  step("Looking up editable App Store versions (all platforms)...");
   const versionsRes = await asc(
-    `/v1/apps/${appId}/appStoreVersions?filter[appStoreState]=PREPARE_FOR_SUBMISSION,DEVELOPER_REJECTED,REJECTED,METADATA_REJECTED,WAITING_FOR_REVIEW&limit=1`
+    `/v1/apps/${appId}/appStoreVersions?filter[appStoreState]=PREPARE_FOR_SUBMISSION,DEVELOPER_REJECTED,REJECTED,METADATA_REJECTED,WAITING_FOR_REVIEW&limit=20`
   );
-  const version = versionsRes?.data?.[0];
-  if (!version) {
+  const versions = versionsRes?.data ?? [];
+  if (versions.length === 0) {
     warn("No editable App Store version found. Create or edit a version in App Store Connect first.");
     info("Tip: a version stays editable until it's submitted for review or accepted.");
     process.exit(0);
   }
-  const versionId = version.id;
-  ok(`Version id: ${versionId} (state: ${version.attributes?.appStoreState}, v${version.attributes?.versionString})`);
-
-  step("Fetching existing localizations for this version...");
-  const locsRes = await asc(`/v1/appStoreVersions/${versionId}/appStoreVersionLocalizations?limit=200`);
-  const existingByLocale = new Map();
-  for (const l of locsRes?.data ?? []) {
-    existingByLocale.set(l.attributes?.locale, l);
+  for (const v of versions) {
+    ok(`Version id: ${v.id}  platform: ${v.attributes?.platform ?? "?"}  state: ${v.attributes?.appStoreState}  v${v.attributes?.versionString}`);
   }
-  info(`Version has ${existingByLocale.size} locale(s) currently.`);
 
   const allLocales = [
     { dir: config.sourceLocale, isHandWritten: true },
@@ -182,82 +177,127 @@ async function main() {
 
   let updated = 0, created = 0, nameUpdates = 0;
 
-  for (const loc of allLocales) {
-    if (ONLY && !ONLY.has(loc.dir)) continue;
-    const localeCode = ascLocale(loc.dir);
-    const localeDir = path.join(METADATA_DIR, loc.dir);
-    if (!fs.existsSync(localeDir)) { dim(`Skip ${loc.dir} (no metadata dir)`); continue; }
-
-    // Per-version fields (subtitle, description, keywords, promotional_text,
-    // marketing_url, support_url, privacy_policy_url — note: ASC uses
-    // underscore or camelCase; we use camelCase in the API body).
-    const attrs = {};
-    const subtitle = readMetadataField(loc.dir, "subtitle");
-    const description = readMetadataField(loc.dir, "description");
-    const keywords = readMetadataField(loc.dir, "keywords");
-    const promo = readMetadataField(loc.dir, "promotional_text");
-    const support = readMetadataField(loc.dir, "support_url");
-    const marketing = readMetadataField(loc.dir, "marketing_url");
-    const privacy = readMetadataField(loc.dir, "privacy_url");
-
-    if (description != null) attrs.description = description;
-    if (keywords != null) attrs.keywords = keywords;
-    if (promo != null) attrs.promotionalText = promo;
-    if (support != null) attrs.supportUrl = support;
-    if (marketing != null) attrs.marketingUrl = marketing;
-
-    step(`[${loc.dir}] ${Object.keys(attrs).length} field(s) to push`);
-
-    const existing = existingByLocale.get(localeCode);
-
-    if (DRY_RUN) {
-      info(`(dry-run) would ${existing ? "PATCH" : "CREATE"} appStoreVersionLocalization for ${localeCode}`);
-      for (const [k, v] of Object.entries(attrs)) {
-        const preview = String(v).replace(/\n/g, " ").slice(0, 80);
-        dim(`${k}: ${preview}${String(v).length > 80 ? "…" : ""}`);
+  // ---- Copyright is a per-version attribute shared across platforms -------
+  const copyright = config.copyright;
+  if (copyright) {
+    step(`Setting copyright on all ${versions.length} version(s): "${copyright}"`);
+    for (const v of versions) {
+      if (v.attributes?.copyright === copyright) {
+        dim(`${v.attributes?.platform}: copyright already set, skipping`);
+        continue;
       }
-    } else if (existing) {
-      await asc(`/v1/appStoreVersionLocalizations/${existing.id}`, {
-        method: "PATCH",
-        body: {
-          data: {
-            type: "appStoreVersionLocalizations",
-            id: existing.id,
-            attributes: attrs,
-          },
-        },
-      });
-      ok(`Updated ${localeCode}`);
-      updated++;
-    } else {
-      await asc(`/v1/appStoreVersionLocalizations`, {
-        method: "POST",
-        body: {
-          data: {
-            type: "appStoreVersionLocalizations",
-            attributes: { ...attrs, locale: localeCode },
-            relationships: {
-              appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+      if (DRY_RUN) {
+        info(`(dry-run) would PATCH ${v.attributes?.platform} copyright → "${copyright}"`);
+      } else {
+        await asc(`/v1/appStoreVersions/${v.id}`, {
+          method: "PATCH",
+          body: {
+            data: {
+              type: "appStoreVersions",
+              id: v.id,
+              attributes: { copyright },
             },
           },
-        },
-      });
-      ok(`Created ${localeCode}`);
-      created++;
+        });
+        ok(`${v.attributes?.platform}: copyright set`);
+      }
     }
+  }
 
-    // App-level fields (name, subtitle live on appInfoLocalizations).
-    // We only touch these via appInfoLocalizations which belong to the
-    // current editable appInfo — fetched lazily below if needed.
-    if (subtitle != null || readMetadataField(loc.dir, "name") != null || privacy != null) {
-      await updateAppInfoLocalization({ appId, loc, subtitle, name: readMetadataField(loc.dir, "name"), privacyUrl: privacy, dryRun: DRY_RUN });
+  // ---- Push per-version metadata for EACH platform version ----------------
+  for (const v of versions) {
+    const versionId = v.id;
+    const platform = v.attributes?.platform ?? "?";
+
+    step(`Fetching existing localizations for ${platform} / v${v.attributes?.versionString}...`);
+    const locsRes = await asc(`/v1/appStoreVersions/${versionId}/appStoreVersionLocalizations?limit=200`);
+    const existingByLocale = new Map();
+    for (const l of locsRes?.data ?? []) {
+      existingByLocale.set(l.attributes?.locale, l);
+    }
+    info(`Version has ${existingByLocale.size} locale(s) currently.`);
+
+    for (const loc of allLocales) {
+      if (ONLY && !ONLY.has(loc.dir)) continue;
+      const localeCode = ascLocale(loc.dir);
+      const localeDir = path.join(METADATA_DIR, loc.dir);
+      if (!fs.existsSync(localeDir)) { dim(`Skip ${loc.dir} (no metadata dir)`); continue; }
+
+      const attrs = {};
+      const description = readMetadataField(loc.dir, "description");
+      const keywords = readMetadataField(loc.dir, "keywords");
+      const promo = readMetadataField(loc.dir, "promotional_text");
+      const support = readMetadataField(loc.dir, "support_url");
+      const marketing = readMetadataField(loc.dir, "marketing_url");
+
+      if (description != null) attrs.description = description;
+      if (keywords != null) attrs.keywords = keywords;
+      if (promo != null) attrs.promotionalText = promo;
+      if (support != null) attrs.supportUrl = support;
+      if (marketing != null) attrs.marketingUrl = marketing;
+
+      step(`[${platform} · ${loc.dir}] ${Object.keys(attrs).length} field(s)`);
+
+      const existing = existingByLocale.get(localeCode);
+
+      if (DRY_RUN) {
+        info(`(dry-run) would ${existing ? "PATCH" : "CREATE"} appStoreVersionLocalization for ${localeCode}`);
+        for (const [k, val] of Object.entries(attrs)) {
+          const preview = String(val).replace(/\n/g, " ").slice(0, 80);
+          dim(`${k}: ${preview}${String(val).length > 80 ? "…" : ""}`);
+        }
+      } else if (existing) {
+        await asc(`/v1/appStoreVersionLocalizations/${existing.id}`, {
+          method: "PATCH",
+          body: {
+            data: {
+              type: "appStoreVersionLocalizations",
+              id: existing.id,
+              attributes: attrs,
+            },
+          },
+        });
+        ok(`Updated ${platform} · ${localeCode}`);
+        updated++;
+      } else {
+        await asc(`/v1/appStoreVersionLocalizations`, {
+          method: "POST",
+          body: {
+            data: {
+              type: "appStoreVersionLocalizations",
+              attributes: { ...attrs, locale: localeCode },
+              relationships: {
+                appStoreVersion: { data: { type: "appStoreVersions", id: versionId } },
+              },
+            },
+          },
+        });
+        ok(`Created ${platform} · ${localeCode}`);
+        created++;
+      }
+    }
+  }
+
+  // ---- Push app-level metadata (shared across platforms via appInfo) ------
+  for (const loc of allLocales) {
+    if (ONLY && !ONLY.has(loc.dir)) continue;
+    const localeDir = path.join(METADATA_DIR, loc.dir);
+    if (!fs.existsSync(localeDir)) continue;
+
+    const subtitle = readMetadataField(loc.dir, "subtitle");
+    const name = readMetadataField(loc.dir, "name");
+    const privacy = readMetadataField(loc.dir, "privacy_url");
+
+    if (subtitle != null || name != null || privacy != null) {
+      await updateAppInfoLocalization({ appId, loc, subtitle, name, privacyUrl: privacy, dryRun: DRY_RUN });
       nameUpdates++;
     }
   }
 
   step("Summary");
-  info(`Locales updated: ${updated}`);
-  info(`Locales created: ${created}`);
+  info(`Platforms touched: ${versions.length} (${versions.map(v => v.attributes?.platform).join(", ")})`);
+  info(`Version locales updated: ${updated}`);
+  info(`Version locales created: ${created}`);
   info(`App-level (name/subtitle/privacyUrl) touched: ${nameUpdates}`);
   if (DRY_RUN) warn("Dry-run mode: no changes were actually sent to App Store Connect.");
 }
@@ -266,13 +306,30 @@ async function main() {
 
 const appInfoCache = { appId: null, appInfoId: null, locsByLocale: null };
 
+// App Store Connect removed `filter[appStoreState]` from the appInfos
+// endpoint, so we list all recent appInfos and filter client-side by state.
+const APPINFO_EDITABLE_STATES = new Set([
+  "PREPARE_FOR_SUBMISSION",
+  "DEVELOPER_REJECTED",
+  "REJECTED",
+  "METADATA_REJECTED",
+  "WAITING_FOR_REVIEW",
+  "IN_REVIEW",
+]);
+
 async function getEditableAppInfo(appId) {
   if (appInfoCache.appId === appId && appInfoCache.appInfoId) return appInfoCache;
-  const res = await asc(
-    `/v1/apps/${appId}/appInfos?filter[appStoreState]=PREPARE_FOR_SUBMISSION,DEVELOPER_REJECTED,REJECTED,METADATA_REJECTED,WAITING_FOR_REVIEW&limit=1`
-  );
-  const appInfo = res?.data?.[0];
-  if (!appInfo) fail("No editable appInfo found — can't push app-level fields (name/subtitle).");
+  const res = await asc(`/v1/apps/${appId}/appInfos?limit=10`);
+  const infos = res?.data ?? [];
+  // Apple renamed `appStoreState` → `state` on AppInfo. Support both.
+  const appInfo = infos.find((info) => {
+    const s = info.attributes?.state ?? info.attributes?.appStoreState;
+    return s && APPINFO_EDITABLE_STATES.has(s);
+  });
+  if (!appInfo) {
+    const states = infos.map((i) => i.attributes?.state ?? i.attributes?.appStoreState).filter(Boolean);
+    fail(`No editable appInfo found — can't push app-level fields (name/subtitle). Current states: ${states.join(", ") || "none"}`);
+  }
   const locsRes = await asc(`/v1/appInfos/${appInfo.id}/appInfoLocalizations?limit=200`);
   const locsByLocale = new Map();
   for (const l of locsRes?.data ?? []) locsByLocale.set(l.attributes?.locale, l);

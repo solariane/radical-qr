@@ -2,16 +2,20 @@
   "productId": "com.radicalsolution.radicalqr.pro",
   "referenceName": "Radical QR Pro",
   "type": "NON_CONSUMABLE",
-  "familyShareable": false,
+  "familyShareable": true,
   "reviewNote": "Unlocks Pro features: PDF/SVG export, logo embedding, unlimited export size, history with iCloud sync, full color picker and custom gradients, saved style preset.",
   "localizations": {
     "en-US": {
       "name": "Radical QR Pro",
-      "description": "Unlock PDF and SVG vector export, logo embedding with automatic quiet zone, export sizes up to 4096 px, history with iCloud sync, the full color picker and custom gradients, plus a saved favorite style. One-time purchase, lifetime access."
+      "description": "Unlock everything. One-time, lifetime access."
     },
     "fr-FR": {
       "name": "Radical QR Pro",
-      "description": "Débloquez l'export vectoriel PDF et SVG, l'ajout de logo avec zone de sécurité automatique, les tailles d'export jusqu'à 4096 px, l'historique avec synchronisation iCloud, la palette de couleurs complète et les dégradés personnalisés, ainsi qu'un style favori mémorisé. Achat unique, accès à vie."
+      "description": "Débloquez tout. Achat unique, accès à vie."
+    },
+    "de-DE": {
+      "name": "Radical QR Pro",
+      "description": "Alles freischalten. Einmalig, lebenslang."
     }
   }
 }

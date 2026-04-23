@@ -57,10 +57,16 @@ info() { printf "  \033[36mi %s\033[0m\n" "$1"; }
 
 if [ -f "$ENV_FILE" ]; then
     # Export every uncommented KEY=VALUE line so the node scripts pick them up.
-    while IFS= read -r line; do
-        if [[ "$line" =~ ^[A-Z_][A-Z0-9_]*= ]]; then
-            export "$line"
-        fi
+    # `|| [ -n "$line" ]` catches the last line when the file has no trailing
+    # newline. Strips CRLF line endings and surrounding single/double quotes.
+    while IFS= read -r line || [ -n "$line" ]; do
+        line="${line%$'\r'}"
+        [[ "$line" =~ ^[A-Z_][A-Z0-9_]*= ]] || continue
+        key="${line%%=*}"
+        value="${line#*=}"
+        value="${value#\"}"; value="${value%\"}"
+        value="${value#\'}"; value="${value%\'}"
+        export "$key=$value"
     done < "$ENV_FILE"
 fi
 
@@ -103,7 +109,10 @@ if [ "$PUSH" = true ]; then
         PUSH_ARGS=()
         [ "$DRY_RUN" = true ] && PUSH_ARGS+=(--dry-run)
         [ -n "$ONLY" ]        && PUSH_ARGS+=(--only="$ONLY")
-        node "$PUSH_SCRIPT" "${PUSH_ARGS[@]}"
+        # `${arr[@]+"${arr[@]}"}` safely expands to nothing when the array is
+        # empty. Needed because `set -u` treats an empty array expansion as an
+        # unbound variable on bash 3.2 (macOS default).
+        node "$PUSH_SCRIPT" ${PUSH_ARGS[@]+"${PUSH_ARGS[@]}"}
         ok "Push pass complete."
     fi
 fi

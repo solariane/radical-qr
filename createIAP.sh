@@ -16,10 +16,16 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ENV_FILE="$SCRIPT_DIR/../.env"
 
 if [ -f "$ENV_FILE" ]; then
-    while IFS= read -r line; do
-        if [[ "$line" =~ ^[A-Z_][A-Z0-9_]*= ]]; then
-            export "$line"
-        fi
+    # `|| [ -n "$line" ]` picks up the last line even when the file has no
+    # trailing newline. Strips CRLF and surrounding single/double quotes.
+    while IFS= read -r line || [ -n "$line" ]; do
+        line="${line%$'\r'}"
+        [[ "$line" =~ ^[A-Z_][A-Z0-9_]*= ]] || continue
+        key="${line%%=*}"
+        value="${line#*=}"
+        value="${value#\"}"; value="${value%\"}"
+        value="${value#\'}"; value="${value%\'}"
+        export "$key=$value"
     done < "$ENV_FILE"
 fi
 

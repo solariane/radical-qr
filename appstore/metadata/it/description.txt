@@ -1,0 +1,44 @@
+Codici QR eleganti. Rilevamento automatico. Nessuna tracciabilità. Nessun abbonamento.
+
+Radical QR genera ogni codice - link, contatti, Wi-Fi, eventi - interamente sul vostro dispositivo. Incollate qualsiasi cosa, l'app riconosce il codice e produce il QR giusto. Nulla viene inviato a un server. Nulla viene memorizzato senza il vostro consenso.
+
+Realizzata per le persone che utilizzano i codici QR ogni giorno - liberi professionisti, ristoranti, associazioni, imprenditori - e che vogliono qualcosa di bello, veloce e rispettoso della loro privacy.
+
+
+PERCHÉ RADICAL QR
+
+- Rilevamento automatico: incollate un URL, un numero di telefono, un'e-mail, una vCard, un evento iCalendar, una rete Wi-Fi - l'app capisce e produce il QR giusto, con la giusta codifica.
+- Profonda personalizzazione: moduli e occhi arrotondati in modo indipendente, scala degli occhi, scelta di colori solidi o sfumature.
+- Esportazione pulita: PNG, JPEG, WebP gratis; PDF e SVG vettoriale in Pro, fino a 4096 px.
+- Integrazione con macOS: cliccate con il tasto destro del mouse su qualsiasi URL, contatto o evento in Safari, Contatti o Calendario → "Genera codice QR". Immediato.
+- Drag & drop: rilasciate un file di testo, una vCard o un .ics direttamente nell'app.
+- 10 lingue: Inglese, francese, tedesco, spagnolo, italiano, portoghese, giapponese, arabo, hindi, cinese.
+
+
+GRATUITO
+
+Tutto l'essenziale: rilevamento automatico, personalizzazione della rotondità, 6 colori e 3 gradienti preimpostati, esportazione PNG / JPEG / WebP fino a 512 px, condivisione del sistema.
+
+
+PRO (acquisto unico, a vita)
+
+- Esportazione di PDF e SVG vettoriali per la stampa e l'uso su larga scala
+- Inclusione del logo personalizzato con zona silenziosa automatica
+- Dimensioni di esportazione fino a 4096 px
+- Cronologia con sincronizzazione iCloud su tutti i dispositivi
+- Selezionatore di colori completo e gradienti personalizzati (lineari, radiali, angolari, a diamante)
+- Stile preferito salvato per il riutilizzo
+
+Un solo acquisto. Accesso a vita. Nessun abbonamento.
+
+
+IL NOSTRO IMPEGNO PER LA PRIVACY
+
+- Nessuna analisi, nessun tracciamento
+- Nessun registro, nessuna telemetria
+- I vostri contenuti non lasciano mai il vostro dispositivo
+- La cronologia dei file pro vive nel vostro contenitore privato di iCloud, mai sui nostri server
+- Non abbiamo bisogno di vedere ciò che codificate e non lo vedremo mai.
+
+
+Prodotto da Radical Solution. Domande, feedback: contact@radicalsolution.com
