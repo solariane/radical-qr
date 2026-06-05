@@ -307,5 +307,7 @@
   "settings.share": "17ec9cf47b20a2664f1d85f64a47185e",
   "settings.share.subtitle": "e532e998fbfce4521521a9ad455d36ce",
   "settings.website": "a6faad604fff21ca0e89ea07b6abbae6",
-  "settings.website.subtitle": "bdcbf7e9495d261a248b48f93c99dbb6"
+  "settings.website.subtitle": "bdcbf7e9495d261a248b48f93c99dbb6",
+  "caption.fitToWidth": "8efd581a0f4c4d2dff201d8f5534d003",
+  "caption.fitToWidth.hint": "32ca50a2da93428a74eba8a0635db2ce"
 }
