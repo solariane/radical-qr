@@ -19,6 +19,9 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
     var showCaption: Bool = false
     var captionText: String? // nil = auto-generated from content
     var captionSize: CaptionSize = .medium
+    /// When true, the caption font shrinks so the whole text fits the width under
+    /// the QR code (no truncation). When false, long captions are truncated with "…".
+    var captionFitToWidth: Bool = false
 
     /// Caption font size relative to QR code width
     enum CaptionSize: String, Codable, Hashable, Sendable, CaseIterable {
@@ -94,6 +97,7 @@ extension QRCodeConfiguration {
         self.showCaption = try c.decodeIfPresent(Bool.self, forKey: .showCaption) ?? false
         self.captionText = try c.decodeIfPresent(String.self, forKey: .captionText)
         self.captionSize = try c.decodeIfPresent(CaptionSize.self, forKey: .captionSize) ?? .medium
+        self.captionFitToWidth = try c.decodeIfPresent(Bool.self, forKey: .captionFitToWidth) ?? false
     }
 }
 

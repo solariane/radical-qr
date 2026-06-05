@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreGraphics
+import CoreText
 import UniformTypeIdentifiers
 
 #if os(macOS)
@@ -223,6 +224,20 @@ final class ExportService: Sendable {
 
         svg += "\n<path fill=\"\(fillAttribute)\" d=\"\(pathData)\"/>"
 
+        // Eyes (finder patterns) — drawn separately with even-odd fill so that
+        // eyeRoundness / eyeScale are honored independently of data roundness.
+        let eyesPath = generateEyesPath(
+            matrix: matrix,
+            eyeRoundness: configuration.eyeRoundness,
+            eyeScale: configuration.eyeScale,
+            exclusionRect: exclusionRect
+        )
+        if !eyesPath.isEmpty {
+            // Rounded eyes need smooth curves; override the root crispEdges.
+            let eyeRendering = configuration.eyeRoundness > 0 ? " shape-rendering=\"geometricPrecision\"" : ""
+            svg += "\n<path fill=\"\(fillAttribute)\" fill-rule=\"evenodd\"\(eyeRendering) d=\"\(eyesPath)\"/>"
+        }
+
         // Logo if present
         if let logoData = configuration.logoData {
             svg += generateSVGLogoElement(
@@ -234,9 +249,23 @@ final class ExportService: Sendable {
 
         // Caption text below QR code
         if let text = captionText {
-            let fontSize = CGFloat(matrix.size) * configuration.captionSize.relativeFraction
+            let baseFontSize = CGFloat(matrix.size) * configuration.captionSize.relativeFraction
+            let maxWidth = CGFloat(matrix.size) * 0.9
             let centerX = CGFloat(matrix.size) / 2
             let captionY = CGFloat(matrix.size) + captionModuleHeight * 0.65
+
+            // Measure to decide whether the caption overflows the QR width.
+            let measuredWidth = measureTextWidth(text, fontSize: baseFontSize)
+            let overflows = measuredWidth > maxWidth
+
+            // Fit mode: shrink the font so the whole string fits, and add textLength
+            // as a hard guarantee independent of the viewer's font metrics.
+            let fontSize = (configuration.captionFitToWidth && overflows)
+                ? baseFontSize * (maxWidth / measuredWidth)
+                : baseFontSize
+            let fitAttr = (configuration.captionFitToWidth && overflows)
+                ? " textLength=\"\(fmt(maxWidth))\" lengthAdjust=\"spacingAndGlyphs\""
+                : ""
 
             // Determine fill color for caption
             let captionFill: String
@@ -252,7 +281,7 @@ final class ExportService: Sendable {
                 .replacingOccurrences(of: "<", with: "&lt;")
                 .replacingOccurrences(of: ">", with: "&gt;")
 
-            svg += "\n<text x=\"\(fmt(centerX))\" y=\"\(fmt(captionY))\" text-anchor=\"middle\" font-family=\"system-ui, -apple-system, Helvetica, sans-serif\" font-size=\"\(fmt(fontSize))\" fill=\"\(captionFill)\">\(escapedText)</text>"
+            svg += "\n<text x=\"\(fmt(centerX))\" y=\"\(fmt(captionY))\" text-anchor=\"middle\" font-family=\"system-ui, -apple-system, Helvetica, sans-serif\" font-size=\"\(fmt(fontSize))\"\(fitAttr) fill=\"\(captionFill)\">\(escapedText)</text>"
         }
 
         svg += "\n</svg>"
@@ -272,30 +301,32 @@ final class ExportService: Sendable {
         exclusionRect: CGRect? = nil
     ) -> String {
         var pathCommands: [String] = []
+        let size = matrix.size
 
-        for row in 0..<matrix.size {
+        // A module is part of the data path only if it is filled, not inside a
+        // finder pattern (eyes are drawn separately so eyeRoundness/eyeScale
+        // apply), and not inside the logo cutout.
+        func isDataModule(_ row: Int, _ col: Int) -> Bool {
+            guard matrix.isModuleFilled(row: row, column: col) else { return false }
+            if isInFinderPattern(row: row, col: col, size: size) { return false }
+            if let exclusion = exclusionRect,
+               exclusion.intersects(CGRect(x: CGFloat(col), y: CGFloat(row), width: 1, height: 1)) {
+                return false
+            }
+            return true
+        }
+
+        for row in 0..<size {
             var col = 0
-            while col < matrix.size {
-                guard matrix.isModuleFilled(row: row, column: col) else {
+            while col < size {
+                guard isDataModule(row, col) else {
                     col += 1
                     continue
                 }
 
-                // Skip modules inside the exclusion rect (logo cutout area)
-                let moduleRect = CGRect(x: CGFloat(col), y: CGFloat(row), width: 1, height: 1)
-                if let exclusion = exclusionRect, exclusion.intersects(moduleRect) {
-                    col += 1
-                    continue
-                }
-
-                // Count consecutive filled modules (that are not in exclusion zone)
+                // Count consecutive data modules
                 var runLength = 1
-                while col + runLength < matrix.size &&
-                      matrix.isModuleFilled(row: row, column: col + runLength) {
-                    let nextModuleRect = CGRect(x: CGFloat(col + runLength), y: CGFloat(row), width: 1, height: 1)
-                    if let exclusion = exclusionRect, exclusion.intersects(nextModuleRect) {
-                        break
-                    }
+                while col + runLength < size && isDataModule(row, col + runLength) {
                     runLength += 1
                 }
 
@@ -324,6 +355,59 @@ final class ExportService: Sendable {
         let r = min(r, min(w, h) / 2)
         // M(x+r,y) h(w-2r) a(r,r,0,0,1,r,r) v(h-2r) a(r,r,0,0,1,-r,r) h(-(w-2r)) a(r,r,0,0,1,-r,-r) v(-(h-2r)) a(r,r,0,0,1,r,-r) z
         return "M\(fmt(x+r)) \(fmt(y))h\(fmt(w-2*r))a\(fmt(r)) \(fmt(r)) 0 0 1 \(fmt(r)) \(fmt(r))v\(fmt(h-2*r))a\(fmt(r)) \(fmt(r)) 0 0 1 \(fmt(-r)) \(fmt(r))h\(fmt(-(w-2*r)))a\(fmt(r)) \(fmt(r)) 0 0 1 \(fmt(-r)) \(fmt(-r))v\(fmt(-(h-2*r)))a\(fmt(r)) \(fmt(r)) 0 0 1 \(fmt(r)) \(fmt(-r))z"
+    }
+
+    /// True if the module is inside any of the three 7×7 finder patterns (eyes).
+    /// Mirrors `QRCodeRenderer.isInFinderPattern` so SVG and bitmap agree.
+    private func isInFinderPattern(row: Int, col: Int, size: Int, patternSize: Int = 7) -> Bool {
+        if row < patternSize && col < patternSize { return true }            // top-left
+        if row < patternSize && col >= size - patternSize { return true }    // top-right
+        if row >= size - patternSize && col < patternSize { return true }    // bottom-left
+        return false
+    }
+
+    /// Builds the SVG path for the three finder-pattern eyes, mirroring
+    /// `QRCodeRenderer.addEyeSubpath`: each eye is outer ring + inner cutout +
+    /// pupil, meant to be filled with `fill-rule="evenodd"` so the ring and pupil
+    /// stay solid while the gap between them is carved out. Honors `eyeRoundness`
+    /// and `eyeScale` (the bug: the old SVG path ignored both).
+    private func generateEyesPath(
+        matrix: QRModuleMatrix,
+        eyeRoundness: CGFloat,
+        eyeScale: CGFloat,
+        exclusionRect: CGRect? = nil
+    ) -> String {
+        var commands: [String] = []
+        let clampedScale = max(0.3, min(eyeScale, 1.15))
+
+        for region in matrix.finderPatternRegions {
+            // Contract the 7×7 slot around its center by (1 - scale). Module size
+            // is 1 in viewBox units, so ring thickness == clampedScale.
+            let shrink = region.width * (1 - clampedScale) / 2
+            let outer = region.insetBy(dx: shrink, dy: shrink)
+
+            if let exclusion = exclusionRect, exclusion.intersects(outer) { continue }
+
+            let ring = clampedScale
+            let innerCutout = outer.insetBy(dx: ring, dy: ring)
+            let pupil = outer.insetBy(dx: ring * 2, dy: ring * 2)
+
+            for rect in [outer, innerCutout, pupil] where rect.width > 0 && rect.height > 0 {
+                commands.append(eyeRectPath(rect, roundness: eyeRoundness))
+            }
+        }
+
+        return commands.joined()
+    }
+
+    /// One eye sub-rectangle as an SVG subpath, rounded proportionally to its own
+    /// width (matching the bitmap renderer's per-rect radius).
+    private func eyeRectPath(_ rect: CGRect, roundness: CGFloat) -> String {
+        if roundness > 0 {
+            let r = (rect.width / 2) * roundness
+            return roundedRectPath(x: rect.minX, y: rect.minY, w: rect.width, h: rect.height, r: r)
+        }
+        return "M\(fmt(rect.minX)) \(fmt(rect.minY))h\(fmt(rect.width))v\(fmt(rect.height))h\(fmt(-rect.width))z"
     }
 
     private func generateSVGGradientDef(_ config: GradientConfiguration, id: String, size: Int) -> String {
@@ -507,6 +591,17 @@ final class ExportService: Sendable {
         #endif
         // Default to square if we can't determine size
         return CGSize(width: 100, height: 100)
+    }
+
+    /// Measures the rendered width of `text` at the given font size (in the same
+    /// units as `fontSize`). Uses Helvetica to stay consistent with the bitmap
+    /// renderer's caption measurement.
+    private func measureTextWidth(_ text: String, fontSize: CGFloat) -> CGFloat {
+        let font = CTFontCreateWithName("Helvetica" as CFString, fontSize, nil)
+        let line = CTLineCreateWithAttributedString(
+            NSAttributedString(string: text, attributes: [.font: font])
+        )
+        return CTLineGetBoundsWithOptions(line, .useOpticalBounds).width
     }
 
     /// Formats a CGFloat for SVG, removing unnecessary decimals
