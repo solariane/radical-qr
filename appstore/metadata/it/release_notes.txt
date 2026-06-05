@@ -1,0 +1,4 @@
+- Il salvataggio come SVG ora mantiene lo stile dell'occhio arrotondato: ciò che si progetta è esattamente ciò che si ottiene.
+- La nuova opzione "Adatta alla larghezza" dimensiona automaticamente l'etichetta in modo che il testo si adatti perfettamente al codice QR.
+
+Come sempre: nessun tracciamento, nessun account: tutto rimane sul vostro dispositivo.

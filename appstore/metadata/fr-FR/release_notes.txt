@@ -1,0 +1,4 @@
+• L'export SVG conserve désormais le style arrondi des yeux — ce que vous concevez est exactement ce que vous obtenez.
+• Nouvelle option de légende « Adaptation à la largeur » : la taille du texte s'ajuste automatiquement pour tenir parfaitement sous le QR code.
+
+Comme toujours : aucun traçage, aucun compte — tout reste sur votre appareil.

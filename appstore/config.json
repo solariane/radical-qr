@@ -19,14 +19,16 @@
     "subtitle": 30,
     "description": 4000,
     "keywords": 100,
-    "promotional_text": 170
+    "promotional_text": 170,
+    "release_notes": 4000
   },
   "translatableFields": [
     "name",
     "subtitle",
     "description",
     "keywords",
-    "promotional_text"
+    "promotional_text",
+    "release_notes"
   ],
   "copyAsIsFields": [
     "support_url",

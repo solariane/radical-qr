@@ -87,6 +87,7 @@ and store it outside the repo. The `ASC_KEY_PATH` can use `~/` expansion.
 | `description.txt`   | yes         | —                 | Per-version, per-locale. 4000 chars.                     |
 | `keywords.txt`      | yes         | —                 | Comma-separated. 100 chars total. Review manually — search terms differ by culture. |
 | `promotional_text.txt` | yes      | —                 | 170 chars. Editable without submitting a new version.    |
+| `release_notes.txt` | yes         | —                 | "What's New" (`whatsNew`). Per-version, 4000 chars. Must be empty/absent for the very first version. |
 | `support_url.txt`   | no          | yes               | `/en/` segment is replaced per target locale.            |
 | `marketing_url.txt` | no          | yes               | Same as above.                                           |
 | `privacy_url.txt`   | no          | yes               | Same as above. App-level field.                          |
@@ -98,7 +99,7 @@ The push script only touches the **current editable version** in App Store Conne
 `METADATA_REJECTED`, or `WAITING_FOR_REVIEW`). If no such version exists, it
 exits cleanly — no action is taken.
 
-- `description`, `keywords`, `promotionalText`, `supportUrl`, `marketingUrl`
+- `description`, `keywords`, `promotionalText`, `whatsNew`, `supportUrl`, `marketingUrl`
   are pushed to the version localization.
 - `name`, `subtitle`, `privacyPolicyUrl` are pushed to the **appInfo**
   localization (app-level, shared across versions).

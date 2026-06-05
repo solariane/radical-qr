@@ -227,12 +227,14 @@ async function main() {
       const description = readMetadataField(loc.dir, "description");
       const keywords = readMetadataField(loc.dir, "keywords");
       const promo = readMetadataField(loc.dir, "promotional_text");
+      const releaseNotes = readMetadataField(loc.dir, "release_notes");
       const support = readMetadataField(loc.dir, "support_url");
       const marketing = readMetadataField(loc.dir, "marketing_url");
 
       if (description != null) attrs.description = description;
       if (keywords != null) attrs.keywords = keywords;
       if (promo != null) attrs.promotionalText = promo;
+      if (releaseNotes != null) attrs.whatsNew = releaseNotes;
       if (support != null) attrs.supportUrl = support;
       if (marketing != null) attrs.marketingUrl = marketing;
 
