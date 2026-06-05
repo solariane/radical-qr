@@ -24,7 +24,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ENV_FILE="$SCRIPT_DIR/../.env"
 
-TRANSLATE_SCRIPT="$SCRIPT_DIR/appstore-translate.mjs"
+TRANSLATE_SCRIPT="$SCRIPT_DIR/../appstore-translate.mjs"   # shared orchestrator (/Code)
 PUSH_SCRIPT="$SCRIPT_DIR/appstore-push.mjs"
 
 TRANSLATE=true
@@ -84,13 +84,14 @@ fi
 # --- Step 1: translate -----------------------------------------------------
 
 if [ "$TRANSLATE" = true ]; then
-    step "Translating missing / stale App Store metadata via DeepL..."
+    step "Translating missing / stale App Store metadata via the hybrid Claude/DeepL..."
 
     if [ -z "${DEEPL_AUTH_KEY:-}" ]; then
         warn "DEEPL_AUTH_KEY not set — skipping translation step."
     else
-        TRANSLATE_ARGS=(--source=EN --api-base="$DEEPL_API_BASE")
+        TRANSLATE_ARGS=(--source=EN --config="$SCRIPT_DIR/appstore/config.json")
         [ "$FORCE" = true ]    && TRANSLATE_ARGS+=(--force)
+        [ "$DRY_RUN" = true ]  && TRANSLATE_ARGS+=(--dry-run)
         [ -n "$ONLY" ]         && TRANSLATE_ARGS+=(--only="$ONLY")
         node "$TRANSLATE_SCRIPT" "${TRANSLATE_ARGS[@]}"
         ok "Translation pass complete."
