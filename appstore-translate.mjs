@@ -27,6 +27,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { protect, unprotect, IGNORE_TAGS, DEFAULT_PROTECTED_TERMS } from "./deepl-protect.mjs";
 
 // --- CLI parsing -----------------------------------------------------------
 
@@ -90,12 +91,16 @@ async function deeplSupportedTargets() {
   return new Set(json.map((x) => x.language));
 }
 
-async function deeplTranslate(text, targetLang) {
+async function deeplTranslate(text, targetLang, terms = DEFAULT_PROTECTED_TERMS) {
   const url = `${API_BASE.replace(/\/$/, "")}/v2/translate`;
   const body = new URLSearchParams();
-  body.append("text", text);
+  // protect() XML-escapes the text and wraps brand terms in <x>...</x>; with
+  // tag_handling=xml + ignore_tags=x DeepL leaves those spans untouched.
+  body.append("text", protect(text, terms));
   body.set("target_lang", targetLang);
   body.set("source_lang", SOURCE_LANG_DEEPL);
+  body.set("tag_handling", "xml");
+  body.set("ignore_tags", IGNORE_TAGS);
   body.set("preserve_formatting", "1");
 
   const res = await fetch(url, {
@@ -110,7 +115,7 @@ async function deeplTranslate(text, targetLang) {
   if (!res.ok || !json?.translations?.[0]) {
     fail(`DeepL translate error: HTTP ${res.status} ${await res.text().catch(() => "")}`);
   }
-  return json.translations[0].text;
+  return unprotect(json.translations[0].text);
 }
 
 // --- URL locale path mapping -----------------------------------------------
@@ -216,7 +221,7 @@ async function main() {
       }
 
       process.stdout.write(`  ${COL.cyan}→${COL.reset} Translating ${field}... `);
-      const translated = await deeplTranslate(srcText, loc.deepl);
+      const translated = await deeplTranslate(srcText, loc.deepl, config.protectedTerms);
       process.stdout.write(`${COL.green}done${COL.reset}\n`);
 
       // Validate character limits.

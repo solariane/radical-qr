@@ -340,6 +340,12 @@ enum FeatureFlag {
 
 ## App Store Metadata
 
+> **Automation**: localized metadata lives in `appstore/metadata/<locale>/*.txt`
+> (en-US is the hand-written source of truth) and is translated + pushed to
+> App Store Connect via `./updAppStore.sh`. Full pipeline docs, per-field rules,
+> and required credentials are in [`appstore/README.md`](appstore/README.md).
+> Brand names are auto-protected during translation (see `deepl-protect.mjs`).
+
 ### Category
 
 - Primary: Utilities
@@ -437,15 +443,27 @@ xcodebuild -scheme "Radical QR" -configuration Debug test
 ./updLocalisation.sh --source=EN
 ./updLocalisation.sh --dry-run        # export + invalidate only, no DeepL calls / no import
 
-# Post-translation NOTE: DeepL translates brand/product names too. Keep these in
-# English across ALL locales (App Store consistency): "Radical QR",
-# "Phone Numbers Cleaner", "RadicalSolution.com". Fix any localized brand variants
-# (e.g. "QR radical", "電話番号クリーナー") by hand after a run.
+# Brand protection: brand/product names are kept identical across ALL locales
+# automatically. deepl-protect.mjs wraps each protected term in <x>..</x> and the
+# DeepL call uses tag_handling=xml + ignore_tags=x, so "Radical QR",
+# "Phone Numbers Cleaner", "RadicalSolution.com" are never transliterated.
+# To protect a new term: add it to DEFAULT_PROTECTED_TERMS in deepl-protect.mjs
+# (xcloc strings) AND to "protectedTerms" in appstore/config.json (App Store).
 
 # Manual equivalents (only if not using the wrapper):
 xcodebuild -exportLocalizations -localizationPath ./Localizations -project QRCode.xcodeproj
 DEEPL_AUTH_KEY=<key> node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
 xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc -project QRCode.xcodeproj
+
+# App Store Connect metadata — translate + push (full docs: appstore/README.md)
+#   Source of truth: appstore/metadata/en-US/*.txt ; config: appstore/config.json
+#   Hash-based invalidation, brand protection, ASC push via App Store Connect API.
+#   Credentials in ../.env: DEEPL_API_KEY, ASC_ISSUER_ID, ASC_KEY_ID, ASC_KEY_PATH
+./updAppStore.sh                  # translate stale/missing locales + push
+./updAppStore.sh --translate-only # DeepL only, no ASC push
+./updAppStore.sh --push-only      # push existing metadata, no retranslate
+./updAppStore.sh --dry-run        # show changes without touching ASC
+# In-App Purchase setup (StoreKit products on ASC): ./createIAP.sh  (see appstore-iap-create.mjs)
 
 # Generate app icon (requires source 1024x1024)
 # Use Asset Catalog for automatic generation
