@@ -1,1 +1,1 @@
-Radikale QR
+Radical QR: QR-Code-Generator

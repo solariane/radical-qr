@@ -1,1 +1,1 @@
-Radical QR
+Radical QR: Gerador de QR

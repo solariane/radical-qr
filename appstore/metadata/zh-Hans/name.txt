@@ -1,1 +1,1 @@
-激进的 QR
+Radical QR: 二维码生成器

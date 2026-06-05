@@ -1,1 +1,1 @@
-codigo qr,generador,vcard,wifi,svg,pdf,logo,contacto,menu,privacidad,evento,ical,compartir
+codigo,generador,maker,creador,logo,personalizado,codigo de barras,vcard,wifi,svg,pdf,url,contacto
