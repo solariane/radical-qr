@@ -1,10 +1,26 @@
 import SwiftUI
 import SwiftData
+import StoreKit
+
+/// Central place for App Store / website links so IDs live in one spot.
+enum AppLinks {
+    static let radicalQRAppStoreID = "6763236391"
+    static let phoneCleanerAppStoreID = "6443850447"
+
+    static let website = URL(string: "https://radicalsolution.com")!
+    static var radicalQRAppStore: URL {
+        URL(string: "https://apps.apple.com/app/id\(radicalQRAppStoreID)")!
+    }
+    static var phoneCleanerAppStore: URL {
+        URL(string: "https://apps.apple.com/app/id\(phoneCleanerAppStoreID)")!
+    }
+}
 
 /// Settings and preferences view
 struct SettingsView: View {
     @EnvironmentObject private var purchaseManager: PurchaseManager
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.requestReview) private var requestReview
 
     @AppStorage("defaultRoundness") private var defaultRoundness: Double = 0
     @AppStorage("defaultBackgroundTransparent") private var defaultBackgroundTransparent = false
@@ -25,8 +41,19 @@ struct SettingsView: View {
                     stylePresetSection
                 }
 
+                // Spread the word: rate & share
+                supportSection
+
+                // More from RadicalSolution: website + other apps
+                moreSection
+
                 // About section
                 aboutSection
+
+                #if DEBUG
+                // Developer-only section, compiled out of Release/App Store builds
+                debugSection
+                #endif
             }
             .navigationTitle(String(localized: "settings.title", defaultValue: "Settings"))
             #if os(iOS)
@@ -192,6 +219,125 @@ struct SettingsView: View {
             Text(String(localized: "settings.section.about", defaultValue: "About"))
         }
     }
+
+    // MARK: - Support Section (rate & share)
+
+    private var supportSection: some View {
+        Section {
+            Button {
+                requestReview()
+            } label: {
+                linkRow(
+                    icon: "star.fill",
+                    tint: .yellow,
+                    title: String(localized: "settings.rate", defaultValue: "Rate Radical QR"),
+                    subtitle: String(localized: "settings.rate.subtitle", defaultValue: "A quick review really helps an indie app"),
+                    showsExternalGlyph: false
+                )
+            }
+            .buttonStyle(.plain)
+
+            ShareLink(item: AppLinks.radicalQRAppStore) {
+                linkRow(
+                    icon: "square.and.arrow.up",
+                    tint: .accentColor,
+                    title: String(localized: "settings.share", defaultValue: "Share the App"),
+                    subtitle: String(localized: "settings.share.subtitle", defaultValue: "Send Radical QR to a friend"),
+                    showsExternalGlyph: false
+                )
+            }
+        } header: {
+            Text(String(localized: "settings.section.support", defaultValue: "Enjoying Radical QR?"))
+        }
+    }
+
+    // MARK: - More Section (website + other apps)
+
+    private var moreSection: some View {
+        Section {
+            Link(destination: AppLinks.website) {
+                linkRow(
+                    icon: "globe",
+                    tint: .accentColor,
+                    title: String(localized: "settings.website", defaultValue: "RadicalSolution.com"),
+                    subtitle: String(localized: "settings.website.subtitle", defaultValue: "Privacy-first apps, tools & WordPress plugins")
+                )
+            }
+
+            Link(destination: AppLinks.phoneCleanerAppStore) {
+                linkRow(
+                    icon: "phone.badge.checkmark",
+                    tint: .green,
+                    title: String(localized: "settings.otherApp.phoneCleaner", defaultValue: "Phone Numbers Cleaner"),
+                    subtitle: String(localized: "settings.otherApp.phoneCleaner.subtitle", defaultValue: "Tidy up your contacts — on the App Store")
+                )
+            }
+        } header: {
+            Text(String(localized: "settings.section.more", defaultValue: "More from RadicalSolution"))
+        }
+    }
+
+    /// Consistent row for external links / actions in Settings.
+    private func linkRow(
+        icon: String,
+        tint: Color,
+        title: String,
+        subtitle: String,
+        showsExternalGlyph: Bool = true
+    ) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: icon)
+                .font(.body)
+                .foregroundStyle(tint)
+                .frame(width: 26, alignment: .center)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 8)
+
+            if showsExternalGlyph {
+                Image(systemName: "arrow.up.right")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .contentShape(Rectangle())
+    }
+
+    // MARK: - Debug Section (DEBUG builds only)
+
+    #if DEBUG
+    private var debugSection: some View {
+        Section {
+            Picker("Pro state", selection: $purchaseManager.debugProOverride) {
+                ForEach(PurchaseManager.DebugProOverride.allCases) { option in
+                    Text(option.label).tag(option)
+                }
+            }
+            #if os(iOS)
+            .pickerStyle(.segmented)
+            #endif
+
+            HStack {
+                Text("Currently")
+                Spacer()
+                Text(purchaseManager.isPro ? "PRO" : "FREE")
+                    .font(.caption.bold())
+                    .foregroundStyle(purchaseManager.isPro ? .green : .secondary)
+            }
+        } header: {
+            Text("Developer")
+        } footer: {
+            Text("Not visible in Release / App Store builds.")
+        }
+    }
+    #endif
 }
 
 // MARK: - Style Preset View

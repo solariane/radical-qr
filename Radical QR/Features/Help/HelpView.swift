@@ -60,14 +60,14 @@ struct HelpView: View {
             )
             HelpRow(
                 icon: "gearshape.2",
-                title: String(localized: "help.services.title", defaultValue: "macOS Services"),
-                detail: String(localized: "help.services.detail", defaultValue: "Select text in any app, right-click, and choose Services > Generate QR Code. Works with text, URLs, contacts, and calendar events.")
+                title: String(localized: "help.services.title", defaultValue: "macOS Services (Right-Click)"),
+                detail: String(localized: "help.services.detail", defaultValue: "Right-click a phone number, email address, URL, or any selected text and choose Services › Generate QR Code. In Finder it also works on contact cards (.vcf) and calendar events (.ics).")
             )
             #endif
             HelpRow(
                 icon: "square.and.arrow.up",
-                title: String(localized: "help.shareExtension.title", defaultValue: "Share Extension"),
-                detail: String(localized: "help.shareExtension.detail", defaultValue: "Use the Share menu in Safari, Contacts, Calendar, Notes, and other apps to send content directly to Radical QR for instant QR code generation.")
+                title: String(localized: "help.shareExtension.title", defaultValue: "Share Sheet"),
+                detail: String(localized: "help.shareExtension.detail", defaultValue: "Tap Share on a phone number, email, link, contact, or calendar event in Safari, Contacts, Calendar, Notes, and other apps, then pick Radical QR to generate a code instantly.")
             )
             HelpRow(
                 icon: "link",

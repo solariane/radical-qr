@@ -422,21 +422,30 @@ xcodebuild -scheme "Radical QR" -configuration Debug build
 # Test
 xcodebuild -scheme "Radical QR" -configuration Debug test
 
-# Localization — export .xcloc files
+# Localization — ONE-COMMAND workflow (preferred)
+#   Wrapper ./updLocalisation.sh does the full pipeline:
+#     1. Read target languages from QRCode.xcodeproj/project.pbxproj (knownRegions)
+#     2. xcodebuild -exportLocalizations  → ./Localizations/<lang>.xcloc
+#     3. invalidate-stale-translations.mjs → clears targets whose source text changed
+#        (so edited strings get re-translated, not just brand-new keys)
+#     4. deepl-xcloc-translate.mjs → fills empty <target> entries via DeepL
+#     5. xcodebuild -importLocalizations → writes back into the .xcstrings catalogs
+#   Requires: Node.js + @xmldom/xmldom & xpath, xcodebuild, and a DeepL key.
+#   Key resolution order: --key=<key>  >  $DEEPL_AUTH_KEY  >  DEEPL_API_KEY in ../.env
+#   (i.e. /Volumes/fastMe/Code/.env holds DEEPL_API_KEY; the wrapper maps it to
+#    DEEPL_AUTH_KEY for the node scripts. A key ending in ":fx" auto-selects the free API.)
+./updLocalisation.sh --source=EN
+./updLocalisation.sh --dry-run        # export + invalidate only, no DeepL calls / no import
+
+# Post-translation NOTE: DeepL translates brand/product names too. Keep these in
+# English across ALL locales (App Store consistency): "Radical QR",
+# "Phone Numbers Cleaner", "RadicalSolution.com". Fix any localized brand variants
+# (e.g. "QR radical", "電話番号クリーナー") by hand after a run.
+
+# Manual equivalents (only if not using the wrapper):
 xcodebuild -exportLocalizations -localizationPath ./Localizations -project QRCode.xcodeproj
-
-# Localization — auto-translate all languages with DeepL
-# Requires: DEEPL_AUTH_KEY env var, npm packages @xmldom/xmldom xpath p-limit
-# Translates only empty <target> entries (won't overwrite existing translations)
 DEEPL_AUTH_KEY=<key> node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
-
-# Localization — import translated .xcloc files back into Xcode
 xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc -project QRCode.xcodeproj
-
-# Full localization workflow:
-#   1. xcodebuild -exportLocalizations ...
-#   2. DEEPL_AUTH_KEY=... node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
-#   3. For each language: xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc ...
 
 # Generate app icon (requires source 1024x1024)
 # Use Asset Catalog for automatic generation

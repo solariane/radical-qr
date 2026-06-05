@@ -11173,61 +11173,61 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "حدد نصًا في أي تطبيق، وانقر بزر الماوس الأيمن واختر خدمات > إنشاء رمز الاستجابة السريعة. يعمل مع النصوص وعناوين URL وجهات الاتصال وأحداث التقويم."
+            "value" : "انقر بزر الفأرة الأيمن فوق رقم هاتف أو عنوان بريد إلكتروني أو عنوان URL أو أي نص محدد واختر خدمات ' إنشاء رمز الاستجابة السريعة. في Finder يعمل أيضًا على بطاقات جهات الاتصال (.vcf) وأحداث التقويم (.ics)."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Markieren Sie Text in einer beliebigen Anwendung, klicken Sie mit der rechten Maustaste und wählen Sie Dienste > QR-Code generieren. Funktioniert mit Text, URLs, Kontakten und Kalenderereignissen."
+            "value" : "Klicken Sie mit der rechten Maustaste auf eine Telefonnummer, E-Mail-Adresse, URL oder einen beliebigen Text und wählen Sie Dienste ' QR-Code generieren. Im Finder funktioniert es auch mit Kontaktkarten (.vcf) und Kalenderereignissen (.ics)."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Select text in any app, right-click, and choose Services > Generate QR Code. Works with text, URLs, contacts, and calendar events."
+            "value" : "Right-click a phone number, email address, URL, or any selected text and choose Services › Generate QR Code. In Finder it also works on contact cards (.vcf) and calendar events (.ics)."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seleccione texto en cualquier aplicación, haga clic con el botón derecho y elija Servicios > Generar código QR. Funciona con texto, URL, contactos y eventos de calendario."
+            "value" : "Haga clic con el botón derecho en un número de teléfono, dirección de correo electrónico, URL o cualquier texto seleccionado y elija Servicios ' Generar código QR. En Finder también funciona con tarjetas de contacto (.vcf) y eventos de calendario (.ics)."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sélectionnez du texte dans n'importe quelle application, faites un clic droit et choisissez Services > Générer un code QR. Fonctionne avec du texte, des URL, des contacts et des événements de calendrier."
+            "value" : "Cliquez avec le bouton droit de la souris sur un numéro de téléphone, une adresse électronique, une URL ou tout autre texte sélectionné et choisissez Services ' Générer un code QR. Dans le Finder, il fonctionne également avec les cartes de contact (.vcf) et les événements du calendrier (.ics)."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "किसी भी ऐप में टेक्स्ट चुनें, राइट-क्लिक करें, और सेवाएँ > QR कोड उत्पन्न करें चुनें। यह टेक्स्ट, URL, संपर्क और कैलेंडर इवेंट्स के साथ काम करता है।"
+            "value" : "किसी फ़ोन नंबर, ईमेल पते, URL या किसी चयनित टेक्स्ट पर राइट-क्लिक करें और Services › Generate QR Code चुनें। Finder में यह संपर्क कार्ड (.vcf) और कैलेंडर इवेंट (.ics) पर भी काम करता है।"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selezionate il testo in qualsiasi applicazione, fate clic con il pulsante destro del mouse e scegliete Servizi > Genera codice QR. Funziona con testo, URL, contatti ed eventi del calendario."
+            "value" : "Fate clic con il tasto destro del mouse su un numero di telefono, un indirizzo e-mail, un URL o qualsiasi testo selezionato e scegliete Servizi ' Genera codice QR. Nel Finder funziona anche sulle schede dei contatti (.vcf) e sugli eventi del calendario (.ics)."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "任意のアプリでテキストを選択し、右クリックし、サービス > QRコードの生成を選択します。テキスト、URL、連絡先、カレンダー・イベントに対応。"
+            "value" : "電話番号、メールアドレス、URL、または選択したテキストを右クリックし、サービス ' QRコードの生成を選択します。Finderでは、連絡先カード（.vcf）やカレンダーイベント（.ics）でも動作します。"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecione texto em qualquer aplicação, clique com o botão direito do rato e escolha Serviços > Gerar código QR. Funciona com texto, URLs, contactos e eventos de calendário."
+            "value" : "Clique com o botão direito do rato num número de telefone, endereço de correio eletrónico, URL ou qualquer texto selecionado e escolha Serviços ' Gerar código QR. No Finder, também funciona com cartões de contacto (.vcf) e eventos de calendário (.ics)."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在任何应用程序中选择文本，右键单击，然后选择服务 > 生成 QR 码。可处理文本、URL、联系人和日历事件。"
+            "value" : "右键单击电话号码、电子邮件地址、URL 或任何选定文本，然后选择服务 ' 生成 QR 码。在 Finder 中，它还适用于联系人卡（.vcf）和日历事件（.ics）。"
           }
         }
       }
@@ -11240,61 +11240,61 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "خدمات macOS"
+            "value" : "خدمات macOS (انقر بزر الماوس الأيمن)"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "macOS-Dienste"
+            "value" : "macOS-Dienste (Rechtsklick)"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "macOS Services"
+            "value" : "macOS Services (Right-Click)"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "servicios macOS"
+            "value" : "servicios de macOS (botón derecho del ratón)"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "services macOS"
+            "value" : "services macOS (clic droit)"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "macOS सेवाएँ"
+            "value" : "macOS सेवाएँ (दाएँ-क्लिक)"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "servizi macOS"
+            "value" : "servizi macOS (clic destro)"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "macOSサービス"
+            "value" : "macOSサービス（右クリック）"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "serviços macOS"
+            "value" : "serviços macOS (clique com o botão direito do rato)"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "macOS 服务"
+            "value" : "macOS 服务（右键单击）"
           }
         }
       }
@@ -11441,61 +11441,61 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "استخدم قائمة المشاركة في Safari وجهات الاتصال والتقويم والملاحظات والتطبيقات الأخرى لإرسال المحتوى مباشرةً إلى Radical QR لإنشاء رمز QR فوري."
+            "value" : "اضغط على مشاركة على رقم هاتف، أو بريد إلكتروني، أو رابط، أو جهة اتصال، أو حدث تقويم في Safari، وجهات الاتصال، والتقويم، والملاحظات، والتطبيقات الأخرى، ثم اختر Radical QR لإنشاء رمز على الفور."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verwenden Sie das Menü \"Freigeben\" in Safari, Kontakten, Kalender, Notizen und anderen Anwendungen, um Inhalte direkt an Radical QR zu senden und sofort einen QR-Code zu erzeugen."
+            "value" : "Tippen Sie auf eine Telefonnummer, eine E-Mail, einen Link, einen Kontakt oder ein Kalenderereignis in Safari, Kontakte, Kalender, Notizen und anderen Apps und wählen Sie dann Radical QR, um sofort einen Code zu erzeugen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Use the Share menu in Safari, Contacts, Calendar, Notes, and other apps to send content directly to Radical QR for instant QR code generation."
+            "value" : "Tap Share on a phone number, email, link, contact, or calendar event in Safari, Contacts, Calendar, Notes, and other apps, then pick Radical QR to generate a code instantly."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilice el menú Compartir en Safari, Contactos, Calendario, Notas y otras aplicaciones para enviar contenido directamente a Radical QR para la generación instantánea de códigos QR."
+            "value" : "Toca Compartir en un número de teléfono, correo electrónico, enlace, contacto o evento de calendario en Safari, Contactos, Calendario, Notas y otras apps, y luego elige Radical QR para generar un código al instante."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilisez le menu Partager dans Safari, Contacts, Calendrier, Notes et d'autres applications pour envoyer du contenu directement à Radical QR afin de générer instantanément un code QR."
+            "value" : "Appuyez sur Partager sur un numéro de téléphone, un e-mail, un lien, un contact ou un événement de calendrier dans Safari, Contacts, Calendrier, Notes et autres applications, puis choisissez Radical QR pour générer un code instantanément."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Safari, Contacts, Calendar, Notes और अन्य ऐप्स में Share मेनू का उपयोग करके सामग्री को सीधे Radical QR पर भेजें और तुरंत QR कोड बनाएं।"
+            "value" : "Safari, Contacts, Calendar, Notes और अन्य ऐप्स में किसी फ़ोन नंबर, ईमेल, लिंक, संपर्क या कैलेंडर इवेंट पर शेयर टैप करें, फिर तुरंत कोड जनरेट करने के लिए Radical QR चुनें।"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilizzate il menu Condividi in Safari, Contatti, Calendario, Note e altre applicazioni per inviare i contenuti direttamente a Radical QR per la generazione istantanea di codici QR."
+            "value" : "Toccate Condividi su un numero di telefono, un'e-mail, un link, un contatto o un evento del calendario in Safari, Contatti, Calendario, Note e altre applicazioni, quindi scegliete Radical QR per generare un codice all'istante."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Safari、連絡先、カレンダー、メモ、その他のアプリケーションの共有メニューを使用して、コンテンツを直接Radical QRに送信し、即座にQRコードを生成します。"
+            "value" : "Safari、連絡先、カレンダー、メモ、その他のアプリケーションで、電話番号、Eメール、リンク、連絡先、カレンダーのイベント上で「共有」をタップし、「Radical QR」を選ぶと、コードが即座に生成されます。"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilize o menu Partilhar no Safari, Contactos, Calendário, Notas e outras aplicações para enviar conteúdos diretamente para o Radical QR para geração instantânea de códigos QR."
+            "value" : "Toque em Partilhar num número de telefone, e-mail, ligação, contacto ou evento de calendário no Safari, Contactos, Calendário, Notas e outras aplicações e, em seguida, escolha Radical QR para gerar um código instantaneamente."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "使用 Safari、通讯录、日历、便笺和其他应用程序中的共享菜单，将内容直接发送到 Radical QR，即时生成 QR 码。"
+            "value" : "在 Safari、通讯录、日历、便笺和其他应用程序中，轻点分享电话号码、电子邮件、链接、联系人或日历事件，然后选择 Radical QR 即可立即生成代码。"
           }
         }
       }
@@ -11508,61 +11508,61 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مشاركة التمديد"
+            "value" : "ورقة المشاركة"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erweiterung teilen"
+            "value" : "Teilen-Menü"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Share Extension"
+            "value" : "Share Sheet"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartir ampliación"
+            "value" : "Hoja para compartir"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extension de l'action"
+            "value" : "Feuille de partage"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "शेयर एक्सटेंशन"
+            "value" : "शेयर शीट"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Condividi Estensione"
+            "value" : "Menu Condividi"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "シェア・エクステンション"
+            "value" : "シェアシート"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Partilhar a extensão"
+            "value" : "Menu Compartilhar"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共享扩展"
+            "value" : "共享表单"
           }
         }
       }
@@ -16300,6 +16300,136 @@
         }
       }
     },
+    "settings.otherApp.phoneCleaner" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phone Numbers Cleaner"
+          }
+        }
+      }
+    },
+    "settings.otherApp.phoneCleaner.subtitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترتيب جهات الاتصال الخاصة بك - على متجر التطبيقات"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bringen Sie Ordnung in Ihre Kontakte - im App Store"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tidy up your contacts — on the App Store"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordena tus contactos - en el App Store"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mettez de l'ordre dans vos contacts - sur l'App Store"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अपने संपर्कों को व्यवस्थित करें — ऐप स्टोर पर"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riordinare i contatti - su App Store"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先を整理整頓 - App Store で"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organize os seus contactos - na App Store"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理通讯录 - 在 App Store 上"
+          }
+        }
+      }
+    },
     "settings.privacy" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -16625,6 +16755,136 @@
         }
       }
     },
+    "settings.rate" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قيم Radical QR"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR bewerten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Rate Radical QR"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Evalúe Radical QR"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noter Radical QR"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR को रेट करें"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vota Radical QR"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QRを評価する"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaliar Radical QR"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "评价 Radical QR"
+          }
+        }
+      }
+    },
+    "settings.rate.subtitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مراجعة سريعة تساعد حقاً تطبيق مستقل"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine kurze Rezension hilft einer Indie-App wirklich"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "A quick review really helps an indie app"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una revisión rápida ayuda mucho a una aplicación independiente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une critique rapide aide vraiment une application indépendante"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "एक त्वरित समीक्षा वास्तव में एक इंडी ऐप की मदद करती है।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una rapida recensione aiuta davvero un'applicazione indie"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "簡単なレビューはインディーズアプリを本当に助ける"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma análise rápida ajuda muito uma aplicação independente"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "快速评论对独立应用程序大有裨益"
+          }
+        }
+      }
+    },
     "settings.restore" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -16820,6 +17080,71 @@
         }
       }
     },
+    "settings.section.more" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "المزيد من RadicalSolution"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mehr von RadicalSolution"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "More from RadicalSolution"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más de RadicalSolution"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus de RadicalSolution"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution से और"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altro da RadicalSolution"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution の詳細"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais da RadicalSolution"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来自 RadicalSolution 的更多信息"
+          }
+        }
+      }
+    },
     "settings.section.style" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -16946,6 +17271,201 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "订阅"
+          }
+        }
+      }
+    },
+    "settings.section.support" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل تستمتع بـ Radical QR؟"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genießen Sie Radical QR?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Enjoying Radical QR?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Disfrutando de Radical QR?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous appréciez Radical QR ?"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR का आनंद ले रहे हैं?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vi piace Radical QR?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QRを楽しんでいますか？"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gostar do Radical QR?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "喜欢 Radical QR 吗？"
+          }
+        }
+      }
+    },
+    "settings.share" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مشاركة التطبيق"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teilen Sie die App"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Share the App"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir la aplicación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager l'application"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ऐप साझा करें"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividere l'app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリを共有する"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partilhar a aplicação"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享应用程序"
+          }
+        }
+      }
+    },
+    "settings.share.subtitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إرسال راديكال QR إلى صديق"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR an einen Freund senden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Send Radical QR to a friend"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar Radical QR a un amigo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer Radical QR à un ami"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "रैडिकल क्यूआर अपने मित्र को भेजें"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia Radical QR ad un amico"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ラディカルQRを友達に教える"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar Radical QR a um amigo"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将 Radical QR 发送给朋友"
           }
         }
       }
@@ -17271,6 +17791,136 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "版本"
+          }
+        }
+      }
+    },
+    "settings.website" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RadicalSolution.com"
+          }
+        }
+      }
+    },
+    "settings.website.subtitle" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تطبيقات وأدوات ومكوّنات ووردبريس الإضافية التي تراعي الخصوصية أولاً"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datenschutzfreundliche Anwendungen, Tools und WordPress-Plugins"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Privacy-first apps, tools & WordPress plugins"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplicaciones, herramientas y plugins de WordPress que dan prioridad a la privacidad"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applications, outils et plugins WordPress respectueux de la vie privée"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "गोपनीयता-प्रथम ऐप्स, उपकरण और वर्डप्रेस प्लगइन्स"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Applicazioni, strumenti e plugin di WordPress che rispettano la privacy"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーを重視したアプリ、ツール、WordPressプラグイン"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aplicações, ferramentas e plug-ins WordPress que dão prioridade à privacidade"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐私至上的应用程序、工具和 WordPress 插件"
           }
         }
       }
