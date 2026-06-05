@@ -3,6 +3,7 @@
   "bundleID": "radicalsolution.com.Radical-QR",
   "copyright": "2025 Radical Solution",
   "deeplSourceLang": "EN",
+  "appContext": "Radical QR generates and customizes QR codes (links, contacts, Wi-Fi, vCard, calendar) entirely on-device; it does NOT scan or read codes. Exports PNG, SVG, PDF. Privacy-first, no tracking, no subscription.",
   "targetLocales": [
     { "dir": "fr-FR",   "deepl": "FR",    "isHandWritten": true,  "note": "Hand-written; not auto-translated" },
     { "dir": "de-DE",   "deepl": "DE",    "isHandWritten": false },

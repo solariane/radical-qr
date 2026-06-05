@@ -1,1 +1,1 @@
-codigo,generador,maker,creador,logo,personalizado,codigo de barras,vcard,wifi,svg,pdf,url,contacto
+código,generador,creador,personalizado,logo,códigodebarras,vcard,wifi,svg,pdf,url,contacto,menú

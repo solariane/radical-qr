@@ -1,1 +1,1 @@
-code,generator,maker,schöpfer,logo,benutzerdefiniert,barcode,vcard,wifi,svg,pdf,url,kontakt,menü
+code,generator,ersteller,qr-code,logo,individuell,barcode,vcard,wifi,svg,pdf,url,kontakt,speisekarte

@@ -28,6 +28,11 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { protect, unprotect, IGNORE_TAGS, DEFAULT_PROTECTED_TERMS } from "./deepl-protect.mjs";
+import { translate } from "../translate.mjs";
+
+// Fields where Claude beats DeepL (short / branded / keyword / marketing copy).
+// Everything else (notably the long `description`) stays on DeepL.
+const CLAUDE_FIELDS = new Set(["name", "subtitle", "keywords", "promotional_text", "release_notes"]);
 
 // --- CLI parsing -----------------------------------------------------------
 
@@ -214,14 +219,28 @@ async function main() {
         continue;
       }
 
-      const targets = await supported();
-      if (!targets.has(loc.deepl)) {
-        warn(`${field}: DeepL target "${loc.deepl}" not supported, skipping`);
-        continue;
+      const engine = CLAUDE_FIELDS.has(field) ? "claude" : "deepl";
+
+      // Only DeepL needs the language to be in its supported-target set.
+      if (engine === "deepl") {
+        const targets = await supported();
+        if (!targets.has(loc.deepl)) {
+          warn(`${field}: DeepL target "${loc.deepl}" not supported, skipping`);
+          continue;
+        }
       }
 
-      process.stdout.write(`  ${COL.cyan}→${COL.reset} Translating ${field}... `);
-      const translated = await deeplTranslate(srcText, loc.deepl, config.protectedTerms);
+      process.stdout.write(`  ${COL.cyan}→${COL.reset} Translating ${field} (${engine})... `);
+      const { out } = await translate([srcText], {
+        engine,
+        field,
+        source: SOURCE_LANG_DEEPL,
+        target: loc.deepl,
+        limit: config.fieldLimits?.[field],
+        protect: config.protectedTerms,
+        context: config.appContext,
+      });
+      const translated = out[0];
       process.stdout.write(`${COL.green}done${COL.reset}\n`);
 
       // Validate character limits.

@@ -1,6 +1,6 @@
 Códigos QR elegantes. Detección automática. Sin seguimiento. Sin suscripción.
 
-Radical QR genera cada código - enlaces, contactos, Wi-Fi, eventos - completamente en tu dispositivo. Pega cualquier cosa, la aplicación reconoce lo que es y produce el QR correcto. Nada se envía a un servidor. Nada se almacena sin su consentimiento.
+Radical QR genera cada código - enlaces, contactos, Wi-Fi, eventos - completamente en tu dispositivo. Pega cualquier cosa, la aplicación reconoce lo que es y genera el QR correcto. Nada se envía a un servidor. Nada se almacena sin tu consentimiento.
 
 Creada para las personas que utilizan códigos QR cada día - autónomos, restaurantes, asociaciones, empresarios - y que quieren algo bonito, rápido y respetuoso con su privacidad.
 

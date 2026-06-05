@@ -1,4 +1,4 @@
-- Beim Speichern als SVG bleibt das Styling des abgerundeten Auges jetzt erhalten - was Sie entwerfen, ist genau das, was Sie bekommen.
-- Die neue Beschriftungsoption "An die Breite anpassen" passt Ihr Etikett automatisch so an, dass jeder Text genau unter den QR-Code passt.
+• Speichern als SVG behält jetzt Ihren abgerundeten Eye-Stil bei – was Sie gestalten, bekommen Sie genau so.
+• Neue Option „An Breite anpassen" für Beschriftungen passt die Textgröße automatisch an, damit jeder Text sauber unter dem QR-Code sitzt.
 
-Wie immer gilt: kein Tracking, keine Konten - alles bleibt auf Ihrem Gerät.
+Wie immer: kein Tracking, keine Konten – alles bleibt auf Ihrem Gerät.
