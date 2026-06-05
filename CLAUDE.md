@@ -340,6 +340,12 @@ enum FeatureFlag {
 
 ## App Store Metadata
 
+> **Automation**: localized metadata lives in `appstore/metadata/<locale>/*.txt`
+> (en-US is the hand-written source of truth) and is translated + pushed to
+> App Store Connect via `./updAppStore.sh`. Full pipeline docs, per-field rules,
+> and required credentials are in [`appstore/README.md`](appstore/README.md).
+> Brand names are auto-protected during translation (see `deepl-protect.mjs`).
+
 ### Category
 
 - Primary: Utilities
@@ -422,21 +428,42 @@ xcodebuild -scheme "Radical QR" -configuration Debug build
 # Test
 xcodebuild -scheme "Radical QR" -configuration Debug test
 
-# Localization — export .xcloc files
+# Localization — ONE-COMMAND workflow (preferred)
+#   Wrapper ./updLocalisation.sh does the full pipeline:
+#     1. Read target languages from QRCode.xcodeproj/project.pbxproj (knownRegions)
+#     2. xcodebuild -exportLocalizations  → ./Localizations/<lang>.xcloc
+#     3. invalidate-stale-translations.mjs → clears targets whose source text changed
+#        (so edited strings get re-translated, not just brand-new keys)
+#     4. deepl-xcloc-translate.mjs → fills empty <target> entries via DeepL
+#     5. xcodebuild -importLocalizations → writes back into the .xcstrings catalogs
+#   Requires: Node.js + @xmldom/xmldom & xpath, xcodebuild, and a DeepL key.
+#   Key resolution order: --key=<key>  >  $DEEPL_AUTH_KEY  >  DEEPL_API_KEY in ../.env
+#   (i.e. /Volumes/fastMe/Code/.env holds DEEPL_API_KEY; the wrapper maps it to
+#    DEEPL_AUTH_KEY for the node scripts. A key ending in ":fx" auto-selects the free API.)
+./updLocalisation.sh --source=EN
+./updLocalisation.sh --dry-run        # export + invalidate only, no DeepL calls / no import
+
+# Brand protection: brand/product names are kept identical across ALL locales
+# automatically. deepl-protect.mjs wraps each protected term in <x>..</x> and the
+# DeepL call uses tag_handling=xml + ignore_tags=x, so "Radical QR",
+# "Phone Numbers Cleaner", "RadicalSolution.com" are never transliterated.
+# To protect a new term: add it to DEFAULT_PROTECTED_TERMS in deepl-protect.mjs
+# (xcloc strings) AND to "protectedTerms" in appstore/config.json (App Store).
+
+# Manual equivalents (only if not using the wrapper):
 xcodebuild -exportLocalizations -localizationPath ./Localizations -project QRCode.xcodeproj
-
-# Localization — auto-translate all languages with DeepL
-# Requires: DEEPL_AUTH_KEY env var, npm packages @xmldom/xmldom xpath p-limit
-# Translates only empty <target> entries (won't overwrite existing translations)
 DEEPL_AUTH_KEY=<key> node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
-
-# Localization — import translated .xcloc files back into Xcode
 xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc -project QRCode.xcodeproj
 
-# Full localization workflow:
-#   1. xcodebuild -exportLocalizations ...
-#   2. DEEPL_AUTH_KEY=... node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN
-#   3. For each language: xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc ...
+# App Store Connect metadata — translate + push (full docs: appstore/README.md)
+#   Source of truth: appstore/metadata/en-US/*.txt ; config: appstore/config.json
+#   Hash-based invalidation, brand protection, ASC push via App Store Connect API.
+#   Credentials in ../.env: DEEPL_API_KEY, ASC_ISSUER_ID, ASC_KEY_ID, ASC_KEY_PATH
+./updAppStore.sh                  # translate stale/missing locales + push
+./updAppStore.sh --translate-only # DeepL only, no ASC push
+./updAppStore.sh --push-only      # push existing metadata, no retranslate
+./updAppStore.sh --dry-run        # show changes without touching ASC
+# In-App Purchase setup (StoreKit products on ASC): ./createIAP.sh  (see appstore-iap-create.mjs)
 
 # Generate app icon (requires source 1024x1024)
 # Use Asset Catalog for automatic generation

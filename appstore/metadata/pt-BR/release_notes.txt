@@ -1,0 +1,4 @@
+- Salvar como SVG agora mantém o estilo de olho arredondado - o que você desenha é exatamente o que você obtém.
+- A nova opção de legenda "Ajustar à largura" dimensiona automaticamente a etiqueta para que qualquer texto se encaixe perfeitamente sob o código QR.
+
+Como sempre: sem rastreamento, sem contas - tudo fica no seu dispositivo.

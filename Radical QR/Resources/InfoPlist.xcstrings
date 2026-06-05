@@ -8,13 +8,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الاستجابة السريعة الجذرية"
+            "value" : "Radical QR"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Radikale QR"
+            "value" : "Radical QR"
           }
         },
         "en" : {
@@ -26,7 +26,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR radical"
+            "value" : "Radical QR"
           }
         },
         "fr" : {
@@ -38,19 +38,19 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "रैडिकल क्यूआर"
+            "value" : "Radical QR"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR radicale"
+            "value" : "Radical QR"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ラジカルQR"
+            "value" : "Radical QR"
           }
         },
         "pt-BR" : {
@@ -62,7 +62,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "激进的 QR"
+            "value" : "Radical QR"
           }
         }
       }
@@ -74,13 +74,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الاستجابة السريعة الجذرية"
+            "value" : "Radical QR"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Radikale QR"
+            "value" : "Radical QR"
           }
         },
         "en" : {
@@ -92,7 +92,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR radical"
+            "value" : "Radical QR"
           }
         },
         "fr" : {
@@ -104,19 +104,19 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "रैडिकल क्यूआर"
+            "value" : "Radical QR"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QR radicale"
+            "value" : "Radical QR"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ラジカルQR"
+            "value" : "Radical QR"
           }
         },
         "pt-BR" : {
@@ -128,7 +128,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "激进的 QR"
+            "value" : "Radical QR"
           }
         }
       }

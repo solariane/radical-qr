@@ -3,6 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
 import xpath from "xpath";
+import { protect, unprotect, IGNORE_TAGS } from "./deepl-protect.mjs";
 
 function fail(msg, code = 1) { console.error("Error:", msg); process.exit(code); }
 function parseArgs(argv) {
@@ -103,10 +104,12 @@ async function deeplTranslateBatch(apiBase, authKey, texts, targetLang, sourceLa
   // Use tag_handling=xml by wrapping each source in <t>...</t> (well-formed)
   const url = `${apiBase.replace(/\/$/, "")}/v2/translate`;
   const body = new URLSearchParams();
-  for (const t of texts) body.append("text", `<t>${t}</t>`);
+  // protect() XML-escapes the source and wraps brand terms in <x>...</x>.
+  for (const t of texts) body.append("text", `<t>${protect(t)}</t>`);
   body.set("target_lang", targetLang);
   if (sourceLang) body.set("source_lang", sourceLang);
   body.set("tag_handling", "xml");
+  body.set("ignore_tags", IGNORE_TAGS);
   body.set("preserve_formatting", "1");
 
   const res = await fetch(url, {
@@ -122,10 +125,10 @@ async function deeplTranslateBatch(apiBase, authKey, texts, targetLang, sourceLa
   if (!res.ok || !json?.translations) {
     fail(`DeepL translate error: HTTP ${res.status} ${await res.text().catch(()=> "")}`);
   }
-  // unwrap <t>...</t>
+  // unwrap <t>...</t>, then strip <x> markers and undo XML escaping
   return json.translations.map(x => {
-    const s = x.text ?? "";
-    return s.replace(/^<t>/, "").replace(/<\/t>$/, "");
+    const s = (x.text ?? "").replace(/^<t>/, "").replace(/<\/t>$/, "");
+    return unprotect(s);
   });
 }
 

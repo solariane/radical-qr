@@ -1086,6 +1086,26 @@ struct GeneratorView: View {
                         .foregroundStyle(viewModel.configuration.captionSize == size ? .primary : .secondary)
                     }
                 }
+
+                // Fit-to-width toggle: shrink the caption so any text fits
+                // the space under the QR code instead of being truncated.
+                HStack {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(String(localized: "caption.fitToWidth", defaultValue: "Fit to width"))
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        Text(String(localized: "caption.fitToWidth.hint", defaultValue: "Shrink text so it always fits"))
+                            .font(.caption2)
+                            .foregroundStyle(.tertiary)
+                    }
+
+                    Spacer()
+
+                    Toggle("", isOn: $viewModel.configuration.captionFitToWidth)
+                        .labelsHidden()
+                        .toggleStyle(.switch)
+                        .controlSize(.small)
+                }
             }
         }
     }

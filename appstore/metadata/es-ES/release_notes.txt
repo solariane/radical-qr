@@ -1,0 +1,4 @@
+- Guardar como SVG ahora mantiene su estilo de ojo redondeado - lo que usted diseña es exactamente lo que obtiene.
+- La nueva opción "Ajustar al ancho" ajusta automáticamente el tamaño de la etiqueta para que el texto quepa perfectamente bajo el código QR.
+
+Como siempre: sin seguimiento, sin cuentas - todo se queda en tu dispositivo.

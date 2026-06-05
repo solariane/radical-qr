@@ -16,12 +16,43 @@ final class PurchaseManager: ObservableObject {
 
     private var transactionListener: Task<Void, Error>?
 
+    #if DEBUG
+    /// Debug-only override to test Free / Pro states without a real purchase.
+    /// Compiled out entirely in Release builds — cannot reach the App Store.
+    enum DebugProOverride: String, CaseIterable, Identifiable {
+        case auto       // Use the real StoreKit entitlement state
+        case forcePro   // Pretend Pro is unlocked
+        case forceFree  // Pretend Pro is NOT unlocked
+
+        var id: String { rawValue }
+
+        var label: String {
+            switch self {
+            case .auto: "Auto (StoreKit)"
+            case .forcePro: "Force Pro"
+            case .forceFree: "Force Free"
+            }
+        }
+    }
+
+    /// Persisted across launches via UserDefaults; `@Published` so SwiftUI
+    /// views observing the manager re-render the instant it changes.
+    @Published var debugProOverride: DebugProOverride = .init(
+        rawValue: UserDefaults.standard.string(forKey: "debug_pro_override") ?? ""
+    ) ?? .auto {
+        didSet {
+            UserDefaults.standard.set(debugProOverride.rawValue, forKey: "debug_pro_override")
+        }
+    }
+    #endif
+
     /// Whether the user has Pro access
     var isPro: Bool {
         #if DEBUG
-        // Set to true to test Pro features during development
-        if UserDefaults.standard.bool(forKey: "debug_force_pro") {
-            return true
+        switch debugProOverride {
+        case .forcePro: return true
+        case .forceFree: return false
+        case .auto: break
         }
         #endif
         return purchasedProductIDs.contains(Self.proProductID)

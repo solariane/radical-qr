@@ -157,7 +157,8 @@ final class QRCodeRenderer: Sendable {
                 captionHeight: captionHeight,
                 totalHeight: totalRenderHeight,
                 style: configuration.foregroundStyle,
-                fontSize: configuration.captionSize
+                fontSize: configuration.captionSize,
+                fitToWidth: configuration.captionFitToWidth
             )
         }
 
@@ -623,10 +624,11 @@ final class QRCodeRenderer: Sendable {
         captionHeight: CGFloat,
         totalHeight: CGFloat,
         style: ForegroundStyle,
-        fontSize: QRCodeConfiguration.CaptionSize
+        fontSize: QRCodeConfiguration.CaptionSize,
+        fitToWidth: Bool
     ) {
-        let fontSizePoints = qrSize * fontSize.relativeFraction
-        let font = CTFontCreateWithName("Helvetica" as CFString, fontSizePoints, nil)
+        let baseFontSize = qrSize * fontSize.relativeFraction
+        let maxWidth = qrSize * 0.9
 
         let color: CGColor
         switch style {
@@ -637,6 +639,19 @@ final class QRCodeRenderer: Sendable {
             color = g.startColor.cgColor
         }
 
+        // Measure at the base size to decide whether to shrink (fit) or truncate.
+        let baseFont = CTFontCreateWithName("Helvetica" as CFString, baseFontSize, nil)
+        let measuredWidth = CTLineGetBoundsWithOptions(
+            CTLineCreateWithAttributedString(NSAttributedString(string: text, attributes: [.font: baseFont])),
+            .useOpticalBounds
+        ).width
+
+        // Fit mode: scale the font down so the whole string fits (never up).
+        let fontSizePoints = (fitToWidth && measuredWidth > maxWidth)
+            ? baseFontSize * (maxWidth / measuredWidth)
+            : baseFontSize
+        let font = CTFontCreateWithName("Helvetica" as CFString, fontSizePoints, nil)
+
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,
             .foregroundColor: color
@@ -645,10 +660,9 @@ final class QRCodeRenderer: Sendable {
         let line = CTLineCreateWithAttributedString(attrString)
         let lineRect = CTLineGetBoundsWithOptions(line, .useOpticalBounds)
 
-        // Truncate if text is wider than QR code
-        let maxWidth = qrSize * 0.9
+        // Truncate only when NOT fitting to width and the text overflows.
         let displayLine: CTLine
-        if lineRect.width > maxWidth {
+        if !fitToWidth && lineRect.width > maxWidth {
             let truncationToken = NSAttributedString(string: "...", attributes: attributes)
             let tokenLine = CTLineCreateWithAttributedString(truncationToken)
             if let truncated = CTLineCreateTruncatedLine(line, maxWidth, .end, tokenLine) {
