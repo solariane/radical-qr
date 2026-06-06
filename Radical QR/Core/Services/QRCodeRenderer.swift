@@ -132,7 +132,7 @@ final class QRCodeRenderer: Sendable {
             totalSize: renderSize,
             style: configuration.foregroundStyle,
             roundness: configuration.roundness,
-            eyeRoundness: configuration.eyeRoundness,
+            eyeStyle: configuration.eyeStyle,
             eyeScale: configuration.eyeScale,
             exclusionRect: logoExclusionRect
         )
@@ -221,7 +221,7 @@ final class QRCodeRenderer: Sendable {
         totalSize: CGFloat,
         style: ForegroundStyle,
         roundness: CGFloat,
-        eyeRoundness: CGFloat,
+        eyeStyle: QRCodeConfiguration.EyeStyle,
         eyeScale: CGFloat,
         exclusionRect: CGRect? = nil
     ) {
@@ -267,7 +267,7 @@ final class QRCodeRenderer: Sendable {
                 region: region,
                 moduleSize: moduleSize,
                 offset: offset,
-                roundness: eyeRoundness,
+                eyeStyle: eyeStyle,
                 scale: eyeScale,
                 exclusionRect: exclusionRect
             )
@@ -326,7 +326,7 @@ final class QRCodeRenderer: Sendable {
         region: CGRect,
         moduleSize: CGFloat,
         offset: CGFloat,
-        roundness: CGFloat,
+        eyeStyle: QRCodeConfiguration.EyeStyle,
         scale: CGFloat,
         exclusionRect: CGRect?
     ) {
@@ -349,18 +349,37 @@ final class QRCodeRenderer: Sendable {
         let innerCutout = outerRect.insetBy(dx: ringThickness, dy: ringThickness)
         let pupilRect = outerRect.insetBy(dx: ringThickness * 2, dy: ringThickness * 2)
 
-        if roundness > 0 {
-            let outerRadius = (outerRect.width / 2) * roundness
-            let innerRadius = (innerCutout.width / 2) * roundness
-            let pupilRadius = (pupilRect.width / 2) * roundness
-            path.addRoundedRect(in: outerRect, cornerWidth: outerRadius, cornerHeight: outerRadius)
-            path.addRoundedRect(in: innerCutout, cornerWidth: innerRadius, cornerHeight: innerRadius)
-            path.addRoundedRect(in: pupilRect, cornerWidth: pupilRadius, cornerHeight: pupilRadius)
-        } else {
-            path.addRect(outerRect)
-            path.addRect(innerCutout)
-            path.addRect(pupilRect)
+        for rect in [outerRect, innerCutout, pupilRect] where rect.width > 0 && rect.height > 0 {
+            addEyeShape(to: path, rect: rect, style: eyeStyle)
         }
+    }
+
+    /// Adds one eye sub-rectangle in the requested style. `leaf` rounds three
+    /// corners and leaves the top-left sharp (petal); others use a uniform radius.
+    private func addEyeShape(to path: CGMutablePath, rect: CGRect, style: QRCodeConfiguration.EyeStyle) {
+        let r = (rect.width / 2) * style.cornerFraction
+        if style.isLeaf {
+            addCornerRect(to: path, rect: rect, tl: 0, tr: r, br: r, bl: r)
+        } else if r > 0 {
+            path.addRoundedRect(in: rect, cornerWidth: r, cornerHeight: r)
+        } else {
+            path.addRect(rect)
+        }
+    }
+
+    /// Rounded rectangle with an independent radius per corner. Uses tangent arcs
+    /// so it is correct regardless of the (flipped) context orientation.
+    private func addCornerRect(to path: CGMutablePath, rect: CGRect,
+                              tl: CGFloat, tr: CGFloat, br: CGFloat, bl: CGFloat) {
+        let (minX, minY, maxX, maxY) = (rect.minX, rect.minY, rect.maxX, rect.maxY)
+        let topL = CGPoint(x: minX, y: minY), topR = CGPoint(x: maxX, y: minY)
+        let botR = CGPoint(x: maxX, y: maxY), botL = CGPoint(x: minX, y: maxY)
+        path.move(to: CGPoint(x: minX + tl, y: minY))
+        path.addArc(tangent1End: topR, tangent2End: botR, radius: tr)
+        path.addArc(tangent1End: botR, tangent2End: botL, radius: br)
+        path.addArc(tangent1End: botL, tangent2End: topL, radius: bl)
+        path.addArc(tangent1End: topL, tangent2End: topR, radius: tl)
+        path.closeSubpath()
     }
 
     private func drawGradient(

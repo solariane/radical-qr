@@ -7,7 +7,52 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
     var roundness: CGFloat = 0.0
     /// Independent roundness for the 3 finder-pattern "eyes" (0 = square, 1 = fully circular).
     /// Controls both the outer ring and the inner pupil of each eye.
+    /// Legacy fine control — the discrete `eyeStyle` is the primary control now;
+    /// kept for backward-compatible decoding / migration.
     var eyeRoundness: CGFloat = 0.0
+    /// Shape of the 3 finder-pattern eyes. Replaces the old roundness slider with
+    /// a curated set of looks. `dot` and `leaf` are Pro.
+    var eyeStyle: EyeStyle = .square
+
+    /// Discrete finder-pattern ("eye") shape.
+    enum EyeStyle: String, Codable, Hashable, Sendable, CaseIterable {
+        case square     // sharp corners (classic)
+        case rounded    // softly rounded corners
+        case dot        // fully circular ring + pupil
+        case leaf       // petal: 3 rounded corners, 1 sharp (Pro)
+
+        var displayName: String {
+            switch self {
+            case .square:  String(localized: "eye.style.square",  defaultValue: "Square")
+            case .rounded: String(localized: "eye.style.rounded", defaultValue: "Rounded")
+            case .dot:     String(localized: "eye.style.dot",     defaultValue: "Dot")
+            case .leaf:    String(localized: "eye.style.leaf",    defaultValue: "Leaf")
+            }
+        }
+
+        /// Dot and Leaf are Pro-only.
+        var isPro: Bool { self == .dot || self == .leaf }
+
+        /// Corner radius as a fraction of each sub-rect's half-width (0 = sharp,
+        /// 1 = full circle). Used for square/rounded/dot; leaf is a special path.
+        var cornerFraction: CGFloat {
+            switch self {
+            case .square:  0.0
+            case .rounded: 0.45
+            case .dot:     1.0
+            case .leaf:    1.0
+            }
+        }
+
+        var isLeaf: Bool { self == .leaf }
+
+        /// Map a legacy `eyeRoundness` value onto the closest style (migration).
+        static func inferred(fromRoundness r: CGFloat) -> EyeStyle {
+            if r >= 0.85 { return .dot }
+            if r >= 0.2  { return .rounded }
+            return .square
+        }
+    }
     /// Scale factor applied to the drawn eye inside its 7-module slot.
     /// 1.0 = fills the slot (standard), <1.0 = shrunk with white margin.
     /// The finder-pattern slot itself always stays 7×7 modules for scannability.
@@ -91,6 +136,9 @@ extension QRCodeConfiguration {
         self.backgroundType = try c.decodeIfPresent(BackgroundType.self, forKey: .backgroundType) ?? .white
         self.roundness = try c.decodeIfPresent(CGFloat.self, forKey: .roundness) ?? 0.0
         self.eyeRoundness = try c.decodeIfPresent(CGFloat.self, forKey: .eyeRoundness) ?? 0.0
+        // Migrate pre-eyeStyle configs by inferring a style from the old roundness.
+        self.eyeStyle = try c.decodeIfPresent(EyeStyle.self, forKey: .eyeStyle)
+            ?? EyeStyle.inferred(fromRoundness: self.eyeRoundness)
         self.eyeScale = try c.decodeIfPresent(CGFloat.self, forKey: .eyeScale) ?? 1.0
         self.logoData = try c.decodeIfPresent(Data.self, forKey: .logoData)
         self.errorCorrectionLevel = try c.decodeIfPresent(ErrorCorrectionLevel.self, forKey: .errorCorrectionLevel) ?? .medium

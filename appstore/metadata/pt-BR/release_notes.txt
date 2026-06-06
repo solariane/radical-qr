@@ -1,4 +1,4 @@
-• Salvar como SVG agora mantém o estilo arredondado dos olhos — o que você cria é exatamente o que você obtém.
-• Nova opção de legenda "Ajustar à largura" dimensiona automaticamente seu texto para caber perfeitamente sob o código QR.
+• Novos estilos de olhos: modele os padrões de localização com visual Arredondado, Ponto ou o elegante Folha (Ponto e Folha são Pro).
+• Suas exportações svg mantêm cada estilo de olho, pixel-perfeito.
 
 Como sempre: sem rastreamento, sem contas — tudo permanece no seu dispositivo.

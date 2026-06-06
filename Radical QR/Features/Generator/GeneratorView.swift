@@ -23,6 +23,7 @@ struct GeneratorView: View {
     @State private var isExporting = false
     @State private var showShareSheet = false
     @State private var exportedFileURL: URL?
+    @State private var showEyeStylePaywall = false
     #if os(macOS)
     @State private var isGlobalDropTargeted = false
     #endif
@@ -847,15 +848,7 @@ struct GeneratorView: View {
                 }
             )
 
-            presetRow(
-                label: String(localized: "roundness.eyes", defaultValue: "Eyes"),
-                presets: roundnessPresets,
-                value: viewModel.configuration.eyeRoundness,
-                formatValue: { "\(Int($0 * 100))%" },
-                onChange: { value in
-                    viewModel.configuration.eyeRoundness = value
-                }
-            )
+            eyeStyleRow
 
             presetRow(
                 label: String(localized: "eye.size.label", defaultValue: "Eye Size"),
@@ -866,6 +859,46 @@ struct GeneratorView: View {
                     viewModel.configuration.eyeScale = value
                 }
             )
+        }
+    }
+
+    // Eye shape picker (Square / Rounded free, Dot / Leaf Pro).
+    private var eyeStyleRow: some View {
+        HStack(spacing: 8) {
+            Text(String(localized: "eye.style.label", defaultValue: "Eyes"))
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .frame(width: 54, alignment: .leading)
+
+            ForEach(QRCodeConfiguration.EyeStyle.allCases, id: \.self) { eyeStyle in
+                let locked = eyeStyle.isPro && !purchaseManager.isPro
+                let selected = viewModel.configuration.eyeStyle == eyeStyle
+                Button {
+                    if locked { showEyeStylePaywall = true }
+                    else { viewModel.configuration.eyeStyle = eyeStyle }
+                } label: {
+                    HStack(spacing: 3) {
+                        Text(eyeStyle.displayName).font(.caption2)
+                        if locked {
+                            Image(systemName: "lock.fill").font(.system(size: 8))
+                        }
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        Capsule().fill(selected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
+                    )
+                    .overlay(
+                        Capsule().strokeBorder(selected ? Color.accentColor : Color.clear, lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(selected ? .primary : .secondary)
+            }
+        }
+        .sheet(isPresented: $showEyeStylePaywall) {
+            PaywallView(feature: .eyeStyles)
         }
     }
 

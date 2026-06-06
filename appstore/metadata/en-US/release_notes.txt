@@ -1,4 +1,4 @@
-• Saving as SVG now keeps your rounded eye styling — what you design is exactly what you get.
-• New "Fit to width" caption option automatically sizes your label so any text fits neatly under the QR code.
+• New eye styles: shape the finder patterns with Rounded, Dot, or the elegant Leaf look (Dot & Leaf are Pro).
+• Your SVG exports keep every eye style, pixel-perfect.
 
 As always: no tracking, no accounts — everything stays on your device.

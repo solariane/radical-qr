@@ -1,4 +1,4 @@
-• Speichern als SVG behält jetzt Ihren abgerundeten Eye-Stil bei – was Sie gestalten, bekommen Sie genau so.
-• Neue Option „An Breite anpassen" für Beschriftungen passt die Textgröße automatisch an, damit jeder Text sauber unter dem QR-Code sitzt.
+• Neue Augen-Stile: Gestalten Sie die Suchmuster mit Abgerundet, Punkt oder dem eleganten Blatt-Look (Punkt & Blatt sind Pro).
+• Ihre SVG-Exporte bewahren jeden Augen-Stil pixelgenau.
 
-Wie immer: kein Tracking, keine Konten – alles bleibt auf Ihrem Gerät.
+Wie immer: kein Tracking, keine Konten — alles bleibt auf Ihrem Gerät.

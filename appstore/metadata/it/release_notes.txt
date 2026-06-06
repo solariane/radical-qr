@@ -1,4 +1,4 @@
-• Il salvataggio come SVG ora mantiene lo stile arrotondato degli occhi: quello che progetti è esattamente quello che ottieni.
-• Nuova opzione didascalia "Adatta alla larghezza" che ridimensiona automaticamente l'etichetta affinché qualsiasi testo si adatti perfettamente sotto il codice QR.
+• Nuovi stili per i quadrati di posizionamento: modella i pattern di ricerca con l'aspetto Arrotondato, Punto o l'elegante Foglia (Punto e Foglia sono Pro).
+• Le tue esportazioni SVG mantengono ogni stile, pixel-perfect.
 
-Come sempre: nessun tracciamento, nessun account: tutto rimane sul tuo dispositivo.
+Come sempre: nessun tracciamento, nessun account — tutto rimane sul tuo dispositivo.

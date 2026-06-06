@@ -1,4 +1,4 @@
-• Guardar como SVG ahora mantiene el estilo redondeado de los ojos: lo que diseñas es exactamente lo que obtienes.
-• Nueva opción de título "Ajustar al ancho" que dimensiona automáticamente tu etiqueta para que cualquier texto encaje perfectamente debajo del código QR.
+• Nuevos estilos de ojos: dale forma a los patrones de búsqueda con los diseños Redondeado, Punto o el elegante aspecto Hoja (Punto y Hoja son Pro).
+• Tus exportaciones SVG conservan cada estilo de ojos, perfectos hasta el píxel.
 
-Como siempre: sin seguimiento, sin cuentas, todo permanece en tu dispositivo.
+Como siempre: sin seguimiento, sin cuentas — todo permanece en tu dispositivo.

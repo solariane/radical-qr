@@ -228,13 +228,13 @@ final class ExportService: Sendable {
         // eyeRoundness / eyeScale are honored independently of data roundness.
         let eyesPath = generateEyesPath(
             matrix: matrix,
-            eyeRoundness: configuration.eyeRoundness,
+            eyeStyle: configuration.eyeStyle,
             eyeScale: configuration.eyeScale,
             exclusionRect: exclusionRect
         )
         if !eyesPath.isEmpty {
-            // Rounded eyes need smooth curves; override the root crispEdges.
-            let eyeRendering = configuration.eyeRoundness > 0 ? " shape-rendering=\"geometricPrecision\"" : ""
+            // Non-square eyes need smooth curves; override the root crispEdges.
+            let eyeRendering = configuration.eyeStyle != .square ? " shape-rendering=\"geometricPrecision\"" : ""
             svg += "\n<path fill=\"\(fillAttribute)\" fill-rule=\"evenodd\"\(eyeRendering) d=\"\(eyesPath)\"/>"
         }
 
@@ -373,7 +373,7 @@ final class ExportService: Sendable {
     /// and `eyeScale` (the bug: the old SVG path ignored both).
     private func generateEyesPath(
         matrix: QRModuleMatrix,
-        eyeRoundness: CGFloat,
+        eyeStyle: QRCodeConfiguration.EyeStyle,
         eyeScale: CGFloat,
         exclusionRect: CGRect? = nil
     ) -> String {
@@ -393,21 +393,39 @@ final class ExportService: Sendable {
             let pupil = outer.insetBy(dx: ring * 2, dy: ring * 2)
 
             for rect in [outer, innerCutout, pupil] where rect.width > 0 && rect.height > 0 {
-                commands.append(eyeRectPath(rect, roundness: eyeRoundness))
+                commands.append(eyeShapePath(rect, style: eyeStyle))
             }
         }
 
         return commands.joined()
     }
 
-    /// One eye sub-rectangle as an SVG subpath, rounded proportionally to its own
-    /// width (matching the bitmap renderer's per-rect radius).
-    private func eyeRectPath(_ rect: CGRect, roundness: CGFloat) -> String {
-        if roundness > 0 {
-            let r = (rect.width / 2) * roundness
+    /// One eye sub-rectangle as an SVG subpath, in the requested style. `leaf`
+    /// rounds three corners and keeps the top-left sharp; others use a uniform
+    /// radius. Mirrors `QRCodeRenderer.addEyeShape`.
+    private func eyeShapePath(_ rect: CGRect, style: QRCodeConfiguration.EyeStyle) -> String {
+        let r = (rect.width / 2) * style.cornerFraction
+        if style.isLeaf {
+            return cornerRectPath(rect, tl: 0, tr: r, br: r, bl: r)
+        }
+        if r > 0 {
             return roundedRectPath(x: rect.minX, y: rect.minY, w: rect.width, h: rect.height, r: r)
         }
         return "M\(fmt(rect.minX)) \(fmt(rect.minY))h\(fmt(rect.width))v\(fmt(rect.height))h\(fmt(-rect.width))z"
+    }
+
+    /// SVG path for a rectangle with an independent radius per corner (arcs).
+    private func cornerRectPath(_ rect: CGRect, tl: CGFloat, tr: CGFloat, br: CGFloat, bl: CGFloat) -> String {
+        let (x, y, w, h) = (rect.minX, rect.minY, rect.width, rect.height)
+        func arc(_ r: CGFloat, _ ex: CGFloat, _ ey: CGFloat) -> String {
+            r > 0 ? "A\(fmt(r)) \(fmt(r)) 0 0 1 \(fmt(ex)) \(fmt(ey))" : "L\(fmt(ex)) \(fmt(ey))"
+        }
+        var p = "M\(fmt(x + tl)) \(fmt(y))"
+        p += "H\(fmt(x + w - tr))" + arc(tr, x + w, y + tr)
+        p += "V\(fmt(y + h - br))" + arc(br, x + w - br, y + h)
+        p += "H\(fmt(x + bl))" + arc(bl, x, y + h - bl)
+        p += "V\(fmt(y + tl))" + arc(tl, x + tl, y)
+        return p + "Z"
     }
 
     private func generateSVGGradientDef(_ config: GradientConfiguration, id: String, size: Int) -> String {

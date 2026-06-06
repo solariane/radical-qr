@@ -249,11 +249,14 @@ enum ProFeature: CaseIterable {
     case history
     case fullColorPicker
     case allGradientTypes
+    case eyeStyles
     case stylePreset
     case duplication
 
     var displayName: String {
         switch self {
+        case .eyeStyles:
+            String(localized: "feature.eyeStyles", defaultValue: "Eye Styles")
         case .fullColorPicker:
             String(localized: "feature.fullColorPicker", defaultValue: "Full Color Picker")
         case .allGradientTypes:
@@ -275,6 +278,8 @@ enum ProFeature: CaseIterable {
 
     var description: String {
         switch self {
+        case .eyeStyles:
+            String(localized: "feature.eyeStyles.description", defaultValue: "Shape the finder patterns — dot and leaf eyes")
         case .fullColorPicker:
             String(localized: "feature.fullColorPicker.description", defaultValue: "Choose any color for your QR codes")
         case .allGradientTypes:
@@ -296,6 +301,7 @@ enum ProFeature: CaseIterable {
 
     var iconName: String {
         switch self {
+        case .eyeStyles: "viewfinder"
         case .fullColorPicker: "paintpalette"
         case .allGradientTypes: "square.stack.3d.up"
         case .vectorExport: "square.and.arrow.up"

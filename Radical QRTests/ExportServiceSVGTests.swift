@@ -29,32 +29,43 @@ final class ExportServiceSVGTests: XCTestCase {
 
     // MARK: - Bug: rounded eyes were lost on SVG export
 
-    func testRoundedEyesEmitEvenOddArcPath() async throws {
+    func testDotEyesEmitEvenOddArcPath() async throws {
         let svg = try await makeSVG { config in
-            config.eyeRoundness = 1.0
+            config.eyeStyle = .dot
             config.eyeScale = 1.0
         }
         // Eyes are drawn as a dedicated even-odd path...
         XCTAssertTrue(svg.contains("fill-rule=\"evenodd\""),
-                      "Rounded eyes must be a separate even-odd path")
+                      "Non-square eyes must be a separate even-odd path")
         // ...with smooth curves (arc commands) and geometricPrecision override.
         XCTAssertTrue(svg.contains("geometricPrecision"),
-                      "Rounded eyes must override crispEdges")
+                      "Non-square eyes must override crispEdges")
         XCTAssertTrue(svg.contains("evenodd\" shape-rendering=\"geometricPrecision\" d=\"M"),
                       "Eyes path should carry the rounding attributes")
     }
 
-    func testSquareEyesStillProduceEvenOddPathWithoutArcs() async throws {
+    func testSquareEyesProduceEvenOddPathWithoutArcs() async throws {
         let svg = try await makeSVG { config in
-            config.eyeRoundness = 0.0
+            config.eyeStyle = .square
             config.eyeScale = 1.0
         }
-        // Even with square eyes, the eyes are a separate even-odd path
-        // (ring + cutout + pupil) — just without geometricPrecision.
         XCTAssertTrue(svg.contains("fill-rule=\"evenodd\""),
                       "Eyes are always a separate even-odd path")
         XCTAssertFalse(svg.contains("geometricPrecision"),
                        "Square eyes must not request geometricPrecision")
+    }
+
+    func testLeafEyeProducesArcsAndDiffersFromDot() async throws {
+        let leaf = try await makeSVG { $0.eyeStyle = .leaf }
+        let dot = try await makeSVG { $0.eyeStyle = .dot }
+        XCTAssertTrue(leaf.contains("geometricPrecision"), "Leaf eyes are non-square")
+        XCTAssertTrue(leaf.contains("0 0 1"), "Leaf eyes use elliptical-arc commands for rounded corners")
+        func eyesPath(_ svg: String) -> String? {
+            guard let r = svg.range(of: "fill-rule=\"evenodd\"") else { return nil }
+            return String(svg[r.upperBound...].prefix(260))
+        }
+        XCTAssertNotEqual(eyesPath(leaf), eyesPath(dot),
+                          "Leaf (3 rounded + 1 sharp corner) must differ from dot")
     }
 
     func testEyeScaleChangesEyesPath() async throws {
