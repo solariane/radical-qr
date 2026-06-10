@@ -67,12 +67,36 @@ function esc(s) {
  * `canvasSize` × `canvasSize` box. The caller is responsible for wrapping
  * it in an <svg> and positioning it.
  */
+// Corner-fraction per eye style (mirrors the app's QRCodeConfiguration.EyeStyle).
+const EYE_FRAC = { square: 0, rounded: 0.45, dot: 1.0, leaf: 1.0 };
+
+/** Rect with an independent radius per corner (absolute arcs). */
+function cornerRectPath(x, y, w, h, tl, tr, br, bl) {
+  const arc = (r, ex, ey) => (r > 0 ? `A${r} ${r} 0 0 1 ${ex} ${ey}` : `L${ex} ${ey}`);
+  let p = `M${x + tl} ${y}`;
+  p += `H${x + w - tr}` + arc(tr, x + w, y + tr);
+  p += `V${y + h - br}` + arc(br, x + w - br, y + h);
+  p += `H${x + bl}` + arc(bl, x, y + h - bl);
+  p += `V${y + tl}` + arc(tl, x + tl, y);
+  return p + "Z";
+}
+
+/** One eye sub-rect in the requested style; `leaf` keeps the top-left corner sharp. */
+function eyeShapePath(x, y, w, eyeStyle, eyeRoundness) {
+  const frac = eyeStyle ? (EYE_FRAC[eyeStyle] ?? 0) : eyeRoundness;
+  const rr = Math.max(0, Math.min((w / 2) * frac, w / 2));
+  if (eyeStyle === "leaf") return cornerRectPath(x, y, w, w, 0, rr, rr, rr);
+  if (rr === 0) return `M${x},${y}h${w}v${w}h${-w}z`;
+  return `M${x},${y + rr} a${rr},${rr} 0 0 1 ${rr},${-rr} h${w - 2 * rr} a${rr},${rr} 0 0 1 ${rr},${rr} v${w - 2 * rr} a${rr},${rr} 0 0 1 ${-rr},${rr} h${-(w - 2 * rr)} a${rr},${rr} 0 0 1 ${-rr},${-rr}z`;
+}
+
 export function renderQR({
   content,
   size = 512,                    // Target outer canvas size (px)
   quietZone = 1,                 // In modules
   roundness = 0,                 // Data modules: 0..1
-  eyeRoundness = 0,              // Finder frames + pupils: 0..1
+  eyeRoundness = 0,              // Finder frames + pupils: 0..1 (legacy)
+  eyeStyle = null,              // "square" | "rounded" | "dot" | "leaf" (overrides eyeRoundness)
   eyeScale = 1,                  // Finder frames scaled around center: ~0.7..1.0
   color = "#000",                // Used when `gradient` is absent
   gradient = null,               // { start, end, angle? }
@@ -150,14 +174,9 @@ export function renderQR({
     const pupilY = outerY + 2 * ringThickness;
     const pupilW = outerW - 4 * ringThickness;
 
-    const roundedRectPath = (x, y, w, rRatio) => {
-      const rr = Math.max(0, Math.min((w / 2) * rRatio, w / 2));
-      if (rr === 0) return `M${x},${y}h${w}v${w}h${-w}z`;
-      return `M${x},${y + rr} a${rr},${rr} 0 0 1 ${rr},${-rr} h${w - 2 * rr} a${rr},${rr} 0 0 1 ${rr},${rr} v${w - 2 * rr} a${rr},${rr} 0 0 1 ${-rr},${rr} h${-(w - 2 * rr)} a${rr},${rr} 0 0 1 ${-rr},${-rr}z`;
-    };
-    eyesPath += roundedRectPath(outerX, outerY, outerW, eyeRoundness);
-    eyesPath += roundedRectPath(innerX, innerY, innerW, eyeRoundness);
-    eyesPath += roundedRectPath(pupilX, pupilY, pupilW, eyeRoundness);
+    eyesPath += eyeShapePath(outerX, outerY, outerW, eyeStyle, eyeRoundness);
+    eyesPath += eyeShapePath(innerX, innerY, innerW, eyeStyle, eyeRoundness);
+    eyesPath += eyeShapePath(pupilX, pupilY, pupilW, eyeStyle, eyeRoundness);
   }
 
   // --- Assemble ---
