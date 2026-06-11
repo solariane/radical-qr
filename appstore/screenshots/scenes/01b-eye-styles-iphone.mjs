@@ -1,5 +1,5 @@
 /**
- * 07-eye-styles-iphone.mjs — App Store screenshot: the 4 eye styles (1290×2796).
+ * 01b-eye-styles-iphone.mjs — App Store screenshot: the 4 eye styles (1290×2796).
  * A 2×2 gallery of QR cards, each finder-pattern ("eye") in a different style.
  */
 import fs from "node:fs";
@@ -82,7 +82,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 `;
 
 fs.mkdirSync(OUT, { recursive: true });
-const filename = `07-eye-styles-iphone-6.9-${LOCALE}.svg`;
+const filename = `01b-eye-styles-iphone-6.9-${LOCALE}.svg`;
 fs.writeFileSync(path.join(OUT, filename), svg);
 console.log("wrote", filename);
 

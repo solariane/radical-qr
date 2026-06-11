@@ -33,13 +33,32 @@ const COPY = {
   "en-US": {
     headline: ["QR codes.", "Radically simple."],
     subtitle: "Auto-detect. Private. Elegant.",
+    chips: ["No tracking", "No subscription", "SVG & PDF"],
   },
   "fr-FR": {
     headline: ["QR codes.", "Simplement radical."],
     subtitle: "Auto-détectés. Privé. Élégant.",
+    chips: ["Sans tracking", "Sans abonnement", "SVG & PDF"],
   },
 };
 const L = COPY[LOCALE] ?? COPY["en-US"];
+
+// Value chips centered on a row. `cy` = vertical center.
+function valueChips(chips, cx, cy) {
+  const fs = 38, padX = 34, gap = 26, h = 78;
+  const widths = chips.map(t => t.length * fs * 0.56 + padX * 2);
+  const total = widths.reduce((a, b) => a + b, 0) + gap * (chips.length - 1);
+  let x = cx - total / 2;
+  return chips.map((t, i) => {
+    const w = widths[i];
+    const g = `<g>
+      <rect x="${x}" y="${cy - h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="#ffffff" opacity="0.18"/>
+      <text x="${x + w / 2}" y="${cy + fs * 0.36}" text-anchor="middle" font-size="${fs}" font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', sans-serif">${escapeXML(t)}</text>
+    </g>`;
+    x += w + gap;
+    return g;
+  }).join("");
+}
 
 // ---- Canvas ---------------------------------------------------------------
 const W = 1290;
@@ -77,7 +96,7 @@ const qrSvg = renderQR({
   content: "https://radicalsolution.com/radical-qr",
   size: QR_SIZE,
   roundness: 0.35,
-  eyeRoundness: 1.0,
+  eyeStyle: "leaf",
   eyeScale: 0.88,
   gradient: QR_GRADIENT,
   background: "#ffffff",
@@ -120,6 +139,9 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     <text x="${W / 2}" y="280" font-size="140" font-weight="700" letter-spacing="-3">${escapeXML(L.headline[0])}</text>
     <text x="${W / 2}" y="460" font-size="140" font-weight="700" letter-spacing="-3" opacity="0.92">${escapeXML(L.headline[1])}</text>
   </g>
+
+  <!-- Value chips -->
+  ${valueChips(L.chips, W / 2, 600)}
 
   <!-- Phone bezel -->
   <g filter="url(#softShadow)">

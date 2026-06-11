@@ -54,7 +54,7 @@ const qrSvg = renderQR({
   content: "https://radicalsolution.com/radical-qr",
   size: QR_SIZE,
   roundness: 0.35,
-  eyeRoundness: 1.0,
+  eyeStyle: "leaf",
   eyeScale: 0.88,
   gradient: { start: MAC_COLORS.qrGradientStart, end: MAC_COLORS.qrGradientEnd, angle: 135 },
   background: "#ffffff",
