@@ -1,4 +1,3 @@
-• Neue Augen-Stile: Gestalten Sie die Suchmuster mit Abgerundet, Punkt oder dem eleganten Blatt-Look (Punkt & Blatt sind Pro).
-• Ihre SVG-Exporte bewahren jeden Augen-Stil pixelgenau.
+• Neu: Live-Scanbarkeits-Prüfung. Radical QR überprüft direkt auf dem Gerät, ob Ihr Code tatsächlich lesbar ist – und bietet eine Ein-Tipp-Lösung (Zuverlässigkeit erhöhen, weniger weichzeichnen oder Logo entfernen), wenn ein Design riskant wird.
 
-Wie immer: kein Tracking, keine Konten — alles bleibt auf Ihrem Gerät.
+Wie immer: kein Tracking, keine Konten – alles bleibt auf Ihrem Gerät.

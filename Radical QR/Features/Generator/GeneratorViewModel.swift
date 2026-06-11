@@ -16,6 +16,9 @@ final class GeneratorViewModel: ObservableObject {
     /// Generated QR code preview image
     @Published private(set) var previewImage: Image?
 
+    /// On-device scannability of the current code (does it actually decode?).
+    @Published private(set) var scannability: ScannabilityResult = .unknown
+
     /// Detected data type for current input
     @Published private(set) var detectedDataType: DataType = .text
 
@@ -29,6 +32,7 @@ final class GeneratorViewModel: ObservableObject {
 
     private let generator = QRCodeGenerator()
     private let renderer = QRCodeRenderer()
+    private let scannabilityChecker = ScannabilityChecker()
     let exportService = ExportService()
 
     // MARK: - Private Properties
@@ -138,6 +142,7 @@ final class GeneratorViewModel: ObservableObject {
 
         guard let input = currentInput else {
             previewImage = nil
+            scannability = .unknown
             return
         }
 
@@ -162,6 +167,36 @@ final class GeneratorViewModel: ObservableObject {
 
             self.previewImage = image
             self.isGenerating = false
+
+            // Verify the code actually scans — render + decode off the main actor.
+            let cfg = self.configuration
+            let renderer = self.renderer
+            let checker = self.scannabilityChecker
+            let result = await Task.detached(priority: .utility) { () -> ScannabilityResult in
+                guard let cg = renderer.renderToCGImage(
+                    input: input, configuration: cfg, size: 512, captionText: nil
+                ) else { return .unknown }
+                return checker.check(cgImage: cg, configuration: cfg)
+            }.value
+
+            guard !Task.isCancelled else { return }
+            self.scannability = result
+        }
+    }
+
+    /// Applies the suggested one-tap fix for a risky code.
+    func applyScanFix(_ fix: ScanFix) {
+        switch fix {
+        case .raiseErrorCorrection:
+            configuration.errorCorrectionLevel = .high
+        case .reduceRoundness:
+            configuration.roundness = min(configuration.roundness, 0.3)
+            configuration.eyeScale = min(max(configuration.eyeScale, 0.9), 1.0)
+            if configuration.eyeStyle == .leaf || configuration.eyeStyle == .dot {
+                configuration.eyeStyle = .rounded
+            }
+        case .removeLogo:
+            configuration.logoData = nil
         }
     }
 

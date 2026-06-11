@@ -1,4 +1,3 @@
-• Nuevos estilos de ojos: dale forma a los patrones de búsqueda con los diseños Redondeado, Punto o el elegante aspecto Hoja (Punto y Hoja son Pro).
-• Tus exportaciones SVG conservan cada estilo de ojos, perfectos hasta el píxel.
+• Nuevo: verificación de escaneabilidad en tiempo real. Radical QR verifica localmente que tu código se escanee correctamente y ofrece una solución con un toque (aumentar confiabilidad, suavizar menos o quitar el logo) cuando un diseño se vuelve arriesgado.
 
-Como siempre: sin seguimiento, sin cuentas — todo permanece en tu dispositivo.
+Como siempre: sin rastreo, sin cuentas; todo permanece en tu dispositivo.

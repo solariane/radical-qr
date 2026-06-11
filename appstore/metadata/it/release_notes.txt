@@ -1,4 +1,3 @@
-• Nuovi stili per i quadrati di posizionamento: modella i pattern di ricerca con l'aspetto Arrotondato, Punto o l'elegante Foglia (Punto e Foglia sono Pro).
-• Le tue esportazioni SVG mantengono ogni stile, pixel-perfect.
+• Novità: verifica della scansionabilità in tempo reale. Radical QR verifica sul dispositivo che il codice sia effettivamente scansionabile e offre una correzione con un tocco (aumenta l'affidabilità, attenua meno o rimuovi il logo) quando un design diventa rischioso.
 
-Come sempre: nessun tracciamento, nessun account — tutto rimane sul tuo dispositivo.
+Come sempre: nessun tracciamento, nessun account: tutto rimane sul tuo dispositivo.

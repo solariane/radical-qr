@@ -1,4 +1,3 @@
-• New eye styles: shape the finder patterns with Rounded, Dot, or the elegant Leaf look (Dot & Leaf are Pro).
-• Your SVG exports keep every eye style, pixel-perfect.
+• New: a live scannability check. Radical QR verifies on-device that your code actually scans — and offers a one-tap fix (boost reliability, soften less, or remove the logo) when a design gets risky.
 
 As always: no tracking, no accounts — everything stays on your device.

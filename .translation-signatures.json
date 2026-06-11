@@ -316,5 +316,14 @@
   "eye.style.rounded": "bef2481eda40bd121482f1814d72314f",
   "eye.style.square": "ceb46ca115d05c51aa5a16a8867c3304",
   "feature.eyeStyles": "0b2c3b8f3262ae41dd33f8683cecc3fd",
-  "feature.eyeStyles.description": "b51f1c0919c9d4c628a40965cd2f152c"
+  "feature.eyeStyles.description": "b51f1c0919c9d4c628a40965cd2f152c",
+  "scan.fix.errorCorrection": "5ba2485d77c4b6092ac6c92892571684",
+  "scan.fix.logo": "b289ca0f79adc68a8df12ffac804755d",
+  "scan.fix.roundness": "22b7d3ff5647e3272ebf11b35b3440da",
+  "scan.reason.contrast": "bcb92f493b1fd7bd4fc1c9cd0f33ea18",
+  "scan.reason.generic": "609ee394270d4c27ed048f3ac810db78",
+  "scan.reason.logo": "11ba904ac450327578c9998155a4d5f7",
+  "scan.reason.roundness": "bcb4f332a4fb82c2739ed694c6a37a53",
+  "scan.reliable": "ed51f373717a5b88d06e99c281679279",
+  "scan.risky": "f46fd7d1f7a21e8c29f673b4317f18c0"
 }

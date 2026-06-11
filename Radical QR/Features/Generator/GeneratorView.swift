@@ -316,10 +316,62 @@ struct GeneratorView: View {
             }
             .animation(.easeInOut(duration: 0.3), value: viewModel.previewImage != nil)
 
+            // Scannability indicator
+            scannabilityBadge
+                .animation(.easeInOut(duration: 0.25), value: viewModel.scannability)
+
             // Export section
             exportSection
                 .padding(.horizontal, 16)
                 .padding(.bottom, 8)
+        }
+    }
+
+    @ViewBuilder
+    private var scannabilityBadge: some View {
+        if viewModel.previewImage != nil {
+            switch viewModel.scannability.level {
+            case .reliable:
+                Label(
+                    String(localized: "scan.reliable", defaultValue: "Scans reliably"),
+                    systemImage: "checkmark.circle.fill"
+                )
+                .font(.caption.weight(.medium))
+                .foregroundStyle(.green)
+
+            case .risky:
+                HStack(spacing: 10) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(String(localized: "scan.risky", defaultValue: "May be hard to scan"))
+                            .font(.caption.weight(.semibold))
+                        if let reason = viewModel.scannability.reason {
+                            Text(reason)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    Spacer(minLength: 6)
+                    if let fix = viewModel.scannability.fix {
+                        Button(fix.label) {
+                            withAnimation { viewModel.applyScanFix(fix) }
+                        }
+                        .font(.caption.weight(.semibold))
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.small)
+                        .tint(.orange)
+                    }
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 8)
+                .background(RoundedRectangle(cornerRadius: 12).fill(Color.orange.opacity(0.12)))
+                .padding(.horizontal, 16)
+
+            case .unknown:
+                EmptyView()
+            }
         }
     }
 
