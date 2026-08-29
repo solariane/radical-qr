@@ -96,7 +96,7 @@ struct HelpView: View {
             HelpRow(
                 icon: "photo.badge.plus",
                 title: String(localized: "help.logoHelp.title", defaultValue: "Logo Embedding"),
-                detail: String(localized: "help.logoHelp.detail", defaultValue: "Drop or select an image to embed your logo at the center of the QR code. The quiet zone is managed automatically to maintain scannability."),
+                detail: String(localized: "help.logoHelp.detail", defaultValue: "Drop or select an image to embed your logo at the center of the QR code. The clear margin around it is managed automatically so the code still scans."),
                 isPro: true
             )
             HelpRow(
