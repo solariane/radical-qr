@@ -8,7 +8,13 @@ import AppKit
 import UIKit
 #endif
 
-/// Main QR code generator view with inline customization
+/// Main QR code generator view.
+///
+/// The code stays on screen at all times: once the content is recognized the
+/// input collapses to a single line inside the preview card, so the keyboard has
+/// nothing left to cover. Settings live in `CustomizationRail` — one family at a
+/// time, every option drawn rather than named — and the save row is pinned below
+/// the scroll area so it is always reachable.
 struct GeneratorView: View {
     @StateObject private var viewModel = GeneratorViewModel()
     @EnvironmentObject private var purchaseManager: PurchaseManager
@@ -17,85 +23,87 @@ struct GeneratorView: View {
 
     @State private var copiedFeedback = false
     @State private var showHelpSheet = false
-    @State private var exportMode: ExportMode = .export
     @State private var selectedFormat: ExportFormat = .png
     @State private var selectedSize: ExportSize = .medium
     @State private var isExporting = false
     @State private var showShareSheet = false
     @State private var exportedFileURL: URL?
-    @State private var showEyeStylePaywall = false
-    #if os(macOS)
+    @State private var family: CustomizationRail.Family = .shape
+    @State private var paywallFeature: ProFeature?
+    /// The input zone is folded away as soon as the content parses; this reopens it.
+    @State private var isEditingInput = false
     @State private var isGlobalDropTargeted = false
-    #endif
 
     private let inputAnchorID = "input-section"
 
-    enum ExportMode: String, CaseIterable {
-        case copy
-        case export
-
-        var label: String {
-            switch self {
-            case .copy: String(localized: "mode.copy", defaultValue: "Copy")
-            case .export: String(localized: "mode.export", defaultValue: "Export")
-            }
-        }
+    private var showsInputZone: Bool {
+        !viewModel.hasValidInput || isEditingInput
     }
 
     var body: some View {
         ZStack {
             GradientBackground()
 
-            ScrollViewReader { proxy in
-                ScrollView {
-                    VStack(spacing: 16) {
-                        // Header
-                        headerSection
+            VStack(spacing: 0) {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(spacing: 11) {
+                            headerSection
 
-                        // Input zone
-                        inputSection
+                            if showsInputZone {
+                                inputSection
+                                    .transition(.opacity.combined(with: .move(edge: .top)))
+                            }
 
-                        // QR Preview + Inline Customization
-                        if viewModel.hasValidInput {
-                            VStack(spacing: 0) {
-                                // QR Preview Card
+                            if viewModel.hasValidInput {
                                 previewCard
 
-                                // Inline Customization (always visible)
-                                inlineCustomization
+                                CustomizationRail(
+                                    configuration: $viewModel.configuration,
+                                    family: $family,
+                                    exportSize: $selectedSize,
+                                    exportFormat: $selectedFormat,
+                                    autoCaption: autoCaption,
+                                    onLocked: { paywallFeature = $0 }
+                                )
+                            } else if purchaseManager.isPro {
+                                RecentHistoryStrip { item in
+                                    viewModel.loadFromHistory(item)
+                                }
+                            } else {
+                                privacyNote
                             }
-                            .cardStyle()
                         }
-
-                        // Recent history (Pro) — quick reload for variants
-                        if purchaseManager.isPro {
-                            RecentHistoryStrip { item in
-                                viewModel.loadFromHistory(item)
-                            }
-                        }
+                        .padding(.horizontal, 16)
+                        .padding(.top, 8)
+                        .padding(.bottom, 10)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 12)
-                    .padding(.bottom, 16)
-                }
-                .onChange(of: viewModel.hasValidInput) { _, hasInput in
-                    guard hasInput else { return }
-                    scrollInputToTop(proxy: proxy)
-                }
-                .onChange(of: viewModel.inputText) { oldValue, newValue in
-                    // Scroll when new content arrives (e.g. D&D, Services, Share)
-                    // but not on every keystroke (only when transitioning from empty
-                    // or when the change is large, indicating external input)
-                    guard !newValue.isEmpty else { return }
-                    let isExternalInput = oldValue.isEmpty || abs(newValue.count - oldValue.count) > 5
-                    if isExternalInput {
+                    .onChange(of: viewModel.hasValidInput) { _, hasInput in
+                        guard hasInput else { return }
+                        withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = false }
                         scrollInputToTop(proxy: proxy)
                     }
+                    .onChange(of: viewModel.inputText) { oldValue, newValue in
+                        // Scroll when content arrives from outside (drag & drop,
+                        // Services, Share) — not on every keystroke.
+                        guard !newValue.isEmpty else { return }
+                        let isExternalInput = oldValue.isEmpty || abs(newValue.count - oldValue.count) > 5
+                        if isExternalInput {
+                            scrollInputToTop(proxy: proxy)
+                        }
+                    }
+                }
+                #if os(iOS)
+                .scrollDismissesKeyboard(.interactively)
+                #endif
+
+                if viewModel.hasValidInput {
+                    actionRow
+                        .padding(.horizontal, 16)
+                        .padding(.top, 8)
+                        .padding(.bottom, 10)
                 }
             }
-            #if os(iOS)
-            .scrollDismissesKeyboard(.interactively)
-            #endif
         }
         #if os(macOS)
         .background(
@@ -129,11 +137,8 @@ struct GeneratorView: View {
         #endif
         #if os(iOS)
         .onTapGesture {
-            // Dismiss keyboard when tapping outside text fields
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
-        #endif
-        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showShareSheet) {
             if let url = exportedFileURL {
@@ -143,6 +148,9 @@ struct GeneratorView: View {
         #endif
         .sheet(isPresented: $showHelpSheet) {
             FormatHelpView()
+        }
+        .sheet(item: $paywallFeature) { feature in
+            PaywallView(feature: feature)
         }
         .alert(item: $viewModel.error) { error in
             Alert(
@@ -202,34 +210,36 @@ struct GeneratorView: View {
         }
     }
 
-    // MARK: - Header Section
+    // MARK: - Header
 
     private var headerSection: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(String(localized: "generator.title", defaultValue: "QR Code Generator"))
-                    .font(.title2.weight(.semibold))
-                    .foregroundStyle(.white)
+        HStack(spacing: 9) {
+            AppMarkGlyph(color: .white)
+                .frame(width: 22, height: 22)
 
-                Text(String(localized: "generator.subtitle", defaultValue: "No tracking. No storage. Just ephemeral QR codes."))
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.75))
-            }
+            Text(verbatim: "Radical QR")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(.white)
 
             Spacer()
 
             Button {
                 showHelpSheet = true
             } label: {
-                Image(systemName: "questionmark.circle")
-                    .font(.title3)
-                    .foregroundStyle(.white.opacity(0.8))
+                Image(systemName: "questionmark")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 34, height: 34)
+                    .background(Circle().fill(.white.opacity(0.18)))
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "generator.help", defaultValue: "Formats and tips"))
         }
+        .frame(height: 30)
+        .id(inputAnchorID)
     }
 
-    // MARK: - Input Section
+    // MARK: - Input
 
     private var inputSection: some View {
         InputZone(
@@ -243,362 +253,276 @@ struct GeneratorView: View {
         )
     }
 
-    // MARK: - Data Type Summary (shown above QR preview)
-
-    private var dataTypeSummary: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 8) {
-                let metadata = viewModel.urlMetadata
-                Image(systemName: metadata?.iconName ?? viewModel.detectedDataType.iconName)
-                Text(metadata?.platform ?? viewModel.detectedDataType.displayName)
-                    .fontWeight(.medium)
-
-                Spacer()
-
-                Text(metadata != nil
-                     ? (metadata?.category == .socialProfile
-                        ? String(localized: "dataType.url.social", defaultValue: "Social Profile")
-                        : String(localized: "dataType.url.deepLink", defaultValue: "App Link"))
-                     : viewModel.detectedDataType.description)
-                    .foregroundStyle(.secondary)
-            }
-            .font(.caption)
-
-            if let summary = DataTypeDetector.summarize(viewModel.inputText, for: viewModel.detectedDataType) {
-                Text(summary)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
+    private var privacyNote: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "lock.shield")
+                .font(.footnote)
+            Text(String(localized: "generator.subtitle", defaultValue: "No tracking. No storage. Just ephemeral QR codes."))
+                .font(.footnote)
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.secondary.opacity(0.08))
-        )
+        .foregroundStyle(.white.opacity(0.78))
+        .frame(maxWidth: .infinity)
+        .padding(.top, 4)
     }
 
     // MARK: - Preview Card
 
     private var previewCard: some View {
-        VStack(spacing: 12) {
-            // Data type summary above the QR
-            dataTypeSummary
-                .padding(.horizontal, 16)
-                .padding(.top, 16)
-
-            // QR Code Image with background to show transparency
+        VStack(spacing: 10) {
             ZStack {
-                // Light gray background to visualize QR transparency
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(white: 0.9))
-                    .frame(width: 272, height: 272)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Color.white)
+                    .overlay {
+                        if viewModel.configuration.backgroundType != .white {
+                            QRPreviewBackground()
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        }
+                    }
 
                 if let image = viewModel.previewImage {
                     image
                         .interpolation(.none)
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 240, maxHeight: 240)
+                        .padding(6)
                         .transition(.opacity.combined(with: .scale(scale: 0.95)))
                 } else if viewModel.isGenerating {
                     ProgressView()
-                        .scaleEffect(1.5)
-                        .frame(width: 240, height: 240)
-                } else {
-                    Rectangle()
-                        .fill(.secondary.opacity(0.1))
-                        .frame(width: 240, height: 240)
                 }
             }
+            // aspectRatio first, then the cap: framing first would let the square
+            // grow to the whole proposed height and shove the rail off screen.
+            .aspectRatio(1, contentMode: .fit)
+            .frame(maxWidth: 186, maxHeight: 186)
             .animation(.easeInOut(duration: 0.3), value: viewModel.previewImage != nil)
 
-            // Scannability indicator
-            scannabilityBadge
+            scannabilityWarning
                 .animation(.easeInOut(duration: 0.25), value: viewModel.scannability)
 
-            // Export section
-            exportSection
-                .padding(.horizontal, 16)
-                .padding(.bottom, 8)
+            contentPill
         }
+        .frame(maxWidth: .infinity)
+        .cardStyle(padding: 14, cornerRadius: 26)
     }
 
+    /// Only speaks up when the code is at risk. A permanent "scans fine" badge
+    /// costs a line of chrome to say nothing.
     @ViewBuilder
-    private var scannabilityBadge: some View {
-        if viewModel.previewImage != nil {
-            switch viewModel.scannability.level {
-            case .reliable:
-                Label(
-                    String(localized: "scan.reliable", defaultValue: "Scans reliably"),
-                    systemImage: "checkmark.circle.fill"
-                )
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.green)
-
-            case .risky:
-                HStack(spacing: 10) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.orange)
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(String(localized: "scan.risky", defaultValue: "May be hard to scan"))
-                            .font(.caption.weight(.semibold))
-                        if let reason = viewModel.scannability.reason {
-                            Text(reason)
-                                .font(.caption2)
-                                .foregroundStyle(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                    }
-                    Spacer(minLength: 6)
-                    if let fix = viewModel.scannability.fix {
-                        Button(fix.label) {
-                            withAnimation { viewModel.applyScanFix(fix) }
-                        }
+    private var scannabilityWarning: some View {
+        if viewModel.previewImage != nil, viewModel.scannability.level == .risky {
+            HStack(spacing: 10) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.orange)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(String(localized: "scan.risky", defaultValue: "May be hard to scan"))
                         .font(.caption.weight(.semibold))
-                        .buttonStyle(.borderedProminent)
-                        .controlSize(.small)
-                        .tint(.orange)
+                    if let reason = viewModel.scannability.reason {
+                        Text(reason)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-                .background(RoundedRectangle(cornerRadius: 12).fill(Color.orange.opacity(0.12)))
-                .padding(.horizontal, 16)
-
-            case .unknown:
-                EmptyView()
+                Spacer(minLength: 6)
+                if let fix = viewModel.scannability.fix {
+                    Button(fix.label) {
+                        withAnimation { viewModel.applyScanFix(fix) }
+                    }
+                    .font(.caption.weight(.semibold))
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.small)
+                    .tint(.orange)
+                }
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(RoundedRectangle(cornerRadius: 12).fill(Color.orange.opacity(0.12)))
         }
     }
 
-    // MARK: - Export Section
+    /// The folded input: what the code encodes, in one line, and the way back to
+    /// editing it.
+    private var contentPill: some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.25)) { isEditingInput.toggle() }
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: viewModel.urlMetadata?.iconName ?? viewModel.detectedDataType.iconName)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(Color.accentColor)
+                    .frame(width: 20)
 
-    private var exportSection: some View {
-        VStack(spacing: 16) {
-            // Mode toggle (Copy / Export)
-            Picker("", selection: $exportMode) {
-                ForEach(ExportMode.allCases, id: \.self) { mode in
-                    Text(mode.label).tag(mode)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+                        .font(.subheadline.weight(.medium))
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+
+                    if let detail = contentDetail {
+                        Text(detail)
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
                 }
-            }
-            .pickerStyle(.segmented)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-            // Size + Format selection (format only in export mode)
-            HStack(alignment: .top, spacing: 16) {
-                sizeSelector
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                if exportMode == .export {
-                    formatSelector
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .transition(.opacity.combined(with: .move(edge: .trailing)))
-                }
-            }
-            .animation(.easeInOut(duration: 0.2), value: exportMode)
-
-            // Action button
-            actionButton
-        }
-    }
-
-    private var sizeSelector: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(String(localized: "export.size", defaultValue: "Size"))
-                    .font(.caption.weight(.medium))
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.secondary)
-
-                Spacer()
-
-                if !purchaseManager.isPro {
-                    Text(String(localized: "export.sizeLimit", defaultValue: "Max \(FeatureLimit.freeMaxExportSize)px free"))
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
+                    .rotationEffect(.degrees(isEditingInput ? 90 : 0))
             }
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(ExportSize.allSizes, id: \.width) { size in
-                        InlineSizeButton(
-                            size: size,
-                            isSelected: selectedSize == size,
-                            isLocked: !purchaseManager.isExportSizeAvailable(size)
-                        ) {
-                            selectedSize = size
-                        }
-                    }
-                }
-            }
+            .padding(.horizontal, 13)
+            .padding(.vertical, 10)
+            .frame(minHeight: 44)
+            .background(
+                RoundedRectangle(cornerRadius: 15, style: .continuous)
+                    .fill(Color.secondary.opacity(0.12))
+            )
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel(String(localized: "generator.editContent", defaultValue: "Edit content"))
+        .accessibilityValue(viewModel.inputText)
     }
 
-    private var formatSelector: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(String(localized: "export.format", defaultValue: "Format"))
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(ExportFormat.allCases) { format in
-                        InlineFormatButton(
-                            format: format,
-                            isSelected: selectedFormat == format,
-                            isLocked: format.requiresPro && !purchaseManager.isPro
-                        ) {
-                            selectedFormat = format
-                        }
-                    }
-                }
-            }
+    private var contentDetail: String? {
+        if let platform = viewModel.urlMetadata?.platform {
+            return platform
         }
+        let input = viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let summary = DataTypeDetector.summarize(input, for: viewModel.detectedDataType)
+        // A summary that just echoes the line above it is noise — name the type instead.
+        if let summary, !input.localizedCaseInsensitiveContains(summary) {
+            return summary
+        }
+        return viewModel.detectedDataType.displayName
     }
 
-    private var actionButton: some View {
-        VStack(spacing: 8) {
-            // Primary action button
+    private var autoCaption: String {
+        viewModel.currentInput.flatMap { CaptionGenerator.defaultCaption(for: $0) } ?? ""
+    }
+
+    // MARK: - Actions
+
+    private var actionRow: some View {
+        HStack(spacing: 11) {
             Button {
-                Task {
-                    await performAction()
-                }
+                Task { await performSave() }
             } label: {
-                HStack {
+                HStack(spacing: 9) {
                     if isExporting {
                         ProgressView()
-                            .tint(.white)
-                    } else if copiedFeedback {
-                        Image(systemName: "checkmark")
-                        Text(String(localized: "action.copied", defaultValue: "Copied!"))
                     } else {
-                        Image(systemName: exportMode == .copy ? "doc.on.doc" : "square.and.arrow.down")
-                        Text(exportMode == .copy
-                             ? String(localized: "action.copyQR", defaultValue: "Copy QR Code")
-                             : String(localized: "action.saveQR", defaultValue: "Save QR Code"))
+                        Image(systemName: "square.and.arrow.down")
+                            .font(.system(size: 17, weight: .semibold))
+                        Text(String(localized: "action.saveQR", defaultValue: "Save QR Code"))
+                            .font(.system(size: 16, weight: .semibold))
                     }
                 }
+                .foregroundStyle(Color(red: 0.294, green: 0.227, blue: 0.525))
                 .frame(maxWidth: .infinity)
+                .frame(height: 54)
+                .background(
+                    Capsule().fill(.white)
+                        .shadow(color: .black.opacity(0.18), radius: 8, y: 4)
+                )
             }
-            .buttonStyle(.borderedProminent)
-            .tint(copiedFeedback ? .green : .accentColor)
-            .controlSize(.large)
-            .disabled(isExporting || !canPerformAction)
+            .buttonStyle(.plain)
+            .disabled(isExporting || !canExport)
+            .opacity(canExport ? 1 : 0.55)
 
-            // Share button (only in export mode)
-            if exportMode == .export {
-                Button {
-                    Task {
-                        await performShare()
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: "square.and.arrow.up")
-                        Text(String(localized: "action.share", defaultValue: "Share"))
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-                .disabled(isExporting || !canPerformAction)
+            secondaryAction(
+                systemImage: copiedFeedback ? "checkmark" : "doc.on.doc",
+                label: String(localized: "action.copyQR", defaultValue: "Copy QR Code")
+            ) {
+                Task { await performCopy() }
+            }
+
+            secondaryAction(
+                systemImage: "square.and.arrow.up",
+                label: String(localized: "action.share", defaultValue: "Share")
+            ) {
+                Task { await performShare() }
             }
         }
     }
 
-    private var canPerformAction: Bool {
+    private func secondaryAction(systemImage: String, label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .font(.system(size: 18, weight: .medium))
+                .foregroundStyle(.white)
+                .frame(width: 54, height: 54)
+                .background(Circle().fill(.white.opacity(0.2)))
+        }
+        .buttonStyle(.plain)
+        .disabled(isExporting || !canExport)
+        .opacity(canExport ? 1 : 0.55)
+        .accessibilityLabel(label)
+    }
+
+    private var canExport: Bool {
         guard viewModel.hasValidInput else { return false }
-
-        if exportMode == .export {
-            if selectedFormat.requiresPro && !purchaseManager.isPro {
-                return false
-            }
-        }
-
-        if !purchaseManager.isExportSizeAvailable(selectedSize) {
-            return false
-        }
-
-        return true
+        if selectedFormat.requiresPro && !purchaseManager.isPro { return false }
+        return purchaseManager.isExportSizeAvailable(selectedSize)
     }
 
-    private func performAction() async {
+    private var exportConfiguration: ExportConfiguration {
+        ExportConfiguration(
+            format: selectedFormat,
+            size: selectedSize,
+            includeBackground: viewModel.configuration.backgroundType == .white
+        )
+    }
+
+    private func performSave() async {
         isExporting = true
-
         do {
-            if exportMode == .copy {
-                try await viewModel.exportService.copyToClipboard(
-                    input: QRInput(content: viewModel.inputText),
-                    configuration: viewModel.configuration,
-                    size: CGFloat(selectedSize.width),
-                    captionText: viewModel.resolvedCaptionText
-                )
+            let url = try await viewModel.saveToFile(config: exportConfiguration)
+            await MainActor.run { recordHistoryIfEligible() }
 
-                await MainActor.run {
-                    recordHistoryIfEligible()
-                    withAnimation {
-                        copiedFeedback = true
-                    }
-                }
-
-                try? await Task.sleep(nanoseconds: 2_000_000_000)
-
-                await MainActor.run {
-                    withAnimation {
-                        copiedFeedback = false
-                    }
-                }
-            } else {
-                let config = ExportConfiguration(
-                    format: selectedFormat,
-                    size: selectedSize,
-                    includeBackground: viewModel.configuration.backgroundType == .white
-                )
-
-                let url = try await viewModel.saveToFile(config: config)
-
-                await MainActor.run { recordHistoryIfEligible() }
-
-                #if os(macOS)
-                NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
-                #else
-                await MainActor.run {
-                    exportedFileURL = url
-                    showShareSheet = true
-                }
-                #endif
-            }
-        } catch {
+            #if os(macOS)
+            NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
+            #else
             await MainActor.run {
-                viewModel.error = .exportFailed(error.localizedDescription)
+                exportedFileURL = url
+                showShareSheet = true
             }
+            #endif
+        } catch {
+            await MainActor.run { viewModel.error = .exportFailed(error.localizedDescription) }
         }
-
-        await MainActor.run {
-            isExporting = false
-        }
+        await MainActor.run { isExporting = false }
     }
 
-    @MainActor
-    private func recordHistoryIfEligible() {
-        guard purchaseManager.isPro else { return }
-        viewModel.recordHistory(in: modelContext)
+    private func performCopy() async {
+        isExporting = true
+        do {
+            try await viewModel.exportService.copyToClipboard(
+                input: QRInput(content: viewModel.inputText),
+                configuration: viewModel.configuration,
+                size: CGFloat(selectedSize.width),
+                captionText: viewModel.resolvedCaptionText
+            )
+
+            await MainActor.run {
+                recordHistoryIfEligible()
+                withAnimation { copiedFeedback = true }
+            }
+
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+
+            await MainActor.run { withAnimation { copiedFeedback = false } }
+        } catch {
+            await MainActor.run { viewModel.error = .exportFailed(error.localizedDescription) }
+        }
+        await MainActor.run { isExporting = false }
     }
 
     private func performShare() async {
         isExporting = true
-
         do {
-            let config = ExportConfiguration(
-                format: selectedFormat,
-                size: selectedSize,
-                includeBackground: viewModel.configuration.backgroundType == .white
-            )
-
-            let url = try await viewModel.saveToFile(config: config)
-
+            let url = try await viewModel.saveToFile(config: exportConfiguration)
             await MainActor.run { recordHistoryIfEligible() }
 
             #if os(macOS)
@@ -616,745 +540,15 @@ struct GeneratorView: View {
             }
             #endif
         } catch {
-            await MainActor.run {
-                viewModel.error = .exportFailed(error.localizedDescription)
-            }
+            await MainActor.run { viewModel.error = .exportFailed(error.localizedDescription) }
         }
-
-        await MainActor.run {
-            isExporting = false
-        }
+        await MainActor.run { isExporting = false }
     }
 
-    // MARK: - Inline Customization
-
-    private var inlineCustomization: some View {
-        VStack(spacing: 0) {
-            // Divider
-            Rectangle()
-                .fill(.secondary.opacity(0.2))
-                .frame(height: 1)
-
-            VStack(spacing: 16) {
-                // Compact Color/Style Row
-                compactStyleSection
-
-                // Compact Roundness Row
-                compactRoundnessSection
-
-                // Compact Background Row
-                compactBackgroundSection
-
-                // Logo Section (Pro) - Compacted
-                compactLogoSection
-
-                // Caption Section
-                compactCaptionSection
-            }
-            .padding(16)
-        }
-    }
-
-    // MARK: - Compact Style Section
-
-    private var compactStyleSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(String(localized: "customization.style", defaultValue: "Style"))
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
-
-                Spacer()
-
-                // Style mode toggle
-                Picker("", selection: Binding(
-                    get: { isGradientMode },
-                    set: { newValue in
-                        if newValue {
-                            if case .solid(let color) = viewModel.configuration.foregroundStyle {
-                                viewModel.configuration.foregroundStyle = .gradient(GradientConfiguration(
-                                    startColor: color,
-                                    endColor: .indigo
-                                ))
-                            }
-                        } else {
-                            if case .gradient(let config) = viewModel.configuration.foregroundStyle {
-                                viewModel.configuration.foregroundStyle = .solid(config.startColor)
-                            }
-                        }
-                    }
-                )) {
-                    Text(String(localized: "style.solid", defaultValue: "Solid")).tag(false)
-                    Text(String(localized: "style.gradient", defaultValue: "Gradient")).tag(true)
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 140)
-            }
-
-            // Color swatches in horizontal scroll
-            if isGradientMode {
-                compactGradientPicker
-            } else {
-                compactColorPicker
-            }
-        }
-    }
-
-    private var isGradientMode: Bool {
-        if case .gradient = viewModel.configuration.foregroundStyle {
-            return true
-        }
-        return false
-    }
-
-    private var compactColorPicker: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(SerializableColor.freeColors, id: \.self) { color in
-                    CompactColorSwatch(
-                        color: color,
-                        isSelected: isColorSelected(color)
-                    ) {
-                        viewModel.configuration.foregroundStyle = .solid(color)
-                    }
-                }
-
-                if purchaseManager.isPro {
-                    ColorPicker("", selection: Binding(
-                        get: { currentSolidColor.color },
-                        set: { viewModel.configuration.foregroundStyle = .solid(SerializableColor($0)) }
-                    ), supportsOpacity: false)
-                    .labelsHidden()
-                    .frame(width: 32, height: 32)
-                }
-            }
-        }
-    }
-
-    private var currentSolidColor: SerializableColor {
-        if case .solid(let color) = viewModel.configuration.foregroundStyle {
-            return color
-        }
-        return .black
-    }
-
-    private func isColorSelected(_ color: SerializableColor) -> Bool {
-        if case .solid(let current) = viewModel.configuration.foregroundStyle {
-            return current == color
-        }
-        return false
-    }
-
-    private var compactGradientPicker: some View {
-        VStack(spacing: 12) {
-            // Gradient type picker (Pro gets Angular & Diamond)
-            if purchaseManager.isPro {
-                HStack(spacing: 6) {
-                    ForEach(GradientConfiguration.GradientType.allCases, id: \.self) { type in
-                        CompactGradientTypeButton(
-                            type: type,
-                            isSelected: currentGradientType == type
-                        ) {
-                            updateGradientType(type)
-                        }
-                    }
-                }
-            }
-
-            // Preset gradients
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(GradientConfiguration.freeGradients, id: \.self) { preset in
-                        CompactGradientSwatch(
-                            gradient: preset,
-                            isSelected: isGradientSelected(preset)
-                        ) {
-                            viewModel.configuration.foregroundStyle = .gradient(preset)
-                        }
-                    }
-
-                    // Custom gradient color pickers for Pro
-                    if purchaseManager.isPro {
-                        Divider()
-                            .frame(height: 24)
-                            .padding(.horizontal, 4)
-
-                        // Start color picker
-                        VStack(spacing: 2) {
-                            ColorPicker("", selection: Binding(
-                                get: { currentGradientConfig.startColor.color },
-                                set: { updateGradientStartColor(SerializableColor($0)) }
-                            ), supportsOpacity: false)
-                            .labelsHidden()
-                            .frame(width: 32, height: 32)
-
-                            Text(String(localized: "gradient.start", defaultValue: "Start"))
-                                .font(.system(size: 8))
-                                .foregroundStyle(.secondary)
-                        }
-
-                        // End color picker
-                        VStack(spacing: 2) {
-                            ColorPicker("", selection: Binding(
-                                get: { currentGradientConfig.endColor.color },
-                                set: { updateGradientEndColor(SerializableColor($0)) }
-                            ), supportsOpacity: false)
-                            .labelsHidden()
-                            .frame(width: 32, height: 32)
-
-                            Text(String(localized: "gradient.end", defaultValue: "End"))
-                                .font(.system(size: 8))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                }
-            }
-
-            // Angle slider for linear gradient (Pro)
-            if purchaseManager.isPro && currentGradientType == .linear {
-                HStack(spacing: 8) {
-                    Text(String(localized: "gradient.angle", defaultValue: "Angle"))
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-
-                    Slider(
-                        value: Binding(
-                            get: { currentGradientConfig.angle },
-                            set: { updateGradientAngle($0) }
-                        ),
-                        in: 0...360,
-                        step: 15
-                    )
-                    .tint(currentGradientConfig.startColor.color)
-
-                    Text("\(Int(currentGradientConfig.angle))°")
-                        .font(.caption2.monospacedDigit())
-                        .foregroundStyle(.secondary)
-                        .frame(width: 32)
-                }
-            }
-        }
-    }
-
-    private var currentGradientConfig: GradientConfiguration {
-        if case .gradient(let config) = viewModel.configuration.foregroundStyle {
-            return config
-        }
-        return .purpleViolet
-    }
-
-    private var currentGradientType: GradientConfiguration.GradientType {
-        currentGradientConfig.type
-    }
-
-    private func updateGradientType(_ type: GradientConfiguration.GradientType) {
-        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
-            config.type = type
-            viewModel.configuration.foregroundStyle = .gradient(config)
-        }
-    }
-
-    private func updateGradientStartColor(_ color: SerializableColor) {
-        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
-            config.startColor = color
-            viewModel.configuration.foregroundStyle = .gradient(config)
-        }
-    }
-
-    private func updateGradientEndColor(_ color: SerializableColor) {
-        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
-            config.endColor = color
-            viewModel.configuration.foregroundStyle = .gradient(config)
-        }
-    }
-
-    private func updateGradientAngle(_ angle: Double) {
-        if case .gradient(var config) = viewModel.configuration.foregroundStyle {
-            config.angle = angle
-            viewModel.configuration.foregroundStyle = .gradient(config)
-        }
-    }
-
-    private func isGradientSelected(_ preset: GradientConfiguration) -> Bool {
-        if case .gradient(let current) = viewModel.configuration.foregroundStyle {
-            return current.startColor == preset.startColor && current.endColor == preset.endColor
-        }
-        return false
-    }
-
-    // MARK: - Compact Roundness Section
-
-    private var compactRoundnessSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text(String(localized: "shape.title", defaultValue: "Shape"))
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
-
-            presetRow(
-                label: String(localized: "roundness.modules", defaultValue: "Modules"),
-                presets: roundnessPresets,
-                value: viewModel.configuration.roundness,
-                formatValue: { "\(Int($0 * 100))%" },
-                onChange: { value in
-                    viewModel.configuration.roundness = value
-                }
-            )
-
-            eyeStyleRow
-
-            presetRow(
-                label: String(localized: "eye.size.label", defaultValue: "Eye Size"),
-                presets: eyeSizePresets,
-                value: viewModel.configuration.eyeScale,
-                formatValue: { "\(Int($0 * 100))%" },
-                onChange: { value in
-                    viewModel.configuration.eyeScale = value
-                }
-            )
-        }
-    }
-
-    // Eye shape picker (Square / Rounded free, Dot / Leaf Pro).
-    private var eyeStyleRow: some View {
-        HStack(spacing: 8) {
-            Text(String(localized: "eye.style.label", defaultValue: "Eyes"))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .frame(width: 54, alignment: .leading)
-
-            ForEach(QRCodeConfiguration.EyeStyle.allCases, id: \.self) { eyeStyle in
-                let locked = eyeStyle.isPro && !purchaseManager.isPro
-                let selected = viewModel.configuration.eyeStyle == eyeStyle
-                Button {
-                    if locked { showEyeStylePaywall = true }
-                    else { viewModel.configuration.eyeStyle = eyeStyle }
-                } label: {
-                    HStack(spacing: 3) {
-                        Text(eyeStyle.displayName).font(.caption2)
-                        if locked {
-                            Image(systemName: "lock.fill").font(.system(size: 8))
-                        }
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        Capsule().fill(selected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
-                    )
-                    .overlay(
-                        Capsule().strokeBorder(selected ? Color.accentColor : Color.clear, lineWidth: 1)
-                    )
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(selected ? .primary : .secondary)
-            }
-        }
-        .sheet(isPresented: $showEyeStylePaywall) {
-            PaywallView(feature: .eyeStyles)
-        }
-    }
-
-    @ViewBuilder
-    private func presetRow(
-        label: String,
-        presets: [(label: String, value: CGFloat)],
-        value: CGFloat,
-        formatValue: (CGFloat) -> String,
-        onChange: @escaping (CGFloat) -> Void
-    ) -> some View {
-        HStack(spacing: 12) {
-            Text(label)
-                .font(.caption2.weight(.medium))
-                .foregroundStyle(.secondary)
-                .frame(width: 72, alignment: .leading)
-
-            HStack(spacing: 6) {
-                ForEach(presets, id: \.value) { preset in
-                    Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            onChange(preset.value)
-                        }
-                    } label: {
-                        Text(preset.label)
-                            .font(.caption2)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(
-                                Capsule()
-                                    .fill(isPresetSelected(value, preset: preset.value)
-                                          ? Color.accentColor.opacity(0.2)
-                                          : Color.secondary.opacity(0.1))
-                            )
-                            .overlay(
-                                Capsule()
-                                    .strokeBorder(
-                                        isPresetSelected(value, preset: preset.value)
-                                            ? Color.accentColor : Color.clear,
-                                        lineWidth: 1
-                                    )
-                            )
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(
-                        isPresetSelected(value, preset: preset.value) ? .primary : .secondary
-                    )
-                }
-            }
-
-            #if os(macOS)
-            Spacer()
-
-            Text(formatValue(value))
-                .font(.caption2.monospacedDigit())
-                .foregroundStyle(.secondary)
-                .frame(width: 36, alignment: .trailing)
-            #endif
-        }
-    }
-
-    private var roundnessPresets: [(label: String, value: CGFloat)] {
-        [
-            (String(localized: "roundness.sharp", defaultValue: "Sharp"), 0),
-            (String(localized: "roundness.slight", defaultValue: "Slight"), 0.3),
-            (String(localized: "roundness.rounded", defaultValue: "Rounded"), 0.6),
-            (String(localized: "roundness.circular", defaultValue: "Circular"), 1.0)
-        ]
-    }
-
-    private var eyeSizePresets: [(label: String, value: CGFloat)] {
-        [
-            (String(localized: "eye.size.compact", defaultValue: "Compact"), 0.75),
-            (String(localized: "eye.size.medium", defaultValue: "Medium"), 0.9),
-            (String(localized: "eye.size.full", defaultValue: "Full"), 1.0)
-        ]
-    }
-
-    private func isPresetSelected(_ current: CGFloat, preset: CGFloat) -> Bool {
-        abs(current - preset) < 0.05
-    }
-
-    // MARK: - Compact Background Section
-
-    private var compactBackgroundSection: some View {
-        HStack {
-            Text(String(localized: "customization.background", defaultValue: "Background"))
-                .font(.caption.weight(.medium))
-                .foregroundStyle(.secondary)
-
-            Spacer()
-
-            HStack(spacing: 8) {
-                CompactBackgroundButton(
-                    type: .white,
-                    isSelected: viewModel.configuration.backgroundType == .white
-                ) {
-                    viewModel.configuration.backgroundType = .white
-                }
-
-                CompactBackgroundButton(
-                    type: .transparent,
-                    isSelected: viewModel.configuration.backgroundType == .transparent
-                ) {
-                    viewModel.configuration.backgroundType = .transparent
-                }
-
-                // Logo cutout option - only show when logo is present and user is Pro
-                if purchaseManager.isPro && viewModel.configuration.logoData != nil {
-                    CompactBackgroundButton(
-                        type: .transparentWithLogoCutout,
-                        isSelected: viewModel.configuration.backgroundType == .transparentWithLogoCutout
-                    ) {
-                        viewModel.configuration.backgroundType = .transparentWithLogoCutout
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - Compact Logo Section
-
-    private var compactLogoSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(String(localized: "logo.title", defaultValue: "Logo"))
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
-
-                if !purchaseManager.isPro {
-                    ProBadge()
-                }
-
-                Spacer()
-
-                if purchaseManager.isPro && viewModel.configuration.logoData != nil {
-                    Button(role: .destructive) {
-                        withAnimation {
-                            viewModel.configuration.logoData = nil
-                        }
-                    } label: {
-                        Label(
-                            String(localized: "logo.remove", defaultValue: "Remove"),
-                            systemImage: "trash"
-                        )
-                        .font(.caption)
-                    }
-                    .buttonStyle(.bordered)
-                    .controlSize(.small)
-                }
-            }
-
-            if purchaseManager.isPro {
-                CompactLogoDropZone(logoData: $viewModel.configuration.logoData)
-            } else {
-                CompactProLockedButton(feature: .logoEmbedding)
-            }
-        }
-    }
-
-    // MARK: - Compact Caption Section
-
-    private var compactCaptionSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(String(localized: "caption.title", defaultValue: "Caption"))
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
-
-                Spacer()
-
-                Toggle("", isOn: $viewModel.configuration.showCaption)
-                    .labelsHidden()
-                    .toggleStyle(.switch)
-                    .controlSize(.small)
-            }
-
-            if viewModel.configuration.showCaption {
-                let autoCaption = viewModel.currentInput.flatMap { CaptionGenerator.defaultCaption(for: $0) } ?? ""
-
-                TextField(
-                    autoCaption,
-                    text: Binding(
-                        get: { viewModel.configuration.captionText ?? "" },
-                        set: { viewModel.configuration.captionText = $0.isEmpty ? nil : $0 }
-                    )
-                )
-                .font(.caption)
-                .textFieldStyle(.roundedBorder)
-
-                // Size selector
-                HStack(spacing: 8) {
-                    Text(String(localized: "caption.size", defaultValue: "Size"))
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-
-                    ForEach(QRCodeConfiguration.CaptionSize.allCases, id: \.self) { size in
-                        Button {
-                            viewModel.configuration.captionSize = size
-                        } label: {
-                            Text(size.displayName)
-                                .font(.caption2)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    Capsule()
-                                        .fill(viewModel.configuration.captionSize == size
-                                              ? Color.accentColor.opacity(0.2)
-                                              : Color.secondary.opacity(0.1))
-                                )
-                                .overlay(
-                                    Capsule()
-                                        .strokeBorder(viewModel.configuration.captionSize == size
-                                                      ? Color.accentColor : Color.clear, lineWidth: 1)
-                                )
-                        }
-                        .buttonStyle(.plain)
-                        .foregroundStyle(viewModel.configuration.captionSize == size ? .primary : .secondary)
-                    }
-                }
-
-                // Fit-to-width toggle: shrink the caption so any text fits
-                // the space under the QR code instead of being truncated.
-                HStack {
-                    VStack(alignment: .leading, spacing: 1) {
-                        Text(String(localized: "caption.fitToWidth", defaultValue: "Fit to width"))
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                        Text(String(localized: "caption.fitToWidth.hint", defaultValue: "Shrink text so it always fits"))
-                            .font(.caption2)
-                            .foregroundStyle(.tertiary)
-                    }
-
-                    Spacer()
-
-                    Toggle("", isOn: $viewModel.configuration.captionFitToWidth)
-                        .labelsHidden()
-                        .toggleStyle(.switch)
-                        .controlSize(.small)
-                }
-            }
-        }
-    }
-
-    private func platformImage(from data: Data) -> Image? {
-        #if os(macOS)
-        guard let nsImage = NSImage(data: data) else { return nil }
-        return Image(nsImage: nsImage)
-        #else
-        guard let uiImage = UIImage(data: data) else { return nil }
-        return Image(uiImage: uiImage)
-        #endif
-    }
-
-
-}
-
-// MARK: - Compact Color Swatch
-
-struct CompactColorSwatch: View {
-    let color: SerializableColor
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            ZStack {
-                Circle()
-                    .fill(color.color)
-                    .frame(width: 32, height: 32)
-
-                if isSelected {
-                    Circle()
-                        .strokeBorder(.white, lineWidth: 2)
-                        .frame(width: 32, height: 32)
-
-                    Image(systemName: "checkmark")
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(.white)
-                        .shadow(radius: 1)
-                }
-            }
-        }
-        .buttonStyle(.plain)
-        .scaleEffect(isSelected ? 1.1 : 1.0)
-        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
-    }
-}
-
-// MARK: - Compact Gradient Swatch
-
-struct CompactGradientSwatch: View {
-    let gradient: GradientConfiguration
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(
-                    LinearGradient(
-                        colors: [gradient.startColor.color, gradient.endColor.color],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: 44, height: 32)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .strokeBorder(isSelected ? .white : .clear, lineWidth: 2)
-                )
-        }
-        .buttonStyle(.plain)
-        .scaleEffect(isSelected ? 1.05 : 1.0)
-        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
-    }
-}
-
-// MARK: - Compact Gradient Type Button
-
-struct CompactGradientTypeButton: View {
-    let type: GradientConfiguration.GradientType
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            VStack(spacing: 2) {
-                Image(systemName: type.iconName)
-                    .font(.caption)
-
-                Text(type.displayName)
-                    .font(.system(size: 9))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 6)
-            .background(
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(isSelected ? .primary : .secondary)
-    }
-}
-
-// MARK: - Compact Background Button
-
-struct CompactBackgroundButton: View {
-    let type: BackgroundType
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 4) {
-                ZStack {
-                    switch type {
-                    case .white:
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(.white)
-                            .frame(width: 16, height: 16)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .strokeBorder(.secondary.opacity(0.3), lineWidth: 0.5)
-                            )
-                    case .transparent:
-                        // Mini checkerboard
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(.secondary.opacity(0.2))
-                            .frame(width: 16, height: 16)
-                    case .transparentWithLogoCutout:
-                        // Checkerboard with white center (logo cutout)
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(.secondary.opacity(0.2))
-                                .frame(width: 16, height: 16)
-                            RoundedRectangle(cornerRadius: 2)
-                                .fill(.white)
-                                .frame(width: 8, height: 8)
-                        }
-                    }
-                }
-
-                Text(type.displayName)
-                    .font(.caption2)
-            }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(
-                Capsule()
-                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
-            )
-            .overlay(
-                Capsule()
-                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(isSelected ? .primary : .secondary)
+    @MainActor
+    private func recordHistoryIfEligible() {
+        guard purchaseManager.isPro else { return }
+        viewModel.recordHistory(in: modelContext)
     }
 }
 
@@ -1564,134 +758,6 @@ struct CompactLogoDropZone: View {
         guard let uiImage = UIImage(data: data) else { return nil }
         return Image(uiImage: uiImage)
         #endif
-    }
-}
-
-// MARK: - Compact Pro Locked Button
-
-struct CompactProLockedButton: View {
-    let feature: ProFeature
-    @State private var showPaywall = false
-
-    var body: some View {
-        Button {
-            showPaywall = true
-        } label: {
-            HStack(spacing: 4) {
-                Image(systemName: "lock.fill")
-                    .font(.caption2)
-                Text(String(localized: "action.unlock", defaultValue: "Unlock"))
-                    .font(.caption)
-            }
-        }
-        .buttonStyle(.bordered)
-        .controlSize(.small)
-        .tint(.secondary)
-        .sheet(isPresented: $showPaywall) {
-            PaywallView(feature: feature)
-        }
-    }
-}
-
-// MARK: - Inline Size Button
-
-struct InlineSizeButton: View {
-    let size: ExportSize
-    let isSelected: Bool
-    let isLocked: Bool
-    let action: () -> Void
-
-    @State private var showPaywall = false
-
-    var body: some View {
-        Button {
-            if isLocked {
-                showPaywall = true
-            } else {
-                action()
-            }
-        } label: {
-            HStack(spacing: 4) {
-                Text(shortDisplayName)
-                    .font(.caption2.monospacedDigit())
-
-                if isLocked {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 8))
-                }
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(
-                Capsule()
-                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
-            )
-            .overlay(
-                Capsule()
-                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(isLocked ? .secondary : (isSelected ? .primary : .secondary))
-        .sheet(isPresented: $showPaywall) {
-            PaywallView(feature: .unlimitedExportSize)
-        }
-    }
-
-    private var shortDisplayName: String {
-        "\(size.width)"
-    }
-}
-
-// MARK: - Inline Format Button
-
-struct InlineFormatButton: View {
-    let format: ExportFormat
-    let isSelected: Bool
-    let isLocked: Bool
-    let action: () -> Void
-
-    @State private var showPaywall = false
-
-    var body: some View {
-        Button {
-            if isLocked {
-                showPaywall = true
-            } else {
-                action()
-            }
-        } label: {
-            HStack(spacing: 4) {
-                Text(format.displayName)
-                    .font(.caption2.weight(.medium))
-
-                if format.isVector {
-                    Text("•")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
-
-                if isLocked {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 8))
-                }
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(
-                Capsule()
-                    .fill(isSelected ? Color.accentColor.opacity(0.2) : Color.secondary.opacity(0.1))
-            )
-            .overlay(
-                Capsule()
-                    .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(isLocked ? .secondary : (isSelected ? .primary : .secondary))
-        .sheet(isPresented: $showPaywall) {
-            PaywallView(feature: .vectorExport)
-        }
     }
 }
 

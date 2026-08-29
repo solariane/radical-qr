@@ -317,3 +317,8 @@ enum ProFeature: CaseIterable {
         false
     }
 }
+
+extension ProFeature: Identifiable {
+    /// Stable, non-localized identity so a feature can drive `sheet(item:)`.
+    var id: String { String(describing: self) }
+}
