@@ -8,6 +8,11 @@ import UniformTypeIdentifiers
 /// one large target that states what the app takes, the field itself, and the two
 /// ways content actually arrives. There is no "scan a photo" entry, because the
 /// app generates codes rather than reading them.
+///
+/// It is deliberately identical on both platforms. macOS used to answer the same
+/// moment with a different, white-on-violet drop zone that turned invisible once
+/// this card put a light surface behind it; dropping there is handled by the
+/// window-wide target in `GeneratorView`, so the card can stay one design.
 struct LaunchCard: View {
     @Binding var text: String
     var summaryOverride: InputSummary?
@@ -21,21 +26,8 @@ struct LaunchCard: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            #if os(macOS)
-            // macOS already has a real, NSView-backed drop target inside
-            // InputZone; the card only frames it.
-            InputZone(
-                text: $text,
-                summaryOverride: summaryOverride,
-                onFileSelected: onFileSelected,
-                placeholder: placeholder,
-                textFieldAnchorID: textFieldAnchorID
-            )
-            #else
             dropTarget
             field
-            #endif
-
             entryRow
         }
         .padding(18)
@@ -56,8 +48,8 @@ struct LaunchCard: View {
 
     // MARK: - Drop target
 
-    #if !os(macOS)
-    /// Tapping anywhere on it starts typing; dropping on it fills the field.
+    /// Tapping anywhere on it starts typing; on iOS, dropping on it fills the
+    /// field. On macOS the window-wide drop target catches the drag instead.
     private var dropTarget: some View {
         Button {
             isFieldFocused = true
@@ -97,9 +89,11 @@ struct LaunchCard: View {
             )
         }
         .buttonStyle(.plain)
+        #if !os(macOS)
         .onDrop(of: [.url, .text, .plainText, .fileURL], isTargeted: $isTargeted) { providers in
             handleDrop(providers)
         }
+        #endif
         .animation(.easeInOut(duration: 0.18), value: isTargeted)
     }
 
@@ -111,10 +105,12 @@ struct LaunchCard: View {
             placeholder: placeholder,
             textFieldAnchorID: textFieldAnchorID,
             isEmbedded: true,
+            showsDropZone: false,
             focusBinding: $isFieldFocused
         )
     }
 
+    #if !os(macOS)
     private func handleDrop(_ providers: [NSItemProvider]) -> Bool {
         guard let provider = providers.first else { return false }
 
@@ -148,7 +144,8 @@ struct LaunchCard: View {
 
     /// The two ways content actually reaches the app. Both are capsules because
     /// the system `PasteButton` is one and will not be reshaped — matching it is
-    /// cheaper than fighting it.
+    /// cheaper than fighting it. "Browse files" is the app's own existing wording
+    /// for this, reused rather than invented a second time.
     private var entryRow: some View {
         HStack(spacing: 12) {
             pasteEntry
@@ -157,9 +154,11 @@ struct LaunchCard: View {
                 showFilePicker = true
             } label: {
                 Label(
-                    String(localized: "launch.file", defaultValue: "File"),
+                    String(localized: "dropZone.browse", defaultValue: "Browse Files"),
                     systemImage: "folder"
                 )
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
             }
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
@@ -173,8 +172,7 @@ struct LaunchCard: View {
     /// `UIPasteboard`: reading the clipboard ourselves raises the "would like to
     /// paste" prompt every time, which is a poor greeting for an app whose whole
     /// pitch is that it takes nothing. Tapping the system button *is* the
-    /// consent, so the paste happens silently and the app never sees a clipboard
-    /// it wasn't handed.
+    /// consent, so nothing is read that was not handed over.
     @ViewBuilder
     private var pasteEntry: some View {
         #if os(macOS)
@@ -185,6 +183,7 @@ struct LaunchCard: View {
                 String(localized: "launch.paste", defaultValue: "Paste"),
                 systemImage: "doc.on.clipboard"
             )
+            .lineLimit(1)
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.capsule)

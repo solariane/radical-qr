@@ -269,7 +269,10 @@ struct GeneratorView: View {
                 viewModel.handleFileDrop(url)
             },
             placeholder: String(localized: "generator.input.placeholder", defaultValue: "Enter URL, text, or drop a file..."),
-            textFieldAnchorID: AnyHashable(inputAnchorID)
+            textFieldAnchorID: AnyHashable(inputAnchorID),
+            // Re-editing existing content: just the field. The launch card owns
+            // the drop target, and the window-wide one still catches a drag here.
+            showsDropZone: false
         )
     }
 
