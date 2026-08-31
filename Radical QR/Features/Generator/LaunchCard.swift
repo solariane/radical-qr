@@ -31,6 +31,9 @@ struct LaunchCard: View {
 
     @State private var showFilePicker = false
     @State private var showImagePicker = false
+    #if !os(macOS)
+    @State private var showScanner = false
+    #endif
     @State private var isTargeted = false
     @State private var decodeFailed = false
     @FocusState private var isFieldFocused: Bool
@@ -79,6 +82,17 @@ struct LaunchCard: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { pasteboardGeneration += 1 }
         }
+        #if !os(macOS)
+        .fullScreenCover(isPresented: $showScanner) {
+            CodeScannerSheet(
+                onFound: { payload in
+                    showScanner = false
+                    withAnimation(.easeOut(duration: 0.2)) { text = payload }
+                },
+                onCancel: { showScanner = false }
+            )
+        }
+        #endif
         .alert(
             String(localized: "duplicate.notFound", defaultValue: "No QR code in that picture"),
             isPresented: $decodeFailed
@@ -231,20 +245,52 @@ struct LaunchCard: View {
     /// picker runs out of process, so this costs no photo-library permission —
     /// and there is no camera here on purpose: a live scanner would need one,
     /// for an app that generates codes rather than reading them.
+    @ViewBuilder
     private var duplicateEntry: some View {
-        Button {
-            showImagePicker = true
-        } label: {
-            Label(
-                String(localized: "launch.duplicate", defaultValue: "Duplicate"),
-                systemImage: "qrcode.viewfinder"
-            )
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
+        #if os(macOS)
+        Button { showImagePicker = true } label: { duplicateLabel }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+            .tint(Color.accentColor)
+        #else
+        if CodeScannerView.isSupported {
+            Menu {
+                Button {
+                    showScanner = true
+                } label: {
+                    Label(String(localized: "duplicate.camera", defaultValue: "Camera"), systemImage: "camera")
+                }
+                Button {
+                    showImagePicker = true
+                } label: {
+                    Label(
+                        String(localized: "duplicate.library", defaultValue: "Photo Library"),
+                        systemImage: "photo.on.rectangle"
+                    )
+                }
+            } label: {
+                duplicateLabel
+            }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.capsule)
+            .tint(Color.accentColor)
+        } else {
+            // Pre-A12, or camera restricted: one destination, so no menu.
+            Button { showImagePicker = true } label: { duplicateLabel }
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+                .tint(Color.accentColor)
         }
-        .buttonStyle(.borderedProminent)
-        .buttonBorderShape(.capsule)
-        .tint(Color.accentColor)
+        #endif
+    }
+
+    private var duplicateLabel: some View {
+        Label(
+            String(localized: "launch.duplicate", defaultValue: "Duplicate"),
+            systemImage: "qrcode.viewfinder"
+        )
+        .lineLimit(1)
+        .minimumScaleFactor(0.8)
     }
 
     /// On iOS this is the system `PasteButton`, not a button of ours reading

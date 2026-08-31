@@ -1,204 +1,138 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "CFBundleDisplayName" : {
-      "comment" : "Bundle display name",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleDisplayName": {
+      "comment": "Bundle display name",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Radical QR"
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Radical QR"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         }
       }
     },
-    "CFBundleName" : {
-      "comment" : "Bundle name",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+    "CFBundleName": {
+      "comment": "Bundle name",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Radical QR"
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Radical QR"
           }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Radical QR"
-          }
-        }
-      }
-    },
-    "NSPhotoLibraryUsageDescription" : {
-      "comment" : "Privacy - Photo Library Usage Description",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "حدد الصور لتضمينها كشعارات في رموز QR الخاصة بك."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wählen Sie Bilder aus, die Sie als Logos in Ihre QR-Codes einbetten möchten."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select images to embed as logos in your QR codes."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selecciona las imágenes que deseas incrustar como logotipos en tus códigos QR."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionnez les images à intégrer comme logos dans vos codes QR."
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "अपने QR कोड में लोगो के रूप में एम्बेड करने के लिए छवियाँ चुनें।"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleziona le immagini da incorporare come loghi nei tuoi codici QR."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "QRコードにロゴとして埋め込む画像を選択してください。"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selecione imagens para incorporar como logótipos nos seus códigos QR."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "选择图像，作为徽标嵌入 QR 代码。"
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Radical QR"
           }
         }
       }
     }
   },
-  "version" : "1.1"
+  "version": "1.1"
 }
