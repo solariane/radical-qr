@@ -264,7 +264,7 @@ struct LaunchCard: View {
                     showImagePicker = true
                 } label: {
                     Label(
-                        String(localized: "duplicate.library", defaultValue: "Photo Library"),
+                        String(localized: "duplicate.library", defaultValue: "Photo Library", comment: "Menu item opening the system photo library. Use the platform's own name for it."),
                         systemImage: "photo.on.rectangle"
                     )
                 }
@@ -286,7 +286,7 @@ struct LaunchCard: View {
 
     private var duplicateLabel: some View {
         Label(
-            String(localized: "launch.duplicate", defaultValue: "Duplicate"),
+            String(localized: "launch.duplicate", defaultValue: "Duplicate", comment: "Button label. Verb: read an existing QR code so the user can recreate it."),
             systemImage: "qrcode.viewfinder"
         )
         .lineLimit(1)
@@ -305,7 +305,7 @@ struct LaunchCard: View {
             pasteFromClipboard()
         } label: {
             Label(
-                String(localized: "launch.paste", defaultValue: "Paste"),
+                String(localized: "launch.paste", defaultValue: "Paste", comment: "Button label. Verb: paste the clipboard contents."),
                 systemImage: "doc.on.clipboard"
             )
             .lineLimit(1)

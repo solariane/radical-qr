@@ -111,18 +111,18 @@ struct ShapeGroupView: View {
     // Spoken names only — nothing here is ever drawn on screen.
     private static func roundnessName(_ step: CGFloat) -> String {
         switch step {
-        case 0: String(localized: "roundness.sharp", defaultValue: "Sharp")
-        case 0.3: String(localized: "roundness.slight", defaultValue: "Slight")
-        case 0.6: String(localized: "roundness.rounded", defaultValue: "Rounded")
-        default: String(localized: "roundness.circular", defaultValue: "Circular")
+        case 0: String(localized: "roundness.sharp", defaultValue: "Square corners", comment: "Corner shape of the QR squares: perfectly square corners, no rounding.")
+        case 0.3: String(localized: "roundness.slight", defaultValue: "Slightly rounded", comment: "Corner shape of the QR squares: barely rounded corners.")
+        case 0.6: String(localized: "roundness.rounded", defaultValue: "Rounded corners", comment: "Corner shape of the QR squares: clearly rounded corners.")
+        default: String(localized: "roundness.circular", defaultValue: "Fully round", comment: "Corner shape of the QR squares: fully round, each square becomes a circle.")
         }
     }
 
     private static func eyeScaleName(_ step: CGFloat) -> String {
         switch step {
-        case 0.75: String(localized: "eye.size.compact", defaultValue: "Compact")
-        case 0.9: String(localized: "eye.size.medium", defaultValue: "Medium")
-        default: String(localized: "eye.size.full", defaultValue: "Full")
+        case 0.75: String(localized: "eye.size.compact", defaultValue: "Compact", comment: "Size of the three corner markers of a QR code: the smallest of three options.")
+        case 0.9: String(localized: "eye.size.medium", defaultValue: "Medium", comment: "Size of the three corner markers of a QR code: the middle of three options.")
+        default: String(localized: "eye.size.full", defaultValue: "Full size", comment: "Size of the three corner markers of a QR code: the largest, filling its slot.")
         }
     }
 }

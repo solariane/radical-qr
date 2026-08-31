@@ -14,8 +14,8 @@ struct CustomizationPanel: View {
 
         var displayName: String {
             switch self {
-            case .solid: String(localized: "style.solid", defaultValue: "Solid")
-            case .gradient: String(localized: "style.gradient", defaultValue: "Gradient")
+            case .solid: String(localized: "style.solid", defaultValue: "Solid color", comment: "A single flat colour, as opposed to a gradient. Not solid as in sturdy or solid matter.")
+            case .gradient: String(localized: "style.gradient", defaultValue: "Gradient", comment: "A colour gradient, two colours blending. Not a slope or a mathematical gradient.")
             }
         }
     }

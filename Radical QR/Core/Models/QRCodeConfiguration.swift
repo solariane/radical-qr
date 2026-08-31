@@ -23,10 +23,10 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
 
         var displayName: String {
             switch self {
-            case .square:  String(localized: "eye.style.square",  defaultValue: "Square")
-            case .rounded: String(localized: "eye.style.rounded", defaultValue: "Rounded")
-            case .dot:     String(localized: "eye.style.dot",     defaultValue: "Dot")
-            case .leaf:    String(localized: "eye.style.leaf",    defaultValue: "Leaf")
+            case .square:  String(localized: "eye.style.square", defaultValue: "Square", comment: "Shape of the three corner markers of a QR code: a square. The geometric shape.")
+            case .rounded: String(localized: "eye.style.rounded", defaultValue: "Rounded", comment: "Shape of the three corner markers of a QR code: a square with rounded corners.")
+            case .dot:     String(localized: "eye.style.dot", defaultValue: "Dot", comment: "Shape of the three corner markers of a QR code: a circle.")
+            case .leaf:    String(localized: "eye.style.leaf", defaultValue: "Leaf", comment: "Shape of the three corner markers of a QR code: a petal, three corners round and one sharp.")
             }
         }
 
@@ -216,9 +216,9 @@ enum BackgroundType: Codable, Hashable, Sendable {
     var displayName: String {
         switch self {
         case .white:
-            String(localized: "background.white", defaultValue: "White")
+            String(localized: "background.white", defaultValue: "White", comment: "Background of the generated image: opaque white.")
         case .transparent:
-            String(localized: "background.transparent", defaultValue: "Clear")
+            String(localized: "background.transparent", defaultValue: "Clear", comment: "Background of the generated image: none, see-through.")
         case .transparentWithLogoCutout:
             String(localized: "background.logoCutout", defaultValue: "Logo Cutout")
         }

@@ -34,10 +34,10 @@ struct RoundnessSlider: View {
 
             // Quick presets
             HStack(spacing: 8) {
-                RoundnessPresetButton(label: String(localized: "roundness.sharp", defaultValue: "Sharp"), value: 0, current: $roundness)
-                RoundnessPresetButton(label: String(localized: "roundness.slight", defaultValue: "Slight"), value: 0.3, current: $roundness)
-                RoundnessPresetButton(label: String(localized: "roundness.rounded", defaultValue: "Rounded"), value: 0.6, current: $roundness)
-                RoundnessPresetButton(label: String(localized: "roundness.circular", defaultValue: "Circular"), value: 1.0, current: $roundness)
+                RoundnessPresetButton(label: String(localized: "roundness.sharp", defaultValue: "Square corners", comment: "Corner shape of the QR squares: perfectly square corners, no rounding."), value: 0, current: $roundness)
+                RoundnessPresetButton(label: String(localized: "roundness.slight", defaultValue: "Slightly rounded", comment: "Corner shape of the QR squares: barely rounded corners."), value: 0.3, current: $roundness)
+                RoundnessPresetButton(label: String(localized: "roundness.rounded", defaultValue: "Rounded corners", comment: "Corner shape of the QR squares: clearly rounded corners."), value: 0.6, current: $roundness)
+                RoundnessPresetButton(label: String(localized: "roundness.circular", defaultValue: "Fully round", comment: "Corner shape of the QR squares: fully round, each square becomes a circle."), value: 1.0, current: $roundness)
             }
         }
     }

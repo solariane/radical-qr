@@ -102,7 +102,7 @@ async function deeplSupportedTargets(apiBase, authKey) {
   return new Set(json.map(x => x.language));
 }
 
-async function deeplTranslateBatch(apiBase, authKey, texts, targetLang, sourceLang) {
+async function deeplTranslateBatch(apiBase, authKey, texts, targetLang, sourceLang, context) {
   // Use tag_handling=xml by wrapping each source in <t>...</t> (well-formed)
   const url = `${apiBase.replace(/\/$/, "")}/v2/translate`;
   const body = new URLSearchParams();
@@ -113,6 +113,10 @@ async function deeplTranslateBatch(apiBase, authKey, texts, targetLang, sourceLa
   body.set("tag_handling", "xml");
   body.set("ignore_tags", IGNORE_TAGS);
   body.set("preserve_formatting", "1");
+  // The Xcode comment, when there is one. A bare "Duplicate" came back as a noun
+  // in all nine languages ("Duplikat", "En double", 重复项) because nothing said
+  // it labels an action; context is what disambiguates a one-word button.
+  if (context) body.set("context", context);
 
   const res = await fetch(url, {
     method: "POST",
@@ -193,6 +197,7 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
   if (!transUnits.length) return { filePath, translated: 0, skipped: 0 };
 
   const sources = [];
+  const contexts = [];
   const unitsNeeding = [];
 
   for (const tu of transUnits) {
@@ -206,22 +211,38 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
     const srcInner = innerXml(src).trim();
     if (!srcInner) continue;
 
+    // Xcode writes the string's comment into <note>; DeepL takes it as context.
+    const note = select("x:note", tu)[0];
+    const context = note?.textContent?.trim() || "";
+
     sources.push(srcInner);
+    contexts.push(context);
     unitsNeeding.push(tu);
   }
 
   if (!sources.length) return { filePath, translated: 0, skipped: transUnits.length };
 
-  // DeepL batches: chunk for safety
+  // DeepL takes a single context per request, so strings are grouped by the
+  // context they carry — commented ones travel with their note, the rest batch
+  // together as before.
+  const groups = new Map();
+  for (let i = 0; i < sources.length; i++) {
+    const key = contexts[i];
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(i);
+  }
+
   const chunkSize = 40;
   let translatedCount = 0;
 
-  for (let i = 0; i < sources.length; i += chunkSize) {
-    const chunk = sources.slice(i, i + chunkSize);
-    const outs = await deeplTranslateBatch(apiBase, authKey, chunk, targetLang, sourceLang);
+  for (const [context, indices] of groups) {
+    for (let start = 0; start < indices.length; start += chunkSize) {
+    const slice = indices.slice(start, start + chunkSize);
+    const chunk = slice.map(i => sources[i]);
+    const outs = await deeplTranslateBatch(apiBase, authKey, chunk, targetLang, sourceLang, context);
 
     for (let j = 0; j < outs.length; j++) {
-      const tu = unitsNeeding[i + j];
+      const tu = unitsNeeding[slice[j]];
       const tgtExisting = select("x:target", tu)[0];
 
       let tgt = tgtExisting;
@@ -233,6 +254,7 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
       tgt.setAttribute("state", "translated");
       replaceChildrenFromXml(doc, tgt, outs[j]);
       translatedCount++;
+    }
     }
   }
 
