@@ -723,10 +723,13 @@ struct CompactLogoDropZone: View {
     private func loadSelectedPhoto(_ item: PhotosPickerItem?) async {
         guard let item else { return }
 
+        // PickedImage, not Data: Photos refuses a plain Data transfer, and the
+        // error used to be swallowed here — picking a logo from the library
+        // simply did nothing.
         do {
-            if let data = try await item.loadTransferable(type: Data.self) {
+            if let picked = try await item.loadTransferable(type: PickedImage.self) {
                 await MainActor.run {
-                    self.logoData = processImageData(data)
+                    self.logoData = processImageData(picked.data)
                 }
             }
         } catch {

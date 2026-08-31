@@ -1,13 +1,16 @@
 import SwiftUI
 import UniformTypeIdentifiers
+#if !os(macOS)
+import PhotosUI
+#endif
 
 /// The screen you meet when the app opens with nothing to encode.
 ///
 /// It used to be a field, two lines of help, and two thirds of empty gradient —
 /// the app's first impression saying almost nothing. This gives the space a job:
-/// one large target that states what the app takes, the field itself, and the two
-/// ways content actually arrives. There is no "scan a photo" entry, because the
-/// app generates codes rather than reading them.
+/// one large target that states what the app takes, the field itself, and the
+/// three ways content actually arrives: the clipboard, an existing code in a
+/// picture, and a file.
 ///
 /// It is deliberately identical on both platforms. macOS used to answer the same
 /// moment with a different, white-on-violet drop zone that turned invisible once
@@ -21,8 +24,15 @@ struct LaunchCard: View {
     var textFieldAnchorID: AnyHashable?
 
     @State private var showFilePicker = false
+    @State private var showImagePicker = false
     @State private var isTargeted = false
+    @State private var decodeFailed = false
     @FocusState private var isFieldFocused: Bool
+    #if !os(macOS)
+    @State private var pickedPhoto: PhotosPickerItem?
+    #endif
+
+    private let decoder = QRCodeDecoder()
 
     var body: some View {
         VStack(spacing: 16) {
@@ -38,11 +48,38 @@ struct LaunchCard: View {
         )
         .fileImporter(
             isPresented: $showFilePicker,
-            allowedContentTypes: [.text, .plainText, .url, .data],
+            allowedContentTypes: [.text, .plainText, .url, .image, .data],
             allowsMultipleSelection: false
         ) { result in
             guard case .success(let urls) = result, let url = urls.first else { return }
-            onFileSelected(url)
+            open(url: url)
+        }
+        #if os(macOS)
+        .fileImporter(
+            isPresented: $showImagePicker,
+            allowedContentTypes: [.image],
+            allowsMultipleSelection: false
+        ) { result in
+            guard case .success(let urls) = result, let url = urls.first else { return }
+            duplicate(fromImageAt: url)
+        }
+        #else
+        .photosPicker(isPresented: $showImagePicker, selection: $pickedPhoto, matching: .images)
+        .onChange(of: pickedPhoto) { _, item in
+            guard let item else { return }
+            Task { await duplicate(from: item) }
+        }
+        #endif
+        .alert(
+            String(localized: "duplicate.notFound", defaultValue: "No QR code in that picture"),
+            isPresented: $decodeFailed
+        ) {
+            Button(String(localized: "error.dismiss", defaultValue: "OK"), role: .cancel) {}
+        } message: {
+            Text(String(
+                localized: "duplicate.notFound.detail",
+                defaultValue: "Try a sharper picture, or one where the whole code is visible."
+            ))
         }
     }
 
@@ -142,30 +179,65 @@ struct LaunchCard: View {
 
     // MARK: - Entry points
 
-    /// The two ways content actually reaches the app. Both are capsules because
+    /// The three ways content actually reaches the app. All are capsules because
     /// the system `PasteButton` is one and will not be reshaped — matching it is
-    /// cheaper than fighting it. "Browse files" is the app's own existing wording
-    /// for this, reused rather than invented a second time.
+    /// cheaper than fighting it. Three of them do not fit one phone-width row, so
+    /// the layout falls back to two. "Browse files" is the app's own existing
+    /// wording, reused rather than invented a second time.
     private var entryRow: some View {
-        HStack(spacing: 12) {
-            pasteEntry
-
-            Button {
-                showFilePicker = true
-            } label: {
-                Label(
-                    String(localized: "dropZone.browse", defaultValue: "Browse Files"),
-                    systemImage: "folder"
-                )
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                pasteEntry
+                duplicateEntry
+                browseEntry
             }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.capsule)
-            .controlSize(.large)
-            .tint(Color.accentColor)
+            VStack(spacing: 10) {
+                HStack(spacing: 12) {
+                    pasteEntry
+                    duplicateEntry
+                }
+                browseEntry
+            }
         }
         .frame(maxWidth: .infinity)
+    }
+
+    private var browseEntry: some View {
+        Button {
+            showFilePicker = true
+        } label: {
+            Label(
+                String(localized: "dropZone.browse", defaultValue: "Browse Files"),
+                systemImage: "folder"
+            )
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+        }
+        .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.capsule)
+        .controlSize(.large)
+        .tint(Color.accentColor)
+    }
+
+    /// Reads an existing code out of a picture so it can be restyled. The photo
+    /// picker runs out of process, so this costs no photo-library permission —
+    /// and there is no camera here on purpose: a live scanner would need one,
+    /// for an app that generates codes rather than reading them.
+    private var duplicateEntry: some View {
+        Button {
+            showImagePicker = true
+        } label: {
+            Label(
+                String(localized: "launch.duplicate", defaultValue: "Duplicate"),
+                systemImage: "qrcode.viewfinder"
+            )
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+        }
+        .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.capsule)
+        .controlSize(.large)
+        .tint(Color.accentColor)
     }
 
     /// On iOS this is the system `PasteButton`, not a button of ours reading
@@ -208,6 +280,50 @@ struct LaunchCard: View {
         guard let pasted = NSPasteboard.general.string(forType: .string),
               !pasted.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         withAnimation(.easeOut(duration: 0.2)) { text = pasted }
+    }
+    #endif
+
+    // MARK: - Opening what was chosen
+
+    /// Browsing accepts images too: a picture of a code is duplicated rather
+    /// than read as text, so one button does the right thing per file.
+    private func open(url: URL) {
+        let isImage = (try? url.resourceValues(forKeys: [.contentTypeKey]))?
+            .contentType?
+            .conforms(to: .image) ?? false
+
+        guard isImage else {
+            onFileSelected(url)
+            return
+        }
+        duplicate(fromImageAt: url)
+    }
+
+    private func duplicate(fromImageAt url: URL) {
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+
+        guard let data = try? Data(contentsOf: url),
+              let decoded = decoder.decode(imageData: data) else {
+            decodeFailed = true
+            return
+        }
+        withAnimation(.easeOut(duration: 0.2)) { text = decoded }
+    }
+
+    // MARK: - Duplicating from the photo library
+
+    #if !os(macOS)
+    private func duplicate(from item: PhotosPickerItem) async {
+        defer { pickedPhoto = nil }
+
+        let picked = try? await item.loadTransferable(type: PickedImage.self)
+
+        guard let picked, let decoded = decoder.decode(imageData: picked.data) else {
+            decodeFailed = true
+            return
+        }
+        withAnimation(.easeOut(duration: 0.2)) { text = decoded }
     }
     #endif
 }
