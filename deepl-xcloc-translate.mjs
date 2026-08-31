@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
 import xpath from "xpath";
@@ -19,6 +20,21 @@ function parseArgs(argv) {
   return args;
 }
 async function isDir(p){ try { return (await fs.stat(p)).isDirectory(); } catch { return false; } }
+
+/**
+ * Keys DeepL must not translate — see translation-manual-keys.json. The line is
+ * not length: "Camera" is one word and comes back right everywhere. What breaks
+ * is a word that is also a brand, a material, or a document.
+ */
+async function loadManualKeys(filePath) {
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    const parsed = JSON.parse(raw);
+    return new Map(Object.entries(parsed.keys || {}));
+  } catch {
+    return new Map(); // absent or unreadable: translate everything, as before
+  }
+}
 
 function normalizeBcp47(tag) {
   const t = tag.replace(/_/g, "-").trim();
@@ -185,7 +201,7 @@ function replaceChildrenFromXml(doc, parent, xmlFragment) {
   }
 }
 
-async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLang) {
+async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLang, manualKeys = new Map()) {
   const xml = await fs.readFile(filePath, "utf8");
   const doc = new DOMParser().parseFromString(xml, "application/xml");
 
@@ -199,10 +215,21 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
   const sources = [];
   const contexts = [];
   const unitsNeeding = [];
+  const manualPending = [];   // reserved keys with nothing to show yet
 
   for (const tu of transUnits) {
     const src = select("x:source", tu)[0];
     if (!src) continue;
+
+    const key = tu.getAttribute("id") || "";
+    const tgt0 = select("x:target", tu)[0];
+    if (manualKeys.has(key)) {
+      // Hands off — but say so if it would ship untranslated.
+      if (!(tgt0 && tgt0.textContent && tgt0.textContent.trim().length)) {
+        manualPending.push(key);
+      }
+      continue;
+    }
 
     const tgt = select("x:target", tu)[0];
     // If already has a target with content, skip (you can change behavior if you want overwrite)
@@ -220,7 +247,9 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
     unitsNeeding.push(tu);
   }
 
-  if (!sources.length) return { filePath, translated: 0, skipped: transUnits.length };
+  if (!sources.length) {
+    return { filePath, translated: 0, skipped: transUnits.length, manualPending };
+  }
 
   // DeepL takes a single context per request, so strings are grouped by the
   // context they carry — commented ones travel with their note, the rest batch
@@ -260,7 +289,12 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
 
   const outXml = new XMLSerializer().serializeToString(doc);
   await fs.writeFile(filePath, outXml, "utf8");
-  return { filePath, translated: translatedCount, skipped: transUnits.length - translatedCount };
+  return {
+    filePath,
+    translated: translatedCount,
+    skipped: transUnits.length - translatedCount,
+    manualPending,
+  };
 }
 
 async function main() {
@@ -282,6 +316,18 @@ async function main() {
 
   const supportedTargets = await deeplSupportedTargets(apiBase, authKey);
   const limit = pLimit(concurrency);
+
+  const manualKeysPath = args["manual-keys"]
+    ? path.resolve(args["manual-keys"])
+    // fileURLToPath, not URL.pathname: this repo lives under "qr app", and a
+    // percent-encoded space silently resolves to a directory that is not there.
+    : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "translation-manual-keys.json");
+  const manualKeys = await loadManualKeys(manualKeysPath);
+  if (manualKeys.size) {
+    console.error(`i ${manualKeys.size} key(s) reserved for hand translation (${path.basename(manualKeysPath)})`);
+  }
+  /** locale -> keys reserved but still empty there */
+  const pendingByLocale = new Map();
 
   if (!inplace) await fs.mkdir(outRoot, { recursive: true });
 
@@ -318,8 +364,16 @@ async function main() {
 
     for (const f of xliffs) {
       jobs.push(limit(async () => {
-        const r = await processXliffFile(f, apiBase, authKey, targetLang, sourceLang);
-        console.error(`  OK ${baseName}:${path.basename(f)} translated=${r.translated} skipped=${r.skipped}`);
+        const r = await processXliffFile(f, apiBase, authKey, targetLang, sourceLang, manualKeys);
+        const held = r.manualPending?.length
+          ? ` reserved-and-empty=${r.manualPending.length}`
+          : "";
+        console.error(`  OK ${baseName}:${path.basename(f)} translated=${r.translated} skipped=${r.skipped}${held}`);
+        if (r.manualPending?.length) {
+          const acc = pendingByLocale.get(baseName) || new Set();
+          r.manualPending.forEach(k => acc.add(k));
+          pendingByLocale.set(baseName, acc);
+        }
       }));
     }
   }
@@ -330,6 +384,24 @@ async function main() {
   }
 
   await Promise.all(jobs);
+
+  // A reserved key with no translation ships in English, silently. Say it out
+  // loud, per language, so the gap is a decision rather than an accident.
+  if (pendingByLocale.size) {
+    console.error("");
+    console.error("Reserved for hand translation, still missing:");
+    for (const [locale, keys] of [...pendingByLocale].sort()) {
+      console.error(`  ${locale}`);
+      for (const key of [...keys].sort()) {
+        console.error(`      ${key}  — ${manualKeys.get(key) || ""}`);
+      }
+    }
+    console.error("");
+    console.error("  These stay English until written by hand in the catalog.");
+  } else if (manualKeys.size) {
+    console.error(`All ${manualKeys.size} reserved key(s) already translated in every language.`);
+  }
+
   console.error(`Done. Output: ${inplace ? "(in-place)" : outRoot}`);
 }
 

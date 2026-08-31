@@ -1,0 +1,22 @@
+{
+  "_comment": [
+    "Strings DeepL must not touch, with the reason it cannot be trusted with them.",
+    "deepl-xcloc-translate.mjs skips these and reports, per language, which are",
+    "still missing a translation — so nothing is silently left in English.",
+    "",
+    "The line is not length: 'Camera' and 'Paste' are one word and come back",
+    "right everywhere, because they mean one thing here. What breaks is a word",
+    "that is also a brand, a material, or a document. Add a key when a machine",
+    "cannot know which sense you meant, and say why."
+  ],
+  "keys": {
+    "roundness.rounded": "Read as a circulated document: Rundschreiben, 回覧, 通告.",
+    "roundness.circular": "Same — 'circular' the noun beats 'circular' the shape.",
+    "duplicate.library": "Must borrow the platform's own term (Photothèque), not a synonym for gallery.",
+    "app.name": "Brand name. Never translated, never transliterated.",
+    "eye.style.leaf": "A petal-shaped finder pattern, not foliage and not a page.",
+    "eye.style.dot": "The shape of a marker, not punctuation.",
+    "style.solid": "A flat colour, not solid matter — Feststoff, 固体, ठोस.",
+    "roundness.sharp": "Corner geometry. Read as the Sharp brand (夏普, シャープ) or as spicy."
+  }
+}

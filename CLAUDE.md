@@ -452,6 +452,17 @@ xcodebuild -scheme "Radical QR" -configuration Debug test
 ./updLocalisation.sh --source=EN
 ./updLocalisation.sh --dry-run        # export + invalidate only, no DeepL calls / no import
 
+# Hand-translated keys: translation-manual-keys.json lists strings DeepL must not
+# touch, each with the reason. The script skips them and reports, per language,
+# which are still empty — a reserved key with no translation ships in English.
+# The line is not length ("Camera" and "Paste" come back right everywhere): it is
+# a word that is also a brand, a material or a document. "Circular" became
+# Rundschreiben in German, "Sharp" became 夏普 — the Sharp corporation.
+# Xcode comments now reach DeepL as its `context` parameter, which fixes most of
+# the rest; add a comment: to String(localized:) when a word has several senses.
+# Caveat: Xcode will NOT re-extract an English string whose state is "translated"
+# in the catalog, so editing its defaultValue in Swift changes nothing that ships.
+
 # Brand protection: brand/product names are kept identical across ALL locales
 # automatically. deepl-protect.mjs wraps each protected term in <x>..</x> and the
 # DeepL call uses tag_handling=xml + ignore_tags=x, so "Radical QR",
