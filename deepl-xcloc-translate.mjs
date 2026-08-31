@@ -37,7 +37,9 @@ function buildDeeplCandidates(bcp47) {
   if (!norm) return [];
   const parts = norm.split("-");
   const lang = parts[0].toUpperCase();
-  const region = parts.find(p => p.length === 2 || p.length === 3)?.toUpperCase();
+  // Skip parts[0] — it is the language. Searching the whole array made "pt-BR"
+  // resolve to region "pt" → PT-PT (European Portuguese in a Brazilian catalog).
+  const region = parts.slice(1).find(p => p.length === 2 || p.length === 3)?.toUpperCase();
   const c = [];
   if (region) c.push(`${lang}-${region}`);
   c.push(lang);

@@ -46,7 +46,11 @@ final class ScannabilityChecker: Sendable {
 
     /// Renders nothing — caller passes the already-rendered code image.
     func check(cgImage: CGImage, configuration: QRCodeConfiguration) -> ScannabilityResult {
-        let ciImage = CIImage(cgImage: cgImage)
+        // A transparent background leaves (0,0,0,0) pixels, which the detector
+        // reads as black: the whole image goes dark and nothing decodes, so a
+        // perfectly good black-on-clear code was reported as risky. Flatten onto
+        // white first — the same light surface the code will be placed on.
+        let ciImage = flattenedOnWhite(cgImage)
         let features = detector?.features(in: ciImage) ?? []
         let decoded = (features.first as? CIQRCodeFeature)?.messageString
         let decodes = !(decoded ?? "").isEmpty
@@ -62,6 +66,13 @@ final class ScannabilityChecker: Sendable {
         }
 
         return .reliable
+    }
+
+    /// The rendered code composited over opaque white.
+    private func flattenedOnWhite(_ cgImage: CGImage) -> CIImage {
+        let source = CIImage(cgImage: cgImage)
+        let white = CIImage(color: CIColor.white).cropped(to: source.extent)
+        return source.composited(over: white)
     }
 
     // MARK: - Diagnostics
@@ -90,9 +101,9 @@ final class ScannabilityChecker: Sendable {
         }
     }
 
-    /// Foreground-vs-background luminance gap on a white background.
+    /// Foreground-vs-background luminance gap, assuming the light surface the
+    /// code ends up on — white background or transparent alike.
     private func lowContrastReason(for config: QRCodeConfiguration) -> String? {
-        guard config.backgroundType == .white else { return nil }
         let fg = config.foregroundStyle.primaryColorComponents
         let luminance = 0.2126 * fg.r + 0.7152 * fg.g + 0.0722 * fg.b
         // Pale foreground on white → poor scan contrast.

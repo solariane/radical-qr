@@ -15,6 +15,7 @@ export const DEFAULT_PROTECTED_TERMS = [
   "Radical Solution",
   "RadicalSolution",
   "Radical QR",
+  "RadicalQRShare",
   "Phone Numbers Cleaner",
 ];
 

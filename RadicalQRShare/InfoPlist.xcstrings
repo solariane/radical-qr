@@ -8,7 +8,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "راديكال كيو آر إس شير"
+            "value" : "RadicalQRShare"
           }
         },
         "de" : {
@@ -38,7 +38,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "रैडिकलक्यूआरशेयर"
+            "value" : "RadicalQRShare"
           }
         },
         "it" : {
@@ -50,7 +50,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ラジカルQRShare"
+            "value" : "RadicalQRShare"
           }
         },
         "pt-BR" : {
@@ -62,7 +62,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "激进QRShare"
+            "value" : "RadicalQRShare"
           }
         }
       }
@@ -74,7 +74,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "راديكال كيو آر إس شير"
+            "value" : "RadicalQRShare"
           }
         },
         "de" : {
@@ -104,7 +104,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "रैडिकलक्यूआरशेयर"
+            "value" : "RadicalQRShare"
           }
         },
         "it" : {
@@ -116,7 +116,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ラジカルQRShare"
+            "value" : "RadicalQRShare"
           }
         },
         "pt-BR" : {
@@ -128,7 +128,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "激进QRShare"
+            "value" : "RadicalQRShare"
           }
         }
       }

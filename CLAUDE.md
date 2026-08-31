@@ -57,7 +57,12 @@ Radical QR/
 │   ├── Generator/
 │   │   ├── GeneratorView.swift          # Main generation interface
 │   │   ├── GeneratorViewModel.swift     # Reactive view model
-│   │   └── CustomizationPanel.swift     # Color, gradient, roundness
+│   │   ├── CustomizationRail.swift      # Icon rail: 5 setting families, one shown at a time
+│   │   ├── ColorGroupView.swift         # Solid, gradient, background
+│   │   ├── ShapeGroupView.swift         # Modules, eyes, eye size
+│   │   ├── BrandGroupView.swift         # Logo + caption
+│   │   ├── SavedStylesStrip.swift       # Pro: the user's own saved styles
+│   │   └── CustomizationPanel.swift     # Legacy sheet — still used by Settings
 │   ├── Export/
 │   │   └── ExportView.swift             # Export options sheet
 │   ├── History/
@@ -73,6 +78,8 @@ Radical QR/
 │   │   ├── DropZone.swift               # Drag & drop target
 │   │   ├── InputZone.swift              # Text input area
 │   │   ├── ColorPickerView.swift        # Color selection
+│   │   ├── SettingTile.swift            # The one control shape: squircle + concentric ring
+│   │   ├── ShapeGlyphs.swift            # Vector previews — every option draws its result
 │   │   ├── RoundnessSlider.swift        # QR element roundness
 │   │   └── LogoDropZone.swift           # Logo embedding (Pro)
 │   └── Modifiers/
@@ -118,7 +125,7 @@ RadicalQRShare/                          # Share Extension (iOS + macOS)
 | **Logo Embedding** | Yes (centered, with automatic quiet zone) |
 | **History** | Yes (last 100 items, iCloud sync) |
 | **Roundness** | Yes |
-| **Style Preset** | Save 1 custom style |
+| **Style Preset** | Save up to 4 custom styles (`FeatureLimit.maxStylePresets`), recalled from the generator's "My styles" family |
 | **Duplication** | Duplicate from history |
 | **Future: Templates** | Ready for preset templates (Instagram, Restaurant Menu, etc.) |
 
@@ -470,6 +477,20 @@ xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc -
 ```
 
 ---
+
+## Generator UI conventions
+
+The generator's settings never name an option in text: each one draws its own
+result (`ShapeGlyphs.swift`) inside the single `SettingTile` shape. Words in a
+68pt-wide capsule are what turned "Rounded" into "Arron-di" on a French phone,
+so a new option means a new glyph, not a new label — the localized string stays
+for VoiceOver only. Glyph geometry mirrors `QRCodeRenderer` (7-unit eye, 1-unit
+ring, 3-unit pupil, even-odd fill) so a tile shows what the exporter draws.
+
+One family is on screen at a time, which is what keeps preview, settings and the
+save button on an iPhone SE without scrolling. Adding a permanent row above the
+groups costs every family its height — that is why saved styles became a family
+rather than a band. Check the vertical budget before adding anything there.
 
 ## Notes for Claude
 

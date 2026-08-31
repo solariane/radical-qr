@@ -135,4 +135,6 @@ enum FeatureLimit: Sendable {
     nonisolated static let freeMaxExportSize = 512
     nonisolated static let proMaxExportSize = 4096
     nonisolated static let maxHistoryItems = 100
+    /// Slots in the generator's "My styles" strip (Pro).
+    nonisolated static let maxStylePresets = 4
 }
