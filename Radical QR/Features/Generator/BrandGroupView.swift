@@ -12,9 +12,10 @@ struct BrandGroupView: View {
     let onLocked: (ProFeature) -> Void
 
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(\.generatorMetrics) private var metrics
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: metrics.rowGap) {
             logoRow
             captionRow
         }
@@ -23,7 +24,7 @@ struct BrandGroupView: View {
     // MARK: - Logo
 
     private var logoRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             HStack(spacing: 8) {
                 SettingRowLabel(text: String(localized: "logo.title", defaultValue: "Logo"))
                 if !purchaseManager.isPro {
@@ -59,7 +60,7 @@ struct BrandGroupView: View {
                     HStack(spacing: 12) {
                         RoundedRectangle(cornerRadius: 20, style: .continuous)
                             .strokeBorder(.white.opacity(0.55), style: StrokeStyle(lineWidth: 2, dash: [5, 4]))
-                            .frame(width: 68, height: 68)
+                            .frame(width: metrics.tile + 20, height: metrics.tile + 20)
                             .overlay {
                                 Image(systemName: "plus")
                                     .font(.system(size: 22, weight: .medium))
@@ -82,11 +83,13 @@ struct BrandGroupView: View {
     // MARK: - Caption
 
     private var captionRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "caption.title", defaultValue: "Caption"))
 
-            HStack(spacing: 11) {
+            HStack(spacing: metrics.tileGap) {
                 SettingTile(
+                    width: metrics.tile,
+                    height: metrics.tile,
                     isSelected: !configuration.showCaption,
                     label: String(localized: "caption.off", defaultValue: "No caption"),
                     action: { withAnimation { configuration.showCaption = false } }
@@ -94,6 +97,8 @@ struct BrandGroupView: View {
                     CaptionGlyph(isOn: false)
                 }
                 SettingTile(
+                    width: metrics.tile,
+                    height: metrics.tile,
                     isSelected: configuration.showCaption,
                     label: String(localized: "caption.on", defaultValue: "With caption"),
                     action: { withAnimation { configuration.showCaption = true } }
@@ -110,7 +115,7 @@ struct BrandGroupView: View {
     }
 
     private var captionDetails: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: metrics.rowGap) {
             TextField(
                 autoCaption,
                 text: Binding(
@@ -129,11 +134,11 @@ struct BrandGroupView: View {
             )
             .accessibilityLabel(String(localized: "caption.text", defaultValue: "Caption text"))
 
-            HStack(spacing: 11) {
+            HStack(spacing: metrics.tileGap) {
                 ForEach(QRCodeConfiguration.CaptionSize.allCases, id: \.self) { size in
                     SettingTile(
-                        width: 52,
-                        height: 44,
+                        width: metrics.tile + 4,
+                        height: metrics.tokenHeight,
                         contentScale: 0.8,
                         isSelected: configuration.captionSize == size,
                         label: size.displayName,
@@ -147,8 +152,8 @@ struct BrandGroupView: View {
                 }
 
                 SettingTile(
-                    width: 52,
-                    height: 44,
+                    width: metrics.tile + 4,
+                    height: metrics.tokenHeight,
                     contentScale: 0.72,
                     isSelected: configuration.captionFitToWidth,
                     label: String(localized: "caption.fitToWidth", defaultValue: "Fit to width"),

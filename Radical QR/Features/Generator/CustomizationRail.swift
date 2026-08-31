@@ -43,17 +43,18 @@ struct CustomizationRail: View {
     let onLocked: (ProFeature) -> Void
 
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(\.generatorMetrics) private var metrics
 
     /// Icon color on an active (white) rail button.
     private static let activeInk = Color(red: 0.357, green: 0.271, blue: 0.659)
 
     var body: some View {
-        VStack(spacing: 11) {
+        VStack(spacing: metrics.sectionGap) {
             familyRail
 
             activeGroup
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(12)
+                .padding(metrics.panelPadding)
                 .background(
                     RoundedRectangle(cornerRadius: 24, style: .continuous)
                         .fill(.white.opacity(0.15))
@@ -84,7 +85,7 @@ struct CustomizationRail: View {
     // MARK: - Family rail
 
     private var familyRail: some View {
-        HStack(spacing: 9) {
+        HStack(spacing: metrics.tileGap - 1) {
             ForEach(Family.allCases) { item in
                 let active = family == item
                 Button {
@@ -101,7 +102,7 @@ struct CustomizationRail: View {
                     }
                     .foregroundStyle(active ? Self.activeInk : .white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 46)
+                    .frame(height: metrics.railHeight)
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .fill(.white.opacity(active ? 1 : 0.18))
@@ -124,8 +125,8 @@ struct CustomizationRail: View {
     // MARK: - Export
 
     private var exportGroup: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            VStack(alignment: .leading, spacing: 7) {
+        VStack(alignment: .leading, spacing: metrics.rowGap) {
+            VStack(alignment: .leading, spacing: metrics.labelGap) {
                 SettingRowLabel(text: String(localized: "export.size", defaultValue: "Size"))
 
                 TileRow {
@@ -147,7 +148,7 @@ struct CustomizationRail: View {
                 }
             }
 
-            VStack(alignment: .leading, spacing: 7) {
+            VStack(alignment: .leading, spacing: metrics.labelGap) {
                 SettingRowLabel(text: String(localized: "export.format", defaultValue: "Format"))
 
                 TileRow {

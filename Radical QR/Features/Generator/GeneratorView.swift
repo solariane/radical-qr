@@ -33,6 +33,8 @@ struct GeneratorView: View {
     /// The input zone is folded away as soon as the content parses; this reopens it.
     @State private var isEditingInput = false
     @State private var isGlobalDropTargeted = false
+    /// Sizes for the height this screen actually got — see GeneratorMetrics.
+    @State private var metrics: GeneratorMetrics = .regular
 
     private let inputAnchorID = "input-section"
 
@@ -47,7 +49,7 @@ struct GeneratorView: View {
             VStack(spacing: 0) {
                 ScrollViewReader { proxy in
                     ScrollView {
-                        VStack(spacing: 11) {
+                        VStack(spacing: metrics.sectionGap) {
                             headerSection
 
                             if showsInputZone {
@@ -75,8 +77,8 @@ struct GeneratorView: View {
                             }
                         }
                         .padding(.horizontal, 16)
-                        .padding(.top, 8)
-                        .padding(.bottom, 10)
+                        .padding(.top, metrics.sectionGap)
+                        .padding(.bottom, metrics.sectionGap)
                     }
                     .onChange(of: viewModel.hasValidInput) { _, hasInput in
                         guard hasInput else { return }
@@ -100,11 +102,21 @@ struct GeneratorView: View {
                 if viewModel.hasValidInput {
                     actionRow
                         .padding(.horizontal, 16)
-                        .padding(.top, 8)
-                        .padding(.bottom, 10)
+                        .padding(.top, metrics.sectionGap)
+                        .padding(.bottom, metrics.sectionGap)
                 }
             }
         }
+        .background(
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear { metrics = .fitting(height: proxy.size.height) }
+                    .onChange(of: proxy.size.height) { _, height in
+                        metrics = .fitting(height: height)
+                    }
+            }
+        )
+        .environment(\.generatorMetrics, metrics)
         #if os(macOS)
         .background(
             GlobalDropTargetView(
@@ -235,7 +247,7 @@ struct GeneratorView: View {
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "generator.help", defaultValue: "Formats and tips"))
         }
-        .frame(height: 30)
+        .frame(height: metrics.headerHeight)
         .id(inputAnchorID)
     }
 
@@ -268,7 +280,7 @@ struct GeneratorView: View {
     // MARK: - Preview Card
 
     private var previewCard: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: metrics.rowGap) {
             ZStack {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .fill(Color.white)
@@ -293,7 +305,7 @@ struct GeneratorView: View {
             // aspectRatio first, then the cap: framing first would let the square
             // grow to the whole proposed height and shove the rail off screen.
             .aspectRatio(1, contentMode: .fit)
-            .frame(maxWidth: 186, maxHeight: 186)
+            .frame(maxWidth: metrics.preview, maxHeight: metrics.preview)
             .animation(.easeInOut(duration: 0.3), value: viewModel.previewImage != nil)
 
             scannabilityWarning
@@ -302,7 +314,7 @@ struct GeneratorView: View {
             contentPill
         }
         .frame(maxWidth: .infinity)
-        .cardStyle(padding: 14, cornerRadius: 26)
+        .cardStyle(padding: metrics.cardPadding, cornerRadius: 26)
     }
 
     /// Only speaks up when the code is at risk. A permanent "scans fine" badge
@@ -405,7 +417,7 @@ struct GeneratorView: View {
     // MARK: - Actions
 
     private var actionRow: some View {
-        HStack(spacing: 11) {
+        HStack(spacing: metrics.tileGap) {
             Button {
                 Task { await performSave() }
             } label: {
@@ -421,7 +433,7 @@ struct GeneratorView: View {
                 }
                 .foregroundStyle(Color(red: 0.294, green: 0.227, blue: 0.525))
                 .frame(maxWidth: .infinity)
-                .frame(height: 54)
+                .frame(height: metrics.actionHeight)
                 .background(
                     Capsule().fill(.white)
                         .shadow(color: .black.opacity(0.18), radius: 8, y: 4)
@@ -452,7 +464,7 @@ struct GeneratorView: View {
             Image(systemName: systemImage)
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(.white)
-                .frame(width: 54, height: 54)
+                .frame(width: metrics.actionHeight, height: metrics.actionHeight)
                 .background(Circle().fill(.white.opacity(0.2)))
         }
         .buttonStyle(.plain)
