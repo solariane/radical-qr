@@ -1,44 +1,46 @@
-Elegante QR-Codes. Automatische Erkennung. Keine Verfolgung. Kein Abonnement.
+Elegante QR-Codes. Automatische Erkennung. Keine Nachverfolgung. Kein Abonnement.
+Radical QR generiert jeden Code – Links, Kontakte, WLAN, Veranstaltungen – vollständig auf Ihrem Gerät. Fügen Sie beliebige Inhalte ein, die App erkennt, um was es sich handelt, und erstellt den passenden QR-Code. Es werden keine Daten an einen Server gesendet. Ohne Ihre Zustimmung werden keine Daten gespeichert.
 
-Radical QR generiert jeden Code - Links, Kontakte, Wi-Fi, Events - komplett auf deinem Gerät. Füge irgendetwas ein, die App erkennt, was es ist und erzeugt den richtigen QR. Nichts wird an einen Server gesendet. Nichts wird ohne Ihre Zustimmung gespeichert.
-
-Entwickelt für Menschen, die jeden Tag QR-Codes verwenden - Freiberufler, Restaurants, Vereine, Unternehmer - und die etwas Schönes, Schnelles und Respektvolles für ihre Privatsphäre wollen.
+Entwickelt für Menschen, die täglich QR-Codes nutzen – Freiberufler, Restaurants, Vereine, Unternehmer – und die sich etwas Schönes, Schnelles und Datenschutzfreundliches wünschen.
 
 
 WARUM RADICAL QR
 
-- Automatische Erkennung: Fügen Sie eine URL, eine Telefonnummer, eine E-Mail, eine vCard, ein iCalendar-Ereignis, ein Wi-Fi-Netzwerk ein - die App versteht und erzeugt den richtigen QR mit der richtigen Kodierung.
-- Umfangreiche Anpassungsmöglichkeiten: runde Module und Augen unabhängig voneinander, Skalierung der Augen, Auswahl von Volltonfarben oder Farbverläufen.
-- Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG Vektor in Pro, bis zu 4096 px.
-- macOS-Integration: Rechtsklick auf eine URL, einen Kontakt oder ein Ereignis in Safari, Kontakte oder Kalender → "QR-Code generieren". Sofort.
-- Drag & Drop: Ziehen Sie eine Textdatei, eine vCard oder eine .ics direkt in die App.
-- 10 Sprachen: Englisch, Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Japanisch, Arabisch, Hindi, Chinesisch.
+• Automatische Erkennung: Fügen Sie eine URL, eine Telefonnummer, eine E-Mail-Adresse, eine vCard, einen iCalendar-Termin oder ein WLAN-Netzwerk ein – die App erkennt den Inhalt und erstellt den passenden QR-Code mit der richtigen Kodierung.
+• Sichtbare Einstellungen: Jede Option führt zu einem eigenen Ergebnis. Wähle die gewünschte Ecke, das gewünschte Symbol und die gewünschte Größe – es gibt nichts zu lesen und nichts zu erraten.
+• Code duplizieren: Richte die Kamera auf einen vorhandenen QR-Code oder wähle ein Foto davon aus und mache ihn zu deinem eigenen. Es wird nichts aufgezeichnet, nichts gesendet.
+• Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG-Vektordateien in der Pro-Version, bis zu 4096 px.
+• macOS-Integration: Klicke mit der rechten Maustaste auf eine beliebige URL, einen Kontakt oder einen Termin in Safari, „Kontakte“ oder „Kalender“ → „QR-Code generieren“. Sofort.
+• Drag & Drop: Ziehe eine Textdatei, eine vCard oder eine .ics-Datei direkt in die App.
+• 10 Sprachen: Englisch, Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Japanisch, Arabisch, Hindi, Chinesisch.
 
 
 KOSTENLOS
 
-Alles Wesentliche: automatische Erkennung, Anpassung der Rundheit, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, PNG / JPEG / WebP Export bis zu 512 px, Systemfreigabe.
+Alles Wesentliche: automatische Erkennung, Duplizieren eines bestehenden Codes, Modul- und Augenformen, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, Export als PNG / JPEG / WebP bis zu 512 px, Systemfreigabe.
 
 
 PRO (einmaliger Kauf, lebenslang)
 
-- Vektor-PDF- und SVG-Export für den Druck und die großflächige Verwendung
-- Benutzerdefinierte Logoeinbettung mit automatischer Ruhezone
-- Exportgröße bis zu 4096 px
-- Historie mit iCloud-Synchronisierung auf allen Ihren Geräten
-- Vollständige Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, eckig, rautenförmig)
-- Favorisierter Stil zur Wiederverwendung gespeichert
+• Vektor-Export als PDF und SVG für den Druck und großflächige Verwendung
+• Einbetten eines eigenen Logos mit automatischer Sicherheitszone
+• Exportgröße bis zu 4096 px
+• Verlauf mit iCloud-Synchronisierung auf allen deinen Geräten
+• Umfassende Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, winklig, rautenförmig)
+• Punkt- und Blatt-Augenformen
+• Bis zu vier eigene Stile, die mit einem Fingertipp gespeichert und wieder abgerufen werden können
 
-Ein Kauf. Lebenslanger Zugriff. Kein Abonnement.
-
-
-UNSERE VERPFLICHTUNG ZUM DATENSCHUTZ
-
-- Keine Analytik, kein Tracking
-- Keine Protokolle, keine Telemetrie
-- Ihre Inhalte verlassen niemals Ihr Gerät
-- Der Pro-Verlauf wird in Ihrem privaten iCloud-Container gespeichert - niemals auf unseren Servern
-- Wir müssen nicht sehen, was du verschlüsselst - und wir werden es auch nie sehen.
+Einmaliger Kauf. Lebenslanger Zugriff. Kein Abonnement.
 
 
-Hergestellt von Radical Solution. Fragen, Feedback: kontakt@radicalsolution.com
+UNSERE DATENSCHUTZVERPFLICHTUNG
+
+• Keine Analysen, kein Tracking
+• Keine Protokolle, keine Telemetrie
+• Ihre Inhalte verlassen niemals Ihr Gerät
+• Die Kamera liest einen Code in Echtzeit ein – es wird kein Foto aufgenommen, nichts wird gespeichert
+• Der Pro-Verlauf wird in Ihrem privaten iCloud-Container gespeichert – niemals auf unseren Servern
+• Wir müssen nicht sehen, was Sie kodieren – und werden es auch niemals tun.
+
+
+Entwickelt von Radical Solution. Fragen, Feedback: contact@radicalsolution.com

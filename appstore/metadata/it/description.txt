@@ -1,44 +1,46 @@
-Codici QR eleganti. Rilevamento automatico. Nessuna tracciabilità. Nessun abbonamento.
+Codici QR eleganti. Rilevamento automatico. Nessun tracciamento. Nessun abbonamento.
+Radical QR genera ogni codice — link, contatti, Wi-Fi, eventi — interamente sul tuo dispositivo. Incolla qualsiasi cosa: l’app la riconosce e crea il codice QR corretto. Nulla viene inviato a un server. Nulla viene memorizzato senza il tuo consenso.
 
-Radical QR genera ogni codice - link, contatti, Wi-Fi, eventi - interamente sul vostro dispositivo. Incollate qualsiasi cosa, l'app riconosce il codice e produce il QR giusto. Nulla viene inviato a un server. Nulla viene memorizzato senza il vostro consenso.
-
-Realizzata per le persone che utilizzano i codici QR ogni giorno - liberi professionisti, ristoranti, associazioni, imprenditori - e che vogliono qualcosa di bello, veloce e rispettoso della loro privacy.
+Progettata per chi usa i codici QR ogni giorno — liberi professionisti, ristoranti, associazioni, imprenditori — e desidera qualcosa di bello, veloce e rispettoso della propria privacy.
 
 
 PERCHÉ RADICAL QR
 
-- Rilevamento automatico: incollate un URL, un numero di telefono, un'e-mail, una vCard, un evento iCalendar, una rete Wi-Fi - l'app capisce e produce il QR giusto, con la giusta codifica.
-- Profonda personalizzazione: moduli e occhi arrotondati in modo indipendente, scala degli occhi, scelta di colori solidi o sfumature.
-- Esportazione pulita: PNG, JPEG, WebP gratis; PDF e SVG vettoriale in Pro, fino a 4096 px.
-- Integrazione con macOS: cliccate con il tasto destro del mouse su qualsiasi URL, contatto o evento in Safari, Contatti o Calendario → "Genera codice QR". Immediato.
-- Drag & drop: rilasciate un file di testo, una vCard o un .ics direttamente nell'app.
-- 10 lingue: Inglese, francese, tedesco, spagnolo, italiano, portoghese, giapponese, arabo, hindi, cinese.
+• Rilevamento automatico: incolla un URL, un numero di telefono, un’e-mail, una vCard, un evento iCalendar, una rete Wi-Fi: l’app lo riconosce e genera il codice QR corretto, con la codifica giusta.
+• Impostazioni visibili: ogni opzione mostra immediatamente il risultato. Scegli l’angolo che preferisci, l’icona che preferisci, le dimensioni che desideri: non c’è nulla da leggere né da indovinare.
+• Duplica un codice: punta la fotocamera su un codice QR esistente, oppure seleziona una foto di uno di essi, e rendilo tuo. Nulla viene registrato, nulla viene inviato.
+• Esportazione pulita: PNG, JPEG, WebP gratuitamente; PDF e vettoriale SVG nella versione Pro, fino a 4096 px.
+• Integrazione con macOS: clicca con il tasto destro su qualsiasi URL, contatto o evento in Safari, Contatti o Calendario → “Genera codice QR”. Istantaneo.
+• Trascina e rilascia: trascina un file di testo, una vCard o un file .ics direttamente nell’app.
+• 10 lingue: inglese, francese, tedesco, spagnolo, italiano, portoghese, giapponese, arabo, hindi, cinese.
 
 
 GRATUITO
 
-Tutto l'essenziale: rilevamento automatico, personalizzazione della rotondità, 6 colori e 3 gradienti preimpostati, esportazione PNG / JPEG / WebP fino a 512 px, condivisione del sistema.
+Tutto l’essenziale: rilevamento automatico, duplicazione di un codice esistente, forme di moduli e occhi, 6 colori predefiniti e 3 sfumature predefinite, esportazione in PNG / JPEG / WebP fino a 512 px, condivisione di sistema.
 
 
-PRO (acquisto unico, a vita)
+PRO (acquisto una tantum, a vita)
 
-- Esportazione di PDF e SVG vettoriali per la stampa e l'uso su larga scala
-- Inclusione del logo personalizzato con zona silenziosa automatica
-- Dimensioni di esportazione fino a 4096 px
-- Cronologia con sincronizzazione iCloud su tutti i dispositivi
-- Selezionatore di colori completo e gradienti personalizzati (lineari, radiali, angolari, a diamante)
-- Stile preferito salvato per il riutilizzo
+• Esportazione in formato vettoriale PDF e SVG per la stampa e l’uso su larga scala
+• Inserimento di loghi personalizzati con zona di sicurezza automatica
+• Dimensioni di esportazione fino a 4096 px
+• Cronologia con sincronizzazione iCloud su tutti i tuoi dispositivi
+• Selettore di colori completo e sfumature personalizzate (lineari, radiali, angolari, a rombo)
+• Forme degli occhi a punto e a foglia
+• Fino a quattro stili personalizzati, salvati e richiamabili con un solo tocco
 
-Un solo acquisto. Accesso a vita. Nessun abbonamento.
+Un unico acquisto. Accesso a vita. Nessun abbonamento.
 
 
 IL NOSTRO IMPEGNO PER LA PRIVACY
 
-- Nessuna analisi, nessun tracciamento
-- Nessun registro, nessuna telemetria
-- I vostri contenuti non lasciano mai il vostro dispositivo
-- La cronologia dei file pro vive nel vostro contenitore privato di iCloud, mai sui nostri server
-- Non abbiamo bisogno di vedere ciò che codificate e non lo vedremo mai.
+• Nessuna analisi, nessun tracciamento
+• Nessun registro, nessuna telemetria
+• I tuoi contenuti non lasciano mai il tuo dispositivo
+• La fotocamera legge un codice in tempo reale: non viene scattata alcuna foto, non viene scritto nulla
+• La cronologia della versione Pro risiede nel tuo contenitore privato su iCloud, mai sui nostri server
+• Non abbiamo bisogno di vedere ciò che codifichi e non lo faremo mai.
 
 
-Prodotto da Radical Solution. Domande e commenti: contact@radicalsolution.com
+Realizzato da Radical Solution. Domande, feedback: contact@radicalsolution.com

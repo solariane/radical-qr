@@ -1,1 +1,1 @@
-código,gerador,criador,personalizado,logo,código de barras,vcard,wifi,svg,pdf,url,contato,menu
+duplicar,logo,personalizado,gradiente,vcard,wifi,url,contato,evento,cardápio,svg,pdf

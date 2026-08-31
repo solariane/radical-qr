@@ -1,44 +1,47 @@
-Códigos QR elegantes. Detecção automática. Rastreamento zero. Sem assinatura.
+Códigos QR elegantes. Detecção automática. Sem rastreamento. Sem assinatura.
 
-Radical QR gera todos os códigos - links, contatos, Wi-Fi, eventos - inteiramente no seu dispositivo. Cole qualquer coisa, o aplicativo reconhece o que é e produz o QR correto. Nada é enviado para um servidor. Nada é armazenado sem seu consentimento.
+ORadical QR gera todos os códigos — links, contatos, Wi-Fi, eventos — inteiramente no seu dispositivo. Cole qualquer coisa, o aplicativo reconhece o que é e gera o código QR correto. Nada é enviado para um servidor. Nada é armazenado sem o seu consentimento.
 
-Criado para as pessoas que usam códigos QR todos os dias - freelancers, restaurantes, associações, empresários - e que desejam algo bonito, rápido e que respeite sua privacidade.
+Criado para quem usa códigos QR diariamente — freelancers, restaurantes, associações, empreendedores — e quem busca algo bonito, rápido e que respeite sua privacidade.
 
 
 POR QUE O RADICAL QR
 
-- Detecção automática: cole um URL, um número de telefone, um e-mail, um vCard, um evento do iCalendar, uma rede Wi-Fi - o aplicativo entende e produz o QR certo, com a codificação certa.
-- Personalização profunda: arredonde módulos e olhos de forma independente, dimensione os olhos, escolha cores sólidas ou gradientes.
-- Exportação limpa: PNG, JPEG, WebP gratuitamente; PDF e SVG vetorial no Pro, até 4096 px.
-- Integração com o macOS: clique com o botão direito do mouse em qualquer URL, contato ou evento no Safari, Contatos ou Calendário → "Gerar código QR". Instantâneo.
-- Arrastar e soltar: solte um arquivo de texto, um vCard ou um .ics diretamente no aplicativo.
-- 10 idiomas: Inglês, francês, alemão, espanhol, italiano, português, japonês, árabe, hindi e chinês.
+• Detecção automática: cole uma URL, um número de telefone, um e-mail, um vCard, um evento do iCalendar, uma rede Wi-Fi — o aplicativo entende e gera o QR correto, com a codificação adequada.
+• Configurações visíveis: cada opção gera seu próprio resultado. Escolha o canto que quiser, o ícone que quiser, o tamanho que quiser — não há nada para ler nem para adivinhar.
+• Duplicar um código: aponte a câmera para um QR existente ou escolha uma foto dele e torne-o seu. Nada é registrado, nada é enviado.
+• Exportação limpa: PNG, JPEG, WebP gratuitamente; PDF e vetor SVG na versão Pro, até 4.096 px.
+• Integração com o macOS: clique com o botão direito do mouse em qualquer URL, contato ou evento no Safari, Contatos ou Calendário → “Gerar código QR”. Instantâneo.
+• Arrastar e soltar: solte um arquivo de texto, um vCard ou um .ics diretamente no aplicativo.
+• 10 idiomas: inglês, francês, alemão, espanhol, italiano, português, japonês, árabe, hindi, chinês.
 
 
 GRÁTIS
 
-Tudo o que é essencial: detecção automática, personalização de arredondamento, 6 cores predefinidas e 3 gradientes predefinidos, exportação de PNG / JPEG / WebP de até 512 px, compartilhamento de sistema.
+Tudo o que é essencial: detecção automática, duplicação de um código existente, formas de módulos e olhos, 6 cores predefinidas e 3 gradientes predefinidos, exportação para PNG/JPEG/WebP de até 512 px, compartilhamento do sistema.
 
 
 PRO (compra única, vitalícia)
 
-- Exportação de PDF vetorial e SVG para impressão e uso em larga escala
-- Incorporação de logotipo personalizado com zona de silêncio automática
-- Tamanho de exportação de até 4096 px
-- Histórico com sincronização do iCloud em seus dispositivos
-- Seletor de cores completo e gradientes personalizados (linear, radial, angular, diamante)
-- Estilo favorito salvo para reutilização
+• Exportação em PDF vetorial e SVG para impressão e uso em grande escala
+• Inserção de logotipo personalizado com zona de segurança automática
+• Tamanho de exportação de até 4.096 px
+• Histórico com sincronização via iCloud entre seus dispositivos
+• Seletor de cores completo e gradientes personalizados (linear, radial, angular, em losango)
+• Formatos de olhos em forma de ponto e folha
+• Até quatro estilos próprios, salvos e recuperados com um único toque
 
 Uma compra. Acesso vitalício. Sem assinatura.
 
 
 NOSSO COMPROMISSO COM A PRIVACIDADE
 
-- Sem análises, sem rastreamento
-- Sem registros, sem telemetria
-- Seu conteúdo nunca sai do seu dispositivo
-- O histórico do Pro fica em seu contêiner privado do iCloud - nunca em nossos servidores
-- Não precisamos ver o que você codifica - e nunca veremos.
+• Sem análises, sem rastreamento
+• Sem registros, sem telemetria
+• Seu conteúdo nunca sai do seu dispositivo
+• A câmera lê um código em tempo real — nenhuma foto é tirada, nada é gravado
+• O histórico da versão Pro fica armazenado em seu contêiner privado no iCloud — nunca em nossos servidores
+• Não precisamos ver o que você codifica — e nunca veremos.
 
 
-Feito por Radical Solution. Perguntas e comentários: contact@radicalsolution.com
+Desenvolvido por Radical Solution. Dúvidas, comentários: contact@radicalsolution.com

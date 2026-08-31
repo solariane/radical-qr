@@ -8,7 +8,8 @@ Built for the people who use QR codes every day — freelancers, restaurants, as
 WHY RADICAL QR
 
 • Auto-detect: paste a URL, a phone number, an email, a vCard, an iCalendar event, a Wi-Fi network — the app understands and produces the right QR, with the right encoding.
-• Deep customization: round modules and eyes independently, scale the eyes, pick solid colors or gradients.
+• Settings you can see: every option draws its own result. Pick the corner you want, the eye you want, the size you want — there is nothing to read and nothing to guess.
+• Duplicate a code: point the camera at an existing QR, or pick a photo of one, and make it yours. Nothing is recorded, nothing is sent.
 • Clean export: PNG, JPEG, WebP for free; PDF and SVG vector in Pro, up to 4096 px.
 • macOS integration: right-click any URL, contact, or event in Safari, Contacts, or Calendar → "Generate QR Code". Instant.
 • Drag & drop: drop a text file, a vCard, or an .ics directly into the app.
@@ -17,7 +18,7 @@ WHY RADICAL QR
 
 FREE
 
-Everything essential: auto-detection, roundness customization, 6 preset colors and 3 preset gradients, PNG / JPEG / WebP export up to 512 px, system sharing.
+Everything essential: auto-detection, duplicating an existing code, module and eye shapes, 6 preset colors and 3 preset gradients, PNG / JPEG / WebP export up to 512 px, system sharing.
 
 
 PRO (one-time purchase, lifetime)
@@ -27,7 +28,8 @@ PRO (one-time purchase, lifetime)
 • Export size up to 4096 px
 • History with iCloud sync across your devices
 • Full color picker and custom gradients (linear, radial, angular, diamond)
-• Favorite style saved for reuse
+• Dot and leaf eye shapes
+• Up to four of your own styles, saved and brought back in one tap
 
 One purchase. Lifetime access. No subscription.
 
@@ -37,6 +39,7 @@ OUR PRIVACY COMMITMENT
 • No analytics, no tracking
 • No logs, no telemetry
 • Your content never leaves your device
+• The camera reads a code live — no photo is taken, nothing is written
 • Pro history lives in your private iCloud container — never on our servers
 • We don't need to see what you encode — and we never will.
 

@@ -1,3 +1,13 @@
-• Nuevo: verificación de escaneabilidad en tiempo real. Radical QR verifica localmente que tu código se escanee correctamente y ofrece una solución con un toque (aumentar confiabilidad, suavizar menos o quitar el logo) cuando un diseño se vuelve arriesgado.
+Radical QR 2.0 — el generador, reconstruido.
 
-Como siempre: sin rastreo, sin cuentas; todo permanece en tu dispositivo.
+• Ajustes que puedes ver. Cada opción ahora dibuja su propio resultado en lugar de nombrarlo: esquinas de módulos, formas de ojos, tamaño de ojos. Nada que leer, nada que se pierda en la interpretación.
+
+• Una cosa a la vez. Color, forma, logo y exportación tienen cada uno su propio lugar, así el código que estás creando permanece en pantalla mientras lo ajustas — incluso en el iPhone más pequeño.
+
+• Tus propios estilos. Crea un diseño una vez, guárdalo y aplícalo a cualquier código con un solo toque.
+
+• Un nuevo comienzo. Pega, arrastra, busca — o duplica un código QR desde una imagen y hazlo tuyo.
+
+Corregido: un código con fondo transparente ya no se marca como difícil de escanear.
+
+Como siempre: sin rastreo, sin cuentas — todo permanece en tu dispositivo.

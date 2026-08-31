@@ -1,1 +1,1 @@
-code,generateur,createur,logo,personnalise,code-barres,vcard,wifi,svg,pdf,url,contact,menu,evenement
+code,scanner,dupliquer,logo,personnalise,degrade,vcard,wifi,url,contact,evenement,menu,svg,pdf

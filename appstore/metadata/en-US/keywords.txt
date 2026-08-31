@@ -1,1 +1,1 @@
-code,generator,maker,creator,logo,custom,barcode,vcard,wifi,svg,pdf,url,contact,menu,event,tracking
+scan,duplicate,logo,custom,gradient,vcard,wifi,url,contact,event,menu,svg,pdf,barcode,maker,offline
