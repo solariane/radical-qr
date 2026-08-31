@@ -354,7 +354,14 @@
   "styles.mine": "b6bc1f6fc89ae13809e6100175bdba32",
   "styles.save": "63113e43973f0cb6fe3ceee9c3fa3e3f",
   "launch.file": "0b27918290ff5323bea1e3b78a9cf04e",
-  "launch.headline": "80a9fb4f5831970bc0921a8958739308",
+  "launch.headline": "ccbc4c1ae0f4a9703ce7aab9867ede6c",
   "launch.paste": "36bb6559696dc9124986ae120515984f",
-  "launch.subhead": "ccd8f65d09b9bceb10b9133f54164815"
+  "launch.subhead": "ccd8f65d09b9bceb10b9133f54164815",
+  "NSCameraUsageDescription": "55ce2f880b3c5ae1df5ced05d331e208",
+  "duplicate.camera": "967d35e40f3f95b1f538bd248640bf3b",
+  "duplicate.library": "8bc47c4179c0f7c6c65fcf1d51b327ad",
+  "duplicate.notFound": "1bb9fc2f5920c428b34f710e00caae92",
+  "duplicate.notFound.detail": "70474ed2dff545721e1de2b5a148c7e8",
+  "launch.duplicate": "ed75712b0eb1913c28a3872731ffd48d",
+  "scanner.hint": "ca8942d6a0fb901c482a1d0c8f7dc258"
 }

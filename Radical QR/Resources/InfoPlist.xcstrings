@@ -1,138 +1,204 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "CFBundleDisplayName": {
-      "comment": "Bundle display name",
-      "extractionState": "extracted_with_value",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Bundle display name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Radical QR"
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Radical QR"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         }
       }
     },
-    "CFBundleName": {
-      "comment": "Bundle name",
-      "extractionState": "extracted_with_value",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Radical QR"
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Radical QR"
           }
         },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
           }
         },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Radical QR"
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR"
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "comment" : "Privacy - Camera Usage Description",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR تستخدم الكاميرا لقراءة رمز QR موجود حتى تتمكن من إعادة إنشائه. لا يتم تسجيل أو إرسال أي شيء."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR nutzt die Kamera, um einen vorhandenen QR-Code zu scannen, damit Sie ihn nachbilden können. Es wird nichts aufgezeichnet oder übertragen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Radical QR uses the camera to read an existing QR code so you can recreate it. Nothing is recorded or sent."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR utiliza la cámara para leer un código QR ya existente, de modo que puedas reproducirlo. No se graba ni se envía nada."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR utilise l'appareil photo pour lire un code QR existant afin que vous puissiez le recréer. Aucune donnée n'est enregistrée ni transmise."
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR मौजूदा QR कोड को पढ़ने के लिए कैमरा का उपयोग करता है ताकि आप उसे फिर से बना सकें। कुछ भी रिकॉर्ड या भेजा नहीं जाता।"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR utilizza la fotocamera per leggere un codice QR esistente, in modo da poterlo ricreare. Non viene registrato né inviato nulla."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR カメラを使って既存のQRコードを読み取り、それを再現できるようにします。何も記録・送信されることはありません。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR usa a câmera para ler um código QR já existente, para que você possa recriá-lo. Nada é gravado nem enviado."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Radical QR 使用相机扫描现有的二维码，以便您能够重新生成该二维码。系统不会记录或发送任何信息。"
           }
         }
       }
     }
   },
-  "version": "1.1"
+  "version" : "1.1"
 }
