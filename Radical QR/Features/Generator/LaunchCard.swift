@@ -23,6 +23,12 @@ struct LaunchCard: View {
     let placeholder: String
     var textFieldAnchorID: AnyHashable?
 
+    @Environment(\.scenePhase) private var scenePhase
+    /// Bumped on every return to the foreground: `PasteButton` decides whether
+    /// it is enabled when it is created, so copying in another app would leave
+    /// it greyed out until something else forced a rebuild.
+    @State private var pasteboardGeneration = 0
+
     @State private var showFilePicker = false
     @State private var showImagePicker = false
     @State private var isTargeted = false
@@ -70,6 +76,9 @@ struct LaunchCard: View {
             Task { await duplicate(from: item) }
         }
         #endif
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { pasteboardGeneration += 1 }
+        }
         .alert(
             String(localized: "duplicate.notFound", defaultValue: "No QR code in that picture"),
             isPresented: $decodeFailed
@@ -100,7 +109,7 @@ struct LaunchCard: View {
                     .frame(width: 72, height: 72)
 
                 VStack(spacing: 5) {
-                    Text(String(localized: "launch.headline", defaultValue: "Paste anything"))
+                    Text(String(localized: "launch.headline", defaultValue: "Drop or paste anything"))
                         .font(.title3.weight(.semibold))
                         .foregroundStyle(.primary)
 
@@ -215,7 +224,6 @@ struct LaunchCard: View {
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.capsule)
-        .controlSize(.large)
         .tint(Color.accentColor)
     }
 
@@ -236,7 +244,6 @@ struct LaunchCard: View {
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.capsule)
-        .controlSize(.large)
         .tint(Color.accentColor)
     }
 
@@ -259,7 +266,6 @@ struct LaunchCard: View {
         }
         .buttonStyle(.borderedProminent)
         .buttonBorderShape(.capsule)
-        .controlSize(.large)
         .tint(Color.accentColor)
         #else
         PasteButton(payloadType: String.self) { strings in
@@ -270,8 +276,8 @@ struct LaunchCard: View {
         }
         .labelStyle(.titleAndIcon)
         .buttonBorderShape(.capsule)
-        .controlSize(.large)
         .tint(Color.accentColor)
+        .id(pasteboardGeneration)
         #endif
     }
 
