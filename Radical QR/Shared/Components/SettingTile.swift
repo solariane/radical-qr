@@ -68,10 +68,12 @@ struct SettingTokenTile: View {
     let label: String
     let action: () -> Void
 
+    @Environment(\.generatorMetrics) private var metrics
+
     var body: some View {
         SettingTile(
-            width: 72,
-            height: 48,
+            width: metrics.tokenWidth,
+            height: metrics.tokenHeight,
             contentScale: 0.86,
             isSelected: isSelected,
             isLocked: isLocked,

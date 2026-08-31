@@ -189,10 +189,12 @@ struct LogoDropZone: View {
     private func loadSelectedPhoto(_ item: PhotosPickerItem?) async {
         guard let item else { return }
 
+        // PickedImage, not Data — see PickedImage: a plain Data transfer is
+        // refused by Photos, and the failure was swallowed here.
         do {
-            if let data = try await item.loadTransferable(type: Data.self) {
+            if let picked = try await item.loadTransferable(type: PickedImage.self) {
                 await MainActor.run {
-                    self.logoData = processImageData(data)
+                    self.logoData = processImageData(picked.data)
                 }
             }
         } catch {

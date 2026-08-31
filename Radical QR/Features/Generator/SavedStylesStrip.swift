@@ -13,6 +13,7 @@ struct SavedStylesStrip: View {
 
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(\.generatorMetrics) private var metrics
     @Query(sort: \StylePreset.createdAt, order: .forward) private var presets: [StylePreset]
 
     private var isFull: Bool { presets.count >= FeatureLimit.maxStylePresets }
@@ -28,14 +29,14 @@ struct SavedStylesStrip: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "styles.mine", defaultValue: "My styles"))
 
-            HStack(spacing: 11) {
+            HStack(spacing: metrics.tileGap) {
                 ForEach(presets) { preset in
                     SettingTile(
-                        width: 44,
-                        height: 44,
+                        width: metrics.swatch,
+                        height: metrics.swatch,
                         contentScale: 0.74,
                         isSelected: isCurrent(preset),
                         label: preset.name,
@@ -57,8 +58,8 @@ struct SavedStylesStrip: View {
 
                 if !isFull {
                     SettingTile(
-                        width: 44,
-                        height: 44,
+                        width: metrics.swatch,
+                        height: metrics.swatch,
                         contentScale: 0.42,
                         isSelected: false,
                         isLocked: !purchaseManager.isPro,

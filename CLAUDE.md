@@ -57,6 +57,7 @@ Radical QR/
 │   ├── Generator/
 │   │   ├── GeneratorView.swift          # Main generation interface
 │   │   ├── GeneratorViewModel.swift     # Reactive view model
+│   │   ├── LaunchCard.swift             # Empty state: drop target, field, Paste / File
 │   │   ├── CustomizationRail.swift      # Icon rail: 5 setting families, one shown at a time
 │   │   ├── ColorGroupView.swift         # Solid, gradient, background
 │   │   ├── ShapeGroupView.swift         # Modules, eyes, eye size
@@ -78,6 +79,7 @@ Radical QR/
 │   │   ├── DropZone.swift               # Drag & drop target
 │   │   ├── InputZone.swift              # Text input area
 │   │   ├── ColorPickerView.swift        # Color selection
+│   │   ├── GeneratorMetrics.swift       # Regular / compact sizes, chosen from the height available
 │   │   ├── SettingTile.swift            # The one control shape: squircle + concentric ring
 │   │   ├── ShapeGlyphs.swift            # Vector previews — every option draws its result
 │   │   ├── RoundnessSlider.swift        # QR element roundness
@@ -488,7 +490,9 @@ for VoiceOver only. Glyph geometry mirrors `QRCodeRenderer` (7-unit eye, 1-unit
 ring, 3-unit pupil, even-odd fill) so a tile shows what the exporter draws.
 
 One family is on screen at a time, which is what keeps preview, settings and the
-save button on an iPhone SE without scrolling. Adding a permanent row above the
+save button on an iPhone SE without scrolling — with `GeneratorMetrics` supplying
+the sizes for the height actually available, since one fixed set overflows a
+667pt screen by about a row and a half. Adding a permanent row above the
 groups costs every family its height — that is why saved styles became a family
 rather than a band. Check the vertical budget before adding anything there.
 

@@ -35,8 +35,8 @@
 	<false/>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Select images to embed as logos in your QR codes.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Radical QR uses the camera to read an existing QR code so you can recreate it. Nothing is recorded or sent.</string>
 	<key>NSServices</key>
 	<array>
 		<dict>

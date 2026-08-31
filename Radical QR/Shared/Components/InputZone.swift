@@ -12,6 +12,15 @@ struct InputZone: View {
     /// Optional id placed on the text-field (or summary) row so a parent
     /// ScrollViewReader can scroll the "free" input into view precisely.
     var textFieldAnchorID: AnyHashable? = nil
+    /// Inside `LaunchCard` the field already sits on a white card, so it drops
+    /// its own capsule, its folder button (the card has a File tile) and its
+    /// helper line (the card's subtitle says it better).
+    var isEmbedded: Bool = false
+    /// macOS only: the launch card owns the drop target now, and the window has
+    /// a global one behind everything, so the editor shows just the field.
+    var showsDropZone: Bool = true
+    /// Lets the launch card's drop target put the caret in this field.
+    var focusBinding: FocusState<Bool>.Binding? = nil
 
     @State private var isTargeted = false
     @State private var showFilePicker = false
@@ -55,7 +64,7 @@ struct InputZone: View {
             .modifier(OptionalID(id: textFieldAnchorID))
 
             // Helper text
-            if text.isEmpty && summaryOverride == nil {
+            if text.isEmpty && summaryOverride == nil && !isEmbedded {
                 Text(String(localized: "input.hint.ios", defaultValue: "Type URL, text, email, phone..."))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.7))
@@ -69,7 +78,7 @@ struct InputZone: View {
                 .textFieldStyle(.plain)
                 .padding(.leading, 16)
                 .padding(.vertical, 14)
-                .focused($isTextFieldFocused)
+                .focused(focusBinding ?? $isTextFieldFocused)
                 .lineLimit(1...3)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.URL)
@@ -91,22 +100,24 @@ struct InputZone: View {
                     .transition(.scale.combined(with: .opacity))
                 }
 
-                // File picker button
-                Button {
-                    showFilePicker = true
-                } label: {
-                    Image(systemName: "folder")
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+                // File picker button — the launch card offers its own File tile.
+                if !isEmbedded {
+                    Button {
+                        showFilePicker = true
+                    } label: {
+                        Image(systemName: "folder")
+                            .font(.title3)
+                            .foregroundStyle(Color.accentColor)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
             .padding(.trailing, 12)
         }
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+            RoundedRectangle(cornerRadius: isEmbedded ? 15 : 12)
+                .fill(isEmbedded ? AnyShapeStyle(Color.secondary.opacity(0.11)) : AnyShapeStyle(.background))
+                .shadow(color: .black.opacity(isEmbedded ? 0 : 0.1), radius: isEmbedded ? 0 : 4, y: isEmbedded ? 0 : 2)
         )
     }
     #endif
@@ -116,6 +127,7 @@ struct InputZone: View {
     #if os(macOS)
     private var macOSInputArea: some View {
         VStack(spacing: 16) {
+            if showsDropZone {
             // Drop zone area using NSViewRepresentable for reliable D&D
             MacOSDropZoneView(
                 isTargeted: $isTargeted,
@@ -145,6 +157,7 @@ struct InputZone: View {
                     .fill(.white.opacity(0.3))
                     .frame(height: 1)
             }
+            }
 
             // Input area: either a summary chip (complex content) or a text field
             macOSInputFieldRow
@@ -167,8 +180,10 @@ struct InputZone: View {
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(.white)
+                            RoundedRectangle(cornerRadius: isEmbedded ? 15 : 12)
+                                .fill(isEmbedded
+                                      ? AnyShapeStyle(Color.secondary.opacity(0.11))
+                                      : AnyShapeStyle(Color.white))
                         )
                         .focused($isTextFieldFocused)
                         .lineLimit(1...3)
@@ -188,7 +203,7 @@ struct InputZone: View {
                     }
                 }
 
-                if text.isEmpty {
+                if text.isEmpty && !isEmbedded {
                     Text(String(localized: "input.hint.mac", defaultValue: "Drop a text file to read its content, or type directly"))
                         .font(.caption)
                         .foregroundStyle(.white.opacity(0.7))
@@ -315,6 +330,10 @@ struct InputSummaryChip: View {
 import AppKit
 
 struct MacOSDropZoneView: NSViewRepresentable {
+    /// When false the view draws nothing and only registers drags — the card
+    /// above it supplies the visuals. Its icon, label and border are white, so
+    /// on a light surface it would otherwise vanish.
+    var drawsChrome: Bool = true
     @Binding var isTargeted: Bool
     var onFileDrop: (URL) -> Void
     var onTextDrop: (String) -> Void
@@ -322,6 +341,7 @@ struct MacOSDropZoneView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> DropZoneNSView {
         let view = DropZoneNSView()
+        view.drawsChrome = drawsChrome
         view.onFileDrop = onFileDrop
         view.onTextDrop = onTextDrop
         view.onTargetChanged = { targeted in
@@ -339,6 +359,11 @@ struct MacOSDropZoneView: NSViewRepresentable {
 }
 
 class DropZoneNSView: NSView {
+    /// Set before the view is added to the hierarchy; a chrome-less zone is an
+    /// invisible drag catcher for whatever is drawn on top of it.
+    var drawsChrome = true {
+        didSet { applyChromeVisibility() }
+    }
     var onFileDrop: ((URL) -> Void)?
     var onTextDrop: ((String) -> Void)?
     var onTargetChanged: ((Bool) -> Void)?
@@ -405,6 +430,12 @@ class DropZoneNSView: NSView {
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
+        applyChromeVisibility()
+        updateAppearance()
+    }
+
+    private func applyChromeVisibility() {
+        stackView.isHidden = !drawsChrome
         updateAppearance()
     }
 
@@ -418,6 +449,11 @@ class DropZoneNSView: NSView {
     }
 
     private func updateAppearance() {
+        guard drawsChrome else {
+            layer?.backgroundColor = NSColor.clear.cgColor
+            layer?.borderWidth = 0
+            return
+        }
         if isCurrentlyTargeted {
             layer?.backgroundColor = NSColor.white.withAlphaComponent(0.15).cgColor
             layer?.borderWidth = 2

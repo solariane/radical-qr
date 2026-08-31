@@ -10,12 +10,13 @@ struct ShapeGroupView: View {
     let onLocked: (ProFeature) -> Void
 
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(\.generatorMetrics) private var metrics
 
     private static let roundnessSteps: [CGFloat] = [0, 0.3, 0.6, 1.0]
     private static let eyeScaleSteps: [CGFloat] = [0.75, 0.9, 1.0]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: metrics.rowGap) {
             modulesRow
             eyeStyleRow
             eyeScaleRow
@@ -23,14 +24,14 @@ struct ShapeGroupView: View {
     }
 
     private var modulesRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "roundness.modules", defaultValue: "Modules"))
 
-            HStack(spacing: 10) {
+            HStack(spacing: metrics.tileGap) {
                 ForEach(Self.roundnessSteps, id: \.self) { step in
                     SettingTile(
-                        width: 48,
-                        height: 48,
+                        width: metrics.tile,
+                        height: metrics.tile,
                         isSelected: matches(configuration.roundness, step),
                         label: Self.roundnessName(step),
                         action: {
@@ -48,15 +49,15 @@ struct ShapeGroupView: View {
     }
 
     private var eyeStyleRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "eye.style.label", defaultValue: "Eyes"))
 
-            HStack(spacing: 10) {
+            HStack(spacing: metrics.tileGap) {
                 ForEach(QRCodeConfiguration.EyeStyle.allCases, id: \.self) { style in
                     let locked = style.isPro && !purchaseManager.isPro
                     SettingTile(
-                        width: 48,
-                        height: 48,
+                        width: metrics.tile,
+                        height: metrics.tile,
                         isSelected: configuration.eyeStyle == style,
                         isLocked: locked,
                         label: style.displayName,
@@ -79,14 +80,14 @@ struct ShapeGroupView: View {
     }
 
     private var eyeScaleRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "eye.size.label", defaultValue: "Eye size"))
 
-            HStack(spacing: 10) {
+            HStack(spacing: metrics.tileGap) {
                 ForEach(Self.eyeScaleSteps, id: \.self) { step in
                     SettingTile(
-                        width: 48,
-                        height: 48,
+                        width: metrics.tile,
+                        height: metrics.tile,
                         isSelected: matches(configuration.eyeScale, step),
                         label: Self.eyeScaleName(step),
                         action: {

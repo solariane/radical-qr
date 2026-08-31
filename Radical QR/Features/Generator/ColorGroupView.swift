@@ -10,6 +10,7 @@ struct ColorGroupView: View {
     let onLocked: (ProFeature) -> Void
 
     @EnvironmentObject private var purchaseManager: PurchaseManager
+    @Environment(\.generatorMetrics) private var metrics
 
     private var isGradient: Bool {
         if case .gradient = configuration.foregroundStyle { return true }
@@ -27,7 +28,7 @@ struct ColorGroupView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: metrics.rowGap) {
             solidRow
             gradientRow
             backgroundRow
@@ -37,14 +38,14 @@ struct ColorGroupView: View {
     // MARK: - Solid
 
     private var solidRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "style.solid", defaultValue: "Solid"))
 
             TileRow {
                 ForEach(SerializableColor.freeColors, id: \.self) { color in
                     SettingTile(
-                        width: 44,
-                        height: 44,
+                        width: metrics.swatch,
+                        height: metrics.swatch,
                         contentScale: 0.64,
                         isSelected: !isGradient && solidColor == color,
                         label: color.accessibilityName,
@@ -64,8 +65,8 @@ struct ColorGroupView: View {
                     )
                 } else {
                     SettingTile(
-                        width: 44,
-                        height: 44,
+                        width: metrics.swatch,
+                        height: metrics.swatch,
                         contentScale: 0.64,
                         isSelected: false,
                         isLocked: true,
@@ -82,14 +83,14 @@ struct ColorGroupView: View {
     // MARK: - Gradient
 
     private var gradientRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "style.gradient", defaultValue: "Gradient"))
 
             TileRow {
                 ForEach(GradientConfiguration.freeGradients, id: \.self) { preset in
                     SettingTile(
-                        width: 44,
-                        height: 44,
+                        width: metrics.swatch,
+                        height: metrics.swatch,
                         contentScale: 0.64,
                         isSelected: isGradient && gradient.matchesStops(of: preset),
                         label: preset.accessibilityName,
@@ -120,8 +121,8 @@ struct ColorGroupView: View {
                     )
                 } else {
                     SettingTile(
-                        width: 44,
-                        height: 44,
+                        width: metrics.swatch,
+                        height: metrics.swatch,
                         contentScale: 0.64,
                         isSelected: false,
                         isLocked: true,
@@ -147,8 +148,8 @@ struct ColorGroupView: View {
             ForEach(GradientConfiguration.GradientType.allCases, id: \.self) { type in
                 let locked = !purchaseManager.isPro && type != .linear && type != .radial
                 SettingTile(
-                    width: 44,
-                    height: 44,
+                    width: metrics.swatch,
+                    height: metrics.swatch,
                     contentScale: 0.64,
                     isSelected: gradient.type == type,
                     isLocked: locked,
@@ -195,12 +196,14 @@ struct ColorGroupView: View {
     // MARK: - Background
 
     private var backgroundRow: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: metrics.labelGap) {
             SettingRowLabel(text: String(localized: "customization.background", defaultValue: "Background"))
 
-            HStack(spacing: 11) {
+            HStack(spacing: metrics.tileGap) {
                 ForEach(backgroundOptions, id: \.self) { type in
                     SettingTile(
+                        width: metrics.tile,
+                        height: metrics.tile,
                         isSelected: configuration.backgroundType == type,
                         label: type.displayName,
                         action: { configuration.backgroundType = type }
@@ -240,13 +243,15 @@ private struct ColorPickerTile: View {
     @Binding var color: Color
     let label: String
 
+    @Environment(\.generatorMetrics) private var metrics
+
     var body: some View {
         ColorPicker("", selection: $color, supportsOpacity: false)
             .labelsHidden()
-            .frame(width: 30, height: 30)
-            .frame(width: 44, height: 44)
+            .frame(width: metrics.swatch * 0.68, height: metrics.swatch * 0.68)
+            .frame(width: metrics.swatch, height: metrics.swatch)
             .background(
-                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                RoundedRectangle(cornerRadius: metrics.swatch * 0.3, style: .continuous)
                     .fill(.white.opacity(0.68))
             )
             .accessibilityLabel(label)
@@ -283,9 +288,11 @@ private struct GradientTypeGlyph: View {
 struct TileRow<Content: View>: View {
     @ViewBuilder var content: () -> Content
 
+    @Environment(\.generatorMetrics) private var metrics
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 11) {
+            HStack(spacing: metrics.tileGap) {
                 content()
             }
             .padding(7)

@@ -1,3 +1,13 @@
-• New: a live scannability check. Radical QR verifies on-device that your code actually scans — and offers a one-tap fix (boost reliability, soften less, or remove the logo) when a design gets risky.
+Radical QR 2.0 — the generator, rebuilt.
+
+• Settings you can see. Every option now draws its own result instead of naming it: module corners, eye shapes, eye size. Nothing to read, nothing to lose in translation.
+
+• One thing at a time. Colour, shape, logo and export each get their own place, so the code you are building stays on screen while you tune it — even on the smallest iPhone.
+
+• Your own styles. Build a look once, save it, bring it back on any code with a single tap.
+
+• A new start. Paste, drop, browse — or duplicate a QR code from a picture and make it yours.
+
+Fixed: a code on a transparent background is no longer flagged as hard to scan.
 
 As always: no tracking, no accounts — everything stays on your device.
