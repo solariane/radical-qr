@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #5b5bd6; } a:hover { color: #4a4ab8; }
+    button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  </style>
+</helmet>
+
+<div style="width: 390px; height: 844px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; padding: 26px 20px 22px; gap: 18px; color: #ffffff; overflow: hidden;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; height: 34px; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 9px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="17" cy="7" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="7" cy="17" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="14.5" cy="14.5" r="1.5" fill="#ffffff"></circle>
+        <circle cx="19.5" cy="14.5" r="1.5" fill="#ffffff" opacity="0.6"></circle>
+        <circle cx="14.5" cy="19.5" r="1.5" fill="#ffffff" opacity="0.6"></circle>
+        <circle cx="19.5" cy="19.5" r="1.5" fill="#ffffff"></circle>
+      </svg>
+      <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">Radical QR</span>
+    </div>
+    <button style="width: 34px; height: 34px; border-radius: 17px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center;">
+      <svg width="18" height="18" viewBox="0 0 24 24">
+        <circle cx="5" cy="12" r="1.4" fill="#ffffff"></circle>
+        <circle cx="12" cy="12" r="1.4" fill="#ffffff"></circle>
+        <circle cx="19" cy="12" r="1.4" fill="#ffffff"></circle>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Cible unique : coller, déposer ou taper, sans choisir de format à l'avance -->
+  <div style="background: #ffffff; border-radius: 28px; padding: 22px; box-shadow: 0 6px 22px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 18px; flex-shrink: 0;">
+    <div style="border: 2px dashed #d6d2e4; border-radius: 22px; padding: 30px 20px 26px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+      <svg width="96" height="96" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.6" fill="none" stroke="#c9c2e6" stroke-width="2.3"></circle>
+        <circle cx="17" cy="7" r="4.6" fill="none" stroke="#c9c2e6" stroke-width="2.3"></circle>
+        <circle cx="7" cy="17" r="4.6" fill="none" stroke="#c9c2e6" stroke-width="2.3"></circle>
+        <circle cx="14.5" cy="14.5" r="1.5" fill="#c9c2e6"></circle>
+        <circle cx="19.5" cy="14.5" r="1.5" fill="#ddd8ee"></circle>
+        <circle cx="14.5" cy="19.5" r="1.5" fill="#ddd8ee"></circle>
+        <circle cx="19.5" cy="19.5" r="1.5" fill="#c9c2e6"></circle>
+      </svg>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <span style="font-size: 19px; font-weight: 650; color: #1c1a22; letter-spacing: -0.3px;">Collez n'importe quoi</span>
+        <span style="font-size: 13.5px; line-height: 1.4; color: #8e8b98; text-align: center; text-wrap: pretty; max-width: 250px;">Lien, texte, contact, réseau Wi-Fi, événement. Le format est reconnu tout seul.</span>
+      </div>
+    </div>
+
+    <!-- Trois entrées, même poids visuel -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px;">
+      <button style="height: 78px; border-radius: 20px; background: #f2f1f6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4b3a86" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6.6" y="4.4" width="11.8" height="15.2" rx="2.6"></rect>
+          <path d="M9.6 4.4V3.6a1.6 1.6 0 0 1 1.6-1.6h2.6a1.6 1.6 0 0 1 1.6 1.6v0.8"></path>
+        </svg>
+        <span style="font-size: 12px; font-weight: 600; color: #4b3a86;">Coller</span>
+      </button>
+      <button style="height: 78px; border-radius: 20px; background: #f2f1f6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4b3a86" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5.4" width="18" height="13.2" rx="3"></rect>
+          <circle cx="8.4" cy="10.2" r="1.7"></circle>
+          <path d="M3.4 16l4.6-4.2 3.4 3 3.2-3.4 5.6 5.4"></path>
+        </svg>
+        <span style="font-size: 12px; font-weight: 600; color: #4b3a86;">Photo</span>
+      </button>
+      <button style="height: 78px; border-radius: 20px; background: #f2f1f6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4b3a86" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.4 2.8H7.4a2.4 2.4 0 0 0-2.4 2.4v13.6a2.4 2.4 0 0 0 2.4 2.4h9.2a2.4 2.4 0 0 0 2.4-2.4V8.4z"></path>
+          <path d="M13.4 2.8v5.6H19"></path>
+        </svg>
+        <span style="font-size: 12px; font-weight: 600; color: #4b3a86;">Fichier</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Reprise d'un code récent (Pro) : les vignettes suffisent à reconnaître -->
+  <div style="display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Récents</span>
+      <span style="font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; background: rgba(255,255,255,0.92); color: #6b4bb0; padding: 2px 7px; border-radius: 7px;">PRO</span>
+    </div>
+    <div style="display: flex; gap: 11px;">
+      <div style="width: 74px; height: 74px; border-radius: 21px; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center;">
+        <svg width="52" height="52" viewBox="-1 -1 27 27"><path d="{{r0}}" fill="#1e3a5f" fill-rule="evenodd"></path></svg>
+      </div>
+      <div style="width: 74px; height: 74px; border-radius: 21px; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center;">
+        <svg width="52" height="52" viewBox="-1 -1 27 27"><defs><linearGradient id="recGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#667eea"></stop><stop offset="1" stop-color="#764ba2"></stop></linearGradient></defs><path d="{{r1}}" fill="url(#recGrad)" fill-rule="evenodd"></path></svg>
+      </div>
+      <div style="width: 74px; height: 74px; border-radius: 21px; background: rgba(255,255,255,0.7); display: flex; align-items: center; justify-content: center;">
+        <svg width="52" height="52" viewBox="-1 -1 27 27">
+          <path d="{{r2}}" fill="#722f37" fill-rule="evenodd"></path>
+        </svg>
+      </div>
+      <div style="width: 74px; height: 74px; border-radius: 21px; background: rgba(255,255,255,0.28); display: flex; align-items: center; justify-content: center;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1;"></div>
+
+  <!-- Promesse de confidentialité, une ligne, jamais un écran -->
+  <div style="display: flex; align-items: center; justify-content: center; gap: 8px; flex-shrink: 0;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.72)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2.8l7.4 3v6c0 4.6-3.1 8.2-7.4 9.4-4.3-1.2-7.4-4.8-7.4-9.4v-6z"></path>
+      <path d="M8.8 12.2l2.2 2.2 4.2-4.4"></path>
+    </svg>
+    <span style="font-size: 12.5px; color: rgba(255,255,255,0.78);">Tout reste sur l'appareil. Rien n'est envoyé.</span>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var N = 25;
+function q(v) { return Math.round(v * 1000) / 1000; }
+
+function rrPath(x, y, w, h, f) {
+  var r = q(Math.min(w, h) * f);
+  x = q(x); y = q(y); w = q(w); h = q(h);
+  if (r <= 0.001) { return 'M' + x + ',' + y + 'h' + w + 'v' + h + 'h' + (-w) + 'z'; }
+  var sw = q(w - 2 * r), sh = q(h - 2 * r);
+  return 'M' + q(x + r) + ',' + y + 'h' + sw + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r +
+         'v' + sh + 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r +
+         'h' + (-sw) + 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + (-r) +
+         'v' + (-sh) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'z';
+}
+function leafPath(x, y, w, h, f) {
+  var r = q(Math.min(w, h) * f);
+  x = q(x); y = q(y); w = q(w); h = q(h);
+  return 'M' + q(x + r) + ',' + y + 'h' + q(w - r) + 'v' + q(h - r) +
+         'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r + 'h' + q(-(w - r)) + 'v' + q(-(h - r)) +
+         'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'z';
+}
+function eyeD(cx, cy, style, scale) {
+  var f = style === 'square' ? 0 : (style === 'rounded' ? 0.22 : 0.5);
+  var mk = style === 'leaf' ? leafPath : rrPath;
+  var S = 7 * scale, W = 1 * scale, I = S - 2 * W, P = 3 * scale;
+  return mk(cx - S / 2, cy - S / 2, S, S, f) + mk(cx - I / 2, cy - I / 2, I, I, f) + mk(cx - P / 2, cy - P / 2, P, P, f);
+}
+function qrPath(round, eye, seed) {
+  var m = [], i, j, s = seed;
+  function rnd() { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+  for (i = 0; i < N; i++) { var row = []; for (j = 0; j < N; j++) { row.push(rnd() < 0.47 ? 1 : 0); } m.push(row); }
+  function clearZone(r, c) {
+    for (var a = -1; a < 8; a++) { for (var b = -1; b < 8; b++) {
+      var y = r + a, x = c + b;
+      if (y >= 0 && y < N && x >= 0 && x < N) { m[y][x] = 0; }
+    } }
+  }
+  clearZone(0, 0); clearZone(0, N - 7); clearZone(N - 7, 0);
+  for (i = 8; i < N - 8; i++) { m[6][i] = (i % 2 === 0) ? 1 : 0; m[i][6] = (i % 2 === 0) ? 1 : 0; }
+  var f = round * 0.5, d = '';
+  for (i = 0; i < N; i++) { for (j = 0; j < N; j++) { if (m[i][j]) { d += rrPath(j, i, 1, 1, f); } } }
+  d += eyeD(3.5, 3.5, eye, 1) + eyeD(N - 3.5, 3.5, eye, 1) + eyeD(3.5, N - 3.5, eye, 1);
+  return d;
+}
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      r0: qrPath(0.6, 'rounded', 1987654321),
+      r1: qrPath(1, 'dot', 918273645),
+      r2: qrPath(0, 'square', 564738291)
+    };
+  }
+}
+</script>
+</body>
+</html>

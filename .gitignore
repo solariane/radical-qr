@@ -36,3 +36,5 @@ fastlane/test_output
 # translation expport / import
 *Localizations
 node_modules/
+# Canvas de design regénéré par seed-canvas.mjs (2,5 Mo) — les sources sont les .dc.html
+design/mockup/radical-qr-redesign.html

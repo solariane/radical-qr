@@ -1,0 +1,541 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #5b5bd6; } a:hover { color: #4a4ab8; }
+    button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  </style>
+</helmet>
+
+<div style="width: 390px; height: 844px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; padding: 26px 20px 22px; gap: 13px; color: #ffffff; position: relative; overflow: hidden;">
+
+  <!-- Barre de titre -->
+  <div style="display: flex; align-items: center; justify-content: space-between; height: 34px; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 9px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="17" cy="7" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="7" cy="17" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="14.5" cy="14.5" r="1.5" fill="#ffffff"></circle>
+        <circle cx="19.5" cy="14.5" r="1.5" fill="#ffffff" opacity="0.6"></circle>
+        <circle cx="14.5" cy="19.5" r="1.5" fill="#ffffff" opacity="0.6"></circle>
+        <circle cx="19.5" cy="19.5" r="1.5" fill="#ffffff"></circle>
+      </svg>
+      <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">Radical QR</span>
+    </div>
+    <button style="width: 34px; height: 34px; border-radius: 17px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round">
+        <circle cx="5" cy="12" r="1.4" fill="#ffffff" stroke="none"></circle>
+        <circle cx="12" cy="12" r="1.4" fill="#ffffff" stroke="none"></circle>
+        <circle cx="19" cy="12" r="1.4" fill="#ffffff" stroke="none"></circle>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Carte aperçu : le QR ne quitte jamais l'écran -->
+  <div style="background: #ffffff; border-radius: 28px; padding: 16px; box-shadow: 0 6px 22px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 12px; flex-shrink: 0;">
+    <div style="position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; min-height: 186px; border-radius: 16px; background-color: #ffffff; background-image: {{qr.checker}}; background-size: 14px 14px; background-position: 0 0, 0 7px, 7px -7px, -7px 0px;">
+      <svg width="186" height="186" viewBox="-1.6 -1.6 28.2 28.2" aria-label="Aperçu du QR code">
+        <defs>
+          <linearGradient id="qgA" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="{{qr.from}}"></stop>
+            <stop offset="1" stop-color="{{qr.to}}"></stop>
+          </linearGradient>
+        </defs>
+        <rect x="-1.6" y="-1.6" width="28.2" height="28.2" rx="2.4" fill="{{qr.bg}}"></rect>
+        <path d="{{qr.d}}" fill="{{qr.fill}}" fill-rule="evenodd"></path>
+      </svg>
+      <sc-if value="{{captionOn}}" hint-placeholder-val="{{false}}">
+        <span style="font-size: 12px; font-weight: 550; color: #56525f; letter-spacing: -0.1px;">radicalsolution.com</span>
+      </sc-if>
+    </div>
+
+    <!-- Contenu détecté : la saisie se replie en une seule ligne -->
+    <div style="display: flex; align-items: center; gap: 10px; background: #f2f1f6; border-radius: 15px; padding: 11px 13px; min-height: 44px;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#5b5bd6" stroke-width="2" stroke-linecap="round">
+        <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path>
+        <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path>
+      </svg>
+      <span style="font-size: 14px; font-weight: 500; color: #1c1a22; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">radicalsolution.com/qr</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8e8b98" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 5l7 7-7 7"></path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Rail de familles : icônes seules, l'anneau concentrique du logo marque l'actif -->
+  <div style="display: flex; gap: 9px; flex-shrink: 0; padding: 0 2px;">
+        <button style="{{tabStyles.style}}" onClick="{{tabStyles.pick}}" aria-label="Mes styles">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{tabStyles.ink}}" stroke-width="1.9" stroke-linejoin="round">
+        <path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"></path>
+      </svg>
+    </button>
+    <button style="{{tabColor.style}}" onClick="{{tabColor.pick}}" aria-label="Couleur">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{tabColor.ink}}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3.5c-4.7 0-8.5 3.6-8.5 8s3.8 8 8.5 8c1.4 0 2.2-.9 2.2-1.9 0-.6-.3-1-.6-1.4-.3-.4-.6-.8-.6-1.4 0-1 .8-1.8 1.9-1.8h1.4c2.6 0 4.2-1.8 4.2-4.3 0-3.1-3.3-5.2-8.5-5.2z"></path>
+        <circle cx="8" cy="10" r="1.25" fill="{{tabColor.ink}}" stroke="none"></circle>
+        <circle cx="12.5" cy="7.8" r="1.25" fill="{{tabColor.ink}}" stroke="none"></circle>
+        <circle cx="16.6" cy="10" r="1.25" fill="{{tabColor.ink}}" stroke="none"></circle>
+      </svg>
+    </button>
+    <button style="{{tabShape.style}}" onClick="{{tabShape.pick}}" aria-label="Forme">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="{{tabShape.ink}}">
+        <rect x="3" y="3" width="7" height="7" rx="3.5"></rect>
+        <rect x="14" y="3" width="7" height="7" rx="1.4"></rect>
+        <rect x="3" y="14" width="7" height="7" rx="1.4"></rect>
+        <rect x="14" y="14" width="7" height="7" rx="3.5"></rect>
+      </svg>
+    </button>
+    <button style="{{tabLogo.style}}" onClick="{{tabLogo.pick}}" aria-label="Logo">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{tabLogo.ink}}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3.2" y="4.6" width="17.6" height="14.8" rx="3.4"></rect>
+        <circle cx="8.6" cy="9.8" r="1.7"></circle>
+        <path d="M3.6 16.4l4.4-4 3.4 3 3.2-3.4 5.4 5.2"></path>
+      </svg>
+    </button>
+    <button style="{{tabExport.style}}" onClick="{{tabExport.pick}}" aria-label="Export">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{tabExport.ink}}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3.6v11"></path>
+        <path d="M7.6 10.4l4.4 4.2 4.4-4.2"></path>
+        <path d="M4.4 17.2v1.6a1.8 1.8 0 0 0 1.8 1.8h11.6a1.8 1.8 0 0 0 1.8-1.8v-1.6"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Groupe actif : un seul à la fois, donc tout tient sans scroll -->
+  <div style="background: rgba(255,255,255,0.15); border-radius: 24px; padding: 15px 15px 17px; display: flex; flex-direction: column; gap: 14px; flex-grow: 1; min-height: 0;">
+
+    <sc-if value="{{isStyles}}" hint-placeholder-val="{{false}}">
+      <!-- Ses propres réglages, enregistrés : pas de presets imposés -->
+      <div style="display: flex; flex-direction: column; gap: 7px;">
+        <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Mes styles</span>
+        <div style="display: flex; gap: 11px;">
+          <button style="{{style0.tile}}" onClick="{{style0.pick}}" aria-label="Style enregistré 1">
+            <svg width="38" height="38" viewBox="-0.5 -0.5 26 26"><path d="{{style0.d}}" fill="#1e3a5f" fill-rule="evenodd"></path></svg>
+          </button>
+          <button style="{{style1.tile}}" onClick="{{style1.pick}}" aria-label="Style enregistré 2">
+            <svg width="38" height="38" viewBox="-0.5 -0.5 26 26">
+              <defs><linearGradient id="savedGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#667eea"></stop><stop offset="1" stop-color="#764ba2"></stop></linearGradient></defs>
+              <path d="{{style1.d}}" fill="url(#savedGrad)" fill-rule="evenodd"></path>
+            </svg>
+          </button>
+          <button style="{{styleAdd.tile}}" onClick="{{styleAdd.pick}}" aria-label="Enregistrer ce style">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#241f31" stroke-width="2.4" stroke-linecap="round" opacity="0.7"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg>
+          </button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isColor}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Uni</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{c0.style}}" onClick="{{c0.pick}}" aria-label="Noir"><span style="width: 28px; height: 28px; border-radius: 14px; background: #000000; display: block;"></span></button>
+            <button style="{{c1.style}}" onClick="{{c1.pick}}" aria-label="Marine"><span style="width: 28px; height: 28px; border-radius: 14px; background: #1e3a5f; display: block;"></span></button>
+            <button style="{{c2.style}}" onClick="{{c2.pick}}" aria-label="Forêt"><span style="width: 28px; height: 28px; border-radius: 14px; background: #2d5a3d; display: block;"></span></button>
+            <button style="{{c3.style}}" onClick="{{c3.pick}}" aria-label="Bordeaux"><span style="width: 28px; height: 28px; border-radius: 14px; background: #722f37; display: block;"></span></button>
+            <button style="{{c4.style}}" onClick="{{c4.pick}}" aria-label="Ardoise"><span style="width: 28px; height: 28px; border-radius: 14px; background: #36454f; display: block;"></span></button>
+            <button style="{{c5.style}}" onClick="{{c5.pick}}" aria-label="Indigo"><span style="width: 28px; height: 28px; border-radius: 14px; background: #4b0082; display: block;"></span></button>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Dégradé</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{g0.style}}" onClick="{{g0.pick}}" aria-label="Violet"><span style="width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #667eea, #764ba2); display: block;"></span></button>
+            <button style="{{g1.style}}" onClick="{{g1.pick}}" aria-label="Cyan"><span style="width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #3b82f6, #38c8d5); display: block;"></span></button>
+            <button style="{{g2.style}}" onClick="{{g2.pick}}" aria-label="Corail"><span style="width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #f97316, #ec4899); display: block;"></span></button>
+            <button style="{{g3.style}}" onClick="{{g3.pick}}" aria-label="Menthe, Pro">
+              <span style="width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #22c55e, #0ea5e9); display: block; opacity: 0.5;"></span>
+              <svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute; top: 4px; right: 4px; background: rgba(255,255,255,0.95); border-radius: 50%; padding: 2px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+            </button>
+            <button style="{{g4.style}}" onClick="{{g4.pick}}" aria-label="Océan, Pro">
+              <span style="width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #0ea5e9, #6366f1); display: block; opacity: 0.5;"></span>
+              <svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute; top: 4px; right: 4px; background: rgba(255,255,255,0.95); border-radius: 50%; padding: 2px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+            </button>
+            <button style="{{g5.style}}" onClick="{{g5.pick}}" aria-label="Graphite, Pro">
+              <span style="width: 28px; height: 28px; border-radius: 14px; background: linear-gradient(135deg, #111827, #64748b); display: block; opacity: 0.5;"></span>
+              <svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute; top: 4px; right: 4px; background: rgba(255,255,255,0.95); border-radius: 50%; padding: 2px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Fond</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{bgWhite.style}}" onClick="{{bgWhite.pick}}" aria-label="Fond blanc">
+              <span style="width: 32px; height: 32px; border-radius: 10px; background: #ffffff; border: 1px solid #d8d5e0; display: block;"></span>
+            </button>
+            <button style="{{bgClear.style}}" onClick="{{bgClear.pick}}" aria-label="Fond transparent">
+              <span style="width: 32px; height: 32px; border-radius: 10px; display: block; border: 1px solid #d8d5e0; background-color: #ffffff; background-image: linear-gradient(45deg, #d3d0dd 25%, transparent 25%), linear-gradient(-45deg, #d3d0dd 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d3d0dd 75%), linear-gradient(-45deg, transparent 75%, #d3d0dd 75%); background-size: 10px 10px; background-position: 0 0, 0 5px, 5px -5px, -5px 0px;"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isShape}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <!-- Modules : chaque vignette EST le résultat, aucun mot -->
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Modules</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{modSharp.style}}" onClick="{{modSharp.pick}}" aria-label="Modules nets">
+              <svg width="34" height="34" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0"></rect><rect x="2" y="0" width="1" height="1" rx="0"></rect><rect x="0" y="1" width="1" height="1" rx="0"></rect><rect x="1" y="1" width="1" height="1" rx="0"></rect><rect x="1" y="2" width="1" height="1" rx="0"></rect><rect x="2" y="2" width="1" height="1" rx="0"></rect></svg>
+            </button>
+            <button style="{{modSlight.style}}" onClick="{{modSlight.pick}}" aria-label="Modules légèrement arrondis">
+              <svg width="34" height="34" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0.15"></rect><rect x="2" y="0" width="1" height="1" rx="0.15"></rect><rect x="0" y="1" width="1" height="1" rx="0.15"></rect><rect x="1" y="1" width="1" height="1" rx="0.15"></rect><rect x="1" y="2" width="1" height="1" rx="0.15"></rect><rect x="2" y="2" width="1" height="1" rx="0.15"></rect></svg>
+            </button>
+            <button style="{{modRound.style}}" onClick="{{modRound.pick}}" aria-label="Modules arrondis">
+              <svg width="34" height="34" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0.32"></rect><rect x="2" y="0" width="1" height="1" rx="0.32"></rect><rect x="0" y="1" width="1" height="1" rx="0.32"></rect><rect x="1" y="1" width="1" height="1" rx="0.32"></rect><rect x="1" y="2" width="1" height="1" rx="0.32"></rect><rect x="2" y="2" width="1" height="1" rx="0.32"></rect></svg>
+            </button>
+            <button style="{{modCircle.style}}" onClick="{{modCircle.pick}}" aria-label="Modules circulaires">
+              <svg width="34" height="34" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0.5"></rect><rect x="2" y="0" width="1" height="1" rx="0.5"></rect><rect x="0" y="1" width="1" height="1" rx="0.5"></rect><rect x="1" y="1" width="1" height="1" rx="0.5"></rect><rect x="1" y="2" width="1" height="1" rx="0.5"></rect><rect x="2" y="2" width="1" height="1" rx="0.5"></rect></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Yeux : la vignette dessine l'œil réel -->
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Yeux</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{eyeSquare.style}}" onClick="{{eyeSquare.pick}}" aria-label="Yeux carrés">
+              <svg width="34" height="34" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd"><path d="M0,0h7v7h-7z M1,1h5v5h-5z"></path><rect x="2" y="2" width="3" height="3"></rect></svg>
+            </button>
+            <button style="{{eyeRounded.style}}" onClick="{{eyeRounded.pick}}" aria-label="Yeux arrondis">
+              <svg width="34" height="34" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd"><rect x="0" y="0" width="7" height="7" rx="1.55"></rect><rect x="1" y="1" width="5" height="5" rx="1.1"></rect><rect x="2" y="2" width="3" height="3" rx="0.66"></rect></svg>
+            </button>
+            <button style="{{eyeDot.style}}" onClick="{{eyeDot.pick}}" aria-label="Yeux ronds, Pro">
+              <svg width="34" height="34" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd" opacity="0.5"><circle cx="3.5" cy="3.5" r="3.5"></circle><circle cx="3.5" cy="3.5" r="2.5"></circle><circle cx="3.5" cy="3.5" r="1.5"></circle></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute; top: 4px; right: 4px; background: rgba(255,255,255,0.95); border-radius: 50%; padding: 2px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+            </button>
+            <button style="{{eyeLeaf.style}}" onClick="{{eyeLeaf.pick}}" aria-label="Yeux feuille, Pro">
+              <svg width="34" height="34" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd" opacity="0.5"><path d="M0,0H3.5A3.5,3.5 0 0 1 7,3.5A3.5,3.5 0 0 1 3.5,7A3.5,3.5 0 0 1 0,3.5Z M1,1H3.5A2.5,2.5 0 0 1 6,3.5A2.5,2.5 0 0 1 3.5,6A2.5,2.5 0 0 1 1,3.5Z"></path><path d="M2,2H3.5A1.5,1.5 0 0 1 5,3.5A1.5,1.5 0 0 1 3.5,5A1.5,1.5 0 0 1 2,3.5Z"></path></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute; top: 4px; right: 4px; background: rgba(255,255,255,0.95); border-radius: 50%; padding: 2px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Taille de l'œil : l'œil grossit dans un cadre fixe -->
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Taille de l'œil</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{sz75.style}}" onClick="{{sz75.pick}}" aria-label="Œil compact">
+              <svg width="34" height="34" viewBox="0 0 10 10" fill-rule="evenodd"><rect x="0.4" y="0.4" width="9.2" height="9.2" rx="1.4" fill="none" stroke="#c2bed2" stroke-width="0.35" stroke-dasharray="0.9 0.7"></rect><g fill="#241f31" transform="translate(5 5) scale(0.5) translate(-3.5 -3.5)"><rect x="0" y="0" width="7" height="7" rx="1.55"></rect><rect x="1" y="1" width="5" height="5" rx="1.1"></rect><rect x="2" y="2" width="3" height="3" rx="0.66"></rect></g></svg>
+            </button>
+            <button style="{{sz90.style}}" onClick="{{sz90.pick}}" aria-label="Œil moyen">
+              <svg width="34" height="34" viewBox="0 0 10 10" fill-rule="evenodd"><rect x="0.4" y="0.4" width="9.2" height="9.2" rx="1.4" fill="none" stroke="#c2bed2" stroke-width="0.35" stroke-dasharray="0.9 0.7"></rect><g fill="#241f31" transform="translate(5 5) scale(0.75) translate(-3.5 -3.5)"><rect x="0" y="0" width="7" height="7" rx="1.55"></rect><rect x="1" y="1" width="5" height="5" rx="1.1"></rect><rect x="2" y="2" width="3" height="3" rx="0.66"></rect></g></svg>
+            </button>
+            <button style="{{sz100.style}}" onClick="{{sz100.pick}}" aria-label="Œil complet">
+              <svg width="34" height="34" viewBox="0 0 10 10" fill-rule="evenodd"><rect x="0.4" y="0.4" width="9.2" height="9.2" rx="1.4" fill="none" stroke="#c2bed2" stroke-width="0.35" stroke-dasharray="0.9 0.7"></rect><g fill="#241f31" transform="translate(5 5) scale(1) translate(-3.5 -3.5)"><rect x="0" y="0" width="7" height="7" rx="1.55"></rect><rect x="1" y="1" width="5" height="5" rx="1.1"></rect><rect x="2" y="2" width="3" height="3" rx="0.66"></rect></g></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isLogo}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Logo au centre</span>
+          <div style="display: flex; gap: 11px; align-items: center;">
+            <button style="width: 72px; height: 72px; border-radius: 21px; border: 2px dashed rgba(255,255,255,0.55); display: flex; align-items: center; justify-content: center; flex-shrink: 0;" onClick="{{openPro}}" aria-label="Ajouter un logo, Pro">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round">
+                <path d="M12 6v12"></path><path d="M6 12h12"></path>
+              </svg>
+            </button>
+            <div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1;">
+              <div style="display: flex; align-items: center; gap: 7px;">
+                <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.8px; background: rgba(255,255,255,0.92); color: #6b4bb0; padding: 3px 8px; border-radius: 8px;">PRO</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg>
+              </div>
+              <span style="font-size: 13px; line-height: 1.35; color: rgba(255,255,255,0.88); text-wrap: pretty;">Déposez une image : la zone de repos est calculée toute seule.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Légende : la vignette montre le bloc de texte, elle ne le nomme pas -->
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Légende</span>
+          <div style="display: flex; gap: 11px;">
+            <button style="{{capOff.style}}" onClick="{{capOff.pick}}" aria-label="Sans légende">
+              <svg width="34" height="34" viewBox="0 0 12 12" fill="#241f31">
+                <rect x="1.5" y="1.5" width="9" height="9" rx="1.6"></rect>
+                <rect x="3.1" y="3.1" width="2.2" height="2.2" rx="0.5" fill="#ffffff"></rect>
+                <rect x="6.7" y="3.1" width="2.2" height="2.2" rx="0.5" fill="#ffffff"></rect>
+                <rect x="3.1" y="6.7" width="2.2" height="2.2" rx="0.5" fill="#ffffff"></rect>
+                <rect x="6.7" y="6.7" width="1" height="1" rx="0.3" fill="#ffffff"></rect>
+                <rect x="8" y="8" width="1" height="1" rx="0.3" fill="#ffffff"></rect>
+              </svg>
+            </button>
+            <button style="{{capOn.style}}" onClick="{{capOn.pick}}" aria-label="Avec légende">
+              <svg width="34" height="34" viewBox="0 0 12 12" fill="#241f31">
+                <rect x="1.5" y="0.7" width="9" height="9" rx="1.6"></rect>
+                <rect x="3.1" y="2.3" width="2.2" height="2.2" rx="0.5" fill="#ffffff"></rect>
+                <rect x="6.7" y="2.3" width="2.2" height="2.2" rx="0.5" fill="#ffffff"></rect>
+                <rect x="3.1" y="5.9" width="2.2" height="2.2" rx="0.5" fill="#ffffff"></rect>
+                <rect x="6.7" y="5.9" width="1" height="1" rx="0.3" fill="#ffffff"></rect>
+                <rect x="8" y="7.2" width="1" height="1" rx="0.3" fill="#ffffff"></rect>
+                <rect x="2.6" y="10.4" width="6.8" height="0.9" rx="0.45" opacity="0.55"></rect>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isExport}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Taille</span>
+          <div style="display: flex; gap: 10px;">
+            <button style="{{s256.style}}" onClick="{{s256.pick}}"><span style="font-size: 13px; font-weight: 600; color: #241f31;">256</span></button>
+            <button style="{{s512.style}}" onClick="{{s512.pick}}"><span style="font-size: 13px; font-weight: 600; color: #241f31;">512</span></button>
+            <button style="{{s1024.style}}" onClick="{{s1024.pick}}"><span style="font-size: 13px; font-weight: 600; color: #241f31; opacity: 0.45;">1024</span><svg width="12" height="12" viewBox="0 0 24 24" style="position: absolute; top: 7px; right: 7px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg></button>
+            <button style="{{s2048.style}}" onClick="{{s2048.pick}}"><span style="font-size: 13px; font-weight: 600; color: #241f31; opacity: 0.45;">2048</span><svg width="12" height="12" viewBox="0 0 24 24" style="position: absolute; top: 7px; right: 7px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg></button>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <span style="font-size: 10.5px; font-weight: 600; letter-spacing: 0.7px; text-transform: uppercase; color: rgba(255,255,255,0.72);">Format</span>
+          <div style="display: flex; gap: 10px;">
+            <button style="{{fPng.style}}" onClick="{{fPng.pick}}"><span style="font-size: 12.5px; font-weight: 600; color: #241f31;">PNG</span></button>
+            <button style="{{fJpg.style}}" onClick="{{fJpg.pick}}"><span style="font-size: 12.5px; font-weight: 600; color: #241f31;">JPG</span></button>
+            <button style="{{fSvg.style}}" onClick="{{fSvg.pick}}"><span style="font-size: 12.5px; font-weight: 600; color: #241f31; opacity: 0.45;">SVG</span><svg width="12" height="12" viewBox="0 0 24 24" style="position: absolute; top: 7px; right: 7px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg></button>
+            <button style="{{fPdf.style}}" onClick="{{fPdf.pick}}"><span style="font-size: 12.5px; font-weight: 600; color: #241f31; opacity: 0.45;">PDF</span><svg width="12" height="12" viewBox="0 0 24 24" style="position: absolute; top: 7px; right: 7px;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg></button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- Action unique -->
+  <div style="display: flex; gap: 11px; flex-shrink: 0;">
+    <button style="flex-grow: 1; height: 54px; border-radius: 27px; background: #ffffff; display: flex; align-items: center; justify-content: center; gap: 9px; box-shadow: 0 5px 16px rgba(0,0,0,0.18);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#6b4bb0" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3.6v11"></path><path d="M7.6 10.4l4.4 4.2 4.4-4.2"></path>
+        <path d="M4.4 17.2v1.6a1.8 1.8 0 0 0 1.8 1.8h11.6a1.8 1.8 0 0 0 1.8-1.8v-1.6"></path>
+      </svg>
+      <span style="font-size: 16px; font-weight: 600; color: #4b3a86; letter-spacing: -0.2px;">Enregistrer</span>
+    </button>
+    <button style="width: 54px; height: 54px; border-radius: 27px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;" aria-label="Partager">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15.4V3.8"></path><path d="M7.8 8l4.2-4.2L16.2 8"></path>
+        <path d="M4.6 14v5a1.8 1.8 0 0 0 1.8 1.8h11.2a1.8 1.8 0 0 0 1.8-1.8v-5"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Rappel Pro, déclenché par un cadenas -->
+  <sc-if value="{{showPro}}" hint-placeholder-val="{{false}}">
+    <div style="position: absolute; left: 20px; right: 20px; bottom: 22px; background: #ffffff; border-radius: 26px; padding: 20px; box-shadow: 0 10px 34px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 13px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.8px; background: linear-gradient(135deg, #667eea, #764ba2); color: #ffffff; padding: 4px 9px; border-radius: 8px;">PRO</span>
+        <span style="font-size: 16px; font-weight: 650; color: #1c1a22; letter-spacing: -0.2px;">Tous les styles</span>
+      </div>
+      <span style="font-size: 13.5px; line-height: 1.4; color: #56525f; text-wrap: pretty;">Yeux ronds et feuille, dégradés libres, logo au centre, export SVG et PDF jusqu'à 2048 px.</span>
+      <div style="display: flex; gap: 10px;">
+        <button style="flex-grow: 1; height: 48px; border-radius: 24px; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center;" onClick="{{closePro}}">
+          <span style="font-size: 15px; font-weight: 600; color: #ffffff;">Passer en Pro</span>
+        </button>
+        <button style="width: 48px; height: 48px; border-radius: 24px; background: #f2f1f6; display: flex; align-items: center; justify-content: center;" onClick="{{closePro}}" aria-label="Fermer">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#56525f" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var COLORS = ['#000000', '#1e3a5f', '#2d5a3d', '#722f37', '#36454f', '#4b0082'];
+var GRADS = [['#667eea', '#764ba2'], ['#3b82f6', '#38c8d5'], ['#f97316', '#ec4899'], ['#22c55e', '#0ea5e9'], ['#0ea5e9', '#6366f1'], ['#111827', '#64748b']];
+var N = 25;
+
+function q(v) { return Math.round(v * 1000) / 1000; }
+
+function rrPath(x, y, w, h, f) {
+  var r = q(Math.min(w, h) * f);
+  x = q(x); y = q(y); w = q(w); h = q(h);
+  if (r <= 0.001) { return 'M' + x + ',' + y + 'h' + w + 'v' + h + 'h' + (-w) + 'z'; }
+  var sw = q(w - 2 * r), sh = q(h - 2 * r);
+  return 'M' + q(x + r) + ',' + y + 'h' + sw + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r +
+         'v' + sh + 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r +
+         'h' + (-sw) + 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + (-r) +
+         'v' + (-sh) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'z';
+}
+
+function leafPath(x, y, w, h, f) {
+  var r = q(Math.min(w, h) * f);
+  x = q(x); y = q(y); w = q(w); h = q(h);
+  return 'M' + q(x + r) + ',' + y + 'h' + q(w - r) + 'v' + q(h - r) +
+         'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r + 'h' + q(-(w - r)) + 'v' + q(-(h - r)) +
+         'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'z';
+}
+
+function eyeD(cx, cy, style, scale) {
+  var f = style === 'square' ? 0 : (style === 'rounded' ? 0.22 : 0.5);
+  var mk = style === 'leaf' ? leafPath : rrPath;
+  var S = 7 * scale, W = 1 * scale, I = S - 2 * W, P = 3 * scale;
+  return mk(cx - S / 2, cy - S / 2, S, S, f) +
+         mk(cx - I / 2, cy - I / 2, I, I, f) +
+         mk(cx - P / 2, cy - P / 2, P, P, f);
+}
+
+function qrPath(round, eye, scale) {
+  var m = [], i, j, s = 1987654321;
+  function rnd() { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+  for (i = 0; i < N; i++) { var row = []; for (j = 0; j < N; j++) { row.push(rnd() < 0.47 ? 1 : 0); } m.push(row); }
+  function clearZone(r, c) {
+    for (var a = -1; a < 8; a++) { for (var b = -1; b < 8; b++) {
+      var y = r + a, x = c + b;
+      if (y >= 0 && y < N && x >= 0 && x < N) { m[y][x] = 0; }
+    } }
+  }
+  clearZone(0, 0); clearZone(0, N - 7); clearZone(N - 7, 0);
+  for (i = 8; i < N - 8; i++) { m[6][i] = (i % 2 === 0) ? 1 : 0; m[i][6] = (i % 2 === 0) ? 1 : 0; }
+  var f = round * 0.5, d = '';
+  for (i = 0; i < N; i++) { for (j = 0; j < N; j++) { if (m[i][j]) { d += rrPath(j, i, 1, 1, f); } } }
+  d += eyeD(3.5, 3.5, eye, scale) + eyeD(N - 3.5, 3.5, eye, scale) + eyeD(3.5, N - 3.5, eye, scale);
+  return d;
+}
+
+var CHECKER = 'linear-gradient(45deg, #eceaf2 25%, transparent 25%), linear-gradient(-45deg, #eceaf2 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #eceaf2 75%), linear-gradient(-45deg, transparent 75%, #eceaf2 75%)';
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: 'shape', round: 0.6, eye: 'rounded', eyeScale: 1,
+      color: 0, grad: -1, bg: 'white', caption: false,
+      size: 512, format: 'PNG', showPro: false, saved: -1
+    };
+  }
+
+  renderVals() {
+    var st = this.state, self = this;
+    var out = {};
+
+    function tileStyle(sel, w, h) {
+      w = w || 56; h = h || 56;
+      return 'width: ' + w + 'px; height: ' + h + 'px; border-radius: ' + Math.round(Math.min(w, h) * 0.3) + 'px; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; ' +
+        (sel
+          ? 'background: #ffffff; box-shadow: 0 0 0 3px rgba(255,255,255,0.95), 0 0 0 5.5px rgba(255,255,255,0.34);'
+          : 'background: rgba(255,255,255,0.68);');
+    }
+    function reg(name, sel, fn, w, h) {
+      out[name] = { style: tileStyle(sel, w, h), pick: fn };
+    }
+    function lock() { self.setState({ showPro: true }); }
+
+    // Familles
+    var tabs = [['tabStyles', 'styles'], ['tabColor', 'color'], ['tabShape', 'shape'], ['tabLogo', 'logo'], ['tabExport', 'export']];
+    tabs.forEach(function (t) {
+      var active = st.tab === t[1];
+      out[t[0]] = {
+        style: 'width: 100%; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; ' +
+          (active
+            ? 'background: #ffffff; box-shadow: 0 0 0 3px rgba(255,255,255,0.9), 0 0 0 5.5px rgba(255,255,255,0.3);'
+            : 'background: rgba(255,255,255,0.18);'),
+        ink: active ? '#5b45a8' : '#ffffff',
+        pick: function () { self.setState({ tab: t[1] }); }
+      };
+    });
+
+    // Couleurs unies
+    COLORS.forEach(function (c, i) {
+      reg('c' + i, st.grad < 0 && st.color === i, function () { self.setState({ color: i, grad: -1 }); }, 44, 44);
+    });
+    // Dégradés (3 libres, 3 Pro)
+    GRADS.forEach(function (g, i) {
+      reg('g' + i, st.grad === i, i < 3 ? function () { self.setState({ grad: i }); } : lock, 44, 44);
+    });
+
+    reg('capOff', !st.caption, function () { self.setState({ caption: false }); });
+    reg('capOn', st.caption, function () { self.setState({ caption: true }); });
+
+    reg('bgWhite', st.bg === 'white', function () { self.setState({ bg: 'white' }); });
+    reg('bgClear', st.bg === 'clear', function () { self.setState({ bg: 'clear' }); });
+
+    // Modules
+    var mods = [['modSharp', 0], ['modSlight', 0.3], ['modRound', 0.6], ['modCircle', 1]];
+    mods.forEach(function (mo) {
+      reg(mo[0], Math.abs(st.round - mo[1]) < 0.02, function () { self.setState({ round: mo[1] }); });
+    });
+
+    // Yeux
+    reg('eyeSquare', st.eye === 'square', function () { self.setState({ eye: 'square' }); });
+    reg('eyeRounded', st.eye === 'rounded', function () { self.setState({ eye: 'rounded' }); });
+    reg('eyeDot', st.eye === 'dot', lock);
+    reg('eyeLeaf', st.eye === 'leaf', lock);
+
+    // Taille d'œil
+    var szs = [['sz75', 0.75], ['sz90', 0.9], ['sz100', 1]];
+    szs.forEach(function (z) {
+      reg(z[0], Math.abs(st.eyeScale - z[1]) < 0.02, function () { self.setState({ eyeScale: z[1] }); });
+    });
+
+    // Export
+    reg('s256', st.size === 256, function () { self.setState({ size: 256 }); }, 72, 48);
+    reg('s512', st.size === 512, function () { self.setState({ size: 512 }); }, 72, 48);
+    reg('s1024', st.size === 1024, lock, 72, 48);
+    reg('s2048', st.size === 2048, lock, 72, 48);
+    reg('fPng', st.format === 'PNG', function () { self.setState({ format: 'PNG' }); }, 72, 48);
+    reg('fJpg', st.format === 'JPG', function () { self.setState({ format: 'JPG' }); }, 72, 48);
+    reg('fSvg', st.format === 'SVG', lock, 72, 48);
+    reg('fPdf', st.format === 'PDF', lock, 72, 48);
+
+    var useGrad = st.grad >= 0;
+    out.qr = {
+      d: qrPath(st.round, st.eye, st.eyeScale),
+      fill: useGrad ? 'url(#qgA)' : COLORS[st.color],
+      from: useGrad ? GRADS[st.grad][0] : '#667eea',
+      to: useGrad ? GRADS[st.grad][1] : '#764ba2',
+      bg: st.bg === 'white' ? '#ffffff' : 'none',
+      checker: st.bg === 'white' ? 'none' : CHECKER
+    };
+
+    out.isStyles = st.tab === 'styles';
+    out.isColor = st.tab === 'color';
+    out.isShape = st.tab === 'shape';
+    out.isLogo = st.tab === 'logo';
+    out.isExport = st.tab === 'export';
+    // Saved styles: the tile IS the style, so nothing here needs a name.
+    function savedTile(sel) {
+      return 'width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; ' +
+        (sel
+          ? 'background: #ffffff; box-shadow: 0 0 0 3px rgba(255,255,255,0.95), 0 0 0 5.5px rgba(255,255,255,0.34);'
+          : 'background: rgba(255,255,255,0.68);');
+    }
+    out.style0 = {
+      tile: savedTile(st.saved === 0),
+      d: qrPath(0.3, 'square', 1),
+      pick: function () { self.setState({ saved: 0, round: 0.3, eye: 'square', color: 1, grad: -1 }); }
+    };
+    out.style1 = {
+      tile: savedTile(st.saved === 1),
+      d: qrPath(1, 'rounded', 0.9),
+      pick: function () { self.setState({ saved: 1, round: 1, eye: 'rounded', eyeScale: 0.9, grad: 0 }); }
+    };
+    out.styleAdd = { tile: savedTile(false), pick: function () { self.setState({ saved: -1 }); } };
+
+    out.captionOn = st.caption;
+    out.showPro = st.showPro;
+    out.openPro = function () { self.setState({ showPro: true }); };
+    out.closePro = function () { self.setState({ showPro: false }); };
+
+    return out;
+  }
+}
+</script>
+</body>
+</html>

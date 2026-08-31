@@ -1,0 +1,118 @@
+{
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Écran retenu"
+    },
+    {
+      "id": "page-2",
+      "name": "Directions écartées"
+    }
+  ],
+  "artboards": [
+    {
+      "file": "Input.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "1 — Lancement",
+      "page": "page-1"
+    },
+    {
+      "file": "Main.dc.html",
+      "x": 490,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "2 — Générateur",
+      "is_interactive": true,
+      "page": "page-1"
+    },
+    {
+      "file": "Compact.dc.html",
+      "x": 980,
+      "y": 0,
+      "w": 375,
+      "h": 667,
+      "title": "3 — iPhone SE",
+      "is_interactive": true,
+      "page": "page-1"
+    },
+    {
+      "file": "Controls.dc.html",
+      "x": 1455,
+      "y": 0,
+      "w": 880,
+      "h": 1120,
+      "title": "4 — Contrôles",
+      "page": "page-1"
+    },
+    {
+      "file": "DirectionB.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "B — Styles en un tap",
+      "is_interactive": true,
+      "page": "page-2"
+    },
+    {
+      "file": "DirectionC.dc.html",
+      "x": 490,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "C — Manipulation directe",
+      "is_interactive": true,
+      "page": "page-2"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "note-input",
+      "x": 0,
+      "y": -190,
+      "w": 390,
+      "text": "1 — Lancement\nUne seule cible : coller, déposer ou taper, sans choisir le format à l'avance. Le motif du logo sert de zone de dépôt.\nLes récents (Pro) se reconnaissent à leur vignette, pas à leur URL tronquée.",
+      "page": "page-1"
+    },
+    {
+      "id": "note-main",
+      "x": 490,
+      "y": -190,
+      "w": 390,
+      "text": "2 — Générateur (l'écran retenu)\nLe QR reste à l'écran en permanence : la saisie se replie en une ligne dès qu'un contenu est reconnu, donc le clavier n'écrase plus rien.\nCinq familles en icônes, un seul groupe affiché à la fois. « Mes styles » est une famille à part : au-dessus de chaque groupe il coûtait une rangée entière et faisait tomber la taille d'œil hors de l'écran.\nLes vignettes sont cliquables — teste aussi un cadenas.",
+      "page": "page-1"
+    },
+    {
+      "id": "note-compact",
+      "x": 980,
+      "y": -190,
+      "w": 375,
+      "text": "3 — iPhone SE (375 × 667)\nLe même écran, sans scroll et sans rien retirer. Le QR passe à 140 px, les vignettes à 48, les cibles restent ≥ 44.\nC'est la preuve que la structure tient sur le pire cas.",
+      "page": "page-1"
+    },
+    {
+      "id": "note-controls",
+      "x": 1455,
+      "y": -190,
+      "w": 880,
+      "text": "4 — Les contrôles à taille réelle, sur violet et sur blanc, avec la spec (vignette 48, glyphe à 61 %, anneau 3 + 2,5, cadenas en coin) et le rappel de ce qu'ils remplacent.",
+      "page": "page-1"
+    },
+    {
+      "id": "note-ecartees",
+      "x": 0,
+      "y": -190,
+      "w": 880,
+      "text": "Gardées pour mémoire. B mérite peut-être de revenir plus tard sous forme de rangée de presets en haut du panneau Forme — ça donnerait le « un tap » sans coûter la personnalisation.",
+      "page": "page-2"
+    }
+  ],
+  "launch": {
+    "view": "canvas",
+    "page": "page-1"
+  }
+}

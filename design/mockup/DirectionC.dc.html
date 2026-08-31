@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    a { color: #5b5bd6; } a:hover { color: #4a4ab8; }
+    button { font: inherit; color: inherit; border: 0; background: none; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  </style>
+</helmet>
+
+<div style="width: 390px; height: 844px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; flex-direction: column; padding: 26px 20px 22px; gap: 14px; color: #ffffff; position: relative; overflow: hidden;">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; height: 34px; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 9px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="7" cy="7" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="17" cy="7" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="7" cy="17" r="4.6" fill="none" stroke="#ffffff" stroke-width="2.3"></circle>
+        <circle cx="14.5" cy="14.5" r="1.5" fill="#ffffff"></circle>
+        <circle cx="19.5" cy="14.5" r="1.5" fill="#ffffff" opacity="0.6"></circle>
+        <circle cx="14.5" cy="19.5" r="1.5" fill="#ffffff" opacity="0.6"></circle>
+        <circle cx="19.5" cy="19.5" r="1.5" fill="#ffffff"></circle>
+      </svg>
+      <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.2px;">Radical QR</span>
+    </div>
+    <button style="width: 34px; height: 34px; border-radius: 17px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center;">
+      <svg width="18" height="18" viewBox="0 0 24 24">
+        <circle cx="5" cy="12" r="1.4" fill="#ffffff"></circle>
+        <circle cx="12" cy="12" r="1.4" fill="#ffffff"></circle>
+        <circle cx="19" cy="12" r="1.4" fill="#ffffff"></circle>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Le QR EST le panneau de réglages : on touche la zone qu'on veut changer -->
+  <div style="background: #ffffff; border-radius: 30px; padding: 20px; box-shadow: 0 6px 22px rgba(0,0,0,0.18); display: flex; flex-direction: column; gap: 12px; flex-shrink: 0;">
+    <div style="position: relative; width: 300px; height: 300px;">
+      <svg width="300" height="300" viewBox="-1.6 -1.6 28.2 28.2" aria-label="Aperçu du QR code">
+        <defs>
+          <linearGradient id="qgC" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="{{qr.from}}"></stop>
+            <stop offset="1" stop-color="{{qr.to}}"></stop>
+          </linearGradient>
+        </defs>
+        <rect x="-1.6" y="-1.6" width="28.2" height="28.2" rx="2.4" fill="#ffffff"></rect>
+        <path d="{{qr.d}}" fill="{{qr.fill}}" fill-rule="evenodd"></path>
+      </svg>
+
+      <!-- Champ de modules (sous les yeux dans la pile) -->
+      <button style="position: absolute; inset: 0; border-radius: 14px; {{zoneMod.ring}}" onClick="{{zoneMod.tap}}" aria-label="Changer la forme des modules"></button>
+
+      <!-- Les trois yeux -->
+      <button style="position: absolute; left: 17px; top: 17px; width: 74px; height: 74px; border-radius: 16px; {{zoneEye.ring}}" onClick="{{zoneEye.tap}}" aria-label="Changer la forme des yeux"></button>
+      <button style="position: absolute; left: 209px; top: 17px; width: 74px; height: 74px; border-radius: 16px; {{zoneEye.ring}}" onClick="{{zoneEye.tap}}" aria-label="Changer la forme des yeux"></button>
+      <button style="position: absolute; left: 17px; top: 209px; width: 74px; height: 74px; border-radius: 16px; {{zoneEye.ring}}" onClick="{{zoneEye.tap}}" aria-label="Changer la forme des yeux"></button>
+
+      <!-- Centre : logo -->
+      <button style="position: absolute; left: 115px; top: 115px; width: 70px; height: 70px; border-radius: 22px; {{zoneLogo.ring}}" onClick="{{zoneLogo.tap}}" aria-label="Ajouter un logo au centre"></button>
+
+      <!-- Apprentissage : disparaît au premier contact -->
+      <sc-if value="{{showHint}}" hint-placeholder-val="{{true}}">
+        <div style="position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); display: flex; align-items: center; gap: 8px; background: rgba(28,26,34,0.9); border-radius: 20px; padding: 9px 14px; white-space: nowrap;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11.5V5.2a1.7 1.7 0 0 1 3.4 0v6"></path>
+            <path d="M12.4 11.6V9.4a1.6 1.6 0 0 1 3.2 0v2.2"></path>
+            <path d="M15.6 11.8v-1.4a1.6 1.6 0 0 1 3.2 0v5.4a5.4 5.4 0 0 1-5.4 5.4h-2a4.6 4.6 0 0 1-3.8-2l-2.8-4.2a1.7 1.7 0 0 1 2.6-2.1L9 14.4"></path>
+          </svg>
+          <span style="font-size: 12.5px; font-weight: 550; color: #ffffff;">Touchez une zone du code</span>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 10px; background: #f2f1f6; border-radius: 15px; padding: 11px 13px; min-height: 44px;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#5b5bd6" stroke-width="2" stroke-linecap="round">
+        <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"></path>
+        <path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"></path>
+      </svg>
+      <span style="font-size: 14px; font-weight: 500; color: #1c1a22; flex-grow: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">radicalsolution.com/qr</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8e8b98" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5l7 7-7 7"></path></svg>
+    </div>
+  </div>
+
+  <!-- Palette de la zone touchée : apparaît sous le code, sinon la place reste libre -->
+  <div style="min-height: 74px; display: flex; align-items: center; flex-shrink: 0;">
+    <sc-if value="{{modeMod}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; gap: 11px; background: rgba(255,255,255,0.15); border-radius: 22px; padding: 9px;">
+        <button style="{{modSharp.style}}" onClick="{{modSharp.pick}}" aria-label="Modules nets"><svg width="30" height="30" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1"></rect><rect x="2" y="0" width="1" height="1"></rect><rect x="0" y="1" width="1" height="1"></rect><rect x="1" y="1" width="1" height="1"></rect><rect x="1" y="2" width="1" height="1"></rect><rect x="2" y="2" width="1" height="1"></rect></svg></button>
+        <button style="{{modSlight.style}}" onClick="{{modSlight.pick}}" aria-label="Modules légers"><svg width="30" height="30" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0.15"></rect><rect x="2" y="0" width="1" height="1" rx="0.15"></rect><rect x="0" y="1" width="1" height="1" rx="0.15"></rect><rect x="1" y="1" width="1" height="1" rx="0.15"></rect><rect x="1" y="2" width="1" height="1" rx="0.15"></rect><rect x="2" y="2" width="1" height="1" rx="0.15"></rect></svg></button>
+        <button style="{{modRound.style}}" onClick="{{modRound.pick}}" aria-label="Modules arrondis"><svg width="30" height="30" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0.32"></rect><rect x="2" y="0" width="1" height="1" rx="0.32"></rect><rect x="0" y="1" width="1" height="1" rx="0.32"></rect><rect x="1" y="1" width="1" height="1" rx="0.32"></rect><rect x="1" y="2" width="1" height="1" rx="0.32"></rect><rect x="2" y="2" width="1" height="1" rx="0.32"></rect></svg></button>
+        <button style="{{modCircle.style}}" onClick="{{modCircle.pick}}" aria-label="Modules circulaires"><svg width="30" height="30" viewBox="0 0 3 3" fill="#241f31"><rect x="0" y="0" width="1" height="1" rx="0.5"></rect><rect x="2" y="0" width="1" height="1" rx="0.5"></rect><rect x="0" y="1" width="1" height="1" rx="0.5"></rect><rect x="1" y="1" width="1" height="1" rx="0.5"></rect><rect x="1" y="2" width="1" height="1" rx="0.5"></rect><rect x="2" y="2" width="1" height="1" rx="0.5"></rect></svg></button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{modeEye}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; gap: 11px; background: rgba(255,255,255,0.15); border-radius: 22px; padding: 9px;">
+        <button style="{{eyeSquare.style}}" onClick="{{eyeSquare.pick}}" aria-label="Yeux carrés"><svg width="30" height="30" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd"><path d="M0,0h7v7h-7z M1,1h5v5h-5z"></path><rect x="2" y="2" width="3" height="3"></rect></svg></button>
+        <button style="{{eyeRounded.style}}" onClick="{{eyeRounded.pick}}" aria-label="Yeux arrondis"><svg width="30" height="30" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd"><rect x="0" y="0" width="7" height="7" rx="1.55"></rect><rect x="1" y="1" width="5" height="5" rx="1.1"></rect><rect x="2" y="2" width="3" height="3" rx="0.66"></rect></svg></button>
+        <button style="{{eyeDot.style}}" onClick="{{eyeDot.pick}}" aria-label="Yeux ronds, Pro"><svg width="30" height="30" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd" opacity="0.4"><circle cx="3.5" cy="3.5" r="3.5"></circle><circle cx="3.5" cy="3.5" r="2.5"></circle><circle cx="3.5" cy="3.5" r="1.5"></circle></svg><svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg></button>
+        <button style="{{eyeLeaf.style}}" onClick="{{eyeLeaf.pick}}" aria-label="Yeux feuille, Pro"><svg width="30" height="30" viewBox="0 0 7 7" fill="#241f31" fill-rule="evenodd" opacity="0.4"><path d="M0,0H3.5A3.5,3.5 0 0 1 7,3.5A3.5,3.5 0 0 1 3.5,7A3.5,3.5 0 0 1 0,3.5Z M1,1H3.5A2.5,2.5 0 0 1 6,3.5A2.5,2.5 0 0 1 3.5,6A2.5,2.5 0 0 1 1,3.5Z"></path><path d="M2,2H3.5A1.5,1.5 0 0 1 5,3.5A1.5,1.5 0 0 1 3.5,5A1.5,1.5 0 0 1 2,3.5Z"></path></svg><svg width="13" height="13" viewBox="0 0 24 24" style="position: absolute;" fill="#3b3550"><path d="M17 10h-1V7.6a4 4 0 0 0-8 0V10H7a1.6 1.6 0 0 0-1.6 1.6v6.8A1.6 1.6 0 0 0 7 20h10a1.6 1.6 0 0 0 1.6-1.6v-6.8A1.6 1.6 0 0 0 17 10zm-7-2.4a2 2 0 0 1 4 0V10h-4z"></path></svg></button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{modeLogo}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.15); border-radius: 22px; padding: 9px 14px 9px 9px;">
+        <div style="width: 52px; height: 52px; border-radius: 16px; border: 2px dashed rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"><path d="M12 6v12"></path><path d="M6 12h12"></path></svg>
+        </div>
+        <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.8px; background: rgba(255,255,255,0.92); color: #6b4bb0; padding: 4px 9px; border-radius: 8px;">PRO</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="flex-grow: 1;"></div>
+
+  <!-- Couleur : toujours accessible, sans zone à toucher -->
+  <div style="display: flex; gap: 11px; flex-shrink: 0; justify-content: space-between;">
+    <button style="{{c0.style}}" onClick="{{c0.pick}}" aria-label="Noir"><span style="width: 30px; height: 30px; border-radius: 15px; background: #000000; display: block;"></span></button>
+    <button style="{{c1.style}}" onClick="{{c1.pick}}" aria-label="Marine"><span style="width: 30px; height: 30px; border-radius: 15px; background: #1e3a5f; display: block;"></span></button>
+    <button style="{{c2.style}}" onClick="{{c2.pick}}" aria-label="Forêt"><span style="width: 30px; height: 30px; border-radius: 15px; background: #2d5a3d; display: block;"></span></button>
+    <button style="{{c3.style}}" onClick="{{c3.pick}}" aria-label="Bordeaux"><span style="width: 30px; height: 30px; border-radius: 15px; background: #722f37; display: block;"></span></button>
+    <button style="{{c4.style}}" onClick="{{c4.pick}}" aria-label="Indigo"><span style="width: 30px; height: 30px; border-radius: 15px; background: #4b0082; display: block;"></span></button>
+    <button style="{{c5.style}}" onClick="{{c5.pick}}" aria-label="Dégradé violet"><span style="width: 30px; height: 30px; border-radius: 15px; background: linear-gradient(135deg, #667eea, #764ba2); display: block;"></span></button>
+  </div>
+
+  <div style="display: flex; gap: 11px; flex-shrink: 0;">
+    <button style="flex-grow: 1; height: 54px; border-radius: 27px; background: #ffffff; display: flex; align-items: center; justify-content: center; gap: 9px; box-shadow: 0 5px 16px rgba(0,0,0,0.18);">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#6b4bb0" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3.6v11"></path><path d="M7.6 10.4l4.4 4.2 4.4-4.2"></path>
+        <path d="M4.4 17.2v1.6a1.8 1.8 0 0 0 1.8 1.8h11.6a1.8 1.8 0 0 0 1.8-1.8v-1.6"></path>
+      </svg>
+      <span style="font-size: 16px; font-weight: 600; color: #4b3a86; letter-spacing: -0.2px;">Enregistrer</span>
+    </button>
+    <button style="width: 54px; height: 54px; border-radius: 27px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;" aria-label="Partager">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 15.4V3.8"></path><path d="M7.8 8l4.2-4.2L16.2 8"></path>
+        <path d="M4.6 14v5a1.8 1.8 0 0 0 1.8 1.8h11.2a1.8 1.8 0 0 0 1.8-1.8v-5"></path>
+      </svg>
+    </button>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var COLORS = ['#000000', '#1e3a5f', '#2d5a3d', '#722f37', '#4b0082'];
+var N = 25;
+function q(v) { return Math.round(v * 1000) / 1000; }
+
+function rrPath(x, y, w, h, f) {
+  var r = q(Math.min(w, h) * f);
+  x = q(x); y = q(y); w = q(w); h = q(h);
+  if (r <= 0.001) { return 'M' + x + ',' + y + 'h' + w + 'v' + h + 'h' + (-w) + 'z'; }
+  var sw = q(w - 2 * r), sh = q(h - 2 * r);
+  return 'M' + q(x + r) + ',' + y + 'h' + sw + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + r +
+         'v' + sh + 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r +
+         'h' + (-sw) + 'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + (-r) +
+         'v' + (-sh) + 'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'z';
+}
+function leafPath(x, y, w, h, f) {
+  var r = q(Math.min(w, h) * f);
+  x = q(x); y = q(y); w = q(w); h = q(h);
+  return 'M' + q(x + r) + ',' + y + 'h' + q(w - r) + 'v' + q(h - r) +
+         'a' + r + ',' + r + ' 0 0 1 ' + (-r) + ',' + r + 'h' + q(-(w - r)) + 'v' + q(-(h - r)) +
+         'a' + r + ',' + r + ' 0 0 1 ' + r + ',' + (-r) + 'z';
+}
+function eyeD(cx, cy, style, scale) {
+  var f = style === 'square' ? 0 : (style === 'rounded' ? 0.22 : 0.5);
+  var mk = style === 'leaf' ? leafPath : rrPath;
+  var S = 7 * scale, W = 1 * scale, I = S - 2 * W, P = 3 * scale;
+  return mk(cx - S / 2, cy - S / 2, S, S, f) + mk(cx - I / 2, cy - I / 2, I, I, f) + mk(cx - P / 2, cy - P / 2, P, P, f);
+}
+function qrPath(round, eye, scale) {
+  var m = [], i, j, s = 1987654321;
+  function rnd() { s = (s * 1103515245 + 12345) & 0x7fffffff; return s / 0x7fffffff; }
+  for (i = 0; i < N; i++) { var row = []; for (j = 0; j < N; j++) { row.push(rnd() < 0.47 ? 1 : 0); } m.push(row); }
+  function clearZone(r, c) {
+    for (var a = -1; a < 8; a++) { for (var b = -1; b < 8; b++) {
+      var y = r + a, x = c + b;
+      if (y >= 0 && y < N && x >= 0 && x < N) { m[y][x] = 0; }
+    } }
+  }
+  clearZone(0, 0); clearZone(0, N - 7); clearZone(N - 7, 0);
+  for (i = 8; i < N - 8; i++) { m[6][i] = (i % 2 === 0) ? 1 : 0; m[i][6] = (i % 2 === 0) ? 1 : 0; }
+  var f = round * 0.5, d = '';
+  for (i = 0; i < N; i++) { for (j = 0; j < N; j++) { if (m[i][j]) { d += rrPath(j, i, 1, 1, f); } } }
+  d += eyeD(3.5, 3.5, eye, scale) + eyeD(N - 3.5, 3.5, eye, scale) + eyeD(3.5, N - 3.5, eye, scale);
+  return d;
+}
+
+var ROUNDS = [0, 0.3, 0.6, 1];
+var EYES = ['square', 'rounded', 'dot', 'leaf'];
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { round: 0.6, eye: 'rounded', color: 0, grad: false, zone: 'mod', touched: false };
+  }
+
+  renderVals() {
+    var st = this.state, self = this;
+    var out = {};
+
+    function ring(active) {
+      return active
+        ? 'box-shadow: 0 0 0 2.5px #6b4bb0, 0 0 0 6px rgba(107,75,176,0.22); background: rgba(107,75,176,0.06);'
+        : 'background: transparent;';
+    }
+    function tile(sel) {
+      return 'width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; ' +
+        (sel ? 'background: #ffffff; box-shadow: 0 0 0 2.5px rgba(255,255,255,0.95), 0 0 0 5px rgba(255,255,255,0.32);' : 'background: rgba(255,255,255,0.66);');
+    }
+    function dot(sel) {
+      return 'width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; ' +
+        (sel ? 'box-shadow: 0 0 0 2.5px rgba(255,255,255,0.95), 0 0 0 5.5px rgba(255,255,255,0.3); background: rgba(255,255,255,0.2);' : 'background: rgba(255,255,255,0.14);');
+    }
+
+    // Zones tactiles sur le code lui-même : le tap fait défiler les variantes
+    out.zoneMod = {
+      ring: ring(st.zone === 'mod'),
+      tap: function () {
+        var i = ROUNDS.indexOf(st.round);
+        var next = st.zone === 'mod' ? ROUNDS[(i + 1) % ROUNDS.length] : st.round;
+        self.setState({ zone: 'mod', round: next, touched: true });
+      }
+    };
+    out.zoneEye = {
+      ring: ring(st.zone === 'eye'),
+      tap: function () {
+        var i = EYES.indexOf(st.eye);
+        var next = st.zone === 'eye' ? EYES[(i + 1) % 2] : st.eye;
+        self.setState({ zone: 'eye', eye: next, touched: true });
+      }
+    };
+    out.zoneLogo = {
+      ring: ring(st.zone === 'logo'),
+      tap: function () { self.setState({ zone: 'logo', touched: true }); }
+    };
+
+    var mods = [['modSharp', 0], ['modSlight', 0.3], ['modRound', 0.6], ['modCircle', 1]];
+    mods.forEach(function (mo) {
+      out[mo[0]] = { style: tile(Math.abs(st.round - mo[1]) < 0.02), pick: function () { self.setState({ round: mo[1] }); } };
+    });
+    var eyes = [['eyeSquare', 'square', false], ['eyeRounded', 'rounded', false], ['eyeDot', 'dot', true], ['eyeLeaf', 'leaf', true]];
+    eyes.forEach(function (e) {
+      out[e[0]] = { style: tile(st.eye === e[1]), pick: e[2] ? function () {} : function () { self.setState({ eye: e[1] }); } };
+    });
+
+    COLORS.forEach(function (c, i) {
+      out['c' + i] = { style: dot(!st.grad && st.color === i), pick: function () { self.setState({ color: i, grad: false }); } };
+    });
+    out.c5 = { style: dot(st.grad), pick: function () { self.setState({ grad: true }); } };
+
+    out.qr = {
+      d: qrPath(st.round, st.eye, 1),
+      fill: st.grad ? 'url(#qgC)' : COLORS[st.color],
+      from: '#667eea',
+      to: '#764ba2'
+    };
+
+    out.modeMod = st.zone === 'mod';
+    out.modeEye = st.zone === 'eye';
+    out.modeLogo = st.zone === 'logo';
+    out.showHint = !st.touched;
+    return out;
+  }
+}
+</script>
+</body>
+</html>
