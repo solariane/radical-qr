@@ -39,7 +39,7 @@ struct ColorGroupView: View {
 
     private var solidRow: some View {
         VStack(alignment: .leading, spacing: metrics.labelGap) {
-            SettingRowLabel(text: String(localized: "style.solid", defaultValue: "Solid"))
+            SettingRowLabel(text: String(localized: "style.solid", defaultValue: "Solid color", comment: "A single flat colour, as opposed to a gradient. Not solid as in sturdy or solid matter."))
 
             TileRow {
                 ForEach(SerializableColor.freeColors, id: \.self) { color in
@@ -84,7 +84,7 @@ struct ColorGroupView: View {
 
     private var gradientRow: some View {
         VStack(alignment: .leading, spacing: metrics.labelGap) {
-            SettingRowLabel(text: String(localized: "style.gradient", defaultValue: "Gradient"))
+            SettingRowLabel(text: String(localized: "style.gradient", defaultValue: "Gradient", comment: "A colour gradient, two colours blending. Not a slope or a mathematical gradient."))
 
             TileRow {
                 ForEach(GradientConfiguration.freeGradients, id: \.self) { preset in
@@ -310,7 +310,7 @@ extension SerializableColor {
         case .navy: String(localized: "color.navy", defaultValue: "Navy")
         case .forest: String(localized: "color.forest", defaultValue: "Forest")
         case .burgundy: String(localized: "color.burgundy", defaultValue: "Burgundy")
-        case .charcoal: String(localized: "color.charcoal", defaultValue: "Charcoal grey")
+        case .charcoal: String(localized: "color.charcoal", defaultValue: "Charcoal grey", comment: "Name of a dark grey colour. Not the fuel.")
         case .indigo: String(localized: "color.indigo", defaultValue: "Indigo")
         default: String(localized: "color.custom", defaultValue: "Custom color")
         }

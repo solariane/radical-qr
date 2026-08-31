@@ -132,18 +132,19 @@
       }
     },
     "background.transparent" : {
+      "comment" : "Background of the generated image: none, see-through.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "واضح"
+            "value" : "مسح"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Klar"
+            "value" : "Lösch"
           }
         },
         "en" : {
@@ -155,13 +156,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Claro"
+            "value" : "Borrar"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clair"
+            "value" : "Effacer"
           }
         },
         "hi" : {
@@ -173,7 +174,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Libero"
+            "value" : "Cancella"
           }
         },
         "ja" : {
@@ -185,18 +186,19 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Limpo"
+            "value" : "Limpar"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清晰"
+            "value" : "清除"
           }
         }
       }
     },
     "background.white" : {
+      "comment" : "Background of the generated image: opaque white.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -232,7 +234,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "सफ़ेद"
+            "value" : "सफेद"
           }
         },
         "it" : {
@@ -244,7 +246,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ホワイト"
+            "value" : "白"
           }
         },
         "pt-BR" : {
@@ -2212,6 +2214,7 @@
       }
     },
     "eye.style.dot" : {
+      "comment" : "Shape of the three corner markers of a QR code: a circle.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
@@ -2271,18 +2274,19 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "圆点"
+            "value" : "点"
           }
         }
       }
     },
     "eye.style.leaf" : {
+      "comment" : "Shape of the three corner markers of a QR code: a petal, three corners round and one sharp.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "أوراق الشجر"
+            "value" : "ورقة"
           }
         },
         "de" : {
@@ -2324,7 +2328,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リーフ"
+            "value" : "葉"
           }
         },
         "pt-BR" : {
@@ -2336,18 +2340,19 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "树叶"
+            "value" : "叶片"
           }
         }
       }
     },
     "eye.style.rounded" : {
+      "comment" : "Shape of the three corner markers of a QR code: a square with rounded corners.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تقريب"
+            "value" : "مدورة"
           }
         },
         "de" : {
@@ -2365,13 +2370,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redondeado"
+            "value" : "Redondeados"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Arrondi"
+            "value" : "Arrondis"
           }
         },
         "hi" : {
@@ -2383,42 +2388,43 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Arrotondato"
+            "value" : "Arrotondati"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "丸みを帯びた"
+            "value" : "角が丸い"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Arredondado"
+            "value" : "Arredondados"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "圆形"
+            "value" : "圆角"
           }
         }
       }
     },
     "eye.style.square" : {
+      "comment" : "Shape of the three corner markers of a QR code: a square. The geometric shape.",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "المربع"
+            "value" : "مربع"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Platz"
+            "value" : "Quadrat"
           }
         },
         "en" : {
@@ -2466,7 +2472,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "方形"
+            "value" : "正方形"
           }
         }
       }
