@@ -53,8 +53,15 @@ struct GeneratorView: View {
                             headerSection
 
                             if showsInputZone {
-                                inputSection
-                                    .transition(.opacity.combined(with: .move(edge: .top)))
+                                Group {
+                                    if viewModel.hasValidInput {
+                                        // Re-editing content that already parses: just the field.
+                                        inputSection
+                                    } else {
+                                        launchCard
+                                    }
+                                }
+                                .transition(.opacity.combined(with: .move(edge: .top)))
                             }
 
                             if viewModel.hasValidInput {
@@ -68,11 +75,12 @@ struct GeneratorView: View {
                                     autoCaption: autoCaption,
                                     onLocked: { paywallFeature = $0 }
                                 )
-                            } else if purchaseManager.isPro {
-                                RecentHistoryStrip { item in
-                                    viewModel.loadFromHistory(item)
-                                }
                             } else {
+                                if purchaseManager.isPro {
+                                    RecentHistoryStrip { item in
+                                        viewModel.loadFromHistory(item)
+                                    }
+                                }
                                 privacyNote
                             }
                         }
@@ -260,6 +268,16 @@ struct GeneratorView: View {
             onFileSelected: { url in
                 viewModel.handleFileDrop(url)
             },
+            placeholder: String(localized: "generator.input.placeholder", defaultValue: "Enter URL, text, or drop a file..."),
+            textFieldAnchorID: AnyHashable(inputAnchorID)
+        )
+    }
+
+    private var launchCard: some View {
+        LaunchCard(
+            text: $viewModel.inputText,
+            summaryOverride: viewModel.inputSummaryOverride,
+            onFileSelected: { url in viewModel.handleFileDrop(url) },
             placeholder: String(localized: "generator.input.placeholder", defaultValue: "Enter URL, text, or drop a file..."),
             textFieldAnchorID: AnyHashable(inputAnchorID)
         )

@@ -12,6 +12,12 @@ struct InputZone: View {
     /// Optional id placed on the text-field (or summary) row so a parent
     /// ScrollViewReader can scroll the "free" input into view precisely.
     var textFieldAnchorID: AnyHashable? = nil
+    /// Inside `LaunchCard` the field already sits on a white card, so it drops
+    /// its own capsule, its folder button (the card has a File tile) and its
+    /// helper line (the card's subtitle says it better).
+    var isEmbedded: Bool = false
+    /// Lets the launch card's drop target put the caret in this field.
+    var focusBinding: FocusState<Bool>.Binding? = nil
 
     @State private var isTargeted = false
     @State private var showFilePicker = false
@@ -55,7 +61,7 @@ struct InputZone: View {
             .modifier(OptionalID(id: textFieldAnchorID))
 
             // Helper text
-            if text.isEmpty && summaryOverride == nil {
+            if text.isEmpty && summaryOverride == nil && !isEmbedded {
                 Text(String(localized: "input.hint.ios", defaultValue: "Type URL, text, email, phone..."))
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.7))
@@ -69,7 +75,7 @@ struct InputZone: View {
                 .textFieldStyle(.plain)
                 .padding(.leading, 16)
                 .padding(.vertical, 14)
-                .focused($isTextFieldFocused)
+                .focused(focusBinding ?? $isTextFieldFocused)
                 .lineLimit(1...3)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.URL)
@@ -91,22 +97,24 @@ struct InputZone: View {
                     .transition(.scale.combined(with: .opacity))
                 }
 
-                // File picker button
-                Button {
-                    showFilePicker = true
-                } label: {
-                    Image(systemName: "folder")
-                        .font(.title3)
-                        .foregroundStyle(Color.accentColor)
+                // File picker button — the launch card offers its own File tile.
+                if !isEmbedded {
+                    Button {
+                        showFilePicker = true
+                    } label: {
+                        Image(systemName: "folder")
+                            .font(.title3)
+                            .foregroundStyle(Color.accentColor)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
             .padding(.trailing, 12)
         }
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.background)
-                .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+            RoundedRectangle(cornerRadius: isEmbedded ? 15 : 12)
+                .fill(isEmbedded ? AnyShapeStyle(Color.secondary.opacity(0.11)) : AnyShapeStyle(.background))
+                .shadow(color: .black.opacity(isEmbedded ? 0 : 0.1), radius: isEmbedded ? 0 : 4, y: isEmbedded ? 0 : 2)
         )
     }
     #endif
