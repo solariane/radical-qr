@@ -94,9 +94,27 @@ export function ipadScreen(body) {
   `;
 }
 
-export function ipadHeadline(lines, { y1 = 230, y2 = 390, maxWidth = IPAD_CANVAS.w - 220 } = {}) {
+/**
+ * Where the headline actually sits, so a scene can place something under it.
+ *
+ * A long translation shrinks the type, which pulls the second line up — the
+ * clearance a scene needs is therefore not a constant, and hard-coding one is
+ * what put the tile row through the middle of "Not settings you read."
+ */
+function ipadHeadlineLayout(lines, { y1 = 230, y2 = 390, maxWidth = IPAD_CANVAS.w - 220 } = {}) {
   const size = fitFontSize(lines, maxWidth, 132);
   const second = size === 132 ? y2 : y1 + (y2 - y1) * (size / 132);
+  // 0.24em covers the descender of a g or a y, which is what collides first.
+  return { size, y1, second, bottom: (lines[1] ? second : y1) + size * 0.24 };
+}
+
+/** Lowest ink of the headline, descenders included. */
+export function ipadHeadlineBottom(lines, opts = {}) {
+  return ipadHeadlineLayout(lines, opts).bottom;
+}
+
+export function ipadHeadline(lines, opts = {}) {
+  const { size, y1, second } = ipadHeadlineLayout(lines, opts);
   return `
     <g text-anchor="middle" fill="#ffffff" font-family="${IPAD_FONT}">
       <text x="${IPAD_CANVAS.w / 2}" y="${y1}" font-size="${size}" font-weight="700" letter-spacing="${-3 * size / 132}">${ipadEscape(lines[0])}</text>

@@ -11,8 +11,8 @@ import { renderQR } from "../lib/qr-svg.mjs";
 import { copyFor } from "../lib/copy.mjs";
 import { writeScene } from "../lib/poster.mjs";
 import {
-  IPAD_CANVAS, IPAD_POINTS, IPAD_SAFE_TOP, IPAD_SAFE_BOTTOM, IPAD_GUTTER,
-  ipadScreen, ipadShell, ipadHeadline, ipadSubtitle, ipadSignature,
+  IPAD, IPAD_CANVAS, IPAD_POINTS, IPAD_SAFE_TOP, IPAD_SAFE_BOTTOM, IPAD_GUTTER,
+  ipadScreen, ipadShell, ipadHeadline, ipadHeadlineBottom, ipadSubtitle, ipadSignature,
 } from "../lib/ipad-frame.mjs";
 import { generatorScreen } from "../lib/screens.mjs";
 import {
@@ -28,9 +28,21 @@ const L = copyFor("customization", LOCALE);
  */
 const M = fittingMetrics(IPAD_POINTS.w, IPAD_POINTS.h);
 
+/**
+ * This scene is the only one that puts a full row between the headline and the
+ * device, and the default headline leaves it 98pt — less than the row is tall.
+ * So the headline sits higher here, and the tiles take what that frees rather
+ * than a fixed size: a translation that shrinks the type gives them more, and
+ * they can never grow back into the text or the bezel.
+ */
+const HEADLINE = { y1: 195, y2: 325 };
+const GAP_ABOVE = 28;
+const GAP_BELOW = 26;
+const HEADLINE_BOTTOM = ipadHeadlineBottom(L.headline, HEADLINE);
+const TILE_SIDE = Math.min(116, IPAD.y - HEADLINE_BOTTOM - GAP_ABOVE - GAP_BELOW);
+
 /** The same tiles the device below draws, at a size the listing can read. */
-function tileShowcase(cy) {
-  const side = 116;
+function tileShowcase(cy, side) {
   const gap = 22;
   const groupGap = 58;
   const total = side * 8 + gap * 6 + groupGap;
@@ -70,8 +82,8 @@ const screen = generatorScreen({
 });
 
 writeScene("p03-customization-ipad", LOCALE, ipadShell(`
-  ${ipadHeadline(L.headline)}
-  ${tileShowcase(462)}
+  ${ipadHeadline(L.headline, HEADLINE)}
+  ${tileShowcase(HEADLINE_BOTTOM + GAP_ABOVE + TILE_SIDE / 2, TILE_SIDE)}
   ${ipadScreen(screen)}
   ${ipadSubtitle(L.subtitle)}
   ${ipadSignature(L)}
