@@ -33,8 +33,9 @@ struct GeneratorView: View {
     /// The input zone is folded away as soon as the content parses; this reopens it.
     @State private var isEditingInput = false
     @State private var isGlobalDropTargeted = false
-    /// Sizes for the height this screen actually got — see GeneratorMetrics.
-    @State private var metrics: GeneratorMetrics = .regular
+    /// The size this screen actually got. Every number below — and whether the
+    /// settings sit under the code or beside it — is derived from it.
+    @State private var canvasSize: CGSize = .zero
 
     private let inputAnchorID = "input-section"
 
@@ -42,86 +43,28 @@ struct GeneratorView: View {
         !viewModel.hasValidInput || isEditingInput
     }
 
+    /// Sizes and arrangement for the canvas this screen actually got. Before the
+    /// first measurement, assume a phone rather than the shortest window there
+    /// is, so nothing flashes at its smallest on the way in.
+    private var metrics: GeneratorMetrics {
+        canvasSize == .zero ? .regular : .fitting(width: canvasSize.width, height: canvasSize.height)
+    }
+
     var body: some View {
         ZStack {
             GradientBackground()
 
-            VStack(spacing: 0) {
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        VStack(spacing: metrics.sectionGap) {
-                            headerSection
-
-                            if showsInputZone {
-                                Group {
-                                    if viewModel.hasValidInput {
-                                        // Re-editing content that already parses: just the field.
-                                        inputSection
-                                    } else {
-                                        launchCard
-                                    }
-                                }
-                                .transition(.opacity.combined(with: .move(edge: .top)))
-                            }
-
-                            if viewModel.hasValidInput {
-                                previewCard
-
-                                CustomizationRail(
-                                    configuration: $viewModel.configuration,
-                                    family: $family,
-                                    exportSize: $selectedSize,
-                                    exportFormat: $selectedFormat,
-                                    autoCaption: autoCaption,
-                                    onLocked: { paywallFeature = $0 }
-                                )
-                            } else {
-                                if purchaseManager.isPro {
-                                    RecentHistoryStrip { item in
-                                        viewModel.loadFromHistory(item)
-                                    }
-                                }
-                                privacyNote
-                            }
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.top, metrics.sectionGap)
-                        .padding(.bottom, metrics.sectionGap)
-                    }
-                    .onChange(of: viewModel.hasValidInput) { _, hasInput in
-                        guard hasInput else { return }
-                        withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = false }
-                        scrollInputToTop(proxy: proxy)
-                    }
-                    .onChange(of: viewModel.inputText) { oldValue, newValue in
-                        // Scroll when content arrives from outside (drag & drop,
-                        // Services, Share) — not on every keystroke.
-                        guard !newValue.isEmpty else { return }
-                        let isExternalInput = oldValue.isEmpty || abs(newValue.count - oldValue.count) > 5
-                        if isExternalInput {
-                            scrollInputToTop(proxy: proxy)
-                        }
-                    }
-                }
-                #if os(iOS)
-                .scrollDismissesKeyboard(.interactively)
-                #endif
-
-                if viewModel.hasValidInput {
-                    actionRow
-                        .padding(.horizontal, 16)
-                        .padding(.top, metrics.sectionGap)
-                        .padding(.bottom, metrics.sectionGap)
-                }
+            if metrics.layout == .split && viewModel.hasValidInput {
+                splitLayout
+            } else {
+                columnLayout
             }
         }
         .background(
             GeometryReader { proxy in
                 Color.clear
-                    .onAppear { metrics = .fitting(height: proxy.size.height) }
-                    .onChange(of: proxy.size.height) { _, height in
-                        metrics = .fitting(height: height)
-                    }
+                    .onAppear { canvasSize = proxy.size }
+                    .onChange(of: proxy.size) { _, size in canvasSize = size }
             }
         )
         .environment(\.generatorMetrics, metrics)
@@ -214,6 +157,131 @@ struct GeneratorView: View {
                 ServicesProvider.shared.pendingContent = nil
             }
         }
+        #endif
+    }
+
+    // MARK: - Layouts
+
+    /// The phone layout, and the one an upright iPad gets at larger sizes: one
+    /// column, centered and capped so a wide canvas widens the margins rather
+    /// than the card, with the save row pinned below the scroll area.
+    private var columnLayout: some View {
+        VStack(spacing: 0) {
+            scrollArea {
+                VStack(spacing: metrics.sectionGap) {
+                    headerSection
+
+                    if showsInputZone {
+                        Group {
+                            if viewModel.hasValidInput {
+                                // Re-editing content that already parses: just the field.
+                                inputSection
+                            } else {
+                                launchCard
+                            }
+                        }
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
+
+                    if viewModel.hasValidInput {
+                        previewCard
+                        settingsRail
+                    } else {
+                        if purchaseManager.isPro {
+                            RecentHistoryStrip { item in
+                                viewModel.loadFromHistory(item)
+                            }
+                        }
+                        privacyNote
+                    }
+                }
+                .contentColumn(width: viewModel.hasValidInput ? metrics.contentWidth : metrics.launchWidth)
+                .padding(.horizontal, 16)
+                .padding(.top, metrics.sectionGap)
+                .padding(.bottom, metrics.sectionGap)
+            }
+
+            if viewModel.hasValidInput {
+                actionRow
+                    .contentColumn(width: metrics.contentWidth)
+                    .padding(.horizontal, 16)
+                    .padding(.top, metrics.sectionGap)
+                    .padding(.bottom, metrics.sectionGap)
+            }
+        }
+    }
+
+    /// Wide and short — an iPad on its side. The code and its save row take the
+    /// left column, the rail and the active family the right, so the settings
+    /// stay beside the thing they change instead of below it. The two columns
+    /// are centered in the height left under the header: the slack an iPad has
+    /// to spare reads as margin that way, not as a gap before the save row.
+    private var splitLayout: some View {
+        scrollArea {
+            VStack(spacing: metrics.sectionGap) {
+                headerSection
+
+                Spacer(minLength: 0)
+
+                HStack(alignment: .top, spacing: metrics.sectionGap) {
+                    VStack(spacing: metrics.sectionGap) {
+                        if showsInputZone {
+                            inputSection
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                        }
+                        previewCard
+                        actionRow
+                    }
+                    .frame(width: metrics.previewColumn)
+
+                    settingsRail
+                        .frame(maxWidth: .infinity, alignment: .top)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .contentColumn(width: metrics.contentWidth)
+            .padding(.horizontal, 16)
+            .padding(.vertical, metrics.sectionGap)
+            .frame(minHeight: max(0, canvasSize.height - metrics.sectionGap * 2))
+        }
+    }
+
+    private var settingsRail: some View {
+        CustomizationRail(
+            configuration: $viewModel.configuration,
+            family: $family,
+            exportSize: $selectedSize,
+            exportFormat: $selectedFormat,
+            autoCaption: autoCaption,
+            onLocked: { paywallFeature = $0 }
+        )
+    }
+
+    /// The scroll area both layouts share, with the anchoring that brings newly
+    /// arrived content to the top.
+    private func scrollArea<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                content()
+            }
+            .onChange(of: viewModel.hasValidInput) { _, hasInput in
+                guard hasInput else { return }
+                withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = false }
+                scrollInputToTop(proxy: proxy)
+            }
+            .onChange(of: viewModel.inputText) { oldValue, newValue in
+                // Scroll when content arrives from outside (drag & drop,
+                // Services, Share) — not on every keystroke.
+                guard !newValue.isEmpty else { return }
+                let isExternalInput = oldValue.isEmpty || abs(newValue.count - oldValue.count) > 5
+                if isExternalInput {
+                    scrollInputToTop(proxy: proxy)
+                }
+            }
+        }
+        #if os(iOS)
+        .scrollDismissesKeyboard(.interactively)
         #endif
     }
 

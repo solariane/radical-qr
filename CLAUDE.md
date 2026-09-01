@@ -79,7 +79,7 @@ Radical QR/
 │   │   ├── DropZone.swift               # Drag & drop target
 │   │   ├── InputZone.swift              # Text input area
 │   │   ├── ColorPickerView.swift        # Color selection
-│   │   ├── GeneratorMetrics.swift       # Regular / compact sizes, chosen from the height available
+│   │   ├── GeneratorMetrics.swift       # Four size sets + the layout, chosen from the canvas measured
 │   │   ├── SettingTile.swift            # The one control shape: squircle + concentric ring
 │   │   ├── ShapeGlyphs.swift            # Vector previews — every option draws its result
 │   │   ├── RoundnessSlider.swift        # QR element roundness
@@ -502,10 +502,25 @@ ring, 3-unit pupil, even-odd fill) so a tile shows what the exporter draws.
 
 One family is on screen at a time, which is what keeps preview, settings and the
 save button on an iPhone SE without scrolling — with `GeneratorMetrics` supplying
-the sizes for the height actually available, since one fixed set overflows a
+the sizes for the canvas actually available, since one fixed set overflows a
 667pt screen by about a row and a half. Adding a permanent row above the
 groups costs every family its height — that is why saved styles became a family
 rather than a band. Check the vertical budget before adding anything there.
+
+`GeneratorMetrics.fitting(width:height:)` picks one of four sets and, with it,
+one of two arrangements. Below 700pt on either side the canvas is phone-shaped —
+an iPad in a narrow Split View included — and gets `.compact` or `.regular` in a
+single column. Above that, orientation decides: taller than it is wide is
+`.expanded` (one column, capped at 640pt and centred, everything larger, the
+preview growing with the height left over), wider than it is tall is `.split`
+(preview and save row in the left column, rail and family panel in the right,
+both centred under the header). The rule is about the canvas, not the platform,
+so a wide-and-short Mac window gets the split layout too.
+
+The two layouts live in `GeneratorView` as `columnLayout` and `splitLayout` and
+share `scrollArea`; the family panels are used unchanged by both, so a new
+family needs no layout work. In `.split` the save row moves *inside* the left
+column and is no longer pinned below the scroll area.
 
 ## Notes for Claude
 
