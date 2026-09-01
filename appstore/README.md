@@ -106,3 +106,45 @@ exits cleanly — no action is taken.
 
 Fields not present locally are never cleared on ASC — missing files mean
 "don't touch", not "erase".
+
+---
+
+## Screenshots
+
+Screenshots are a separate pipeline — `appstore-push.mjs` only handles text — and
+they are **drawn, not captured**: each scene is a Node script that writes an SVG
+in which the app's screen is redrawn, then rasterised with `rsvg-convert`. No
+simulator and no app build are involved.
+
+```bash
+# Everything: translate the copy, render every locale, upload
+./updScreenshots.sh
+
+./updScreenshots.sh --render-only      # no DeepL, no App Store Connect
+./updScreenshots.sh --upload-only      # send what is already in out/
+./updScreenshots.sh --dry-run
+./updScreenshots.sh --only=fr-FR,de-DE
+./updScreenshots.sh --clean            # wipe out/ before rendering
+```
+
+Requires `rsvg-convert`:
+
+```bash
+brew install librsvg
+```
+
+**Text** lives in `appstore/screenshots/copy/<locale>.json`, with `en-US` as the
+source of truth and `fr-FR` hand-written (`isHandWritten` in `config.json`, same
+as the metadata). The other locales come from `translate-copy.mjs`, which reuses
+this pipeline's brand protection and hash-based invalidation, and sends the app
+description plus a per-key note as DeepL `context`. Strings that also exist in
+the app are copied verbatim from `Localizable.xcstrings` — a screenshot whose
+button says something different from the app reads as a different app.
+
+**Drawing** lives in `appstore/screenshots/lib/app-ui.mjs`, which mirrors the
+real SwiftUI components at the real `GeneratorMetrics` values. Screens are laid
+out in app points and scaled into the device frame, so a layout change in the app
+is mirrored by copying numbers rather than re-tuning a drawing. When
+`GeneratorMetrics` changes, update `METRICS` there and re-render.
+
+Full notes, scene list and open items: `appstore/screenshots/MEMO-2.0.md`.

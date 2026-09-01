@@ -1,0 +1,115 @@
+{
+  "_comment": "Hand-written, like appstore/metadata/fr-FR — config.json marks fr-FR isHandWritten, so translate-copy.mjs never overwrites this file. Every string that also exists in the app is copied verbatim from Localizable.xcstrings: a screenshot showing 'Enregistrer le QR' next to an app that says 'Enregistrer le code QR' reads as a different app.",
+
+  "shared": {
+    "signature": "Privacy First, Privacy by Design",
+    "signatureBrand": "RadicalSolution.com",
+    "appName": "Radical QR",
+    "placeholder": "Entrez une URL, du texte, ou déposez un fichier…",
+    "kindURL": "URL",
+    "kindContact": "Contact",
+    "kindWiFi": "Wi-Fi",
+    "save": "Enregistrer le code QR",
+    "labelModules": "Modules",
+    "labelEyes": "Yeux",
+    "labelEyeSize": "Taille de l'œil",
+    "labelSolid": "Couleur unie",
+    "labelGradient": "Dégradé",
+    "labelBackground": "Arrière-plan",
+    "labelLogo": "Logo",
+    "labelCaption": "Légende",
+    "labelSize": "Taille",
+    "labelFormat": "Format",
+    "labelMyStyles": "Mes styles",
+    "sidebarGenerator": "Générateur",
+    "sidebarHistory": "Historique",
+    "sidebarHelp": "Aide"
+  },
+
+  "hero": {
+    "headline": ["QR codes.", "Radicalement simple."],
+    "badges": ["Sans suivi", "Sans abonnement", "SVG & PDF"],
+    "subtitle": ["Détection auto. Privé. Élégant."]
+  },
+
+  "launch": {
+    "headline": ["Déposez.", "Il sait ce que c'est."],
+    "subtitle": ["Lien, contact, Wi-Fi, événement —", "le format est défini automatiquement."],
+    "launchHeadline": "Déposez ou collez ce que vous voulez",
+    "launchSubhead": "Lien, texte, contact, réseau Wi-Fi, événement. Le format est défini automatiquement.",
+    "paste": "Coller",
+    "duplicate": "Dupliquer",
+    "browse": "Parcourir les fichiers"
+  },
+
+  "duplicate": {
+    "headline": ["N'importe quel code.", "À vous, de nouveau."],
+    "subtitle": ["Visez un code, ou choisissez une photo.", "Restylez-le, il dit toujours la même chose."],
+    "camera": "Appareil photo",
+    "library": "Photothèque",
+    "found": "Code lu",
+    "readValue": "radicalsolution.com/radical-qr",
+    "before": "Trouvé",
+    "after": "Restylé",
+    "scannerHint": "Pointez l'appareil photo vers un code QR pour le recréer."
+  },
+
+  "customization": {
+    "headline": ["Des réglages qu'on voit.", "Pas qu'on lit."],
+    "subtitle": ["Chaque option dessine son résultat —", "rien à traduire, rien à deviner."],
+    "families": "Cinq familles, une à la fois"
+  },
+
+  "brand": {
+    "headline": ["Votre logo.", "En plein centre."],
+    "subtitle": ["Une zone est dégagée pour lui, le code", "reste lisible. Légende en dessous."],
+    "captionValue": "radicalsolution.com"
+  },
+
+  "export": {
+    "headline": ["PNG. SVG. PDF.", "Jamais flou."],
+    "subtitle": ["Jusqu'à 4096 px, ou du vectoriel qui ne", "pixellise pas. Un achat, sans abonnement."],
+    "sizes": ["256", "512", "1024", "2048", "4096"],
+    "formats": ["PNG", "JPEG", "WEBP", "PDF", "SVG"]
+  },
+
+  "privacy": {
+    "headline": ["Rien ne quitte", "votre appareil."],
+    "subtitle": ["Pas de compte, pas de mesure d'audience,", "pas de serveur. Vos codes sont oubliés."],
+    "points": [
+      "Aucun suivi, aucun SDK d'analyse",
+      "Rien n'est conservé sans votre accord",
+      "L'historique reste dans votre iCloud",
+      "Généré et exporté sur l'appareil"
+    ],
+    "note": "Pas de suivi. Pas de stockage. Juste des QR codes éphémères.",
+    "badges": ["Sans compte", "Sans mesure", "Sans serveur"]
+  },
+
+  "services": {
+    "headline": ["Clic droit.", "C'est fait."],
+    "subtitle": ["Un code QR depuis n'importe quel texte,", "lien ou contact sélectionné, sur tout le Mac."],
+    "menuTitle": "Services",
+    "menuItem": "Créer un code QR",
+    "selection": "https://radicalsolution.com/radical-qr",
+    "readyLabel": "Prêt à enregistrer",
+    "shareTitle": "Et dans le menu Partager"
+  },
+
+  "history": {
+    "headline": ["Tous les codes", "que vous gardez."],
+    "subtitle": ["L'historique Pro se synchronise par votre", "iCloud. Rouvrez, restylez, réexportez."],
+    "title": "Historique",
+    "today": "Aujourd'hui",
+    "yesterday": "Hier",
+    "duplicateAction": "Dupliquer",
+    "recent": "Récents",
+    "empty": "Rien pour l'instant",
+    "searchPlaceholder": "Rechercher vos codes"
+  },
+
+  "styles": {
+    "headline": ["Enregistrez un style.", "Réutilisez-le toujours."],
+    "subtitle": ["Quatre styles à vous, à un geste", "depuis le générateur."]
+  }
+}

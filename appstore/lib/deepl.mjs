@@ -25,13 +25,22 @@ export async function deeplSupportedTargets(apiBase, authKey) {
  * Translate a single piece of text. `preserve_formatting=1` keeps line breaks
  * + punctuation intact.
  */
-export async function deeplTranslate({ apiBase, authKey, text, targetLang, sourceLang }) {
+export async function deeplTranslate({
+  apiBase, authKey, text, targetLang, sourceLang,
+  tagHandling = null, ignoreTags = null, context = null,
+}) {
   const url = `${apiBase.replace(/\/$/, "")}/v2/translate`;
   const body = new URLSearchParams();
   body.append("text", text);
   body.set("target_lang", targetLang);
   if (sourceLang) body.set("source_lang", sourceLang);
   body.set("preserve_formatting", "1");
+  // Optional: brand protection (`tag_handling=xml` + `ignore_tags=x`, see
+  // deepl-protect.mjs) and the `context` parameter, which is what stops a lone
+  // word like "Sharp" coming back as a company name.
+  if (tagHandling) body.set("tag_handling", tagHandling);
+  if (ignoreTags) body.set("ignore_tags", ignoreTags);
+  if (context) body.set("context", context);
 
   const res = await fetch(url, {
     method: "POST",

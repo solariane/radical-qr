@@ -1,0 +1,183 @@
+{
+  "_comment": "Source of truth for every string drawn into an App Store screenshot. Edit this file only; the other locales are produced by ../translate-copy.mjs (DeepL) except fr-FR, which is hand-written. Keys are scene ids; `shared` is drawn on every scene.",
+  "shared": {
+    "signature": "Privacy First, Privacy by Design",
+    "signatureBrand": "RadicalSolution.com",
+    "placeholder": "Enter URL, text, or drop a file…",
+    "kindURL": "URL",
+    "kindContact": "Contact",
+    "kindWiFi": "Wi-Fi",
+    "save": "Save QR Code",
+    "labelModules": "Modules",
+    "labelEyes": "Eyes",
+    "labelEyeSize": "Eye size",
+    "labelSolid": "Solid color",
+    "labelGradient": "Gradient",
+    "labelBackground": "Background",
+    "labelLogo": "Logo",
+    "labelCaption": "Caption",
+    "labelSize": "Size",
+    "labelFormat": "Format",
+    "labelMyStyles": "My styles",
+    "appName": "Radical QR",
+    "sidebarGenerator": "Generator",
+    "sidebarHistory": "History",
+    "sidebarHelp": "Help"
+  },
+  "hero": {
+    "headline": [
+      "QR codes.",
+      "Radically simple."
+    ],
+    "badges": [
+      "No tracking",
+      "No subscription",
+      "SVG & PDF"
+    ],
+    "subtitle": [
+      "Auto-detect. Private. Elegant."
+    ]
+  },
+  "launch": {
+    "headline": [
+      "Drop it.",
+      "It knows what it is."
+    ],
+    "subtitle": [
+      "Link, contact, Wi-Fi, event —",
+      "the format is worked out on its own."
+    ],
+    "launchHeadline": "Drop or paste anything",
+    "launchSubhead": "Link, text, contact, Wi-Fi network, event. The format is worked out on its own.",
+    "paste": "Paste",
+    "duplicate": "Duplicate",
+    "browse": "Browse Files"
+  },
+  "duplicate": {
+    "headline": [
+      "Any code.",
+      "Yours again."
+    ],
+    "subtitle": [
+      "Point the camera at a code, or pick",
+      "a picture. Restyle it, keep what it says."
+    ],
+    "camera": "Camera",
+    "library": "Photo Library",
+    "found": "Code read",
+    "readValue": "radicalsolution.com/radical-qr",
+    "before": "Found",
+    "after": "Restyled",
+    "scannerHint": "Point the camera at a QR code to recreate it."
+  },
+  "customization": {
+    "headline": [
+      "Settings you see.",
+      "Not settings you read."
+    ],
+    "subtitle": [
+      "Every option draws its own result —",
+      "nothing to translate, nothing to guess."
+    ],
+    "families": "Five families, one at a time"
+  },
+  "brand": {
+    "headline": [
+      "Your logo.",
+      "Dead centre."
+    ],
+    "subtitle": [
+      "A quiet zone is cleared for it, so the",
+      "code still scans. Caption underneath."
+    ],
+    "captionValue": "radicalsolution.com"
+  },
+  "export": {
+    "headline": [
+      "PNG. SVG. PDF.",
+      "No blur, ever."
+    ],
+    "subtitle": [
+      "Up to 4096 px, or vector that never",
+      "blurs. One purchase, no subscription."
+    ],
+    "sizes": [
+      "256",
+      "512",
+      "1024",
+      "2048",
+      "4096"
+    ],
+    "formats": [
+      "PNG",
+      "JPEG",
+      "WEBP",
+      "PDF",
+      "SVG"
+    ]
+  },
+  "privacy": {
+    "headline": [
+      "Nothing leaves",
+      "your device."
+    ],
+    "subtitle": [
+      "No account, no analytics, no server.",
+      "Your codes are made and forgotten."
+    ],
+    "points": [
+      "No tracking, no analytics SDK",
+      "Nothing is stored unless you ask",
+      "History stays in your own iCloud",
+      "Generated and exported on-device"
+    ],
+    "note": "No tracking. No storage. Just ephemeral QR codes.",
+    "badges": [
+      "No account",
+      "No analytics",
+      "No server"
+    ]
+  },
+  "services": {
+    "headline": [
+      "Right-click.",
+      "Done."
+    ],
+    "subtitle": [
+      "A QR code from any selected text,",
+      "link or contact, anywhere on the Mac."
+    ],
+    "menuTitle": "Services",
+    "menuItem": "Create QR Code",
+    "selection": "https://radicalsolution.com/radical-qr",
+    "shareTitle": "Share menu, too",
+    "readyLabel": "Ready to save"
+  },
+  "history": {
+    "headline": [
+      "Every code",
+      "you kept."
+    ],
+    "subtitle": [
+      "Pro history syncs over your own iCloud.",
+      "Reopen one, restyle it, export again."
+    ],
+    "title": "History",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "duplicateAction": "Duplicate",
+    "recent": "Recent",
+    "empty": "Nothing here yet",
+    "searchPlaceholder": "Search your codes"
+  },
+  "styles": {
+    "headline": [
+      "Save a style.",
+      "Reuse it forever."
+    ],
+    "subtitle": [
+      "Four of your own styles, one tap away",
+      "from the generator."
+    ]
+  }
+}
