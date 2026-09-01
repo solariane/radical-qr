@@ -1,6 +1,6 @@
 Des QR codes élégants. Détection automatique. Zéro pistage, zéro abonnement.
 
-Radical QR génère tous vos codes — liens, contacts, Wi-Fi, événements — localement sur votre appareil. Collez n'importe quoi, l'app reconnaît de quoi il s'agit et produit le QR adapté, avec le bon encodage. Rien n'est envoyé à un serveur. Rien n'est conservé sans votre accord.
+Radical QR génère tous vos codes — liens, contacts, Wi-Fi, événements — localement sur votre appareil. Déposez ou collez ce que vous voulez, l'app reconnaît de quoi il s'agit et produit le QR adapté, avec le bon encodage. Rien n'est envoyé à un serveur. Rien n'est conservé sans votre accord.
 
 Pensé pour les personnes qui utilisent les QR codes au quotidien — indépendants, restaurateurs, associations, entrepreneurs — et qui veulent un outil beau, rapide et respectueux.
 
@@ -8,16 +8,17 @@ Pensé pour les personnes qui utilisent les QR codes au quotidien — indépenda
 POURQUOI RADICAL QR
 
 • Détection automatique : collez une URL, un numéro, un email, une vCard, un événement iCal, un réseau Wi-Fi — l'app comprend et produit le QR adapté, avec le bon encodage.
-• Personnalisation fine : arrondissez les modules et les yeux indépendamment, ajustez la taille des yeux, choisissez couleurs unies ou dégradés.
+• Des réglages qui se voient : chaque option dessine son propre résultat. Choisissez l'angle, l'œil, la taille que vous voulez — il n'y a rien à lire et rien à deviner.
+• Dupliquer un code : visez un QR existant avec l'appareil photo, ou choisissez-en une photo, et refaites-le à votre goût. Rien n'est enregistré, rien n'est envoyé.
 • Export propre : PNG, JPEG, WebP en gratuit ; PDF et SVG vectoriel en Pro, jusqu'à 4096 px.
-• Intégration macOS : clic droit sur une URL, un contact, un événement depuis Safari, Contacts ou Calendar → "Générer un QR Code". Instantané.
-• Drag & drop : déposez un fichier texte, une vCard, un .ics directement dans l'app.
+• Intégration macOS : clic droit sur une URL, un contact, un événement depuis Safari, Contacts ou Calendar → « Générer un QR Code ». Instantané.
+• Glisser-déposer : déposez un fichier texte, une vCard, un .ics directement dans l'app.
 • 10 langues disponibles : français, anglais, allemand, espagnol, italien, portugais, japonais, arabe, hindi, chinois.
 
 
 GRATUIT
 
-Tout l'essentiel : détection, personnalisation des arrondis, 6 couleurs et 3 dégradés préréglés, export PNG / JPEG / WebP jusqu'à 512 px, partage système.
+Tout l'essentiel : détection automatique, duplication d'un code existant, formes de modules et d'yeux, 6 couleurs et 3 dégradés préréglés, export PNG / JPEG / WebP jusqu'à 512 px, partage système.
 
 
 PRO (achat unique, à vie)
@@ -27,7 +28,8 @@ PRO (achat unique, à vie)
 • Taille d'export jusqu'à 4096 px
 • Historique avec synchronisation iCloud entre vos appareils
 • Palette de couleurs complète et dégradés personnalisés (linéaire, radial, angulaire, diamant)
-• Style favori mémorisé
+• Yeux en point et en feuille
+• Jusqu'à quatre styles à vous, enregistrés et rappelés d'un geste
 
 Un seul achat. Accès à vie. Pas d'abonnement.
 
@@ -37,8 +39,9 @@ NOTRE ENGAGEMENT PRIVACY
 • Aucun analytique, aucun tracking
 • Aucun log, aucune télémétrie
 • Votre contenu ne quitte jamais votre appareil
+• L'appareil photo lit le code en direct — aucune photo n'est prise, rien n'est écrit
 • L'historique Pro est stocké dans votre conteneur iCloud privé, jamais sur nos serveurs
-• Nous n'avons pas à voir ce que vous chiffrez — et nous ne le verrons jamais.
+• Nous n'avons pas à voir ce que vous encodez — et nous ne le verrons jamais.
 
 
 Développé par Radical Solution. Questions, retours, suggestions : contact@radicalsolution.com

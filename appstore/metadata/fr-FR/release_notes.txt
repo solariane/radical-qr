@@ -1,4 +1,15 @@
-• L'export SVG conserve désormais le style arrondi des yeux — ce que vous concevez est exactement ce que vous obtenez.
-• Nouvelle option de légende « Adaptation à la largeur » : la taille du texte s'ajuste automatiquement pour tenir parfaitement sous le QR code.
+Radical QR 2.0 — le générateur, repensé.
+
+• Des réglages qui se voient. Chaque option dessine désormais son résultat au lieu de le nommer : angles des modules, formes d'yeux, taille des yeux. Rien à lire, rien à perdre en traduction.
+
+• Une chose à la fois. Couleur, forme, logo et export ont chacun leur place, si bien que le code que vous construisez reste à l'écran pendant que vous le réglez — même sur le plus petit iPhone.
+
+• Vos propres styles. Composez un look une fois, enregistrez-le, rappelez-le sur n'importe quel code d'un simple geste.
+
+• Un nouveau départ. Collez, déposez, parcourez — ou dupliquez un QR code depuis une image et refaites-le à votre goût.
+
+• iPad et Mac. Sur grand écran, les réglages passent à côté du code au lieu de s'empiler dessous.
+
+Corrigé : un code sur fond transparent n'est plus signalé comme difficile à scanner.
 
 Comme toujours : aucun traçage, aucun compte — tout reste sur votre appareil.
