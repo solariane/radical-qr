@@ -36,16 +36,16 @@
     </g>
   
   <g>
-      <rect x="468.77600000000007" y="433.15" width="347.392" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="642.4720000000001" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="533.9982500000001" y="433.15" width="312.75974999999994" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="690.3781250000001" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">Sans compte</text>
     </g><g>
-      <rect x="846.068" y="433.15" width="347.392" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="1019.764" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="876.658" y="433.15" width="312.75974999999994" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1033.037875" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">Sans mesure</text>
     </g><g>
-      <rect x="1223.36" y="433.15" width="371.864" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="1409.292" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="1219.31775" y="433.15" width="310.68399999999997" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1374.6597499999998" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">Sans serveur</text>
     </g>
   

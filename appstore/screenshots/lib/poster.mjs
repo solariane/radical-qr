@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { FONT, esc } from "./app-ui.mjs";
+import { FONT, esc, estimateTextWidth } from "./app-ui.mjs";
 import { symbol } from "./symbols.mjs";
 
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../out");
@@ -19,7 +19,10 @@ export function badgeRow(chips, cx, cy, { size = 38, scale = 1 } = {}) {
   const padX = 34 * scale;
   const gap = 26 * scale;
   const height = 78 * scale;
-  const widths = chips.map((t) => t.length * fontSize * 0.56 + padX * 2);
+  // Not t.length * 0.56: that is a Latin average, and it sized the Japanese
+  // pills at 85 where the text needed 144, so the words sat outside them.
+  // estimateTextWidth counts a kanji as a full em, which is what it is.
+  const widths = chips.map((t) => estimateTextWidth(t, fontSize) + padX * 2);
   const total = widths.reduce((a, b) => a + b, 0) + gap * (chips.length - 1);
   let x = cx - total / 2;
 

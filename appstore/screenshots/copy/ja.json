@@ -1,0 +1,182 @@
+{
+  "shared": {
+    "signature": "Privacy First, Privacy by Design",
+    "signatureBrand": "RadicalSolution.com",
+    "placeholder": "URLやテキストを入力するか、ファイルをドラッグ＆ドロップしてください…",
+    "kindURL": "URL",
+    "kindContact": "お問い合わせ",
+    "kindWiFi": "Wi-Fi",
+    "save": "QRコードを保存",
+    "labelModules": "モジュール",
+    "labelEyes": "目",
+    "labelEyeSize": "目のサイズ",
+    "labelSolid": "単色",
+    "labelGradient": "グラデーション",
+    "labelBackground": "背景",
+    "labelLogo": "ロゴ",
+    "labelCaption": "キャプション",
+    "labelSize": "サイズ",
+    "labelFormat": "形式",
+    "labelMyStyles": "マイスタイル",
+    "appName": "Radical QR",
+    "sidebarGenerator": "ジェネレーター",
+    "sidebarHistory": "履歴",
+    "sidebarHelp": "ヘルプ"
+  },
+  "hero": {
+    "headline": [
+      "QRコード。",
+      "驚くほどシンプル。"
+    ],
+    "badges": [
+      "追跡なし",
+      "定期購読なし",
+      "SVG および PDF"
+    ],
+    "subtitle": [
+      "自動検出。プライバシー保護。洗練されたデザイン。"
+    ]
+  },
+  "launch": {
+    "headline": [
+      "ダウンロードしてください。",
+      "このアプリは、自らの役割を明確に理解しています。"
+    ],
+    "subtitle": [
+      "リンク、連絡先、Wi-Fi、イベント —",
+      "フォーマットは独自に設計されています。"
+    ],
+    "launchHeadline": "何でもドラッグ＆ドロップまたは貼り付け可能",
+    "launchSubhead": "リンク、テキスト、連絡先、Wi-Fiネットワーク、イベント。フォーマットは自動的に生成されます。",
+    "paste": "貼り付け",
+    "duplicate": "複製",
+    "browse": "ファイルを参照"
+  },
+  "duplicate": {
+    "headline": [
+      "あらゆるコードに対応。",
+      "それでは、また。"
+    ],
+    "subtitle": [
+      "カメラをコードに向けるか、選択して",
+      "画像。デザインを変更し、記載内容はそのままに。"
+    ],
+    "camera": "カメラ",
+    "library": "フォトライブラリ",
+    "found": "コードを読み取り",
+    "readValue": "radicalsolution.com/radical-qr",
+    "before": "見つかりました",
+    "after": "スタイル変更済み",
+    "scannerHint": "カメラをQRコードに向けると、そのQRコードを再現できます。"
+  },
+  "customization": {
+    "headline": [
+      "表示される設定。",
+      "設定画面などではありません。"
+    ],
+    "subtitle": [
+      "各オプションごとに独自の結果が生成されます —",
+      "翻訳する必要も、推測する必要もありません。"
+    ],
+    "families": "5つのカテゴリを、1つずつ"
+  },
+  "brand": {
+    "headline": [
+      "お客様のロゴ。",
+      "まさにその通り。"
+    ],
+    "subtitle": [
+      "このアプリのために「静寂ゾーン」が確保されているため、",
+      "コードは依然としてスキャン可能です。その下にキャプションがあります。"
+    ],
+    "captionValue": "radicalsolution.com"
+  },
+  "export": {
+    "headline": [
+      "PNG。SVG。PDF。",
+      "ぼやけは一切ありません。"
+    ],
+    "subtitle": [
+      "最大4096ピクセル、または解像度制限のないベクター形式で",
+      "ぼかし処理。1回の購入で、定期購読は不要です。"
+    ],
+    "sizes": [
+      "256",
+      "512",
+      "1024",
+      "2048",
+      "4096"
+    ],
+    "formats": [
+      "PNG",
+      "JPEG",
+      "WEBP",
+      "PDF",
+      "SVG"
+    ]
+  },
+  "privacy": {
+    "headline": [
+      "端末外へデータが流出することはありません",
+      "お使いの端末。"
+    ],
+    "subtitle": [
+      "アカウント不要、分析機能なし、サーバーなし。",
+      "QRコードは作成したら、あとは忘れてしまっても大丈夫です。"
+    ],
+    "points": [
+      "追跡なし、分析用SDKなし",
+      "ユーザーが指示しない限り、何も保存されません",
+      "履歴はご自身のiCloudに保存されます",
+      "端末上で生成・エクスポート"
+    ],
+    "note": "追跡なし。保存なし。一時的なQRコードのみです。",
+    "badges": [
+      "アカウント不要",
+      "分析機能なし",
+      "サーバーなし"
+    ]
+  },
+  "services": {
+    "headline": [
+      "右クリックしてください。",
+      "完了。"
+    ],
+    "subtitle": [
+      "選択したテキストからQRコードを作成し、",
+      "Macのどこからでも、リンクや連絡先を作成できます。"
+    ],
+    "menuTitle": "サービス",
+    "menuItem": "QRコードを作成",
+    "selection": "https://radicalsolution.com/radical-qr",
+    "shareTitle": "共有メニューも利用可能です",
+    "readyLabel": "保存する準備ができました"
+  },
+  "history": {
+    "headline": [
+      "すべてのQRコード",
+      "あなたが保持した。"
+    ],
+    "subtitle": [
+      "Pro版では、履歴をユーザー自身のiCloud経由で同期できます。",
+      "QRコードを再度開き、デザインを変更して、再度エクスポートできます。"
+    ],
+    "title": "履歴",
+    "today": "今日",
+    "yesterday": "昨日",
+    "duplicateAction": "重複",
+    "recent": "最近",
+    "empty": "まだコンテンツはありません",
+    "searchPlaceholder": "QRコードを検索"
+  },
+  "styles": {
+    "headline": [
+      "スタイルを保存する。",
+      "何度でも繰り返しご利用いただけます。"
+    ],
+    "subtitle": [
+      "4つのオリジナルスタイルを、ワンタップで利用可能",
+      "ジェネレーターより。"
+    ]
+  }
+}

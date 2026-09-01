@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2064 2752" width="2064" height="2752">
+  <defs>
+    <linearGradient id="ipadBgG" x1="0" y1="0" x2="2064" y2="2752" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#667eea"/>
+      <stop offset="1" stop-color="#764ba2"/>
+    </linearGradient>
+    <filter id="ipadDeviceShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="28"/>
+      <feOffset dx="0" dy="20" result="o"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="ipadCardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dx="0" dy="10" result="o"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.22"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    
+    <clipPath id="ipadAppGClip">
+      <rect x="374" y="552" width="1316" height="1776" rx="60" ry="60"/>
+    </clipPath>
+    <linearGradient id="ipadAppG" x1="374" y1="552"
+      x2="1690" y2="2328" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#667EEA"/>
+      <stop offset="1" stop-color="#764BA2"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="2064" height="2752" fill="url(#ipadBgG)"/>
+  
+  
+    <g text-anchor="middle" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif">
+      <text x="1032" y="230" font-size="132" font-weight="700" letter-spacing="-3">कोई डेटा बाहर नहीं जाता</text>
+      <text x="1032" y="390" font-size="132" font-weight="700" letter-spacing="-3" opacity="0.92">आपके डिवाइस।</text>
+    </g>
+  
+  <g>
+      <rect x="395.7533000000002" y="433.15" width="350.9535499999999" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="571.2300750000002" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+        font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">कोई खाता नहीं</text>
+    </g><g>
+      <rect x="776.6068500000001" y="433.15" width="487.95304999999996" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1020.5833750000002" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+        font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">कोई एनालिटिक्स नहीं</text>
+    </g><g>
+      <rect x="1294.4599" y="433.15" width="373.78679999999986" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1481.3533" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+        font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">कोई सर्वर नहीं</text>
+    </g>
+  
+    <g filter="url(#ipadDeviceShadow)">
+      <rect x="342" y="520" width="1380" height="1840"
+        rx="92" ry="92" fill="#0f0f18"/>
+      <g clip-path="url(#ipadAppGClip)">
+    <rect x="374" y="552" width="1316" height="1776" fill="url(#ipadAppG)"/>
+    <g transform="translate(374 552) scale(1.28515625)"><g transform="translate(0 0)">
+    <g opacity="0.95">
+    <circle cx="810" cy="46" r="13" fill="none" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="805" cy="46" r="1.7" fill="#ffffff"/><circle cx="810" cy="46" r="1.7" fill="#ffffff"/><circle cx="815" cy="46" r="1.7" fill="#ffffff"/>
+  </g>
+    <g>
+    <g><circle cx="198.41666666666666" cy="97.41666666666667" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="207.58333333333334" cy="97.41666666666667" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="198.41666666666666" cy="106.58333333333333" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="205.29166666666666" cy="104.29166666666667" r="1.375" fill="#ffffff" opacity="1"/><circle cx="209.875" cy="104.29166666666667" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="205.29166666666666" cy="108.875" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="209.875" cy="108.875" r="1.375" fill="#ffffff" opacity="1"/></g>
+    <text x="223" y="107.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="start" opacity="1">Radical QR</text>
+    <circle cx="815" cy="102" r="17" fill="#ffffff" fill-opacity="0.18"/>
+    <g transform="translate(807.5 94.5) scale(0.15)">
+    <path d="M31 33 A19 19 0 1 1 50 58 L50 66"
+      fill="none" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
+    <circle cx="50" cy="84" r="6.5" fill="#ffffff"/></g>
+  </g>
+    <g>
+    <rect x="192" y="136" width="640" height="314" rx="28" ry="28" fill="#ffffff"/>
+    <rect x="210" y="154" width="604" height="164" rx="22" ry="22" fill="none" stroke="#8E8E93" stroke-opacity="0.28" stroke-width="2" stroke-dasharray="6 5"/>
+    <g><circle cx="498.25" cy="193.25" r="12.649999999999999" fill="none" stroke="#C9C2E6" stroke-width="6.324999999999999"/><circle cx="525.75" cy="193.25" r="12.649999999999999" fill="none" stroke="#C9C2E6" stroke-width="6.324999999999999"/><circle cx="498.25" cy="220.75" r="12.649999999999999" fill="none" stroke="#C9C2E6" stroke-width="6.324999999999999"/><circle cx="518.875" cy="213.875" r="4.125" fill="#C9C2E6" opacity="1"/><circle cx="532.625" cy="213.875" r="4.125" fill="#C9C2E6" opacity="0.6"/><circle cx="518.875" cy="227.625" r="4.125" fill="#C9C2E6" opacity="0.6"/><circle cx="532.625" cy="227.625" r="4.125" fill="#C9C2E6" opacity="1"/></g>
+    <text x="512" y="260" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#1C1C1E" text-anchor="middle" opacity="1">कुछ भी ड्रॉप या पेस्ट करें</text>
+    <text x="512" y="280" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6C6C70" text-anchor="middle" opacity="1">लिंक, टेक्स्ट, संपर्क, वाई-फाई नेटवर्क,</text><text x="512" y="294" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#6C6C70" text-anchor="middle" opacity="1">इवेंट। प्रारूप अपने आप निर्धारित हो जाता है।</text>
+    <rect x="210" y="334" width="604" height="46" rx="13" ry="13" fill="#F1F0F6"/>
+    <text x="224" y="362" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#9A9AA0" text-anchor="start" opacity="1">URL, टेक्स्ट दर्ज करें, या फ़ाइल ड्रॉप करें…</text>
+    
+      <rect x="210" y="396" width="193.33333333333334" height="36" rx="18" ry="18" fill="#667EEA"/>
+      <g transform="translate(266.2322916666667 407.5) scale(0.13)">
+    <rect x="34" y="34" width="59" height="58" rx="12" ry="12"
+      fill="none" stroke="#ffffff" stroke-width="8"/>
+    <path d="M34 62 L20 62 A12 12 0 0 1 8 50 L8 22 A12 12 0 0 1 20 10 L50 10 A12 12 0 0 1 62 22 L62 34"
+      fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="24" y="3" width="22" height="14" rx="6" ry="6" fill="#ffffff"/></g>
+      <text x="285.2322916666667" y="418.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#ffffff" text-anchor="start" opacity="1">पेस्ट करें</text>
+      <rect x="415.33333333333337" y="396" width="193.33333333333334" height="36" rx="18" ry="18" fill="#667EEA"/>
+      <g transform="translate(473.109375 407.5) scale(0.13)">
+    <path d="M8 32 L8 19 A11 11 0 0 1 19 8 L32 8 M68 8 L81 8 A11 11 0 0 1 92 19 L92 32
+             M92 68 L92 81 A11 11 0 0 1 81 92 L68 92 M32 92 L19 92 A11 11 0 0 1 8 81 L8 68"
+      fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+    <rect x="26" y="26" width="17" height="17" rx="3.5" ry="3.5" fill="#ffffff"/>
+    <rect x="57" y="26" width="17" height="17" rx="3.5" ry="3.5" fill="#ffffff"/>
+    <rect x="26" y="57" width="17" height="17" rx="3.5" ry="3.5" fill="#ffffff"/>
+    <rect x="57" y="57" width="8" height="8" rx="2" ry="2" fill="#ffffff"/>
+    <rect x="68" y="66" width="8" height="8" rx="2" ry="2" fill="#ffffff"/></g>
+      <text x="492.109375" y="418.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#ffffff" text-anchor="start" opacity="1">डुप्लिकेट</text>
+      <rect x="620.6666666666667" y="396" width="193.33333333333334" height="36" rx="18" ry="18" fill="#667EEA"/>
+      <g transform="translate(645.9645833333334 407.5) scale(0.13)">
+    <path d="M7 32 L7 76 A11 11 0 0 0 18 87 L82 87 A11 11 0 0 0 93 76 L93 41 A11 11 0 0 0 82 30 L50 30 L42 20 A9 9 0 0 0 35 17 L18 17 A11 11 0 0 0 7 28 Z"
+      fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
+    <path d="M7 34 L93 34" fill="none" stroke="#ffffff" stroke-width="8" opacity="0.9"/></g>
+      <text x="664.9645833333334" y="418.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#ffffff" text-anchor="start" opacity="1">फ़ाइलें ब्राउज़ करें</text>
+  </g>
+    
+    <g opacity="0.78">
+    <g transform="translate(340.03999999999996 468.92) scale(0.12)">
+    <path d="M50 6 C64 15 78 18 90 18 C90 55 78 82 50 94 C22 82 10 55 10 18 C22 18 36 15 50 6 Z"
+      fill="none" stroke="#ffffff" stroke-width="7" stroke-linejoin="round"/>
+    <rect x="34" y="47" width="32" height="26" rx="7" ry="7" fill="#ffffff"/>
+    <path d="M40 47 L40 39 A10 10 0 0 1 60 39 L60 47"
+      fill="none" stroke="#ffffff" stroke-width="5.6000000000000005"/></g>
+    <text x="358.03999999999996" y="479" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#ffffff" text-anchor="start" opacity="1">कोई ट्रैकिंग नहीं। कोई भंडारण नहीं। केवल अस्थायी QR कोड।</text>
+  </g>
+  </g></g>
+  </g>
+    </g>
+  
+  
+    <g text-anchor="middle" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif" fill="#ffffff">
+      <text x="1032" y="2500" font-size="54" font-weight="500" opacity="0.95">कोई खाता नहीं, कोई एनालिटिक्स नहीं, कोई सर्वर नहीं।</text><text x="1032" y="2568" font-size="54" font-weight="500" opacity="0.95">आपके कोड बनाए जाते हैं और भुला दिए जाते हैं।</text>
+    </g>
+  
+  <text x="1032" y="2660" text-anchor="middle" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif"
+    font-size="40" fill="#ffffff" opacity="0.58">
+    <tspan font-weight="600">RadicalSolution.com</tspan><tspan
+      dx="20" opacity="0.6">•</tspan><tspan
+      dx="20" font-weight="400">Privacy First, Privacy by Design</tspan>
+  </text>
+
+</svg>

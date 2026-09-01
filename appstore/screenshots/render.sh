@@ -36,7 +36,9 @@ done
 if [ ${#LOCALES[@]} -eq 0 ]; then
     while IFS= read -r file; do
         LOCALES+=("$(basename "$file" .json)")
-    done < <(find "$COPY_DIR" -maxdepth 1 -name '*.json' | sort)
+    # ! -name '.*' — find has no shell glob's instinct to skip dotfiles, and
+    # copy/.copy-signatures.json would otherwise render as a locale of its own.
+    done < <(find "$COPY_DIR" -maxdepth 1 -name '*.json' ! -name '.*' | sort)
 fi
 
 if [ "$CLEAN" -eq 1 ]; then

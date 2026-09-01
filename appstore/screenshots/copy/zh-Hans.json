@@ -1,0 +1,182 @@
+{
+  "shared": {
+    "signature": "Privacy First, Privacy by Design",
+    "signatureBrand": "RadicalSolution.com",
+    "placeholder": "输入网址、文本或拖放文件……",
+    "kindURL": "URL",
+    "kindContact": "联系我们",
+    "kindWiFi": "Wi-Fi",
+    "save": "保存二维码",
+    "labelModules": "模块",
+    "labelEyes": "眼睛",
+    "labelEyeSize": "眼部大小",
+    "labelSolid": "纯色",
+    "labelGradient": "渐变",
+    "labelBackground": "背景",
+    "labelLogo": "徽标",
+    "labelCaption": "图注",
+    "labelSize": "大小",
+    "labelFormat": "格式",
+    "labelMyStyles": "我的样式",
+    "appName": "Radical QR",
+    "sidebarGenerator": "生成器",
+    "sidebarHistory": "历史",
+    "sidebarHelp": "帮助"
+  },
+  "hero": {
+    "headline": [
+      "二维码。",
+      "极简设计。"
+    ],
+    "badges": [
+      "无追踪",
+      "无需订阅",
+      "SVG 和 PDF"
+    ],
+    "subtitle": [
+      "自动检测。私密。优雅。"
+    ]
+  },
+  "launch": {
+    "headline": [
+      "直接下载吧。",
+      "它清楚自己的定位。"
+    ],
+    "subtitle": [
+      "链接、联系人、Wi-Fi、事件 —",
+      "该格式由其自行设计。"
+    ],
+    "launchHeadline": "拖放或粘贴任意内容",
+    "launchSubhead": "链接、文本、联系人、Wi-Fi 网络、事件。格式由应用自行处理。",
+    "paste": "粘贴",
+    "duplicate": "复制",
+    "browse": "浏览文件"
+  },
+  "duplicate": {
+    "headline": [
+      "任意类型的二维码。",
+      "再次向您致意。"
+    ],
+    "subtitle": [
+      "将摄像头对准二维码，或选择",
+      "一张图片。重新设计样式，保留原有内容。"
+    ],
+    "camera": "相机",
+    "library": "照片库",
+    "found": "已读取二维码",
+    "readValue": "radicalsolution.com/radical-qr",
+    "before": "已找到",
+    "after": "重新设计",
+    "scannerHint": "将摄像头对准二维码即可重新生成该二维码。"
+  },
+  "customization": {
+    "headline": [
+      "您所看到的设置。",
+      "绝非您所见的那种设置。"
+    ],
+    "subtitle": [
+      "每个选项都会生成独立的结果 —",
+      "无需翻译，无需揣测。"
+    ],
+    "families": "五类，每次一种"
+  },
+  "brand": {
+    "headline": [
+      "您的徽标。",
+      "正中。"
+    ],
+    "subtitle": [
+      "为此专门划出了一块“静区”，因此该",
+      "二维码仍可扫描。下方配有说明文字。"
+    ],
+    "captionValue": "radicalsolution.com"
+  },
+  "export": {
+    "headline": [
+      "PNG。SVG。PDF。",
+      "绝无模糊，永远清晰。"
+    ],
+    "subtitle": [
+      "最高支持 4096 像素，或永不失真的矢量图",
+      "blurs。一次购买，无需订阅。"
+    ],
+    "sizes": [
+      "256",
+      "512",
+      "1024",
+      "2048",
+      "4096"
+    ],
+    "formats": [
+      "PNG",
+      "JPEG",
+      "WEBP",
+      "PDF",
+      "SVG"
+    ]
+  },
+  "privacy": {
+    "headline": [
+      "没有任何数据外传",
+      "您的设备。"
+    ],
+    "subtitle": [
+      "无需账户、无数据分析、无服务器。",
+      "生成二维码后即可将其忘却。"
+    ],
+    "points": [
+      "无追踪，无分析 SDK",
+      "除非您主动要求，否则不会存储任何数据",
+      "历史记录保存在您自己的 iCloud 中",
+      "在设备上生成并导出"
+    ],
+    "note": "无追踪。无存储。仅生成临时二维码。",
+    "badges": [
+      "无需注册",
+      "无分析功能",
+      "无需服务器"
+    ]
+  },
+  "services": {
+    "headline": [
+      "右键点击。",
+      "完成。"
+    ],
+    "subtitle": [
+      "将任意选定文本转换为二维码，",
+      "链接或联系人，在 Mac 的任意位置。"
+    ],
+    "menuTitle": "服务",
+    "menuItem": "创建二维码",
+    "selection": "https://radicalsolution.com/radical-qr",
+    "shareTitle": "还支持分享菜单",
+    "readyLabel": "准备保存"
+  },
+  "history": {
+    "headline": [
+      "每个二维码",
+      "你保留了。"
+    ],
+    "subtitle": [
+      "专业版历史记录可通过您自己的 iCloud 同步。",
+      "重新打开一个二维码，重新设计样式，然后再次导出。"
+    ],
+    "title": "历史",
+    "today": "今天",
+    "yesterday": "昨天",
+    "duplicateAction": "重复项",
+    "recent": "最近",
+    "empty": "此处暂无内容",
+    "searchPlaceholder": "搜索您的二维码"
+  },
+  "styles": {
+    "headline": [
+      "保存样式。",
+      "可永久重复使用。"
+    ],
+    "subtitle": [
+      "四种专属风格，一键即可使用",
+      "来自生成器。"
+    ]
+  }
+}

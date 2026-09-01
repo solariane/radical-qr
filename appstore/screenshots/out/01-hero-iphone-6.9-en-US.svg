@@ -43,16 +43,16 @@
     </g>
   
   <g>
-      <rect x="144.59999999999997" y="531" width="302.08000000000004" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
-      <text x="295.64" y="583.68" text-anchor="middle" font-size="38"
+      <rect x="223.14600000000002" y="531" width="242.724" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
+      <text x="344.50800000000004" y="583.68" text-anchor="middle" font-size="38"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">No tracking</text>
     </g><g>
-      <rect x="472.68" y="531" width="387.20000000000005" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
-      <text x="666.28" y="583.68" text-anchor="middle" font-size="38"
+      <rect x="491.87" y="531" width="309.14799999999997" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
+      <text x="646.444" y="583.68" text-anchor="middle" font-size="38"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">No subscription</text>
     </g><g>
-      <rect x="885.8800000000001" y="531" width="259.52" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
-      <text x="1015.6400000000001" y="583.68" text-anchor="middle" font-size="38"
+      <rect x="827.018" y="531" width="239.836" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
+      <text x="946.936" y="583.68" text-anchor="middle" font-size="38"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">SVG &amp; PDF</text>
     </g>
   

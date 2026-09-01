@@ -36,16 +36,16 @@
     </g>
   
   <g>
-      <rect x="505.48400000000004" y="433.15" width="322.91999999999996" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="666.944" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="590.0435" y="433.15" width="277.472" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="728.7795" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">No account</text>
     </g><g>
-      <rect x="858.304" y="433.15" width="371.864" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="1044.2359999999999" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="897.4155" y="433.15" width="300.7203999999999" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1047.7757" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">No analytics</text>
     </g><g>
-      <rect x="1260.068" y="433.15" width="298.448" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="1409.292" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="1228.0358999999999" y="433.15" width="245.9206" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1350.9961999999998" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">No server</text>
     </g>
   

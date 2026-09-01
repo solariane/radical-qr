@@ -1,0 +1,182 @@
+{
+  "shared": {
+    "signature": "Privacy First, Privacy by Design",
+    "signatureBrand": "RadicalSolution.com",
+    "placeholder": "Introduce una URL, texto o arrastra y suelta un archivo…",
+    "kindURL": "URL",
+    "kindContact": "Contacto",
+    "kindWiFi": "Wi-Fi",
+    "save": "Guardar código QR",
+    "labelModules": "Módulos",
+    "labelEyes": "Ojos",
+    "labelEyeSize": "Tamaño del ojo",
+    "labelSolid": "Color liso",
+    "labelGradient": "Degradado",
+    "labelBackground": "Fondo",
+    "labelLogo": "Logotipo",
+    "labelCaption": "Leyenda",
+    "labelSize": "Tamaño",
+    "labelFormat": "Formato",
+    "labelMyStyles": "Mis estilos",
+    "appName": "Radical QR",
+    "sidebarGenerator": "Generador",
+    "sidebarHistory": "Historial",
+    "sidebarHelp": "Ayuda"
+  },
+  "hero": {
+    "headline": [
+      "Códigos QR.",
+      "Radicalmente sencillo."
+    ],
+    "badges": [
+      "Sin seguimiento",
+      "Sin suscripción",
+      "SVG y PDF"
+    ],
+    "subtitle": [
+      "Detección automática. Privado. Elegante."
+    ]
+  },
+  "launch": {
+    "headline": [
+      "Olvídate de ello.",
+      "Sabe lo que es."
+    ],
+    "subtitle": [
+      "Enlaces, contactos, Wi-Fi, eventos —",
+      "El formato se genera automáticamente."
+    ],
+    "launchHeadline": "Arrastra y suelta o pega lo que quieras",
+    "launchSubhead": "Enlaces, texto, contactos, redes Wi-Fi, eventos. El formato se genera automáticamente.",
+    "paste": "Pegar",
+    "duplicate": "Duplicar",
+    "browse": "Explorar archivos"
+  },
+  "duplicate": {
+    "headline": [
+      "Cualquier código.",
+      "Atentamente."
+    ],
+    "subtitle": [
+      "Apunta la cámara hacia un código o selecciona",
+      "Una imagen. Cámbiale el estilo, pero mantén lo que dice."
+    ],
+    "camera": "Cámara",
+    "library": "Galería de fotos",
+    "found": "Código leído",
+    "readValue": "radicalsolution.com/radical-qr",
+    "before": "Encontrado",
+    "after": "Rediseñado",
+    "scannerHint": "Apunta la cámara hacia un código QR para recrearlo."
+  },
+  "customization": {
+    "headline": [
+      "Las opciones de configuración que ves.",
+      "No son los ajustes que te esperas."
+    ],
+    "subtitle": [
+      "Cada opción genera su propio resultado —",
+      "No hay nada que traducir, nada que adivinar."
+    ],
+    "families": "Cinco familias, una por una"
+  },
+  "brand": {
+    "headline": [
+      "Tu logotipo.",
+      "Justo en el centro."
+    ],
+    "subtitle": [
+      "Se le ha reservado una zona tranquila, por lo que el",
+      "El código sigue escaneándose. Leyenda debajo."
+    ],
+    "captionValue": "radicalsolution.com"
+  },
+  "export": {
+    "headline": [
+      "PNG. SVG. PDF.",
+      "Sin desenfoque, nunca."
+    ],
+    "subtitle": [
+      "Hasta 4096 píxeles, o un archivo vectorial que nunca",
+      "blurs. Una sola compra, sin suscripción."
+    ],
+    "sizes": [
+      "256",
+      "512",
+      "1024",
+      "2048",
+      "4096"
+    ],
+    "formats": [
+      "PNG",
+      "JPEG",
+      "WEBP",
+      "PDF",
+      "SVG"
+    ]
+  },
+  "privacy": {
+    "headline": [
+      "No se envía nada al exterior",
+      "tu dispositivo."
+    ],
+    "subtitle": [
+      "Sin cuenta, sin análisis de datos, sin servidor.",
+      "Tus códigos se crean y se olvidan."
+    ],
+    "points": [
+      "Sin seguimiento, sin SDK de análisis",
+      "No se almacena nada a menos que tú lo pidas.",
+      "El historial se guarda en tu propio iCloud",
+      "Generados y exportados directamente en el dispositivo"
+    ],
+    "note": "Sin seguimiento. Sin almacenamiento. Solo códigos QR efímeros.",
+    "badges": [
+      "Sin necesidad de crear una cuenta",
+      "Sin análisis de datos",
+      "Sin servidor"
+    ]
+  },
+  "services": {
+    "headline": [
+      "Haz clic con el botón derecho.",
+      "Listo."
+    ],
+    "subtitle": [
+      "Un código QR a partir de cualquier texto seleccionado,",
+      "enlace o contacto, en cualquier lugar del Mac."
+    ],
+    "menuTitle": "Servicios",
+    "menuItem": "Crear código QR",
+    "selection": "https://radicalsolution.com/radical-qr",
+    "shareTitle": "También incluye menú para compartir.",
+    "readyLabel": "Listo para guardar"
+  },
+  "history": {
+    "headline": [
+      "Cada código",
+      "que guardaste."
+    ],
+    "subtitle": [
+      "El historial de la versión Pro se sincroniza a través de tu propio iCloud.",
+      "Vuelve a abrir uno, rediseña su estilo y vuelve a exportarlo."
+    ],
+    "title": "Historial",
+    "today": "Hoy",
+    "yesterday": "Ayer",
+    "duplicateAction": "Duplicar",
+    "recent": "Recientes",
+    "empty": "Aún no hay nada aquí",
+    "searchPlaceholder": "Busca tus códigos"
+  },
+  "styles": {
+    "headline": [
+      "Guarda un estilo.",
+      "Reutilízalo siempre que quieras."
+    ],
+    "subtitle": [
+      "Cuatro estilos propios, a un solo toque",
+      "desde el generador."
+    ]
+  }
+}

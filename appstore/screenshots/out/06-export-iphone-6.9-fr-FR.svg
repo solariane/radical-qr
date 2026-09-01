@@ -43,16 +43,16 @@
     </g>
   
   <g>
-      <rect x="410.59999999999997" y="539" width="153.12" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
-      <text x="487.15999999999997" y="591.68" text-anchor="middle" font-size="38"
+      <rect x="400.93850000000003" y="539" width="165.83100000000002" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
+      <text x="483.85400000000004" y="591.68" text-anchor="middle" font-size="38"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">WEBP</text>
     </g><g>
-      <rect x="589.72" y="539" width="131.84" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
-      <text x="655.64" y="591.68" text-anchor="middle" font-size="38"
+      <rect x="592.7695000000001" y="539" width="135.146" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
+      <text x="660.3425000000001" y="591.68" text-anchor="middle" font-size="38"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">PDF</text>
     </g><g>
-      <rect x="747.5600000000001" y="539" width="131.84" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
-      <text x="813.48" y="591.68" text-anchor="middle" font-size="38"
+      <rect x="753.9155000000001" y="539" width="135.146" height="78" rx="39" fill="#ffffff" opacity="0.18"/>
+      <text x="821.4885" y="591.68" text-anchor="middle" font-size="38"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">SVG</text>
     </g>
   

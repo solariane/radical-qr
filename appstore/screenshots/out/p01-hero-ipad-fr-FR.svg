@@ -36,16 +36,16 @@
     </g>
   
   <g>
-      <rect x="468.77600000000007" y="433.15" width="322.91999999999996" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="630.2360000000001" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="530.884625" y="433.15" width="267.50840000000005" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="664.638825" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">Sans suivi</text>
     </g><g>
-      <rect x="821.596" y="433.15" width="445.28" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="1044.2359999999999" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="828.2930250000001" y="433.15" width="399.11094999999983" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1027.8485" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">Sans abonnement</text>
     </g><g>
-      <rect x="1296.7759999999998" y="433.15" width="298.448" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
-      <text x="1445.9999999999998" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
+      <rect x="1257.3039749999998" y="433.15" width="275.8114" height="89.69999999999999" rx="44.849999999999994" fill="#ffffff" opacity="0.18"/>
+      <text x="1395.2096749999998" y="493.73199999999997" text-anchor="middle" font-size="43.699999999999996"
         font-weight="600" fill="#ffffff" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif">SVG &amp; PDF</text>
     </g>
   
