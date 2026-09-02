@@ -5,8 +5,8 @@
 
 ## Diagnostic
 
-- Baseline (juin 2026) : **16 installs, 2 achats Pro** → conversion install→Pro ~12,5 %.
-- Ce chiffre (même sur échantillon minuscule) est **excellent** pour un utilitaire (marché : 1-5 %).
+- Baseline propre (RadicalQR seul, 90 j au 1 sept 2026) : **40 téléchargements, 4 achats Pro** → conversion install→Pro **~10 %**. Run-rate ~13-15 installs/mois, +233 % vs trimestre précédent. Détail chiffré dans [`HANDOFF.md`](HANDOFF.md).
+- Ce chiffre est **excellent** pour un utilitaire (marché : 1-5 %).
 - **Conclusion : le problème n'est pas la monétisation, c'est le volume en haut du funnel.** Toute la stratégie vise à faire entrer plus de monde.
 
 ## Principe directeur : l'argent remplace le temps
@@ -38,12 +38,12 @@ On **abandonne** la cadence de contenu quotidien (pas tenable en 1-2 h/sem). On 
 1. **CVR fiche** (page view → install) : cible ≥ 25 %, puis 30 %. Mesure la qualité de la fiche.
 2. **CPI** (coût par install, Apple Search Ads) : cible < 1 €, idéal < 0,50 €.
 
-| Étape | Métrique | Baseline | M+1 | M+3 |
+| Étape | Métrique | Baseline (installs/mois) | M+1 | M+3 |
 |---|---|---|---|---|
-| Acquisition | Installs | 16 | 50 | 180 |
+| Acquisition | Installs / mois | ~13-15 | 50 | 180 |
 | Acquisition | CVR fiche | ? | ≥25 % | ≥30 % |
-| Revenue | Achats Pro | 2 | 5 | 18 |
-| Revenue | Conv. install→Pro | 12,5 % | ≥8 % | ≥10 % |
+| Revenue | Achats Pro / mois | ~1-1,5 | 5 | 18 |
+| Revenue | Conv. install→Pro | ~10 % | ≥8 % | ≥10 % |
 
 > ⚠️ **Analytics** : App Store Connect natif UNIQUEMENT. **Jamais** de SDK de tracking (Firebase/FB) — ça détruirait le positionnement "no tracking" qui est l'argument marketing n°1.
 

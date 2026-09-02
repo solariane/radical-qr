@@ -1,7 +1,24 @@
 # HANDOFF — reprise marketing Radical QR
 
 > **Lis ce fichier en premier quand tu reviens.** Il te dit où tu en es, quoi faire, et dans quel ordre.
-> Dernière mise à jour : 2026-07-23. Tu changes de machine pour ~1 mois — tout est dans ce dossier `marketing/` (versionné avec le repo, donc te suit).
+> Dernière mise à jour : 2026-09-02. Tu changes de machine pour ~1 mois — tout est dans ce dossier `marketing/` (versionné avec le repo, donc te suit).
+
+## 📉 Baseline chiffrée (point zéro AVANT marketing)
+
+Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner), 90 jours 4 juin → 1 sept 2026.
+
+| Métrique | Valeur | Note |
+|---|---|---|
+| Téléchargements | **40** sur 90 j (~13-15/mois) | +233 % vs trimestre précédent (12) — en accélération |
+| Achats Pro | **4** | tous entre juillet et fin août, ~1 vente / 2-3 sem |
+| **Conversion download → Pro** | **10 %** | excellent pour un utilitaire (marché : 1-5 %) |
+| Prix Pro | **4,99 € / $4.99** ✅ confirmé | $21,63 brut ÷ 4 ≈ 5,40 $ ≈ 4,99 € |
+| Revenu Pro brut | **21,63 $** sur 90 j (~7 $/mois) | net ≈ 18 $ (small business 85 %) |
+| CVR fiche (page→install) | à mesurer | go/no-go des ads |
+
+**Diagnostic : l'entonnoir convertit (10 %), il manque le débit en haut.** Économie unitaire : valeur d'un install ≈ 10 % × ~4,24 $ net ≈ **0,42 $** → seuil CPI ≈ 0,42 $, tolérable ~0,60-0,80 $. La math des docs (`03-apple-search-ads.md`) est calibrée juste — rien à réécrire.
+
+> ⚠️ Ne pas confondre avec l'écran "Tendances 26 sem." qui **agrège les 2 apps** (RadicalQR + Phone Number Cleaner) : 66 unités / 65 $ y mélangent les deux. La baseline ci-dessus est RadicalQR pur.
 
 ## 📁 Les documents
 
@@ -13,7 +30,7 @@
 | [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads + mots-clés |
 | `HANDOFF.md` | Ce fichier — statut & checklist de reprise |
 
-## ✅ État au 2026-07-23 (ce qui est fait)
+## ✅ État au 2026-09-02 (ce qui est fait)
 
 - [x] Stratégie définie et documentée (contraintes : 1-2 h/sem, faceless, 100-150 €/mois)
 - [x] Audit ASO réalisé, textes optimisés rédigés (pas encore appliqués)
@@ -23,7 +40,7 @@
 
 ## ❓ À confirmer avant de lancer
 
-- **Prix du Pro** : supposé 4,99 € dans tous les calculs de CPI. Si différent → recalcule le seuil de rentabilité dans `03-apple-search-ads.md` (seuil ≈ prix × 10 %).
+- ~~**Prix du Pro**~~ ✅ **Confirmé 4,99 € / $4.99** (cf. baseline ci-dessus). La math CPI des docs tient.
 - **Décision sur le keyword `scan`** : le garder en ASO (volume) ou le remplacer par `print` (irréprochable) — cf. `01-aso-audit.md`.
 
 ## 🎯 Ordre d'exécution recommandé (quand tu reviens)
@@ -50,9 +67,11 @@
 
 Copie ce tableau et remplis-le chaque semaine. Source : App Store Connect + dashboard Apple Search Ads (aucun SDK).
 
+> Rappel baseline pré-marketing (RadicalQR seul, 90 j) : ~13-15 installs/mois · conversion 10 % · ~1-1,5 Pro/mois · 0 € ads. C'est le point zéro à battre.
+
 | Semaine | Installs | CVR fiche | Achats Pro | Dépense ads | CPI | Notes |
 |---|---|---|---|---|---|---|
-| Baseline (juin) | 16 | ? | 2 | 0 € | — | avant marketing |
+| Baseline (90j→sept) | ~13-15/mois | ? | 4 (sur 90j) | 0 € | — | organique pur, avant marketing |
 | S1 | | | | | | |
 | S2 | | | | | | |
 | S3 | | | | | | |
