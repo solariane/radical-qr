@@ -27,7 +27,8 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 | [`00-growth-plan.md`](00-growth-plan.md) | La stratégie globale + les KPI. **Vue d'ensemble.** |
 | [`01-aso-audit.md`](01-aso-audit.md) | Audit de la fiche App Store + textes optimisés prêts à coller |
 | [`02-video-scripts.md`](02-video-scripts.md) | 10 storyboards vidéo faceless + setup de tournage |
-| [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads + mots-clés |
+| [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads (référence stratégique) |
+| [`04-campaign-setup-FR.md`](04-campaign-setup-FR.md) | **Runbook exécutable prêt à copier-coller** (budget 50 €/mois, France) |
 | `HANDOFF.md` | Ce fichier — statut & checklist de reprise |
 
 ## ✅ État au 2026-09-02 (ce qui est fait)
@@ -35,7 +36,7 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 - [x] Stratégie définie et documentée (contraintes : 1-2 h/sem, faceless, 100-150 €/mois)
 - [x] Audit ASO réalisé, textes optimisés rédigés (pas encore appliqués)
 - [x] 10 storyboards vidéo écrits (pas encore tournés)
-- [x] Structure Apple Search Ads définie (compte pas encore créé)
+- [x] Structure Apple Search Ads définie (`03`) + **runbook exécutable 50 €/mois prêt à copier-coller** (`04`, compte pas encore créé)
 - [ ] **RIEN n'est encore exécuté** — tout est prêt à lancer
 
 ## ❓ À confirmer avant de lancer
@@ -56,7 +57,7 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 3. **Vérifier la CVR fiche** dans App Store Connect (baseline actuelle) — c'est le go/no-go pour les ads.
 
 ### Semaine 2 — Lancer le moteur
-4. **Apple Search Ads** (1 h setup) — suis la checklist de `03-apple-search-ads.md` : compte Advanced, campagne France, 3 €/j, mots-clés Exact + négatifs.
+4. **Apple Search Ads** (1 h setup) — suis le runbook prêt à copier-coller `04-campaign-setup-FR.md` : compte Advanced, 1 campagne France à 1,70 €/j (50 €/mois), 3 groupes (Exact / Discovery / Brand), mots-clés + négatifs déjà rédigés.
 5. Pose un **rappel hebdo vendredi** (20 min de pilotage).
 
 ### Quand tu as un samedi libre (pas dans le rythme hebdo)
