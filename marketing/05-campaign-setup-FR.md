@@ -1,7 +1,9 @@
-# (c-bis) Runbook Apple Search Ads — prêt à copier-coller (budget 50 €/mois)
+# (c-ter) Runbook Apple Search Ads — FRANCE (marché SECONDAIRE, à lancer plus tard)
 
+> ⚠️ **La France n'est pas le marché prioritaire.** Le marché n°1 est les USA → voir `04-campaign-setup-US.md`.
+> Ne lance cette campagne France **qu'après** que les USA soient rentables (cf. paliers de décision du doc `04`), ou en parallèle si tu montes le budget global.
 > Version **exécutable** de `03-apple-search-ads.md`, calibrée sur **50 €/mois**.
-> Le doc `03` reste la référence stratégique ; **pour le budget 50 €, ce sont les chiffres ci-dessous qui font foi.**
+> Le doc `03` reste la référence stratégique ; **pour le budget 50 € sur la France, ce sont les chiffres ci-dessous qui font foi.**
 > Outil : **Apple Search Ads Advanced** (searchads.apple.com) — gratuit, contrôle fin. PAS "Basic".
 > App : Radical QR : Générateur QR — Apple ID `6763236391`.
 

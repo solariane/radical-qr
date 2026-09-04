@@ -27,11 +27,11 @@ Apple Search Ads = 1 campagne par **marché (pays)** et par **type de correspond
 
 | # | Marché | Storefront | Pourquoi |
 |---|---|---|---|
-| 1 | 🇫🇷 France | fr-FR | Ton marché, métadonnées hand-written, CPT bas |
-| 2 | 🇺🇸 USA | en-US | Plus gros volume, mais CPT plus cher — budget limité |
-| 3 | 🇩🇪🇪🇸🇮🇹 (à ouvrir en M2) | de/es/it | CPT modéré, app déjà localisée |
+| 1 | 🇺🇸 USA | en-US | **Marché principal du founder.** Plus gros volume, prix 4,99 $ natif. CPT plus cher → stratégie longue-traîne (cf. `04`) |
+| 2 | 🇫🇷 France | fr-FR | Secondaire. CPT bas, métadonnées hand-written (cf. `05`) |
+| 3 | 🇬🇧🇨🇦 puis 🇩🇪🇪🇸🇮🇹 | en/de/es/it | À ouvrir quand le n°1 est rentable ; app déjà localisée |
 
-➡️ **Démarrage : France seule** (ou France + un petit test US). Concentre les 3 €/j pour avoir des données statistiquement lisibles vite. Ouvre les autres marchés quand la France est rentable.
+➡️ **Démarrage : USA seuls** (`04-campaign-setup-US.md`). Concentre le budget pour des données lisibles vite. Ouvre la France (`05`) puis les autres quand les USA sont rentables.
 
 ### Les 3 groupes de pub (ad groups) par campagne
 

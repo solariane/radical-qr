@@ -28,7 +28,8 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 | [`01-aso-audit.md`](01-aso-audit.md) | Audit de la fiche App Store + textes optimisés prêts à coller |
 | [`02-video-scripts.md`](02-video-scripts.md) | 10 storyboards vidéo faceless + setup de tournage |
 | [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads (référence stratégique) |
-| [`04-campaign-setup-FR.md`](04-campaign-setup-FR.md) | **Runbook exécutable prêt à copier-coller** (budget 50 €/mois, France) |
+| [`04-campaign-setup-US.md`](04-campaign-setup-US.md) | **Runbook exécutable — USA, marché n°1** (50 €/mois) ← à lancer en premier |
+| [`05-campaign-setup-FR.md`](05-campaign-setup-FR.md) | Runbook France — marché secondaire, à lancer plus tard |
 | `HANDOFF.md` | Ce fichier — statut & checklist de reprise |
 
 ## ✅ État au 2026-09-02 (ce qui est fait)
@@ -57,7 +58,7 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 3. **Vérifier la CVR fiche** dans App Store Connect (baseline actuelle) — c'est le go/no-go pour les ads.
 
 ### Semaine 2 — Lancer le moteur
-4. **Apple Search Ads** (1 h setup) — suis le runbook prêt à copier-coller `04-campaign-setup-FR.md` : compte Advanced, 1 campagne France à 1,70 €/j (50 €/mois), 3 groupes (Exact / Discovery / Brand), mots-clés + négatifs déjà rédigés.
+4. **Apple Search Ads — USA d'abord** (1 h setup) — suis le runbook prêt à copier-coller `04-campaign-setup-US.md` : compte Advanced, 1 campagne **United States** à 1,70 €/j (50 €/mois), 3 groupes (Exact-Intent / Discovery / Brand), mots-clés + négatifs déjà rédigés. La France (`05`) attend que les USA soient rentables.
 5. Pose un **rappel hebdo vendredi** (20 min de pilotage).
 
 ### Quand tu as un samedi libre (pas dans le rythme hebdo)
