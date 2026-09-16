@@ -34,6 +34,7 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { createAscClient } from "./appstore/lib/asc.mjs";
 
 const args = Object.fromEntries(
   process.argv.slice(2).flatMap((a) => {
@@ -72,57 +73,45 @@ const info = (m) => console.log(`  ${COL.cyan}i ${m}${COL.reset}`);
 const dim = (m) => console.log(`  ${COL.dim}${m}${COL.reset}`);
 const fail = (m) => { console.error(`${COL.red}Error: ${m}${COL.reset}`); process.exit(1); };
 
-// --- JWT + client ----------------------------------------------------------
+// --- Client ASC -------------------------------------------------------------
+//
+// Le jeton est renouvelé en cours de route (un envoi complet dépasse les
+// 20 minutes qu'Apple accorde à un JWT) et les GET sont repris sur HTTP 5xx.
 
-const b64url = (buf) =>
-  Buffer.from(buf).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+const asc = createAscClient({
+  issuerId: ISSUER_ID,
+  keyId: KEY_ID,
+  keyPath: KEY_PATH,
+  fail,
+  // Déjà le cas avant : les coupures réseau isolées sont fréquentes sur 260 envois.
+  retryWritesOnNetworkError: true,
+  onRetry: ({ method, pathname, reason, attempt, attempts, delayMs }) => {
+    if (reason === "HTTP 401") warn(`\n    ${method} ${pathname} → HTTP 401, jeton renouvelé, nouvel essai`);
+    else warn(`\n    ${method} ${pathname} → ${reason}, nouvel essai dans ${delayMs / 1000} s (${attempt}/${attempts - 1})`);
+  },
+});
 
-function signJWT() {
-  const now = Math.floor(Date.now() / 1000);
-  const head = b64url(JSON.stringify({ alg: "ES256", kid: KEY_ID, typ: "JWT" }));
-  const payload = b64url(JSON.stringify({ iss: ISSUER_ID, iat: now, exp: now + 1200, aud: "appstoreconnect-v1" }));
-  const signer = crypto.createSign("SHA256");
-  signer.update(`${head}.${payload}`);
-  signer.end();
-  return `${head}.${payload}.${b64url(signer.sign({ key: fs.readFileSync(KEY_PATH, "utf8"), dsaEncoding: "ieee-p1363" }))}`;
-}
-
-const API = "https://api.appstoreconnect.apple.com";
-let token = null;
-
-/** fetch avec reprise : les coupures réseau isolées sont fréquentes sur 180 envois. */
+/**
+ * fetch avec reprise, pour les PUT d'octets hors API : coupures réseau isolées
+ * et HTTP 5xx. Renvoyer le même morceau au même offset ne change rien s'il
+ * était déjà arrivé. La dernière réponse est rendue telle quelle.
+ */
 async function fetchRetry(url, options, attempts = 4) {
-  let lastError;
-  for (let i = 0; i < attempts; i += 1) {
+  for (let i = 1; ; i += 1) {
+    let reason;
     try {
-      return await fetch(url, options);
+      const res = await fetch(url, options);
+      if (res.status < 500 || i >= attempts) return res;
+      await res.body?.cancel();
+      reason = `HTTP ${res.status}`;
     } catch (e) {
-      lastError = e;
-      await new Promise((r) => setTimeout(r, 1000 * 2 ** i));
+      if (i >= attempts) throw e;
+      reason = e.cause?.code || e.message;
     }
+    const delayMs = 1000 * 2 ** i;
+    warn(`\n    ${options.method} ${new URL(url).host} → ${reason}, nouvel essai dans ${delayMs / 1000} s (${i}/${attempts - 1})`);
+    await new Promise((r) => setTimeout(r, delayMs));
   }
-  throw lastError;
-}
-
-async function asc(pathname, { method = "GET", body = null, tolerate = [] } = {}) {
-  token ??= signJWT();
-  const url = pathname.startsWith("http") ? pathname : `${API}${pathname}`;
-  const headers = { Authorization: `Bearer ${token}` };
-  let reqBody = null;
-  if (body) {
-    headers["Content-Type"] = "application/json";
-    reqBody = JSON.stringify(body);
-  }
-  const res = await fetchRetry(url, { method, headers, body: reqBody });
-  const text = await res.text();
-  let json = null;
-  try { json = text ? JSON.parse(text) : null; } catch { /* corps vide */ }
-  if (!res.ok) {
-    if (tolerate.includes(res.status)) return { __error: res.status, json };
-    const err = json?.errors?.[0];
-    fail(`ASC ${method} ${pathname} → HTTP ${res.status}${err ? `\n  ${err.title}: ${err.detail}` : `\n  ${text}`}`);
-  }
-  return json;
 }
 
 // --- Correspondance fichiers → types d'affichage --------------------------

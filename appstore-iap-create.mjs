@@ -28,6 +28,7 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { createAscClient } from "./appstore/lib/asc.mjs";
 import { deeplApiBaseForKey, deeplSupportedTargets, deeplTranslate } from "./appstore/lib/deepl.mjs";
 
 // --- CLI ------------------------------------------------------------------
@@ -102,49 +103,21 @@ const info = (m) => console.log(`  ${COL.cyan}i ${m}${COL.reset}`);
 const dim = (m) => console.log(`  ${COL.dim}${m}${COL.reset}`);
 const fail = (m) => { console.error(`${COL.red}Error: ${m}${COL.reset}`); process.exit(1); };
 
-// --- JWT (ES256) ----------------------------------------------------------
+// --- API client ------------------------------------------------------------
+//
+// Shared with appstore-screenshots.mjs: the JWT is re-signed before Apple's
+// 20-minute limit and GETs are retried on HTTP 5xx.
 
-function b64url(buf) {
-  return Buffer.from(buf).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-}
-
-function signJWT() {
-  const header = { alg: "ES256", kid: KEY_ID, typ: "JWT" };
-  const now = Math.floor(Date.now() / 1000);
-  const payload = { iss: ISSUER_ID, iat: now, exp: now + 1200, aud: "appstoreconnect-v1" };
-  const signingInput = `${b64url(JSON.stringify(header))}.${b64url(JSON.stringify(payload))}`;
-  const pk = fs.readFileSync(KEY_PATH, "utf8");
-  const signer = crypto.createSign("SHA256");
-  signer.update(signingInput);
-  signer.end();
-  const sig = signer.sign({ key: pk, dsaEncoding: "ieee-p1363" });
-  return `${signingInput}.${b64url(sig)}`;
-}
-
-// --- API client -----------------------------------------------------------
-
-const API = "https://api.appstoreconnect.apple.com";
-let token = null;
-
-async function asc(pathname, { method = "GET", body = null } = {}) {
-  token ??= signJWT();
-  const url = pathname.startsWith("http") ? pathname : `${API}${pathname}`;
-  const headers = { "Authorization": `Bearer ${token}` };
-  let reqBody = null;
-  if (body) {
-    headers["Content-Type"] = "application/json";
-    reqBody = JSON.stringify(body);
-  }
-  const res = await fetch(url, { method, headers, body: reqBody });
-  const text = await res.text();
-  let json = null;
-  try { json = text ? JSON.parse(text) : null; } catch { /* ignore */ }
-  if (!res.ok) {
-    const err = json?.errors?.[0];
-    fail(`ASC ${method} ${pathname} → HTTP ${res.status}${err ? `\n  ${err.title}: ${err.detail}` : `\n  ${text}`}`);
-  }
-  return json;
-}
+const asc = createAscClient({
+  issuerId: ISSUER_ID,
+  keyId: KEY_ID,
+  keyPath: KEY_PATH,
+  fail,
+  onRetry: ({ method, pathname, reason, attempt, attempts, delayMs }) => {
+    if (reason === "HTTP 401") warn(`${method} ${pathname} → HTTP 401, token refreshed, retrying`);
+    else warn(`${method} ${pathname} → ${reason}, retrying in ${delayMs / 1000}s (${attempt}/${attempts - 1})`);
+  },
+});
 
 // --- DeepL translation pass ------------------------------------------------
 
