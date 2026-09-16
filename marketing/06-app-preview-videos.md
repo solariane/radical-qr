@@ -60,6 +60,47 @@ Le film « satisfying » de la personnalisation + l'argument print/Pro.
 - **Son** : mets une musique douce (elle jouera sur la fiche quand on tape la vidéo), mais **ne fais reposer aucune info sur le son** (autoplay muet dans la recherche).
 - **Fond de marque** : le gradient `#667eea → #764ba2` est déjà à l'écran dans l'app → cohérence automatique.
 
+## Recette technique (capture + montage)
+
+### Emplacements & résolutions (une App Preview par famille de device)
+App Store Connect a un emplacement séparé pour iPhone / iPad / Mac (ratios différents). **Priorité : iPhone seul pour commencer** (c'est là que joue l'autoplay dans la recherche + le gros du volume). iPad/Mac plus tard.
+
+| Device | Résolution à viser (portrait) | Note |
+|---|---|---|
+| iPhone 6.9″ (16 Pro Max) | **1320 × 2868** | couvre tous les iPhones plus petits |
+| iPad Pro 13″ | 2064 × 2752 | optionnel |
+| Mac | 16:10 paysage (ex. 2880 × 1800) | UI différente (layout split) → tournage à part |
+
+> Apple change parfois la liste des résolutions acceptées → vérifier dans ASC au moment de l'upload.
+
+### Capture iPhone / iPad — au simulateur (pratique et propre)
+```bash
+# 1. Booter le device cible
+xcrun simctl boot "iPhone 16 Pro Max"
+
+# 2. Nettoyer la barre d'état (heure 9:41, batterie/onde pleines)
+xcrun simctl status_bar booted override \
+  --time "9:41" --batteryState charged --batteryLevel 100 \
+  --cellularBars 4 --wifiBars 3
+
+# 3. Lancer l'app puis enregistrer (Ctrl+C pour arrêter)
+xcrun simctl io booted recordVideo --codec h264 beat.mov
+```
+- Alternative GUI : **Simulator → File → Record Screen**.
+- **Repli device réel** (si review tatillonne) : **QuickTime → Nouvel enregistrement vidéo → source = iPhone**.
+
+### Capture Mac
+- **QuickTime → Nouvel enregistrement de l'écran** (ou Cmd+Shift+5), cibler la fenêtre de l'app.
+
+### Montage FCPX
+- Projet à la **résolution native de la capture**, **30 fps**.
+- Trim des temps morts ; **texte incrusté dans le tiers supérieur** ; musique douce (jouée seulement sur la fiche, pas en autoplay recherche).
+- Durée finale **15-30 s** ; export **H.264 .mov/.mp4**.
+- **Poster frame** : ne se règle PAS dans FCPX → se choisit dans App Store Connect à l'upload.
+
+### Division du travail possible (capture assistée)
+Les captures iPhone/iPad peuvent être **produites automatiquement** (build + lancement simulateur + pilotage de l'UI + `recordVideo`), livrant des **clips bruts par beat** ; le montage créatif (texte, rythme, musique) reste dans FCPX. Bloqueur : le beat héros « texte → événement » attend que la feature de détection soit codée. Le Mac se capture mieux à la main (permissions d'enregistrement d'écran).
+
 ## Le timing malin — groupe tout dans une sortie de version
 
 Tu codes la détection améliorée → sors **ensemble** : la **feature** + cette **App Preview** qui la met en scène + la **publication de version**. Triple effet :
