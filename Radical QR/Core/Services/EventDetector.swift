@@ -24,8 +24,13 @@ nonisolated enum EventDetector {
     /// - Parameter requireFullCoverage: the input already reads as another type
     ///   (a phone number for "16.09.2026"); only a date that is the whole input wins.
     static func detect(in input: String, requireFullCoverage: Bool = false, now: Date = Date()) -> EventDetection? {
-        let text = input.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty, text.count <= maxInputLength else { return nil }
+        let original = input.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !original.isEmpty, original.count <= maxInputLength else { return nil }
+        // The detectors are read with CJK and Arabic punctuation as its ASCII twin —
+        // "20時、350 Fifth Avenue" hides the address otherwise. Same length, so
+        // every range found still points into the original, which the title and
+        // the location are cut from.
+        let text = ScriptPunctuation.asciiAligned(original)
         let nsText = text as NSString
         let fullRange = NSRange(location: 0, length: nsText.length)
 
@@ -52,8 +57,8 @@ nonisolated enum EventDetector {
             date: found.date,
             duration: found.duration,
             hasTime: hasTime,
-            title: TitleCleaner.title(from: text, removing: coveredRanges),
-            location: address?.location ?? "",
+            title: TitleCleaner.title(from: original, removing: coveredRanges),
+            location: address.map { singleLine((original as NSString).substring(with: $0.range)) } ?? "",
             url: link?.url.absoluteString ?? ""
         )
 
@@ -364,7 +369,7 @@ nonisolated enum TitleCleaner {
     ]
 
     static let edgePunctuation = CharacterSet.whitespacesAndNewlines
-        .union(CharacterSet(charactersIn: ",;:–—-·|/@()[]•.!?"))
+        .union(CharacterSet(charactersIn: ",;:–—-·|/@()[]•.!?，、。；：！？（）「」،؛؟"))
 
     static func title(from text: String, removing ranges: [NSRange]) -> String {
         var remaining = text as NSString
@@ -439,5 +444,19 @@ nonisolated enum CJKDateParser {
             hasTime: hour != nil,
             alternatives: 0
         )
+    }
+}
+
+// MARK: - Punctuation in other scripts
+
+/// Full-width and Arabic punctuation, read as the ASCII the detectors know.
+nonisolated enum ScriptPunctuation {
+    private static let twins: [Character: Character] = [
+        "，": ",", "、": ",", "،": ",", "；": ";", "؛": ";", "：": ":", "（": "(", "）": ")",
+    ]
+
+    /// Same UTF-16 length as the input: every twin is one code unit, like the original.
+    static func asciiAligned(_ text: String) -> String {
+        String(text.map { twins[$0] ?? $0 })
     }
 }

@@ -129,6 +129,19 @@ final class EventDetectorTests: XCTestCase {
         }
     }
 
+    func testFullWidthAndArabicPunctuation() throws {
+        // "、", "，" and "،" are commas too: out of the title, and not in the way of the address.
+        for (text, title) in [
+            ("ディナー 9月19日 20時、350 Fifth Avenue, New York", "ディナー"),
+            ("晚餐 9月19日 20点，350 Fifth Avenue, New York", "晚餐"),
+            ("عشاء 19/09 20:00، 350 Fifth Avenue, New York", "عشاء"),
+        ] {
+            let detection = try XCTUnwrap(EventDetector.detect(in: text, now: now), text)
+            XCTAssertEqual(detection.draft.title, title, text)
+            XCTAssertEqual(detection.draft.location, "350 Fifth Avenue, New York", text)
+        }
+    }
+
     func testNoAddressLeavesTheLocationEmpty() throws {
         let detection = try XCTUnwrap(EventDetector.detect(in: "Réunion salle 3 bâtiment B 16/09/2099 10h", now: now))
         XCTAssertEqual(detection.draft.location, "")

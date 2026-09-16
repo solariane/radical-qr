@@ -41,6 +41,13 @@ final class ContentDetectorTests: XCTestCase {
         XCTAssertEqual(detection.draft, .wifi(WiFiDraft(ssid: "Livebox-A1B2", password: "xK9#mQ2!")))
     }
 
+    func testArabicAndHindiWiFiLabels() throws {
+        for text in ["واي فاي: CafeGuest / كلمة المرور: abc", "वाई-फ़ाई: CafeGuest / पासवर्ड: abc"] {
+            let detection = try XCTUnwrap(detect(text), text)
+            XCTAssertEqual(detection.draft, .wifi(WiFiDraft(ssid: "CafeGuest", password: "abc")), text)
+        }
+    }
+
     func testPasswordAloneIsNotANetwork() {
         XCTAssertNil(detect("Mot de passe : hunter2"))
     }

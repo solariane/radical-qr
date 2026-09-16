@@ -14,7 +14,7 @@ nonisolated enum WiFiDetector {
             "wi-fi", "wifi", "wlan", "ssid", "network name", "network", "nom du réseau", "réseau",
             "netzwerkname", "netzwerk", "nombre de la red", "red", "nome della rete", "nome rete", "rete",
             "nome da rede", "rede", "ネットワーク名", "ネットワーク", "网络名称", "网络", "無線網路",
-            "اسم الشبكة", "الشبكة", "नेटवर्क का नाम", "नेटवर्क"
+            "اسم الشبكة", "الشبكة", "الواي فاي", "واي فاي", "नेटवर्क का नाम", "नेटवर्क", "वाई-फ़ाई", "वाई-फाई", "वाईफाई"
         ]
         let password = [
             "password", "passwort", "passcode", "pass", "pwd", "mot de passe", "mdp", "clé wi-fi", "clé wifi",
