@@ -198,22 +198,22 @@ final class GeneratorEventFlowTests: XCTestCase {
         viewModel.inputText = "21h mercredi 16/09/2099"
         await settle()
 
-        XCTAssertNotNil(viewModel.eventDraft)
-        XCTAssertEqual(viewModel.eventEditorRequest, 1)
+        XCTAssertNotNil(viewModel.draft)
+        XCTAssertEqual(viewModel.editorRequest, 1)
         XCTAssertTrue(viewModel.inputText.hasPrefix("BEGIN:VEVENT"))
         XCTAssertEqual(viewModel.detectedDataType, .icalendar)
 
-        var draft = viewModel.eventDraft!
+        guard case .event(var draft)? = viewModel.draft else { return XCTFail("not an event") }
         draft.title = "Dîner"
-        viewModel.updateEventDraft(draft)
+        viewModel.updateDraft(.event(draft))
         await settle()
         XCTAssertTrue(viewModel.inputText.contains("SUMMARY:Dîner"))
-        XCTAssertEqual(viewModel.eventDraft?.title, "Dîner")
+        XCTAssertEqual(viewModel.draft, .event(draft))
 
         viewModel.keepAsText()
         await settle()
-        XCTAssertNil(viewModel.eventDraft)
-        XCTAssertNil(viewModel.eventSuggestion)
+        XCTAssertNil(viewModel.draft)
+        XCTAssertNil(viewModel.suggestion)
         XCTAssertEqual(viewModel.inputText, "21h mercredi 16/09/2099")
     }
 
@@ -222,12 +222,12 @@ final class GeneratorEventFlowTests: XCTestCase {
         viewModel.inputText = "16/09/2099"
         await settle()
 
-        XCTAssertNil(viewModel.eventDraft)
-        XCTAssertNotNil(viewModel.eventSuggestion)
+        XCTAssertNil(viewModel.draft)
+        XCTAssertNotNil(viewModel.suggestion)
         XCTAssertEqual(viewModel.inputText, "16/09/2099")
 
-        viewModel.acceptEventSuggestion()
-        XCTAssertNotNil(viewModel.eventDraft)
+        viewModel.acceptSuggestion()
+        XCTAssertNotNil(viewModel.draft)
         XCTAssertTrue(viewModel.inputText.contains("DTSTART;VALUE=DATE:20990916"))
     }
 
@@ -239,7 +239,7 @@ final class GeneratorEventFlowTests: XCTestCase {
         }
         await settle()
 
-        XCTAssertNil(viewModel.eventDraft)
-        XCTAssertNotNil(viewModel.eventSuggestion)
+        XCTAssertNil(viewModel.draft)
+        XCTAssertNotNil(viewModel.suggestion)
     }
 }

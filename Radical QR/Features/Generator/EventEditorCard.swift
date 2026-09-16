@@ -9,7 +9,6 @@ struct EventEditorCard: View {
     let onKeepAsText: (() -> Void)?
     let onClear: () -> Void
 
-    @Environment(\.generatorMetrics) private var metrics
     @State private var showsLocation = false
     @State private var showsLink = false
     @FocusState private var focusedField: Field?
@@ -17,14 +16,11 @@ struct EventEditorCard: View {
     private enum Field { case title, location, link }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: metrics.rowGap) {
-            header
+        EditorCard(type: .icalendar, onKeepAsText: onKeepAsText, onClear: onClear) {
             titleField
             dateRows
             extraFields
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .cardStyle(padding: metrics.cardPadding, cornerRadius: 26)
         .onAppear {
             showsLocation = !draft.location.isEmpty
             showsLink = !draft.url.isEmpty
@@ -33,31 +29,6 @@ struct EventEditorCard: View {
     }
 
     // MARK: - Rows
-
-    private var header: some View {
-        HStack(spacing: 8) {
-            Image(systemName: "calendar")
-                .foregroundStyle(Color.accentColor)
-            Text(DataType.icalendar.displayName)
-                .font(.headline)
-            Spacer(minLength: 8)
-            if let onKeepAsText {
-                Button(String(localized: "event.keepAsText", defaultValue: "Keep as text",
-                              comment: "Button: undo the automatic conversion of pasted text into a calendar event, and encode the original text instead."),
-                       action: onKeepAsText)
-                    .font(.subheadline)
-                    .buttonStyle(.borderless)
-            }
-            Button(action: onClear) {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.title3)
-                    .foregroundStyle(.secondary)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(String(localized: "event.clear", defaultValue: "Clear",
-                                       comment: "Accessibility label: erase the content being encoded and start over."))
-        }
-    }
 
     private var titleField: some View {
         TextField(
@@ -69,7 +40,7 @@ struct EventEditorCard: View {
         .font(.body.weight(.medium))
         .focused($focusedField, equals: .title)
         .submitLabel(.done)
-        .fieldBackground()
+        .editorFieldBackground()
     }
 
     private var dateRows: some View {
@@ -100,21 +71,13 @@ struct EventEditorCard: View {
     @ViewBuilder
     private var extraFields: some View {
         if showsLocation {
-            TextField(
-                String(localized: "event.location.placeholder", defaultValue: "Location",
-                       comment: "Placeholder: where a calendar event takes place — an address or a venue, as in Apple Calendar."),
-                text: binding(\.location)
-            )
+            TextField(locationPlaceholder, text: binding(\.location))
             .textFieldStyle(.plain)
             .focused($focusedField, equals: .location)
-            .fieldBackground()
+            .editorFieldBackground()
         }
         if showsLink {
-            TextField(
-                String(localized: "event.url.placeholder", defaultValue: "URL",
-                       comment: "Placeholder: a web address attached to a calendar event, such as a video-call link."),
-                text: binding(\.url)
-            )
+            TextField(urlPlaceholder, text: binding(\.url))
             .textFieldStyle(.plain)
             .focused($focusedField, equals: .link)
             #if os(iOS)
@@ -122,25 +85,25 @@ struct EventEditorCard: View {
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             #endif
-            .fieldBackground()
+            .editorFieldBackground()
         }
         if !showsLocation || !showsLink {
-            HStack(spacing: 8) {
+            AddFieldRow {
                 if !showsLocation {
-                    addButton(
-                        String(localized: "event.addLocation", defaultValue: "Add location",
-                               comment: "Button: reveal the field for the place of a calendar event."),
-                        systemImage: "mappin.and.ellipse"
+                    AddFieldButton(
+                        title: locationPlaceholder,
+                        accessibilityLabel: String(localized: "event.addLocation", defaultValue: "Add location",
+                                                   comment: "Button: reveal the field for the place of a calendar event.")
                     ) {
                         showsLocation = true
                         focusedField = .location
                     }
                 }
                 if !showsLink {
-                    addButton(
-                        String(localized: "event.addURL", defaultValue: "Add link",
-                               comment: "Button: reveal the field for a web link (e.g. a video call) attached to a calendar event."),
-                        systemImage: "link"
+                    AddFieldButton(
+                        title: urlPlaceholder,
+                        accessibilityLabel: String(localized: "event.addURL", defaultValue: "Add link",
+                                                   comment: "Button: reveal the field for a web link (e.g. a video call) attached to a calendar event.")
                     ) {
                         showsLink = true
                         focusedField = .link
@@ -150,18 +113,14 @@ struct EventEditorCard: View {
         }
     }
 
-    private func addButton(_ title: String, systemImage: String, action: @escaping () -> Void) -> some View {
-        Button(action: { withAnimation(.easeInOut(duration: 0.2), action) }) {
-            Label(title, systemImage: systemImage)
-                .font(.subheadline)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Capsule().fill(Color.secondary.opacity(0.12)))
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(Color.accentColor)
+    private var locationPlaceholder: String {
+        String(localized: "event.location.placeholder", defaultValue: "Location",
+               comment: "Placeholder: where a calendar event takes place — an address or a venue, as in Apple Calendar.")
+    }
+
+    private var urlPlaceholder: String {
+        String(localized: "event.url.placeholder", defaultValue: "URL",
+               comment: "Placeholder: a web address attached to a calendar event, such as a video-call link.")
     }
 
     // MARK: - Editing
@@ -181,67 +140,6 @@ struct EventEditorCard: View {
     }
 }
 
-private extension View {
-    func fieldBackground() -> some View {
-        padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color.secondary.opacity(0.11))
-            )
-    }
-}
-
-// MARK: - Suggestion
-
-/// Offered under the code when a date was found but not clearly enough to
-/// switch on our own. Tapping it opens the editor; the cross never asks again.
-struct EventSuggestionBanner: View {
-    let draft: EventDraft
-    let onAccept: () -> Void
-    let onDismiss: () -> Void
-
-    var body: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "calendar.badge.plus")
-                .foregroundStyle(Color.accentColor)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(String(localized: "event.suggestion.title", defaultValue: "Looks like a date",
-                            comment: "Hint under the QR code: the text the user entered contains a date or time and could become a calendar event."))
-                    .font(.caption.weight(.semibold))
-                Text(dateText)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-            Spacer(minLength: 6)
-            Button(String(localized: "event.suggestion.accept", defaultValue: "Make an event",
-                          comment: "Button: turn the entered text into a calendar event (appointment) that the QR code adds to the calendar."),
-                   action: onAccept)
-                .font(.caption.weight(.semibold))
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-            Button(action: onDismiss) {
-                Image(systemName: "xmark")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(String(localized: "event.suggestion.dismiss", defaultValue: "Keep as text",
-                                       comment: "Accessibility label: decline turning the entered text into a calendar event."))
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(RoundedRectangle(cornerRadius: 12).fill(Color.accentColor.opacity(0.10)))
-    }
-
-    private var dateText: String {
-        draft.isAllDay
-            ? draft.start.formatted(date: .abbreviated, time: .omitted)
-            : draft.start.formatted(date: .abbreviated, time: .shortened)
-    }
-}
-
 // MARK: - Previews
 
 #Preview("Editor") {
@@ -255,13 +153,4 @@ struct EventSuggestionBanner: View {
         )
         .padding()
     }
-}
-
-#Preview("Suggestion") {
-    EventSuggestionBanner(
-        draft: EventDraft(start: .now, end: .now.addingTimeInterval(3600)),
-        onAccept: {},
-        onDismiss: {}
-    )
-    .padding()
 }

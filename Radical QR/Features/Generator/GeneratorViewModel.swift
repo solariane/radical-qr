@@ -28,19 +28,19 @@ final class GeneratorViewModel: ObservableObject {
     /// Current error if any
     @Published var error: GeneratorError?
 
-    /// The event being edited, when the input is one — the QR content is
-    /// regenerated from it on every change.
-    @Published private(set) var eventDraft: EventDraft?
+    /// The event, Wi-Fi network or contact being edited in a form — the QR
+    /// content is regenerated from it on every change.
+    @Published private(set) var draft: ContentDraft?
 
-    /// A date found in the text but not clearly enough to switch on our own.
-    @Published private(set) var eventSuggestion: EventDraft?
+    /// Structure found in the text but not clearly enough to switch on our own.
+    @Published private(set) var suggestion: ContentDraft?
 
-    /// Bumped when the input just turned into an event, so the view opens the editor.
-    @Published private(set) var eventEditorRequest = 0
+    /// Bumped when the input just turned into a form, so the view opens the editor.
+    @Published private(set) var editorRequest = 0
 
-    /// Changes whenever a different event is loaded (not when the current one is
+    /// Changes whenever different content is loaded (not when the current one is
     /// edited), so the editor drops the folded/unfolded state of the previous one.
-    @Published private(set) var eventGeneration = 0
+    @Published private(set) var draftGeneration = 0
 
     // MARK: - Services
 
@@ -53,14 +53,14 @@ final class GeneratorViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     private var generateTask: Task<Void, Never>?
-    private var eventDetectionTask: Task<Void, Never>?
+    private var detectionTask: Task<Void, Never>?
 
-    /// The text an event was made from, restored by "Keep as text".
-    private(set) var eventSourceText: String?
+    /// The text a form was made from, restored by "Keep as text".
+    private(set) var draftSourceText: String?
     /// Texts the user chose to keep as text — never offered again this session.
-    private var declinedEventSources: Set<String> = []
-    /// The last VEVENT we wrote, so our own writes are not re-analysed.
-    private var lastEncodedEvent: String?
+    private var declinedSources: Set<String> = []
+    /// The last payload a form wrote, so our own writes are not re-analysed.
+    private var lastEncodedDraft: String?
 
     /// Typed text waits for a pause before a suggestion appears.
     private let typingDetectionDelay: Duration = .milliseconds(600)
@@ -315,33 +315,33 @@ final class GeneratorViewModel: ObservableObject {
         previewImage = nil
     }
 
-    // MARK: - Events
+    // MARK: - Forms (event, Wi-Fi, contact)
 
-    /// Decides whether new input is, might be, or has stopped being an event.
+    /// Decides whether new input is, might be, or has stopped being structured content.
     private func inputWillChange(to text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard trimmed != lastEncodedEvent else { return }
+        guard trimmed != lastEncodedDraft else { return }
 
         let previous = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        eventDetectionTask?.cancel()
-        eventSuggestion = nil
-        eventDraft = nil
-        eventSourceText = nil
-        lastEncodedEvent = nil
+        detectionTask?.cancel()
+        suggestion = nil
+        draft = nil
+        draftSourceText = nil
+        lastEncodedDraft = nil
         guard !trimmed.isEmpty else { return }
 
         let type = DataTypeDetector.detect(trimmed)
-        if type == .icalendar {
-            // From history, a file or a share: editable when we could have written it.
-            eventDraft = EventDraft(icalendar: trimmed)
-            eventGeneration += 1
+        // From history, a file or a share: editable when we could have written it.
+        if let existing = ContentDraft(content: trimmed, type: type) {
+            draft = existing
+            draftGeneration += 1
             return
         }
-        guard type == .text || type == .phone, !declinedEventSources.contains(trimmed) else { return }
+        guard type == .text || type == .phone, !declinedSources.contains(trimmed) else { return }
 
         // Same rule the scroll anchoring uses: a paste, drop or share arrives whole.
         let arrivedWhole = previous.isEmpty || abs(trimmed.count - previous.count) > 5
-        eventDetectionTask = Task { [weak self, typingDetectionDelay] in
+        detectionTask = Task { [weak self, typingDetectionDelay] in
             if !arrivedWhole {
                 try? await Task.sleep(for: typingDetectionDelay)
             } else {
@@ -349,53 +349,53 @@ final class GeneratorViewModel: ObservableObject {
             }
             guard !Task.isCancelled, let self,
                   self.inputText.trimmingCharacters(in: .whitespacesAndNewlines) == trimmed,
-                  let detection = EventDetector.detect(in: trimmed, requireFullCoverage: type == .phone) else { return }
+                  let detection = ContentDetector.detect(in: trimmed, type: type) else { return }
 
             if detection.confidence == .high && arrivedWhole {
-                self.applyEvent(detection.draft, from: trimmed)
+                self.apply(detection.draft, from: trimmed)
             } else {
-                self.eventSuggestion = detection.draft
+                self.suggestion = detection.draft
             }
         }
     }
 
-    /// Turns the offered suggestion into the event being edited.
-    func acceptEventSuggestion() {
-        guard let draft = eventSuggestion else { return }
-        applyEvent(draft, from: inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+    /// Turns the offered suggestion into the form being edited.
+    func acceptSuggestion() {
+        guard let suggestion else { return }
+        apply(suggestion, from: inputText.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
-    func dismissEventSuggestion() {
-        declinedEventSources.insert(inputText.trimmingCharacters(in: .whitespacesAndNewlines))
-        eventSuggestion = nil
+    func dismissSuggestion() {
+        declinedSources.insert(inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+        suggestion = nil
     }
 
-    func updateEventDraft(_ draft: EventDraft) {
-        guard eventDraft != nil else { return }
-        eventDraft = draft
-        encode(draft)
+    func updateDraft(_ newDraft: ContentDraft) {
+        guard draft != nil else { return }
+        draft = newDraft
+        encode(newDraft)
     }
 
-    /// Puts back what was pasted and stops reading it as an event.
+    /// Puts back what was pasted and stops reading it as structured content.
     func keepAsText() {
-        guard let source = eventSourceText else { return }
-        declinedEventSources.insert(source)
-        lastEncodedEvent = nil
+        guard let source = draftSourceText else { return }
+        declinedSources.insert(source)
+        lastEncodedDraft = nil
         inputText = source
     }
 
-    private func applyEvent(_ draft: EventDraft, from source: String) {
-        eventSuggestion = nil
-        eventDraft = draft
-        encode(draft)
-        eventSourceText = source
-        eventGeneration += 1
-        eventEditorRequest += 1
+    private func apply(_ newDraft: ContentDraft, from source: String) {
+        suggestion = nil
+        draft = newDraft
+        encode(newDraft)
+        draftSourceText = source
+        draftGeneration += 1
+        editorRequest += 1
     }
 
-    private func encode(_ draft: EventDraft) {
-        let content = draft.icalendar
-        lastEncodedEvent = content
+    private func encode(_ newDraft: ContentDraft) {
+        let content = newDraft.encoded
+        lastEncodedDraft = content
         inputText = content
     }
 

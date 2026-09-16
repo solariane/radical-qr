@@ -2,12 +2,7 @@ import Foundation
 
 /// A free-text input that reads as an appointment, and how sure we are of it.
 nonisolated struct EventDetection: Equatable, Sendable {
-    enum Confidence: Sendable {
-        /// Worth offering — the user decides.
-        case medium
-        /// Clear enough to switch to the event editor straight away.
-        case high
-    }
+    typealias Confidence = ContentDetection.Confidence
 
     let draft: EventDraft
     let confidence: Confidence

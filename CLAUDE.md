@@ -42,13 +42,18 @@ Radical QR/
 │   │   ├── DataType.swift               # Data type detection enum
 │   │   ├── ExportFormat.swift           # Export format enum
 │   │   ├── URLMetadata.swift            # URL/social profile metadata
+│   │   ├── ContentDraft.swift           # Event | Wi-Fi | contact form content + ContentDetector
 │   │   ├── EventDraft.swift             # Editable event ⇄ VEVENT (+ ICalendarDate)
+│   │   ├── WiFiDraft.swift              # Editable network ⇄ WIFI: string
+│   │   ├── ContactDraft.swift           # Editable card ⇄ vCard 3.0
 │   │   └── HistoryItem.swift            # SwiftData model for history
 │   └── Services/
 │       ├── QRCodeGenerator.swift        # Core QR generation (Core Image)
 │       ├── QRCodeRenderer.swift         # Custom rendering with styles
 │       ├── DataTypeDetector.swift       # Auto-detect input type + summarize
 │       ├── EventDetector.swift          # Free text → event draft ("21h mercredi 16/09")
+│       ├── WiFiDetector.swift           # Labelled text → network ("Mot de passe : …")
+│       ├── ContactDetector.swift        # Signature / card text → contact
 │       ├── ExportService.swift          # Export to various formats (incl. SVG)
 │       ├── PurchaseManager.swift        # StoreKit 2 wrapper
 │       ├── CaptionGenerator.swift       # Auto-caption from QR content
@@ -60,7 +65,11 @@ Radical QR/
 │   │   ├── GeneratorView.swift          # Main generation interface
 │   │   ├── GeneratorViewModel.swift     # Reactive view model
 │   │   ├── LaunchCard.swift             # Empty state: drop target, field, Paste / File
-│   │   ├── EventEditorCard.swift        # Event editor + "looks like a date" suggestion
+│   │   ├── EditorCardChrome.swift       # Shared form frame, field style, folded "＋ Field" buttons
+│   │   ├── EventEditorCard.swift        # Event form
+│   │   ├── WiFiEditorCard.swift         # Wi-Fi form
+│   │   ├── ContactEditorCard.swift      # Contact form
+│   │   ├── ContentSuggestionBanner.swift # "Looks like …" offer for medium confidence
 │   │   ├── CustomizationRail.swift      # Icon rail: 5 setting families, one shown at a time
 │   │   ├── ColorGroupView.swift         # Solid, gradient, background
 │   │   ├── ShapeGroupView.swift         # Modules, eyes, eye size
@@ -152,7 +161,38 @@ The app automatically detects and optimizes QR encoding for:
 | Geographic | `geo:` or coordinates | Geo URI |
 | Plain Text | Fallback | Alphanumeric/byte encoding |
 
-### Events from free text
+### Forms from free text: events, Wi-Fi, contacts
+
+Plain text goes through `ContentDetector`, which returns a `ContentDraft`
+(event, Wi-Fi network or contact) with a confidence. The same rules apply to
+all three:
+
+- **High** — a paste, drop or share switches straight to the form
+  (`EventEditorCard`, `WiFiEditorCard`, `ContactEditorCard`). Typed text never
+  switches on its own; after a 600ms pause it only gets the suggestion.
+- **Medium** — `ContentSuggestionBanner` under the code. Its cross, and the
+  form's "Keep as text", decline that exact text for the session.
+- The QR payload is always regenerated from the draft. `ContentDraft(content:type:)`
+  reads back only what the form can write again (no RRULE, no EAP, no second
+  phone number), so richer content from history or a share keeps its summary
+  chip instead of being flattened by editing.
+
+Order: Wi-Fi labels first (they are specific), then event and contact — the
+more confident one wins, an event on a tie.
+
+**Wi-Fi** (`WiFiDetector`) works from labels in the ten languages ("Wi-Fi :",
+"Mot de passe :", "WLAN:", "パスワード："). A network name and a password → high;
+a name alone → medium (open network?); a password alone → nothing.
+
+**Contact** (`ContactDetector`): `NSDataDetector` finds phone, email, website
+and address; the first remaining piece shaped like a name (2–4 capitalised
+words, or a short run in a script without capitals) is the name, a piece after
+it on the same line the job title, one on another line the company. A name and
+two ways to reach them → high; a name and one, or two without a name → medium;
+leftover prose ("rappelle-moi au 06…") → nothing. A lone phone number or email
+keeps its own type.
+
+#### Events
 
 Text (or a "phone number" that is really `16.09.2026`) goes through
 `EventDetector`: `NSDataDetector` finds the date, street address and link

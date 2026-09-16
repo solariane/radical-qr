@@ -34,7 +34,9 @@ nonisolated enum DataTypeDetector {
             return .email
         }
 
-        if lowercased.hasPrefix("tel:") {
+        // "Tel: 01 23 45 67 89 / Email: …" is a signature, not a tel: link.
+        if lowercased.hasPrefix("tel:"),
+           input.dropFirst(4).allSatisfy({ $0.isNumber || " +-.()/".contains($0) }) {
             return .phone
         }
 

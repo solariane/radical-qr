@@ -123,8 +123,8 @@ struct GeneratorView: View {
                 dismissButton: .default(Text(String(localized: "error.dismiss", defaultValue: "OK")))
             )
         }
-        .onChange(of: viewModel.eventEditorRequest) { _, _ in
-            // Pasted text just became an event: open it, the title is still to write.
+        .onChange(of: viewModel.editorRequest) { _, _ in
+            // Pasted text just became a form: open it, something is usually still to write.
             withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = true }
         }
         .onChange(of: deepLinkHandler.pendingContent) { _, newContent in
@@ -334,23 +334,36 @@ struct GeneratorView: View {
 
     // MARK: - Input
 
-    /// The event editor when the content is an event, the plain field otherwise.
+    /// The form when the content is an event, a Wi-Fi network or a contact the
+    /// app can edit, the plain field otherwise.
     @ViewBuilder
     private var editorSection: some View {
-        if let draft = viewModel.eventDraft {
+        if let draft = viewModel.draft {
             VStack(spacing: 0) {
-                EventEditorCard(
-                    draft: draft,
-                    onChange: { viewModel.updateEventDraft($0) },
-                    onKeepAsText: viewModel.eventSourceText == nil ? nil : { viewModel.keepAsText() },
-                    onClear: { viewModel.clearInput() }
-                )
-                // A new event starts with its own fields folded or open.
-                .id(viewModel.eventGeneration)
+                contentEditor(for: draft)
+                    // New content starts with its own fields folded or open.
+                    .id(viewModel.draftGeneration)
             }
             .id(inputAnchorID)
         } else {
             inputSection
+        }
+    }
+
+    @ViewBuilder
+    private func contentEditor(for draft: ContentDraft) -> some View {
+        let keepAsText: (() -> Void)? = viewModel.draftSourceText == nil ? nil : { viewModel.keepAsText() }
+        let clear = { viewModel.clearInput() }
+        switch draft {
+        case .event(let event):
+            EventEditorCard(draft: event, onChange: { viewModel.updateDraft(.event($0)) },
+                            onKeepAsText: keepAsText, onClear: clear)
+        case .wifi(let wifi):
+            WiFiEditorCard(draft: wifi, onChange: { viewModel.updateDraft(.wifi($0)) },
+                           onKeepAsText: keepAsText, onClear: clear)
+        case .contact(let contact):
+            ContactEditorCard(draft: contact, onChange: { viewModel.updateDraft(.contact($0)) },
+                              onKeepAsText: keepAsText, onClear: clear)
         }
     }
 
@@ -425,11 +438,11 @@ struct GeneratorView: View {
             scannabilityWarning
                 .animation(.easeInOut(duration: 0.25), value: viewModel.scannability)
 
-            if let suggestion = viewModel.eventSuggestion {
-                EventSuggestionBanner(
+            if let suggestion = viewModel.suggestion {
+                ContentSuggestionBanner(
                     draft: suggestion,
-                    onAccept: { viewModel.acceptEventSuggestion() },
-                    onDismiss: { withAnimation { viewModel.dismissEventSuggestion() } }
+                    onAccept: { viewModel.acceptSuggestion() },
+                    onDismiss: { withAnimation { viewModel.dismissSuggestion() } }
                 )
                 .transition(.opacity)
             }

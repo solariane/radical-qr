@@ -25,6 +25,13 @@
     "event.ends": "Same as event.starts.",
     "event.allDay": "Apple Calendar's own switch label (Journée entière, Ganztägig, 終日), not a paraphrase.",
     "event.location.placeholder": "Where an appointment is (Lieu, Ort), not GPS coordinates: Emplacement, Standort.",
-    "event.suggestion.accept": "Must use the same word for event as dataType.icalendar (创建日程, not 创建活动)."
+    "event.suggestion.accept": "Must use the same word for event as dataType.icalendar (创建日程, not 创建活动).",
+    "dataType.vcard": "A card in the address book (連絡先, جهة اتصال, 联系人) — DeepL gave the website's “contact us”: お問い合わせ, اتصل بنا.",
+    "wifi.security.none": "Qualifies “security”, feminine in French, Spanish, Italian, Portuguese (Aucune, Ninguna) — alone it comes back masculine.",
+    "wifi.hidden": "iOS Settings' own term (Réseau masqué, 非公開ネットワーク) — “hidden” alone reads as concealed or secret.",
+    "contact.jobTitle.placeholder": "A position in a company (Poste, 役職) — read as a title of nobility or of a book.",
+    "contact.name.placeholder": "A person's full name (姓名, not 名称, the name of a thing).",
+    "contact.address.placeholder": "A postal address. In Arabic العنوان alone also means title, which event.title.placeholder uses.",
+    "contact.company.placeholder": "The employer (Entreprise, Firma) — “company” alone comes back as companionship or a military unit."
   }
 }
