@@ -470,6 +470,12 @@ xcodebuild -scheme "Radical QR" -configuration Debug test
 # To protect a new term: add it to DEFAULT_PROTECTED_TERMS in deepl-protect.mjs
 # (xcloc strings) AND to "protectedTerms" in appstore/config.json (App Store).
 
+# Format specifiers: DeepL used to mangle them ("%lld%%" → "%لـ %د%" in Arabic,
+# "%1$@" → "%1$$@"). format-specifiers.mjs now wraps them in <x> before sending,
+# and any output whose specifiers still differ from English is left untranslated
+# and listed. The wrapper ends with a full-catalog audit; run it alone with:
+node check-format-specifiers.mjs      # exit 1 + list when a translation differs
+
 # Manual equivalents (only if not using the wrapper):
 xcodebuild -exportLocalizations -localizationPath ./Localizations -project QRCode.xcodeproj
 DEEPL_AUTH_KEY=<key> node deepl-xcloc-translate.mjs ./Localizations --inplace --source=EN

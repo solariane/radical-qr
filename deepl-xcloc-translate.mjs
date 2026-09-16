@@ -5,6 +5,7 @@ import path from "node:path";
 import { DOMParser, XMLSerializer } from "@xmldom/xmldom";
 import xpath from "xpath";
 import { protect, unprotect, IGNORE_TAGS } from "./deepl-protect.mjs";
+import { compareSpecifiers, protectSpecifiers } from "./format-specifiers.mjs";
 
 function fail(msg, code = 1) { console.error("Error:", msg); process.exit(code); }
 function parseArgs(argv) {
@@ -122,8 +123,10 @@ async function deeplTranslateBatch(apiBase, authKey, texts, targetLang, sourceLa
   // Use tag_handling=xml by wrapping each source in <t>...</t> (well-formed)
   const url = `${apiBase.replace(/\/$/, "")}/v2/translate`;
   const body = new URLSearchParams();
-  // protect() XML-escapes the source and wraps brand terms in <x>...</x>.
-  for (const t of texts) body.append("text", `<t>${protect(t)}</t>`);
+  // protect() XML-escapes the source and wraps brand terms in <x>...</x>;
+  // protectSpecifiers() does the same for %lld, %1$@, %% — left bare, DeepL
+  // translated "%lld" into Arabic letters and doubled the $ of "%1$@".
+  for (const t of texts) body.append("text", `<t>${protectSpecifiers(protect(t))}</t>`);
   body.set("target_lang", targetLang);
   if (sourceLang) body.set("source_lang", sourceLang);
   body.set("tag_handling", "xml");
@@ -216,6 +219,7 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
   const contexts = [];
   const unitsNeeding = [];
   const manualPending = [];   // reserved keys with nothing to show yet
+  const rejected = [];        // DeepL output whose format specifiers differ from the source
 
   for (const tu of transUnits) {
     const src = select("x:source", tu)[0];
@@ -248,7 +252,7 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
   }
 
   if (!sources.length) {
-    return { filePath, translated: 0, skipped: transUnits.length, manualPending };
+    return { filePath, translated: 0, skipped: transUnits.length, manualPending, rejected };
   }
 
   // DeepL takes a single context per request, so strings are grouped by the
@@ -272,6 +276,13 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
 
     for (let j = 0; j < outs.length; j++) {
       const tu = unitsNeeding[slice[j]];
+      // A damaged specifier prints garbage or crashes String(format:). Leave the
+      // target empty instead: the string ships in English and is retried next run.
+      const problems = compareSpecifiers(chunk[j], outs[j]);
+      if (problems.length) {
+        rejected.push({ key: tu.getAttribute("id") || "", source: chunk[j], output: outs[j], problems });
+        continue;
+      }
       const tgtExisting = select("x:target", tu)[0];
 
       let tgt = tgtExisting;
@@ -294,6 +305,7 @@ async function processXliffFile(filePath, apiBase, authKey, targetLang, sourceLa
     translated: translatedCount,
     skipped: transUnits.length - translatedCount,
     manualPending,
+    rejected,
   };
 }
 
@@ -328,6 +340,8 @@ async function main() {
   }
   /** locale -> keys reserved but still empty there */
   const pendingByLocale = new Map();
+  /** locale -> DeepL outputs refused for damaged format specifiers */
+  const rejectedByLocale = new Map();
 
   if (!inplace) await fs.mkdir(outRoot, { recursive: true });
 
@@ -368,7 +382,11 @@ async function main() {
         const held = r.manualPending?.length
           ? ` reserved-and-empty=${r.manualPending.length}`
           : "";
-        console.error(`  OK ${baseName}:${path.basename(f)} translated=${r.translated} skipped=${r.skipped}${held}`);
+        const refused = r.rejected?.length ? ` rejected=${r.rejected.length}` : "";
+        console.error(`  OK ${baseName}:${path.basename(f)} translated=${r.translated} skipped=${r.skipped}${held}${refused}`);
+        if (r.rejected?.length) {
+          rejectedByLocale.set(baseName, [...(rejectedByLocale.get(baseName) || []), ...r.rejected]);
+        }
         if (r.manualPending?.length) {
           const acc = pendingByLocale.get(baseName) || new Set();
           r.manualPending.forEach(k => acc.add(k));
@@ -400,6 +418,22 @@ async function main() {
     console.error("  These stay English until written by hand in the catalog.");
   } else if (manualKeys.size) {
     console.error(`All ${manualKeys.size} reserved key(s) already translated in every language.`);
+  }
+
+  if (rejectedByLocale.size) {
+    console.error("");
+    console.error("Rejected — DeepL damaged the format specifiers, left untranslated:");
+    for (const [locale, items] of [...rejectedByLocale].sort()) {
+      console.error(`  ${locale}`);
+      for (const { key, source, output, problems } of items) {
+        console.error(`      ${key}`);
+        console.error(`          source: ${JSON.stringify(source)}`);
+        console.error(`          deepl:  ${JSON.stringify(output)}`);
+        for (const p of problems) console.error(`          - ${p}`);
+      }
+    }
+    console.error("");
+    console.error("  Translate these by hand in the catalog, keeping the specifiers exactly.");
   }
 
   console.error(`Done. Output: ${inplace ? "(in-place)" : outRoot}`);

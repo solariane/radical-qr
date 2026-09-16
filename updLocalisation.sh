@@ -8,6 +8,7 @@
 #   3. Invalidate stale translations (source text changed since last run)
 #   4. Translate empty targets via DeepL
 #   5. Re-import translated .xcloc files back into Xcode project
+#   6. Check every translation's format specifiers against English
 #
 # Requirements:
 #   - DEEPL_API_KEY in ../.env (or --key=<key> or DEEPL_AUTH_KEY env var)
@@ -207,6 +208,18 @@ for lang in "${LANGUAGES[@]}"; do
 done
 
 ok "Imported $imported language(s)"
+
+# --- Step 5: Check format specifiers ---------------------------------------
+# DeepL output is checked as it arrives, but strings translated in an earlier
+# run are not re-sent — this covers the whole catalog after import.
+
+step "Checking format specifiers (%@, %lld, %1\$@, %%)..."
+
+if node "$SCRIPT_DIR/check-format-specifiers.mjs"; then
+    ok "All translations keep the English specifiers"
+else
+    warn "Some translations have damaged specifiers (listed above) -- fix them by hand"
+fi
 
 # --- Done ------------------------------------------------------------------
 

@@ -7,7 +7,7 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "%لـ %د%"
+            "value": "%lld%%"
           }
         },
         "de": {
@@ -65,7 +65,7 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "%د °"
+            "value": "%lld°"
           }
         },
         "de": {
@@ -89,7 +89,7 @@
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%लिलड°"
+            "value": "%lld°"
           }
         },
         "it": {
@@ -6788,7 +6788,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Maximaler Prozentsatz freier Seiten"
+            "value": "Max. %lldpx kostenlos"
           }
         },
         "en": {
@@ -6800,13 +6800,13 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Porcentaje máximo de páginas libres"
+            "value": "Máx. %lldpx gratis"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pourcentage maximal de pages libres"
+            "value": "Max. %lld px en gratuit"
           }
         },
         "hi": {
@@ -6818,25 +6818,25 @@
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Percentuale massima di pagine libere"
+            "value": "Max %lldpx gratis"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "空きページの最大割合"
+            "value": "無料版は最大%lldpx"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Percentagem máxima de páginas livres"
+            "value": "Máx. %lldpx grátis"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "最大空闲 %lldpx"
+            "value": "免费版最大 %lldpx"
           }
         }
       }
@@ -15381,7 +15381,7 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "%مرة واحدة"
+            "value": "%lld مرة"
           }
         },
         "de": {
@@ -22706,7 +22706,7 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "الموقع: %1$$@، %2$@"
+            "value": "الموقع: %1$@، %2$@"
           }
         },
         "de": {
