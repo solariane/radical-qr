@@ -178,5 +178,19 @@
       "Cuatro estilos propios, a un solo toque",
       "desde el generador."
     ]
+  },
+  "paste": {
+    "headline": [
+      "Pégalo tal y como está escrito.",
+      "El formulario se rellena solo."
+    ],
+    "subtitle": [
+      "Una cita, una tarjeta de Wi-Fi, una firma de correo",
+      "o una dirección se convierte en el código adecuado."
+    ],
+    "pastedLabel": "Pegado",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

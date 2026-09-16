@@ -532,7 +532,7 @@ export function previewCard({
     ${logoBlock}${captionBlock}
     ${rrect(x + m.cardPadding, pillY, width - m.cardPadding * 2, pillH, 15, `fill="#F1F0F6"`)}
     ${text(x + m.cardPadding + 12, pillY + 19.5, kind, { size: 11, weight: 700, fill: INK.railActive, tracking: 0.5, uppercase: true })}
-    ${text(x + m.cardPadding + 12 + kind.length * 7.2 + 10, pillY + 19.5, content, { size: 12.5, weight: 500, fill: INK.secondary })}
+    ${text(x + m.cardPadding + 12 + estimateTextWidth(String(kind).toUpperCase(), 11) * 1.08 + 10, pillY + 19.5, content, { size: 12.5, weight: 500, fill: INK.secondary })}
   </g>`;
 }
 

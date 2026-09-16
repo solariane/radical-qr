@@ -178,5 +178,19 @@
       "4つのオリジナルスタイルを、ワンタップで利用可能",
       "ジェネレーターより。"
     ]
+  },
+  "paste": {
+    "headline": [
+      "書いたまま貼り付けるだけ。",
+      "フォームが自動で埋まります。"
+    ],
+    "subtitle": [
+      "予定、Wi-Fiカード、メール署名、住所が",
+      "そのまま適切なコードになります。"
+    ],
+    "pastedLabel": "貼り付け済み",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

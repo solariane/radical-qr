@@ -64,7 +64,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "es-ES": {
     "shared.placeholder": "e9a478bc2796",
@@ -131,7 +134,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "it": {
     "shared.placeholder": "e9a478bc2796",
@@ -198,7 +204,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "pt-BR": {
     "shared.placeholder": "e9a478bc2796",
@@ -265,7 +274,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "ja": {
     "shared.placeholder": "e9a478bc2796",
@@ -332,7 +344,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "ar-SA": {
     "shared.placeholder": "e9a478bc2796",
@@ -399,7 +414,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "hi": {
     "shared.placeholder": "e9a478bc2796",
@@ -466,7 +484,10 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   },
   "zh-Hans": {
     "shared.placeholder": "e9a478bc2796",
@@ -533,6 +554,9 @@
     "history.empty": "17950805f01b",
     "history.searchPlaceholder": "54919017e89f",
     "styles.headline": "d904204cd560",
-    "styles.subtitle": "9c19232d5806"
+    "styles.subtitle": "9c19232d5806",
+    "paste.headline": "5f2318411b50",
+    "paste.subtitle": "f3f80bc92533",
+    "paste.pastedLabel": "f63e99f4107b"
   }
 }

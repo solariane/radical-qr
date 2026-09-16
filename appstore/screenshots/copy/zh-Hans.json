@@ -178,5 +178,19 @@
       "四种专属风格，一键即可使用",
       "来自生成器。"
     ]
+  },
+  "paste": {
+    "headline": [
+      "原样粘贴即可。",
+      "表单自动填好。"
+    ],
+    "subtitle": [
+      "约会、Wi-Fi 卡片、邮件签名或地址，",
+      "都会变成正确的二维码。"
+    ],
+    "pastedLabel": "粘贴",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

@@ -17,7 +17,7 @@
  */
 
 import { renderQR } from "../lib/qr-svg.mjs";
-import { copyFor } from "../lib/copy.mjs";
+import { copyFor, isRTL } from "../lib/copy.mjs";
 import { writeScene } from "../lib/poster.mjs";
 import { appString, intlLocale } from "../lib/app-strings.mjs";
 import { symbol } from "../lib/symbols.mjs";
@@ -40,8 +40,13 @@ const S = (key) => appString(key, LOCALE);
 const start = new Date(2026, 8, 19, 20, 0);
 const end = new Date(2026, 8, 19, 21, 0);
 const lang = intlLocale(LOCALE);
-const day = new Intl.DateTimeFormat(lang, { dateStyle: "medium" }).format(start);
-const time = (d) => new Intl.DateTimeFormat(lang, { timeStyle: "short" }).format(d);
+// In a right-to-left locale a date is a left-to-right run inside RTL text; without
+// the marks the renderer reorders its pieces ("192026/09/").
+// Intl's Arabic dates already carry right-to-left marks between their parts;
+// they go, so the whole date is one left-to-right run.
+const ltr = (s) => (isRTL(LOCALE) ? `\u200E${s.replace(/[\u200F\u061C]/g, "")}\u200E` : s);
+const day = ltr(new Intl.DateTimeFormat(lang, { dateStyle: "medium" }).format(start));
+const time = (d) => ltr(new Intl.DateTimeFormat(lang, { timeStyle: "short" }).format(d));
 
 const ical = [
   "BEGIN:VEVENT",

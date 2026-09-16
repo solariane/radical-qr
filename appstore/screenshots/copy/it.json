@@ -178,5 +178,19 @@
       "Quattro stili personalizzati, a portata di tocco",
       "dal generatore."
     ]
+  },
+  "paste": {
+    "headline": [
+      "Incollalo così com’è.",
+      "Il modulo si compila automaticamente."
+    ],
+    "subtitle": [
+      "Un appuntamento, una scheda Wi-Fi, una firma email",
+      "o un indirizzo diventa il codice giusto."
+    ],
+    "pastedLabel": "Incollato",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

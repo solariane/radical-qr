@@ -178,5 +178,19 @@
       "Quatro estilos personalizados, a apenas um toque de distância",
       "a partir do gerador."
     ]
+  },
+  "paste": {
+    "headline": [
+      "Cole exatamente como está escrito.",
+      "O formulário se preenche sozinho."
+    ],
+    "subtitle": [
+      "Um compromisso, um cartão de Wi-Fi, uma assinatura de e-mail",
+      "ou um endereço vira o código certo."
+    ],
+    "pastedLabel": "Colado",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

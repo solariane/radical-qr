@@ -178,5 +178,19 @@
       "أربعة أنماط خاصة بك، بنقرة واحدة فقط",
       "من المولد."
     ]
+  },
+  "paste": {
+    "headline": [
+      "الصق النص كما هو مكتوب.",
+      "يتم ملء النموذج تلقائيًا."
+    ],
+    "subtitle": [
+      "موعد، بطاقة واي فاي، توقيع بريد إلكتروني",
+      "أو عنوان: كلٌّ منها يصبح الرمز الصحيح."
+    ],
+    "pastedLabel": "تم اللصق",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

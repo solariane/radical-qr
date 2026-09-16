@@ -178,5 +178,19 @@
       "Vier eigene Designs – mit nur einem Fingertipp",
       "vom Generator."
     ]
+  },
+  "paste": {
+    "headline": [
+      "Fügen Sie den Text unverändert ein.",
+      "Das Formular füllt sich von selbst aus."
+    ],
+    "subtitle": [
+      "Ein Termin, eine WLAN-Karte, eine E-Mail-Signatur",
+      "oder eine Adresse wird zum passenden Code."
+    ],
+    "pastedLabel": "Eingefügt",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

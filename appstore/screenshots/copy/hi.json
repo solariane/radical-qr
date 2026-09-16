@@ -178,5 +178,19 @@
       "आपकी अपनी चार शैलियाँ, बस एक टैप दूर",
       "जनरेटर से।"
     ]
+  },
+  "paste": {
+    "headline": [
+      "इसे जैसा लिखा है वैसा ही पेस्ट करें।",
+      "फ़ॉर्म अपने आप भर जाता है।"
+    ],
+    "subtitle": [
+      "एक अपॉइंटमेंट, एक वाई-फ़ाई कार्ड, एक ईमेल सिग्नेचर",
+      "या एक पता सही कोड बन जाता है।"
+    ],
+    "pastedLabel": "पेस्ट किया गया",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }
