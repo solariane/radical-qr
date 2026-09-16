@@ -338,12 +338,16 @@ struct GeneratorView: View {
     @ViewBuilder
     private var editorSection: some View {
         if let draft = viewModel.eventDraft {
-            EventEditorCard(
-                draft: draft,
-                onChange: { viewModel.updateEventDraft($0) },
-                onKeepAsText: viewModel.eventSourceText == nil ? nil : { viewModel.keepAsText() },
-                onClear: { viewModel.clearInput() }
-            )
+            VStack(spacing: 0) {
+                EventEditorCard(
+                    draft: draft,
+                    onChange: { viewModel.updateEventDraft($0) },
+                    onKeepAsText: viewModel.eventSourceText == nil ? nil : { viewModel.keepAsText() },
+                    onClear: { viewModel.clearInput() }
+                )
+                // A new event starts with its own fields folded or open.
+                .id(viewModel.eventGeneration)
+            }
             .id(inputAnchorID)
         } else {
             inputSection

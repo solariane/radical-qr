@@ -38,6 +38,10 @@ final class GeneratorViewModel: ObservableObject {
     /// Bumped when the input just turned into an event, so the view opens the editor.
     @Published private(set) var eventEditorRequest = 0
 
+    /// Changes whenever a different event is loaded (not when the current one is
+    /// edited), so the editor drops the folded/unfolded state of the previous one.
+    @Published private(set) var eventGeneration = 0
+
     // MARK: - Services
 
     private let generator = QRCodeGenerator()
@@ -330,6 +334,7 @@ final class GeneratorViewModel: ObservableObject {
         if type == .icalendar {
             // From history, a file or a share: editable when we could have written it.
             eventDraft = EventDraft(icalendar: trimmed)
+            eventGeneration += 1
             return
         }
         guard type == .text || type == .phone, !declinedEventSources.contains(trimmed) else { return }
@@ -384,6 +389,7 @@ final class GeneratorViewModel: ObservableObject {
         eventDraft = draft
         encode(draft)
         eventSourceText = source
+        eventGeneration += 1
         eventEditorRequest += 1
     }
 
