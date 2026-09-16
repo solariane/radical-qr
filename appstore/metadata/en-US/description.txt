@@ -8,6 +8,7 @@ Built for the people who use QR codes every day — freelancers, restaurants, as
 WHY RADICAL QR
 
 • Auto-detect: paste a URL, a phone number, an email, a vCard, an iCalendar event, a Wi-Fi network — the app understands and produces the right QR, with the right encoding.
+• Written the way people write: paste "Dinner Saturday 8pm", "Wi-Fi: CafeGuest / Password: …", an email signature or an address, and get a calendar event, a Wi-Fi code, a contact card or a Maps link — filled in, in a small form you can adjust.
 • Settings you can see: every option draws its own result. Pick the corner you want, the eye you want, the size you want — there is nothing to read and nothing to guess.
 • Duplicate a code: point the camera at an existing QR, or pick a photo of one, and make it yours. Nothing is recorded, nothing is sent.
 • Clean export: PNG, JPEG, WebP for free; PDF and SVG vector in Pro, up to 4096 px.

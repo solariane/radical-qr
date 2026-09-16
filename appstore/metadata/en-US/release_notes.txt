@@ -1,13 +1,16 @@
-Radical QR 2.0 — the generator, rebuilt.
+Radical QR 2.1 — paste it the way you wrote it.
 
-• Settings you can see. Every option now draws its own result instead of naming it: module corners, eye shapes, eye size. Nothing to read, nothing to lose in translation.
+• Appointments. Paste "Dinner Saturday 8pm, 350 Fifth Avenue, New York" and get a calendar event: date, time, place and meeting link are already filled in. Add a title, and it is ready to scan into a calendar.
 
-• One thing at a time. Colour, shape, logo and export each get their own place, so the code you are building stays on screen while you tune it — even on the smallest iPhone.
+• Wi-Fi from the card on the table. "Wi-Fi: CafeGuest / Password: …" becomes a code that joins the network. Name, password and security in one small form.
 
-• Your own styles. Build a look once, save it, bring it back on any code with a single tap.
+• Contacts from a signature. Paste an email signature and get a contact card: name, phone, email, company, job title, website, address.
 
-• A new start. Paste, drop, browse — or duplicate a QR code from a picture and make it yours.
+• Addresses. An address on its own becomes a code that opens it in Maps. Nothing is looked up from your device.
 
-Fixed: a code on a transparent background is no longer flagged as hard to scan.
+• Asks when unsure. If the text only might be one of these, the app offers instead of deciding — and "Keep as text" always gives you back exactly what you pasted.
+
+Fixed: typing on the start screen no longer loses the field after the first letter.
+Fixed: a few Arabic, Japanese and Chinese translations.
 
 As always: no tracking, no accounts — everything stays on your device.

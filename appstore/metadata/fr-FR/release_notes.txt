@@ -1,15 +1,16 @@
-Radical QR 2.0 — le générateur, repensé.
+Radical QR 2.1 — collez-le comme vous l'avez écrit.
 
-• Des réglages qui se voient. Chaque option dessine désormais son résultat au lieu de le nommer : angles des modules, formes d'yeux, taille des yeux. Rien à lire, rien à perdre en traduction.
+• Rendez-vous. Collez « dîner samedi 20h, 12 rue de Rivoli » et obtenez un événement : date, heure, lieu et lien de visio sont déjà remplis. Ajoutez un titre, il est prêt à être scanné dans un calendrier.
 
-• Une chose à la fois. Couleur, forme, logo et export ont chacun leur place, si bien que le code que vous construisez reste à l'écran pendant que vous le réglez — même sur le plus petit iPhone.
+• Le Wi-Fi de la carte posée sur la table. « Wi-Fi : Livebox-A1B2 / Mot de passe : … » devient un code qui connecte au réseau. Nom, mot de passe et sécurité dans un petit formulaire.
 
-• Vos propres styles. Composez un look une fois, enregistrez-le, rappelez-le sur n'importe quel code d'un simple geste.
+• Des contacts depuis une signature. Collez une signature d'e-mail et obtenez une fiche contact : nom, téléphone, e-mail, entreprise, poste, site web, adresse.
 
-• Un nouveau départ. Collez, déposez, parcourez — ou dupliquez un QR code depuis une image et refaites-le à votre goût.
+• Des adresses. Une adresse seule devient un code qui l'ouvre dans Plans. Rien n'est recherché depuis votre appareil.
 
-• iPad et Mac. Sur grand écran, les réglages passent à côté du code au lieu de s'empiler dessous.
+• Une question en cas de doute. Quand le texte n'est peut-être qu'un de ces cas, l'app propose au lieu de décider — et « Garder en texte » vous rend toujours exactement ce que vous avez collé.
 
-Corrigé : un code sur fond transparent n'est plus signalé comme difficile à scanner.
+Corrigé : en tapant sur l'écran d'accueil, le champ ne disparaît plus après la première lettre.
+Corrigé : quelques traductions en arabe, en japonais et en chinois.
 
-Comme toujours : aucun traçage, aucun compte — tout reste sur votre appareil.
+Comme toujours : aucun pistage, aucun compte — tout reste sur votre appareil.

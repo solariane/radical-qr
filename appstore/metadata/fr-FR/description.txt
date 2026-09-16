@@ -8,6 +8,7 @@ Pensé pour les personnes qui utilisent les QR codes au quotidien — indépenda
 POURQUOI RADICAL QR
 
 • Détection automatique : collez une URL, un numéro, un email, une vCard, un événement iCal, un réseau Wi-Fi — l'app comprend et produit le QR adapté, avec le bon encodage.
+• Écrit comme on l'écrit : collez « dîner samedi 20h », « Wi-Fi : Livebox / Mot de passe : … », une signature d'e-mail ou une adresse, et obtenez un événement, un code Wi-Fi, une fiche contact ou un lien Plans — déjà rempli, dans un petit formulaire à ajuster.
 • Des réglages qui se voient : chaque option dessine son propre résultat. Choisissez l'angle, l'œil, la taille que vous voulez — il n'y a rien à lire et rien à deviner.
 • Dupliquer un code : visez un QR existant avec l'appareil photo, ou choisissez-en une photo, et refaites-le à votre goût. Rien n'est enregistré, rien n'est envoyé.
 • Export propre : PNG, JPEG, WebP en gratuit ; PDF et SVG vectoriel en Pro, jusqu'à 4096 px.
