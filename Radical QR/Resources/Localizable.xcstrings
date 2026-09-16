@@ -6986,7 +6986,7 @@
       }
     },
     "editor.keepAsText": {
-      "comment": "Button: undo the automatic conversion of pasted text into a calendar event, Wi-Fi network or contact card, and encode the original text instead.",
+      "comment": "Button: undo the automatic conversion of pasted text into a calendar event, Wi-Fi network, contact card or Maps link, and encode the original text instead.",
       "extractionState": "extracted_with_value",
       "localizations": {
         "ar": {
@@ -19647,6 +19647,270 @@
         }
       }
     },
+    "place.address.placeholder": {
+      "comment": "Placeholder: the postal address a Maps link opens.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "العنوان البريدي"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Address"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dirección"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पता"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indirizzo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endereço"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "地址"
+          }
+        }
+      }
+    },
+    "place.hint": {
+      "comment": "Note under the address field: what happens when someone scans the code. Maps is Apple's app (Plans, Karten, マップ).",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عند المسح يُفتح هذا العنوان في الخرائط."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beim Scannen öffnet sich diese Adresse in Karten."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Scanning opens this address in Maps."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Al escanear, esta dirección se abre en Mapas."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le scan ouvre cette adresse dans Plans."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्कैन करने पर यह पता मैप्स में खुलता है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La scansione apre questo indirizzo in Mappe."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンするとこの住所がマップで開きます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ao escanear, este endereço abre no Mapas."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描后会在“地图”中打开此地址。"
+          }
+        }
+      }
+    },
+    "place.suggestion.accept": {
+      "comment": "Button: turn the entered address into a QR code that opens it in Maps, Apple's app (Plans, Karten, マップ).",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إنشاء رابط الخرائط"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karten-Link erstellen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Make a Maps link"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear enlace de Mapas"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créer un lien Plans"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "मैप्स लिंक बनाएँ"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea link a Mappe"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マップのリンクを作成"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criar link do Mapas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建地图链接"
+          }
+        }
+      }
+    },
+    "place.suggestion.title": {
+      "comment": "Hint under the QR code: the text the user entered is a postal address and could become a code that opens it in Maps.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبدو كعنوان بريدي"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieht nach einer Adresse aus"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Looks like an address"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parece una dirección"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On dirait une adresse"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह एक पता लगता है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sembra un indirizzo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所のようです"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parece um endereço"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "看起来像地址"
+          }
+        }
+      }
+    },
     "purchase.error.productNotFound": {
       "extractionState": "extracted_with_value",
       "localizations": {
@@ -24217,7 +24481,7 @@
       }
     },
     "suggestion.dismiss": {
-      "comment": "Accessibility label: decline turning the entered text into a calendar event, Wi-Fi network or contact card.",
+      "comment": "Accessibility label: decline turning the entered text into a calendar event, Wi-Fi network, contact card or Maps link.",
       "extractionState": "extracted_with_value",
       "localizations": {
         "ar": {

@@ -127,6 +127,39 @@ final class ContentDetectorTests: XCTestCase {
         XCTAssertNil(ContactDraft(vCard: card))
     }
 
+    // MARK: - Place
+
+    func testAddressAloneIsAPlace() throws {
+        let detection = try XCTUnwrap(detect("12 rue de Rivoli\n75001 Paris"))
+        XCTAssertEqual(detection.confidence, .high)
+        XCTAssertEqual(detection.draft, .place(PlaceDraft(address: "12 rue de Rivoli, 75001 Paris")))
+    }
+
+    func testStreetWithoutTownIsOnlySuggested() throws {
+        let detection = try XCTUnwrap(detect("10 rue de la Paix"))
+        XCTAssertEqual(detection.confidence, .medium)
+    }
+
+    func testSentenceMentioningAnAddressIsNotAPlace() {
+        XCTAssertNil(detect("Je t'attendrai devant l'entrée principale du 12 rue de Rivoli, pas de retard"))
+    }
+
+    func testAddressWithPhoneIsACard() throws {
+        let detection = try XCTUnwrap(detect("Boulangerie Martin\n12 rue de Rivoli, 75001 Paris\n01 23 45 67 89"))
+        guard case .contact = detection.draft else { return XCTFail("expected a contact") }
+    }
+
+    func testMapsLinkRoundTrip() throws {
+        let draft = PlaceDraft(address: "5 place de la République, 69002 Lyon")
+        XCTAssertEqual(draft.mapsURL, "https://maps.apple.com/?address=5%20place%20de%20la%20R%C3%A9publique,%2069002%20Lyon")
+        XCTAssertEqual(PlaceDraft(mapsURL: draft.mapsURL), draft)
+        XCTAssertEqual(DataTypeDetector.detect(draft.mapsURL), .url)
+        XCTAssertEqual(ContentDraft(content: draft.mapsURL, type: .url), .place(draft))
+        // Coordinates or a search keep their own meaning.
+        XCTAssertNil(PlaceDraft(mapsURL: "https://maps.apple.com/?ll=48.86,2.35&q=Louvre"))
+        XCTAssertNil(ContentDraft(content: "https://example.com/?address=x", type: .url))
+    }
+
     // MARK: - Precedence
 
     func testAppointmentStaysAnEvent() throws {

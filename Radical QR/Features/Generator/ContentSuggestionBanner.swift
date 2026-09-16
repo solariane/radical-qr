@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Offered under the code when the text reads as an event, a Wi-Fi network or
-/// a contact, but not clearly enough to switch on our own. Accepting opens the
+/// Offered under the code when the text reads as an event, a Wi-Fi network,
+/// a contact or a place, but not clearly enough to switch on our own. Accepting opens the
 /// form; the cross never asks again for that text.
 struct ContentSuggestionBanner: View {
     let draft: ContentDraft
@@ -34,7 +34,7 @@ struct ContentSuggestionBanner: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "suggestion.dismiss", defaultValue: "Keep as text",
-                                       comment: "Accessibility label: decline turning the entered text into a calendar event, Wi-Fi network or contact card."))
+                                       comment: "Accessibility label: decline turning the entered text into a calendar event, Wi-Fi network, contact card or Maps link."))
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
@@ -46,6 +46,7 @@ struct ContentSuggestionBanner: View {
         case .event: "calendar.badge.plus"
         case .wifi: "wifi"
         case .contact: "person.crop.circle.badge.plus"
+        case .place: "mappin.and.ellipse"
         }
     }
 
@@ -60,6 +61,9 @@ struct ContentSuggestionBanner: View {
         case .contact:
             String(localized: "contact.suggestion.title", defaultValue: "Looks like contact details",
                    comment: "Hint under the QR code: the text the user entered contains a person's phone number or email and could become a contact card.")
+        case .place:
+            String(localized: "place.suggestion.title", defaultValue: "Looks like an address",
+                   comment: "Hint under the QR code: the text the user entered is a postal address and could become a code that opens it in Maps.")
         }
     }
 
@@ -73,6 +77,8 @@ struct ContentSuggestionBanner: View {
             wifi.ssid
         case .contact(let contact):
             [contact.name, contact.phone, contact.email].first { !$0.isEmpty } ?? ""
+        case .place(let place):
+            place.address
         }
     }
 
@@ -87,6 +93,9 @@ struct ContentSuggestionBanner: View {
         case .contact:
             String(localized: "contact.suggestion.accept", defaultValue: "Make a contact card",
                    comment: "Button: turn the entered text into a contact card (vCard) that the QR code adds to the address book.")
+        case .place:
+            String(localized: "place.suggestion.accept", defaultValue: "Make a Maps link",
+                   comment: "Button: turn the entered address into a QR code that opens it in Maps, Apple's app (Plans, Karten, マップ).")
         }
     }
 }

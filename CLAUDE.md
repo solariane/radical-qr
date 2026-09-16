@@ -46,6 +46,7 @@ Radical QR/
 │   │   ├── EventDraft.swift             # Editable event ⇄ VEVENT (+ ICalendarDate)
 │   │   ├── WiFiDraft.swift              # Editable network ⇄ WIFI: string
 │   │   ├── ContactDraft.swift           # Editable card ⇄ vCard 3.0
+│   │   ├── PlaceDraft.swift             # Editable address ⇄ maps.apple.com/?address= link
 │   │   └── HistoryItem.swift            # SwiftData model for history
 │   └── Services/
 │       ├── QRCodeGenerator.swift        # Core QR generation (Core Image)
@@ -54,6 +55,7 @@ Radical QR/
 │       ├── EventDetector.swift          # Free text → event draft ("21h mercredi 16/09")
 │       ├── WiFiDetector.swift           # Labelled text → network ("Mot de passe : …")
 │       ├── ContactDetector.swift        # Signature / card text → contact
+│       ├── PlaceDetector.swift          # An address on its own → place
 │       ├── ExportService.swift          # Export to various formats (incl. SVG)
 │       ├── PurchaseManager.swift        # StoreKit 2 wrapper
 │       ├── CaptionGenerator.swift       # Auto-caption from QR content
@@ -69,6 +71,7 @@ Radical QR/
 │   │   ├── EventEditorCard.swift        # Event form
 │   │   ├── WiFiEditorCard.swift         # Wi-Fi form
 │   │   ├── ContactEditorCard.swift      # Contact form
+│   │   ├── PlaceEditorCard.swift        # Place form (address + what scanning does)
 │   │   ├── ContentSuggestionBanner.swift # "Looks like …" offer for medium confidence
 │   │   ├── CustomizationRail.swift      # Icon rail: 5 setting families, one shown at a time
 │   │   ├── ColorGroupView.swift         # Solid, gradient, background
@@ -161,10 +164,10 @@ The app automatically detects and optimizes QR encoding for:
 | Geographic | `geo:` or coordinates | Geo URI |
 | Plain Text | Fallback | Alphanumeric/byte encoding |
 
-### Forms from free text: events, Wi-Fi, contacts
+### Forms from free text: events, Wi-Fi, contacts, places
 
 Plain text goes through `ContentDetector`, which returns a `ContentDraft`
-(event, Wi-Fi network or contact) with a confidence. The same rules apply to
+(event, Wi-Fi network, contact or place) with a confidence. The same rules apply to
 all three:
 
 - **High** — a paste, drop or share switches straight to the form
@@ -178,7 +181,8 @@ all three:
   chip instead of being flattened by editing.
 
 Order: Wi-Fi labels first (they are specific), then event and contact — the
-more confident one wins, an event on a tie.
+more confident one wins, an event on a tie — and a place only when neither
+matched (an address with a date is an appointment, with a phone a card).
 
 **Wi-Fi** (`WiFiDetector`) works from labels in the ten languages ("Wi-Fi :",
 "Mot de passe :", "WLAN:", "パスワード："). A network name and a password → high;
@@ -191,6 +195,14 @@ it on the same line the job title, one on another line the company. A name and
 two ways to reach them → high; a name and one, or two without a name → medium;
 leftover prose ("rappelle-moi au 06…") → nothing. A lone phone number or email
 keeps its own type.
+
+**Place** (`PlaceDetector`): an address that is at least 60% of the text.
+Street plus city or postcode, and ≥90% of the text → high; a street alone or
+text around it → medium. Encoded as `https://maps.apple.com/?address=…` with
+the address as written: nothing is geocoded on the device. Scanning opens Maps
+on iOS (checked in the simulator) and Apple Maps on the web elsewhere. Only a
+maps.apple.com link holding just `address` reopens in the form; one with
+coordinates or a search stays a plain URL.
 
 #### Events
 

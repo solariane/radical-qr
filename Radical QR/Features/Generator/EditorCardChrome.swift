@@ -29,7 +29,7 @@ struct EditorCard<Content: View>: View {
             Spacer(minLength: 8)
             if let onKeepAsText {
                 Button(String(localized: "editor.keepAsText", defaultValue: "Keep as text",
-                              comment: "Button: undo the automatic conversion of pasted text into a calendar event, Wi-Fi network or contact card, and encode the original text instead."),
+                              comment: "Button: undo the automatic conversion of pasted text into a calendar event, Wi-Fi network, contact card or Maps link, and encode the original text instead."),
                        action: onKeepAsText)
                     .font(.subheadline)
                     .buttonStyle(.borderless)

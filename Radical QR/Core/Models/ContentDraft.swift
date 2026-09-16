@@ -1,11 +1,13 @@
 import Foundation
 
-/// Structured content the generator edits in a form instead of a text field:
+/// Structured content the generator edits in a form instead of a text field —
+/// an event, a Wi-Fi network, a contact card or a place:
 /// the QR payload is always regenerated from it.
 nonisolated enum ContentDraft: Equatable, Sendable {
     case event(EventDraft)
     case wifi(WiFiDraft)
     case contact(ContactDraft)
+    case place(PlaceDraft)
 
     /// What the QR code encodes.
     var encoded: String {
@@ -13,6 +15,7 @@ nonisolated enum ContentDraft: Equatable, Sendable {
         case .event(let draft): draft.icalendar
         case .wifi(let draft): draft.wifiString
         case .contact(let draft): draft.vCard
+        case .place(let draft): draft.mapsURL
         }
     }
 
@@ -21,6 +24,7 @@ nonisolated enum ContentDraft: Equatable, Sendable {
         case .event: .icalendar
         case .wifi: .wifi
         case .contact: .vcard
+        case .place: .url
         }
     }
 
@@ -38,6 +42,9 @@ nonisolated enum ContentDraft: Equatable, Sendable {
         case .vcard:
             guard let draft = ContactDraft(vCard: content) else { return nil }
             self = .contact(draft)
+        case .url:
+            guard let draft = PlaceDraft(mapsURL: content) else { return nil }
+            self = .place(draft)
         default:
             return nil
         }
@@ -86,6 +93,9 @@ nonisolated enum ContentDetector {
         switch (event, contact) {
         case let (event?, contact?):
             return contact.confidence > event.confidence ? contact : event
+        case (nil, nil):
+            // Only an address left: a place.
+            return PlaceDetector.detect(in: text)
         default:
             return event ?? contact
         }

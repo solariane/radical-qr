@@ -337,7 +337,7 @@ struct GeneratorView: View {
 
     // MARK: - Input
 
-    /// The form when the content is an event, a Wi-Fi network or a contact the
+    /// The form when the content is an event, a Wi-Fi network, a contact or a place the
     /// app can edit, the plain field otherwise.
     @ViewBuilder
     private var editorSection: some View {
@@ -367,6 +367,9 @@ struct GeneratorView: View {
         case .contact(let contact):
             ContactEditorCard(draft: contact, onChange: { viewModel.updateDraft(.contact($0)) },
                               onKeepAsText: keepAsText, onClear: clear)
+        case .place(let place):
+            PlaceEditorCard(draft: place, onChange: { viewModel.updateDraft(.place($0)) },
+                            onKeepAsText: keepAsText, onClear: clear)
         }
     }
 
@@ -540,6 +543,10 @@ struct GeneratorView: View {
 
     /// A VEVENT or vCard blob reads as "BEGIN:VEVENT" — show its summary instead.
     private var pillTitle: String {
+        // A Maps link reads as its address, not as a percent-encoded URL.
+        if case .place(let place) = viewModel.draft {
+            return place.address
+        }
         if let detail = viewModel.inputSummaryOverride?.detail, !detail.isEmpty {
             return detail
         }
