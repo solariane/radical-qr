@@ -61,6 +61,9 @@ final class GeneratorViewModel: ObservableObject {
     private var declinedSources: Set<String> = []
     /// The last payload a form wrote, so our own writes are not re-analysed.
     private var lastEncodedDraft: String?
+    /// The last change was a keystroke, not a paste, drop, share or history item:
+    /// the text field must stay in place, whatever the text starts to look like.
+    private(set) var isTyping = false
 
     /// Typed text waits for a pause before a suggestion appears.
     private let typingDetectionDelay: Duration = .milliseconds(600)
@@ -100,7 +103,8 @@ final class GeneratorViewModel: ObservableObject {
     /// of the raw text. Returns `nil` for simple types (URL, email, phone, etc.),
     /// letting the text field display the content normally.
     var inputSummaryOverride: InputSummary? {
-        guard hasValidInput,
+        // Someone typing "BEGIN:VCARD" by hand keeps their field.
+        guard hasValidInput, !isTyping,
               Self.complexTypesForSummaryOverride.contains(detectedDataType) else {
             return nil
         }
@@ -323,6 +327,10 @@ final class GeneratorViewModel: ObservableObject {
         guard trimmed != lastEncodedDraft else { return }
 
         let previous = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        // A paste, drop or share arrives whole; a keystroke adds one character —
+        // including the very first one, into an empty field.
+        let arrivedWhole = previous.isEmpty ? trimmed.count > 1 : abs(trimmed.count - previous.count) > 5
+        isTyping = !arrivedWhole
         detectionTask?.cancel()
         suggestion = nil
         draft = nil
@@ -332,15 +340,14 @@ final class GeneratorViewModel: ObservableObject {
 
         let type = DataTypeDetector.detect(trimmed)
         // From history, a file or a share: editable when we could have written it.
-        if let existing = ContentDraft(content: trimmed, type: type) {
+        // Not while typing — the form would take the field away mid-word.
+        if arrivedWhole, let existing = ContentDraft(content: trimmed, type: type) {
             draft = existing
             draftGeneration += 1
             return
         }
         guard type == .text || type == .phone, !declinedSources.contains(trimmed) else { return }
 
-        // Same rule the scroll anchoring uses: a paste, drop or share arrives whole.
-        let arrivedWhole = previous.isEmpty || abs(trimmed.count - previous.count) > 5
         detectionTask = Task { [weak self, typingDetectionDelay] in
             if !arrivedWhole {
                 try? await Task.sleep(for: typingDetectionDelay)
@@ -385,6 +392,8 @@ final class GeneratorViewModel: ObservableObject {
     }
 
     private func apply(_ newDraft: ContentDraft, from source: String) {
+        // The form owns the content now: the pill may summarise it again.
+        isTyping = false
         suggestion = nil
         draft = newDraft
         encode(newDraft)

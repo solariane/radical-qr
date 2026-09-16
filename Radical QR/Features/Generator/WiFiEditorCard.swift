@@ -37,7 +37,11 @@ struct WiFiEditorCard: View {
             .font(.subheadline)
         }
         .onAppear {
-            if draft.ssid.isEmpty { focusedField = .network }
+            if draft.ssid.isEmpty {
+                focusedField = .network
+            } else if draft.security != .none && draft.password.isEmpty {
+                focusedField = .password
+            }
         }
     }
 

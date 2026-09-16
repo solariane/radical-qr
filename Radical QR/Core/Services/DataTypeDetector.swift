@@ -44,7 +44,9 @@ nonisolated enum DataTypeDetector {
             return .sms
         }
 
-        if lowercased.hasPrefix("wifi:") {
+        // The WIFI: format starts with a field ("WIFI:T:WPA;S:…"). "Wifi: Livebox" is
+        // someone writing the network down, which WiFiDetector reads from plain text.
+        if lowercased.range(of: #"^wifi:\s*(?:[tsphe]:|;)"#, options: .regularExpression) != nil {
             return .wifi
         }
 

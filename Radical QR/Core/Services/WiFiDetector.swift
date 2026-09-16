@@ -60,7 +60,9 @@ nonisolated enum WiFiDetector {
 
         guard let ssid = values[.network] else { return nil }
         let password = values[.password] ?? ""
-        let draft = WiFiDraft(ssid: ssid, password: password, security: security(from: values[.security], password: password))
+        // No password written is more often a password still to add than an open
+        // network: WPA keeps the password field in the form, None is one tap away.
+        let draft = WiFiDraft(ssid: ssid, password: password, security: security(from: values[.security], password: password) ?? .wpa)
         // A network without a password may be open — or the password is elsewhere.
         return ContentDetection(draft: .wifi(draft), confidence: password.isEmpty ? .medium : .high)
     }

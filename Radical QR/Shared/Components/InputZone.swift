@@ -21,6 +21,8 @@ struct InputZone: View {
     var showsDropZone: Bool = true
     /// Lets the launch card's drop target put the caret in this field.
     var focusBinding: FocusState<Bool>.Binding? = nil
+    /// Takes the keyboard when shown — for a field that replaces one being typed in.
+    var focusesOnAppear: Bool = false
 
     @State private var isTargeted = false
     @State private var showFilePicker = false
@@ -42,6 +44,14 @@ struct InputZone: View {
             allowsMultipleSelection: false
         ) { result in
             handleFileImport(result)
+        }
+        .onAppear {
+            guard focusesOnAppear else { return }
+            if let focusBinding {
+                focusBinding.wrappedValue = true
+            } else {
+                isTextFieldFocused = true
+            }
         }
     }
 

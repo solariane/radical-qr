@@ -272,7 +272,10 @@ struct GeneratorView: View {
             }
             .onChange(of: viewModel.hasValidInput) { _, hasInput in
                 guard hasInput else { return }
-                withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = false }
+                // A paste folds the field into the pill. A first keystroke must not:
+                // the launch card makes way for the preview, and the field has to
+                // come back open, or the rest of the word has nowhere to go.
+                withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = viewModel.isTyping }
                 scrollInputToTop(proxy: proxy)
             }
             .onChange(of: viewModel.inputText) { oldValue, newValue in
@@ -378,7 +381,9 @@ struct GeneratorView: View {
             textFieldAnchorID: AnyHashable(inputAnchorID),
             // Re-editing existing content: just the field. The launch card owns
             // the drop target, and the window-wide one still catches a drag here.
-            showsDropZone: false
+            showsDropZone: false,
+            // Typing that started in the launch card continues here.
+            focusesOnAppear: viewModel.isTyping
         )
     }
 

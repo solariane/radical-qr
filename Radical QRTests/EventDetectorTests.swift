@@ -231,6 +231,36 @@ final class GeneratorEventFlowTests: XCTestCase {
         XCTAssertTrue(viewModel.inputText.contains("DTSTART;VALUE=DATE:20990916"))
     }
 
+    func testTypingKeepsTheTextField() async {
+        let viewModel = GeneratorViewModel()
+        for character in "Wifi: Livebox" {
+            viewModel.inputText.append(character)
+            await Task.yield()
+            // The field must never be swapped for a summary or a form mid-word.
+            XCTAssertNil(viewModel.inputSummaryOverride, "after \(viewModel.inputText)")
+            XCTAssertNil(viewModel.draft, "after \(viewModel.inputText)")
+        }
+        await settle()
+        XCTAssertEqual(viewModel.suggestion, .wifi(WiFiDraft(ssid: "Livebox", security: .wpa)))
+        viewModel.acceptSuggestion()
+        XCTAssertNotNil(viewModel.inputSummaryOverride, "the form's content is summarised, not shown raw")
+
+        // Typing the WIFI: format by hand keeps the field too.
+        let raw = GeneratorViewModel()
+        for character in "WIFI:S:Home;P:secret;;" {
+            raw.inputText.append(character)
+            await Task.yield()
+            XCTAssertNil(raw.inputSummaryOverride, "after \(raw.inputText)")
+            XCTAssertNil(raw.draft, "after \(raw.inputText)")
+        }
+    }
+
+    func testPastedWiFiFormatOpensItsForm() async {
+        let viewModel = GeneratorViewModel()
+        viewModel.inputText = "WIFI:T:WPA;S:Home;P:secret;;"
+        XCTAssertEqual(viewModel.draft, .wifi(WiFiDraft(ssid: "Home", password: "secret")))
+    }
+
     func testTypedAppointmentIsOnlySuggested() async {
         let viewModel = GeneratorViewModel()
         for character in "21h mercredi 16/09/2099" {

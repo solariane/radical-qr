@@ -29,7 +29,16 @@ final class ContentDetectorTests: XCTestCase {
     func testNetworkWithoutPasswordIsOnlySuggested() throws {
         let detection = try XCTUnwrap(detect("Réseau : Café du Coin"))
         XCTAssertEqual(detection.confidence, .medium)
-        XCTAssertEqual(detection.draft, .wifi(WiFiDraft(ssid: "Café du Coin", security: WiFiDraft.Security.none)))
+        // WPA with an empty password: the form keeps the password field to fill in.
+        XCTAssertEqual(detection.draft, .wifi(WiFiDraft(ssid: "Café du Coin", security: .wpa)))
+    }
+
+    func testWrittenWiFiLabelIsNotTheWiFiFormat() throws {
+        XCTAssertEqual(DataTypeDetector.detect("WIFI:T:WPA;S:Home;P:x;;"), .wifi)
+        XCTAssertEqual(DataTypeDetector.detect("WIFI:S:Home;;"), .wifi)
+        XCTAssertEqual(DataTypeDetector.detect("Wifi: Livebox"), .text)
+        let detection = try XCTUnwrap(detect("Wifi: Livebox-A1B2\nMot de passe : xK9#mQ2!"))
+        XCTAssertEqual(detection.draft, .wifi(WiFiDraft(ssid: "Livebox-A1B2", password: "xK9#mQ2!")))
     }
 
     func testPasswordAloneIsNotANetwork() {
