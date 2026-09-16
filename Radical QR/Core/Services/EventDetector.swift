@@ -108,8 +108,11 @@ nonisolated enum EventDetector {
                 }
             }
         }
-        guard let longest = matches.max(by: { $0.range.length < $1.range.length }),
-              let date = longest.date else { return nil }
+        guard var longest = matches.max(by: { $0.range.length < $1.range.length }) else { return nil }
+        if offset == 0, let better = reclaimTime(from: longest, in: text, detector: detector) {
+            longest = better
+        }
+        guard let date = longest.date else { return nil }
         return FoundDate(
             range: NSRange(location: longest.range.location + offset, length: longest.range.length),
             date: date,
@@ -118,6 +121,37 @@ nonisolated enum EventDetector {
             alternatives: matches.count - 1
         )
     }
+
+    /// The detector reads a meal as a time of day: "dîner samedi 20h" becomes
+    /// "dîner samedi" at 19:00, and the "20h" written after it is lost. When the
+    /// date it took names no time, the first word is masked and the text read
+    /// again; if that finds a date with a time, it wins, and the meal stays in
+    /// the title where it belongs.
+    private static func reclaimTime(from match: NSTextCheckingResult, in text: String, detector: NSDataDetector) -> NSTextCheckingResult? {
+        let nsText = text as NSString
+        guard let firstWord = wordPattern?.firstMatch(in: text, range: match.range),
+              firstWord.range.length < match.range.length else { return nil }
+        let startsWithMeal = mealWords.contains(nsText.substring(with: firstWord.range).lowercased()
+            .trimmingCharacters(in: .punctuationCharacters))
+        // "Dinner Saturday 8pm" has its time, but "Dinner" is still the title.
+        guard startsWithMeal || !TimeExpression.matches(in: nsText.substring(with: match.range)) else { return nil }
+        // Same length, so every range found still points into the original text.
+        let masked = nsText.replacingCharacters(in: firstWord.range, with: String(repeating: " ", count: firstWord.range.length))
+        let retry = detector.matches(in: masked, range: NSRange(location: 0, length: nsText.length))
+            .filter { $0.date != nil && TimeExpression.matches(in: nsText.substring(with: $0.range)) }
+        return retry.max(by: { $0.range.length < $1.range.length })
+    }
+
+    /// Meals the detector reads as a time of day, in the app's languages.
+    private static let mealWords: Set<String> = [
+        "breakfast", "brunch", "lunch", "dinner", "supper",
+        "petit-déjeuner", "déjeuner", "dîner", "souper", "goûter",
+        "frühstück", "mittagessen", "abendessen",
+        "desayuno", "almuerzo", "comida", "cena",
+        "colazione", "pranzo",
+        "café", "almoço", "jantar",
+        "朝食", "昼食", "夕食", "早餐", "午餐", "晚餐"
+    ]
 
     private static let wordPattern = try? NSRegularExpression(pattern: #"\S+"#)
 

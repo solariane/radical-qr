@@ -115,6 +115,20 @@ final class EventDetectorTests: XCTestCase {
         XCTAssertEqual(detection.draft.location, "Calle de Alcalá 42, 28014 Madrid")
     }
 
+    func testMealStaysInTheTitleAndTheTimeIsKept() throws {
+        // The detector reads "dîner"/"Dinner" as a time of day; hour and title must survive it.
+        for (text, title, location) in [
+            ("dîner samedi 20h, 12 rue de Rivoli", "dîner", "12 rue de Rivoli"),
+            ("Dinner Saturday 8pm, 350 Fifth Avenue, New York", "Dinner", "350 Fifth Avenue, New York")
+        ] {
+            let detection = try XCTUnwrap(EventDetector.detect(in: text, now: now), text)
+            XCTAssertEqual(detection.draft.title, title, text)
+            XCTAssertEqual(detection.draft.location, location, text)
+            XCTAssertEqual(Calendar.current.component(.hour, from: detection.draft.start), 20, text)
+            XCTAssertFalse(detection.draft.isAllDay, text)
+        }
+    }
+
     func testNoAddressLeavesTheLocationEmpty() throws {
         let detection = try XCTUnwrap(EventDetector.detect(in: "Réunion salle 3 bâtiment B 16/09/2099 10h", now: now))
         XCTAssertEqual(detection.draft.location, "")
