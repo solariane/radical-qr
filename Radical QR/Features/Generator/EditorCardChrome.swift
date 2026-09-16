@@ -4,6 +4,9 @@ import SwiftUI
 /// naming the type with the ways out, then the form's own rows.
 struct EditorCard<Content: View>: View {
     let type: DataType
+    /// Replaces the type's name when the form means something narrower —
+    /// a place is an address, not the coordinates `DataType.geo` names.
+    var title: String? = nil
     /// `nil` when there is no text to go back to (content loaded from history).
     let onKeepAsText: (() -> Void)?
     let onClear: () -> Void
@@ -24,7 +27,7 @@ struct EditorCard<Content: View>: View {
         HStack(spacing: 8) {
             Image(systemName: type.iconName)
                 .foregroundStyle(Color.accentColor)
-            Text(type.displayName)
+            Text(title ?? type.displayName)
                 .font(.headline)
             Spacer(minLength: 8)
             if let onKeepAsText {

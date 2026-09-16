@@ -11,7 +11,13 @@ struct PlaceEditorCard: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        EditorCard(type: .geo, onKeepAsText: onKeepAsText, onClear: onClear) {
+        EditorCard(
+            type: .geo,
+            title: String(localized: "place.title", defaultValue: "Place",
+                          comment: "Header of the form for an address that opens in Maps: a place someone goes to (Lieu, Ort), not a town square and not the verb."),
+            onKeepAsText: onKeepAsText,
+            onClear: onClear
+        ) {
             TextField(
                 String(localized: "place.address.placeholder", defaultValue: "Address",
                        comment: "Placeholder: the postal address a Maps link opens."),
