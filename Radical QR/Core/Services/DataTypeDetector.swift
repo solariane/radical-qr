@@ -1,7 +1,7 @@
 import Foundation
 
 /// Service for automatically detecting the type of content for QR code optimization
-enum DataTypeDetector {
+nonisolated enum DataTypeDetector {
     /// Detects the data type from the given input string
     /// - Parameter input: The raw input string
     /// - Returns: The detected DataType
@@ -162,7 +162,7 @@ enum DataTypeDetector {
 
 // MARK: - Input Formatter
 
-extension DataTypeDetector {
+nonisolated extension DataTypeDetector {
     /// Formats the input appropriately for the detected type
     /// - Parameters:
     ///   - input: The raw input string
@@ -214,7 +214,7 @@ extension DataTypeDetector {
 
 // MARK: - Content Summary
 
-extension DataTypeDetector {
+nonisolated extension DataTypeDetector {
     /// Returns a human-readable summary of the detected content
     /// - Parameters:
     ///   - input: The raw input string
@@ -439,7 +439,7 @@ extension DataTypeDetector {
 
 // MARK: - File Type Detection
 
-extension DataTypeDetector {
+nonisolated extension DataTypeDetector {
     /// Detects if the dropped file contains content that should be converted to QR
     /// - Parameter url: The file URL
     /// - Returns: The content string if readable, nil otherwise

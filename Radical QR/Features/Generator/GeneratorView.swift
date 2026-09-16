@@ -1,5 +1,6 @@
 import SwiftUI
 import PhotosUI
+import SwiftData
 import UniformTypeIdentifiers
 
 #if os(macOS)
