@@ -1,15 +1,16 @@
 Códigos QR elegantes. Detección automática. Sin seguimiento. Sin suscripción.
 Radical QR genera todos los códigos —enlaces, contactos, Wi-Fi, eventos— íntegramente en tu dispositivo. Pega lo que quieras: la aplicación reconoce de qué se trata y genera el código QR adecuado. No se envía nada a un servidor. No se almacena nada sin tu consentimiento.
 
-Diseñada para quienes utilizan códigos QR a diario —autónomos, restaurantes, asociaciones, emprendedores— y buscan algo bonito, rápido y que respete su privacidad.
+Diseñada para quienes utilizan códigos QR a diario —autónomos, restaurantes, asociaciones, emprendedores— y que buscan algo bonito, rápido y que respete su privacidad.
 
 
 POR QUÉ RADICAL QR
 
-• Detección automática: pega una URL, un número de teléfono, un correo electrónico, una vCard, un evento de iCalendar o una red Wi-Fi; la aplicación lo interpreta y genera el código QR adecuado, con la codificación correcta.
-• Ajustes visibles: cada opción muestra su propio resultado. Elige la esquina que quieras, el icono que prefieras, el tamaño que desees: no hay que leer nada ni adivinar nada.
-• Duplicar un código: apunta la cámara a un código QR existente o selecciona una foto de uno, y hazlo tuyo. No se graba nada, no se envía nada.
-• Exportación limpia: PNG, JPEG y WebP de forma gratuita; PDF y SVG vectorial en la versión Pro, hasta 4096 píxeles.
+• Detección automática: pega una URL, un número de teléfono, un correo electrónico, una vCard, un evento de iCalendar o una red Wi-Fi; la aplicación lo identifica y genera el código QR adecuado, con la codificación correcta.
+• Escribe como lo hace la gente: pega «Cena el sábado a las 20:00», «Wi-Fi: CafeGuest / Contraseña: …», una firma de correo electrónico o una dirección, y obtén un evento de calendario, un código de Wi-Fi, una tarjeta de contacto o un enlace de Mapas, todo ello rellenado en un pequeño formulario que puedes ajustar.
+• Ajustes visibles: cada opción muestra su propio resultado. Elige la esquina que quieras, el icono que prefieras, el tamaño que desees: no hay nada que leer ni nada que adivinar.
+• Duplica un código: apunta la cámara a un código QR existente o selecciona una foto de uno, y hazlo tuyo. No se graba nada, no se envía nada.
+• Exportación limpia: PNG, JPEG y WebP gratis; PDF y SVG vectorial en la versión Pro, hasta 4096 píxeles.
 • Integración con macOS: haz clic con el botón derecho en cualquier URL, contacto o evento en Safari, Contactos o Calendario → «Generar código QR». Al instante.
 • Arrastrar y soltar: suelta un archivo de texto, una vCard o un archivo .ics directamente en la aplicación.
 • 10 idiomas: inglés, francés, alemán, español, italiano, portugués, japonés, árabe, hindi y chino.
@@ -17,17 +18,17 @@ POR QUÉ RADICAL QR
 
 GRATIS
 
-Todo lo esencial: detección automática, duplicación de un código existente, formas de módulos y ojos, 6 colores predefinidos y 3 degradados predefinidos, exportación a PNG / JPEG / WebP de hasta 512 px, función para compartir del sistema.
+Todo lo esencial: detección automática, duplicación de un código existente, formas de módulos y ojos, 6 colores predefinidos y 3 degradados predefinidos, exportación a PNG/JPEG/WebP de hasta 512 px, función de compartir del sistema.
 
 
 PRO (compra única, de por vida)
 
 • Exportación vectorial a PDF y SVG para impresión y uso a gran escala
-• Incorporación de logotipo personalizado con zona de seguridad automática
+• Incrustación de logotipo personalizado con zona de seguridad automática
 • Tamaño de exportación de hasta 4096 px
 • Historial con sincronización con iCloud en todos tus dispositivos
 • Selector de color completo y degradados personalizados (lineales, radiales, angulares, en forma de rombo)
-• Formas de ojos «punto» y «hoja»
+• Formas de ojos de punto y de hoja
 • Hasta cuatro estilos propios, que se guardan y se recuperan con un solo toque
 
 Una sola compra. Acceso de por vida. Sin suscripción.

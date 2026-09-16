@@ -1,13 +1,16 @@
-Radical QR 2.0 — o gerador, reconstruído.
+Radical QR 2.1 — cole do jeito que você escreveu.
 
-• Configurações que você pode ver. Cada opção agora desenha seu próprio resultado em vez de nomeá-lo: cantos dos módulos, formatos dos olhos, tamanho dos olhos. Nada para ler, nada se perde na tradução.
+• Compromissos. Cole "Jantar sábado 20h, Avenida Paulista 1578, São Paulo" e obtenha um evento de calendário: data, hora, local e link da reunião já preenchidos. Adicione um título e está pronto para escanear no calendário.
 
-• Uma coisa de cada vez. Cor, formato, logotipo e exportação têm seu próprio lugar, para que o código que você está criando fique na tela enquanto você o ajusta — mesmo no menor iPhone.
+• Wi-Fi do cartão na mesa. "Wi-Fi: CafeConvidado / Senha: …" vira um código que conecta à rede. Nome, senha e segurança em um único formulário pequeno.
 
-• Seus próprios estilos. Crie um visual uma vez, salve-o e recupere-o em qualquer código com um único toque.
+• Contatos de uma assinatura. Cole uma assinatura de e-mail e obtenha um cartão de contato: nome, telefone, e-mail, empresa, cargo, site, endereço.
 
-• Um novo começo. Cole, arraste, navegue — ou duplique um código QR de uma imagem e torne-o seu.
+• Endereços. Um endereço sozinho vira um código que o abre no Mapas. Nada é consultado do seu dispositivo.
 
-Corrigido: um código em fundo transparente não é mais marcado como difícil de escanear.
+• Pergunta quando não tem certeza. Se o texto apenas pode ser uma dessas opções, o app oferece em vez de decidir — e "Manter como texto" sempre devolve exatamente o que você colou.
+
+Corrigido: digitar na tela inicial não perde mais o campo após a primeira letra.
+Corrigido: algumas traduções em árabe, japonês e chinês.
 
 Como sempre: sem rastreamento, sem contas — tudo fica no seu dispositivo.

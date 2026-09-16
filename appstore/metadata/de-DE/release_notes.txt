@@ -1,13 +1,16 @@
-Radical QR 2.0 — der Generator, neu gebaut.
+Radical QR 2.1 — füge ein, wie du es geschrieben hast.
 
-• Einstellungen, die du siehst. Jede Option zeichnet jetzt ihr eigenes Ergebnis, statt es zu benennen: Modulecken, Augenformen, Augengröße. Nichts zu lesen, nichts misszuverstehen.
+• Termine. Füge „Abendessen Samstag 20 Uhr, Hauptstraße 5, Berlin" ein und erhalte einen Kalendereintrag: Datum, Uhrzeit, Ort und Meeting-Link sind bereits ausgefüllt. Titel hinzufügen, fertig zum Scannen in den Kalender.
 
-• Eins nach dem anderen. Farbe, Form, Logo und Export haben jeweils ihren eigenen Bereich, sodass der Code, den du erstellst, auf dem Bildschirm bleibt, während du ihn anpasst — selbst auf dem kleinsten iPhone.
+• WLAN von der Tischkarte. „WLAN: CafeGuest / Passwort: …" wird zu einem Code, der ins Netzwerk einloggt. Name, Passwort und Sicherheit in einem kleinen Formular.
 
-• Deine eigenen Stile. Erstelle einmal ein Design, speichere es und wende es mit einem Fingertipp auf jeden Code an.
+• Kontakte aus einer Signatur. E-Mail-Signatur einfügen und Kontaktkarte erhalten: Name, Telefon, E-Mail, Firma, Berufsbezeichnung, Website, Adresse.
 
-• Ein neuer Anfang. Einfügen, ablegen, durchsuchen — oder dupliziere einen QR-Code aus einem Bild und mach ihn zu deinem.
+• Adressen. Eine Adresse allein wird zu einem Code, der sie in Karten öffnet. Nichts wird von deinem Gerät nachgeschlagen.
 
-Behoben: Ein Code auf transparentem Hintergrund wird nicht mehr als schwer lesbar markiert.
+• Fragt nach, wenn unsicher. Wenn der Text nur eventuell eines davon sein könnte, bietet die App Optionen an, statt zu entscheiden — und „Als Text behalten" gibt dir immer genau das zurück, was du eingefügt hast.
 
-Wie immer: kein Tracking, keine Accounts — alles bleibt auf deinem Gerät.
+Behoben: Tippen auf dem Startbildschirm verliert das Feld nicht mehr nach dem ersten Buchstaben.
+Behoben: einige arabische, japanische und chinesische Übersetzungen.
+
+Wie immer: kein Tracking, keine Konten — alles bleibt auf deinem Gerät.

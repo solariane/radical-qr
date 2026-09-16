@@ -1,15 +1,16 @@
 Elegante QR-Codes. Automatische Erkennung. Keine Nachverfolgung. Kein Abonnement.
-Radical QR generiert jeden Code – Links, Kontakte, WLAN, Veranstaltungen – vollständig auf Ihrem Gerät. Fügen Sie beliebige Inhalte ein, die App erkennt, um was es sich handelt, und erstellt den passenden QR-Code. Es werden keine Daten an einen Server gesendet. Ohne Ihre Zustimmung werden keine Daten gespeichert.
+Radical QR generiert jeden Code – Links, Kontakte, WLAN, Veranstaltungen – vollständig auf Ihrem Gerät. Fügen Sie beliebige Inhalte ein, die App erkennt, um was es sich handelt, und erstellt den passenden QR-Code. Es werden keine Daten an einen Server gesendet. Ohne Ihre Zustimmung wird nichts gespeichert.
 
-Entwickelt für Menschen, die täglich QR-Codes nutzen – Freiberufler, Restaurants, Vereine, Unternehmer – und die sich etwas Schönes, Schnelles und Datenschutzfreundliches wünschen.
+Entwickelt für alle, die täglich QR-Codes nutzen – Freiberufler, Restaurants, Vereine, Unternehmer – und die sich etwas Schönes, Schnelles und Privatsphäre-freundliches wünschen.
 
 
 WARUM RADICAL QR
 
 • Automatische Erkennung: Fügen Sie eine URL, eine Telefonnummer, eine E-Mail-Adresse, eine vCard, einen iCalendar-Termin oder ein WLAN-Netzwerk ein – die App erkennt den Inhalt und erstellt den passenden QR-Code mit der richtigen Kodierung.
-• Sichtbare Einstellungen: Jede Option führt zu einem eigenen Ergebnis. Wähle die gewünschte Ecke, das gewünschte Symbol und die gewünschte Größe – es gibt nichts zu lesen und nichts zu erraten.
-• Code duplizieren: Richte die Kamera auf einen vorhandenen QR-Code oder wähle ein Foto davon aus und mache ihn zu deinem eigenen. Es wird nichts aufgezeichnet, nichts gesendet.
-• Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG-Vektordateien in der Pro-Version, bis zu 4096 px.
+• So geschrieben, wie Menschen schreiben: Füge „Abendessen Samstag 20 Uhr“, „WLAN: CafeGuest / Passwort: …“, eine E-Mail-Signatur oder eine Adresse ein und erhalte einen Kalendertermin, einen WLAN-Code, eine Kontaktkarte oder einen Karten-Link – bereits ausgefüllt in einem kleinen Formular, das du anpassen kannst.
+• Sichtbare Einstellungen: Jede Option zeigt ihr eigenes Ergebnis an. Wählen Sie die gewünschte Ecke, das gewünschte Symbol und die gewünschte Größe – es gibt nichts zu lesen und nichts zu erraten.
+• Code duplizieren: Richten Sie die Kamera auf einen vorhandenen QR-Code oder wählen Sie ein Foto davon aus und machen Sie ihn zu Ihrem eigenen. Es wird nichts aufgezeichnet, nichts gesendet.
+• Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG-Vektorgrafik in der Pro-Version, bis zu 4096 px.
 • macOS-Integration: Klicke mit der rechten Maustaste auf eine beliebige URL, einen Kontakt oder einen Termin in Safari, „Kontakte“ oder „Kalender“ → „QR-Code generieren“. Sofort.
 • Drag & Drop: Ziehe eine Textdatei, eine vCard oder eine .ics-Datei direkt in die App.
 • 10 Sprachen: Englisch, Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Japanisch, Arabisch, Hindi, Chinesisch.
@@ -17,18 +18,18 @@ WARUM RADICAL QR
 
 KOSTENLOS
 
-Alles Wesentliche: automatische Erkennung, Duplizieren eines bestehenden Codes, Modul- und Augenformen, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, Export als PNG / JPEG / WebP bis zu 512 px, Systemfreigabe.
+Alles Wesentliche: automatische Erkennung, Duplizieren eines bestehenden Codes, Modul- und Augenformen, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, PNG-/JPEG-/WebP-Export bis zu 512 px, Systemfreigabe.
 
 
 PRO (einmaliger Kauf, lebenslang)
 
-• Vektor-Export als PDF und SVG für den Druck und großflächige Verwendung
+• Vektor-Export als PDF und SVG für den Druck und die großflächige Verwendung
 • Einbetten eines eigenen Logos mit automatischer Sicherheitszone
 • Exportgröße bis zu 4096 px
-• Verlauf mit iCloud-Synchronisierung auf allen deinen Geräten
-• Umfassende Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, winklig, rautenförmig)
+• Verlauf mit iCloud-Synchronisierung auf allen Ihren Geräten
+• Umfassende Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, eckig, rautenförmig)
 • Punkt- und Blatt-Augenformen
-• Bis zu vier eigene Stile, die mit einem Fingertipp gespeichert und wieder abgerufen werden können
+• Bis zu vier eigene Stile, die mit einem Fingertipp gespeichert und wiederhergestellt werden können
 
 Einmaliger Kauf. Lebenslanger Zugriff. Kein Abonnement.
 

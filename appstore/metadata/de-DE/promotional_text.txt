@@ -1,1 +1,1 @@
-Neu in 2.0: Einstellungen sehen, nicht lesen. Eigene Stile speichern. Codes aus Foto oder Kamera duplizieren. Einmalkauf, kein Abo.
+Neu in 2.1: Termin, WLAN-Karte, E-Mail-Signatur oder Adresse einfügen — Radical QR füllt Ereignis, Netzwerk, Kontakt oder Karte automatisch aus.
