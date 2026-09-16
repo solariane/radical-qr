@@ -1,7 +1,12 @@
 import SwiftUI
 
 /// Main configuration model for QR code generation and styling
-struct QRCodeConfiguration: Codable, Hashable, Sendable {
+///
+/// The types in this file are explicitly `nonisolated`: the target defaults to
+/// `MainActor` isolation, which would make their `Codable` conformances
+/// MainActor-isolated too — and `HistoryItem`/`StylePreset` encode them from
+/// nonisolated inits during SwiftData + CloudKit hydration.
+nonisolated struct QRCodeConfiguration: Codable, Hashable, Sendable {
     var foregroundStyle: ForegroundStyle = .solid(.black)
     var backgroundType: BackgroundType = .white
     var roundness: CGFloat = 0.0
@@ -127,7 +132,7 @@ struct QRCodeConfiguration: Codable, Hashable, Sendable {
 
 // MARK: - Codable (graceful decoding for forward-compat)
 
-extension QRCodeConfiguration {
+nonisolated extension QRCodeConfiguration {
     /// Custom decoder so adding a new field (e.g. `eyeRoundness`) doesn't
     /// invalidate presets/history items encoded before the field existed.
     init(from decoder: Decoder) throws {
@@ -151,7 +156,7 @@ extension QRCodeConfiguration {
 
 // MARK: - Foreground Style
 
-enum ForegroundStyle: Codable, Hashable, Sendable {
+nonisolated enum ForegroundStyle: Codable, Hashable, Sendable {
     case solid(SerializableColor)
     case gradient(GradientConfiguration)
 
@@ -167,7 +172,7 @@ enum ForegroundStyle: Codable, Hashable, Sendable {
 
 // MARK: - Gradient Configuration
 
-struct GradientConfiguration: Codable, Hashable, Sendable {
+nonisolated struct GradientConfiguration: Codable, Hashable, Sendable {
     var startColor: SerializableColor
     var endColor: SerializableColor
     var type: GradientType = .linear
@@ -201,7 +206,7 @@ struct GradientConfiguration: Codable, Hashable, Sendable {
 
 // MARK: - Background Type
 
-enum BackgroundType: Codable, Hashable, Sendable {
+nonisolated enum BackgroundType: Codable, Hashable, Sendable {
     case white
     case transparent
     case transparentWithLogoCutout  // Transparent background but white cutout area for logo
@@ -233,7 +238,7 @@ enum BackgroundType: Codable, Hashable, Sendable {
 // MARK: - Serializable Color
 
 /// A color representation that can be encoded/decoded
-struct SerializableColor: Codable, Hashable, Sendable {
+nonisolated struct SerializableColor: Codable, Hashable, Sendable {
     var red: Double
     var green: Double
     var blue: Double
@@ -265,7 +270,7 @@ struct SerializableColor: Codable, Hashable, Sendable {
 
 // MARK: - Predefined Colors
 
-extension SerializableColor {
+nonisolated extension SerializableColor {
     static let black = SerializableColor(red: 0, green: 0, blue: 0)
     static let navy = SerializableColor(red: 0.118, green: 0.227, blue: 0.373) // #1e3a5f
     static let forest = SerializableColor(red: 0.176, green: 0.353, blue: 0.239) // #2d5a3d
@@ -281,7 +286,7 @@ extension SerializableColor {
 
 // MARK: - Predefined Gradients
 
-extension GradientConfiguration {
+nonisolated extension GradientConfiguration {
     static let purpleViolet = GradientConfiguration(
         startColor: SerializableColor(red: 0.4, green: 0.494, blue: 0.918), // #667eea
         endColor: SerializableColor(red: 0.463, green: 0.294, blue: 0.635), // #764ba2
@@ -311,7 +316,7 @@ extension GradientConfiguration {
 
 // MARK: - Default Configuration
 
-extension QRCodeConfiguration {
+nonisolated extension QRCodeConfiguration {
     static let `default` = QRCodeConfiguration()
 
     /// Creates a configuration with the app's signature purple-violet gradient

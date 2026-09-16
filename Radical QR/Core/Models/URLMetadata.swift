@@ -1,7 +1,7 @@
 import Foundation
 
 /// Enriched metadata for URL-type QR inputs
-struct URLMetadata: Sendable, Hashable {
+nonisolated struct URLMetadata: Sendable, Hashable {
     enum URLCategory: String, Sendable, Hashable {
         case website
         case socialProfile
@@ -18,7 +18,7 @@ struct URLMetadata: Sendable, Hashable {
 // MARK: - URL Metadata Extraction
 
 /// Extracts rich metadata (social profiles, deep links) from URLs
-enum URLMetadataExtractor {
+nonisolated enum URLMetadataExtractor {
 
     // MARK: - Public API
 

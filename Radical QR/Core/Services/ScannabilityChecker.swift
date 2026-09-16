@@ -3,7 +3,7 @@ import CoreGraphics
 import Foundation
 
 /// Result of the on-device scannability check.
-struct ScannabilityResult: Equatable, Sendable {
+nonisolated struct ScannabilityResult: Equatable, Sendable {
     enum Level: Sendable { case reliable, risky, unknown }
     var level: Level
     var reason: String?     // Localized "why it might not scan" (risky only)
@@ -14,7 +14,7 @@ struct ScannabilityResult: Equatable, Sendable {
 }
 
 /// A one-tap remedy the user can apply when a code is risky.
-enum ScanFix: Equatable, Sendable {
+nonisolated enum ScanFix: Equatable, Sendable {
     case raiseErrorCorrection
     case reduceRoundness
     case removeLogo
@@ -33,11 +33,15 @@ enum ScanFix: Equatable, Sendable {
 
 /// Verifies that a rendered QR code actually scans, entirely on-device
 /// (Core Image — no network), and explains how to fix it when it doesn't.
-final class ScannabilityChecker: Sendable {
-    private let detector: CIDetector?
-
-    init() {
-        detector = CIDetector(
+///
+/// `nonisolated` on purpose: the generator checks scannability from a detached
+/// task so a 512px render + decode never blocks the main actor.
+nonisolated final class ScannabilityChecker: Sendable {
+    /// Built per check rather than stored: `CIDetector` is not `Sendable` and has
+    /// no documented thread safety, while the check runs on a detached task. One
+    /// QR detector is cheap next to the 512px render it inspects.
+    private func makeDetector() -> CIDetector? {
+        CIDetector(
             ofType: CIDetectorTypeQRCode,
             context: nil,
             options: [CIDetectorAccuracy: CIDetectorAccuracyHigh]
@@ -51,7 +55,7 @@ final class ScannabilityChecker: Sendable {
         // perfectly good black-on-clear code was reported as risky. Flatten onto
         // white first — the same light surface the code will be placed on.
         let ciImage = flattenedOnWhite(cgImage)
-        let features = detector?.features(in: ciImage) ?? []
+        let features = makeDetector()?.features(in: ciImage) ?? []
         let decoded = (features.first as? CIQRCodeFeature)?.messageString
         let decodes = !(decoded ?? "").isEmpty
 
@@ -114,7 +118,7 @@ final class ScannabilityChecker: Sendable {
     }
 }
 
-private extension ForegroundStyle {
+nonisolated private extension ForegroundStyle {
     /// Approx RGB (0…1) of the dominant foreground color.
     var primaryColorComponents: (r: Double, g: Double, b: Double) {
         let c: SerializableColor

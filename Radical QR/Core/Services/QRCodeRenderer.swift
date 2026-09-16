@@ -3,7 +3,7 @@ import CoreGraphics
 import CoreText
 
 /// Service for rendering QR codes with custom styling (colors, gradients, roundness, logos)
-final class QRCodeRenderer: Sendable {
+nonisolated final class QRCodeRenderer: Sendable {
     private let generator: QRCodeGenerator
 
     init(generator: QRCodeGenerator = QRCodeGenerator()) {
@@ -717,7 +717,7 @@ final class QRCodeRenderer: Sendable {
 
 // MARK: - Preview Helper
 
-extension QRCodeRenderer {
+nonisolated extension QRCodeRenderer {
     /// Generates a preview image at a standard size
     @MainActor
     func preview(

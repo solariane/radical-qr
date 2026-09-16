@@ -235,7 +235,7 @@ struct ShareExtensionView: View {
         }
 
         detectedType = DataTypeDetector.detect(inputText)
-        await generatePreview()
+        generatePreview()
         isLoading = false
     }
 

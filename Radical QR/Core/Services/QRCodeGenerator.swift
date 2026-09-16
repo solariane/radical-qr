@@ -3,7 +3,7 @@ import CoreImage.CIFilterBuiltins
 import SwiftUI
 
 /// Core service for generating QR codes using Core Image
-final class QRCodeGenerator: Sendable {
+nonisolated final class QRCodeGenerator: Sendable {
     private let context: CIContext
 
     init() {
@@ -161,7 +161,7 @@ final class QRCodeGenerator: Sendable {
 // MARK: - Module Matrix
 
 /// Represents the extracted module data from a QR code
-struct QRModuleMatrix: Sendable {
+nonisolated struct QRModuleMatrix: Sendable {
     let modules: [[Bool]]
     let size: Int
 

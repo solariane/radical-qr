@@ -576,10 +576,11 @@ final class ExportService: Sendable {
         }
         #else
         if let uiImage = UIImage(data: data) {
-            // Check if image has alpha
-            let hasAlpha = uiImage.cgImage?.alphaInfo != .none &&
-                           uiImage.cgImage?.alphaInfo != .noneSkipLast &&
-                           uiImage.cgImage?.alphaInfo != .noneSkipFirst
+            // Check if image has alpha. `CGImageAlphaInfo.none` has to be spelled
+            // out: bare `.none` against an optional resolves to `Optional.none`,
+            // which made every opaque logo test as having alpha and embed as PNG.
+            let opaqueAlpha: Set<CGImageAlphaInfo> = [.none, .noneSkipLast, .noneSkipFirst]
+            let hasAlpha = uiImage.cgImage.map { !opaqueAlpha.contains($0.alphaInfo) } ?? false
 
             if hasAlpha {
                 if let pngData = uiImage.pngData() {

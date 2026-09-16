@@ -21,7 +21,7 @@ final class ScannabilityCheckerTests: XCTestCase {
     }
 
     func testPlainBlackCodeIsReliable() {
-        var config = QRCodeConfiguration()   // default: black on white, square
+        let config = QRCodeConfiguration()   // default: black on white, square
         let img = render { $0 = config }
         let result = checker.check(cgImage: img, configuration: config)
         XCTAssertEqual(result.level, .reliable)

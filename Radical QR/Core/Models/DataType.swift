@@ -1,7 +1,7 @@
 import Foundation
 
 /// Detected data types for QR code content
-enum DataType: String, CaseIterable, Identifiable, Sendable {
+nonisolated enum DataType: String, CaseIterable, Identifiable, Sendable {
     case url
     case email
     case phone
@@ -69,7 +69,7 @@ enum DataType: String, CaseIterable, Identifiable, Sendable {
 
 // MARK: - Wi-Fi Configuration
 
-struct WiFiConfiguration: Sendable {
+nonisolated struct WiFiConfiguration: Sendable {
     let ssid: String
     let password: String
     let securityType: SecurityType
@@ -116,7 +116,7 @@ struct WiFiConfiguration: Sendable {
 
 // MARK: - Contact Configuration (vCard)
 
-struct ContactConfiguration: Sendable {
+nonisolated struct ContactConfiguration: Sendable {
     let firstName: String
     let lastName: String
     let organization: String?
@@ -161,7 +161,7 @@ struct ContactConfiguration: Sendable {
 // MARK: - QR Input
 
 /// Represents the input data for QR code generation
-struct QRInput: Sendable, Hashable {
+nonisolated struct QRInput: Sendable, Hashable {
     let content: String
     let detectedType: DataType
 
