@@ -17,6 +17,14 @@
     "eye.style.leaf": "A petal-shaped finder pattern, not foliage and not a page.",
     "eye.style.dot": "The shape of a marker, not punctuation.",
     "style.solid": "A flat colour, not solid matter — Feststoff, 固体, ठोस.",
-    "roundness.sharp": "Corner geometry. Read as the Sharp brand (夏普, シャープ) or as spicy."
+    "roundness.sharp": "Corner geometry. Read as the Sharp brand (夏普, シャープ) or as spicy.",
+    "dataType.icalendar": "A calendar entry, as Apple Calendar names it (Ereignis, 日程, इवेंट) — not a public happening: Veranstaltung, 活动.",
+    "summary.event.dateOnly": "Same word as dataType.icalendar; it must match it.",
+    "event.title.placeholder": "The name of an appointment. Read alone it becomes a legal or academic title.",
+    "event.starts": "Calendar vocabulary (Début, Beginn, 開始) — read alone it is a verb and comes back conjugated.",
+    "event.ends": "Same as event.starts.",
+    "event.allDay": "Apple Calendar's own switch label (Journée entière, Ganztägig, 終日), not a paraphrase.",
+    "event.location.placeholder": "Where an appointment is (Lieu, Ort), not GPS coordinates: Emplacement, Standort.",
+    "event.suggestion.accept": "Must use the same word for event as dataType.icalendar (创建日程, not 创建活动)."
   }
 }

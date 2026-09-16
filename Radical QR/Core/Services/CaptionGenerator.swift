@@ -44,7 +44,7 @@ enum CaptionGenerator {
 
         case .icalendar:
             if let range = content.range(of: "SUMMARY:([^\r\n]+)", options: .regularExpression) {
-                return String(String(content[range]).dropFirst(8)).trimmingCharacters(in: .whitespaces)
+                return EventDraft.unescape(String(String(content[range]).dropFirst(8))).trimmingCharacters(in: .whitespaces)
             }
             return nil
 

@@ -42,11 +42,13 @@ Radical QR/
 │   │   ├── DataType.swift               # Data type detection enum
 │   │   ├── ExportFormat.swift           # Export format enum
 │   │   ├── URLMetadata.swift            # URL/social profile metadata
+│   │   ├── EventDraft.swift             # Editable event ⇄ VEVENT (+ ICalendarDate)
 │   │   └── HistoryItem.swift            # SwiftData model for history
 │   └── Services/
 │       ├── QRCodeGenerator.swift        # Core QR generation (Core Image)
 │       ├── QRCodeRenderer.swift         # Custom rendering with styles
 │       ├── DataTypeDetector.swift       # Auto-detect input type + summarize
+│       ├── EventDetector.swift          # Free text → event draft ("21h mercredi 16/09")
 │       ├── ExportService.swift          # Export to various formats (incl. SVG)
 │       ├── PurchaseManager.swift        # StoreKit 2 wrapper
 │       ├── CaptionGenerator.swift       # Auto-caption from QR content
@@ -58,6 +60,7 @@ Radical QR/
 │   │   ├── GeneratorView.swift          # Main generation interface
 │   │   ├── GeneratorViewModel.swift     # Reactive view model
 │   │   ├── LaunchCard.swift             # Empty state: drop target, field, Paste / File
+│   │   ├── EventEditorCard.swift        # Event editor + "looks like a date" suggestion
 │   │   ├── CustomizationRail.swift      # Icon rail: 5 setting families, one shown at a time
 │   │   ├── ColorGroupView.swift         # Solid, gradient, background
 │   │   ├── ShapeGroupView.swift         # Modules, eyes, eye size
@@ -148,6 +151,26 @@ The app automatically detects and optimizes QR encoding for:
 | iCalendar | `BEGIN:VCALENDAR` / `BEGIN:VEVENT` | Calendar event encoding |
 | Geographic | `geo:` or coordinates | Geo URI |
 | Plain Text | Fallback | Alphanumeric/byte encoding |
+
+### Events from free text
+
+Text (or a "phone number" that is really `16.09.2026`) goes through
+`EventDetector`: `NSDataDetector` finds the date and link on-device, a small
+parser covers 年月日 dates it misses, and what is left becomes the title.
+
+- **High confidence** — a time *and* a day ("21h mercredi 16/09", "demain 14h30"),
+  one date only, not in the past, short title. On a paste/drop/share the input
+  switches to `EventEditorCard` straight away, title focused. Typed input never
+  switches on its own: it only gets the suggestion, after a 600ms pause.
+- **Medium** — a date without time, a time without day, two dates, a longer
+  title → `EventSuggestionBanner` under the code. Its cross (and the editor's
+  "Keep as text") declines that exact text for the session.
+- No digit in the date match, >280 chars or >4 lines → not an event.
+
+The QR content is the `VEVENT` the draft encodes (UTC times, all-day as
+`VALUE=DATE` with an exclusive end), regenerated on every edit.
+`EventDraft(icalendar:)` reads back only blocks it could have written, so an
+imported event with an RRULE or VTIMEZONE is never flattened by editing.
 
 ---
 

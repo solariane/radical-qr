@@ -4370,7 +4370,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Veranstaltung"
+            "value": "Ereignis"
           }
         },
         "en": {
@@ -4394,7 +4394,7 @@
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "कार्यक्रम"
+            "value": "इवेंट"
           }
         },
         "it": {
@@ -4418,7 +4418,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "活动"
+            "value": "日程"
           }
         }
       }
@@ -6187,6 +6187,864 @@
           "stringUnit": {
             "state": "translated",
             "value": "错误"
+          }
+        }
+      }
+    },
+    "event.addLocation": {
+      "comment": "Button: reveal the field for the place of a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إضافة موقع"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Add location"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir ubicación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un lieu"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्थान जोड़ें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi luogo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "場所を追加"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar local"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加位置"
+          }
+        }
+      }
+    },
+    "event.addURL": {
+      "comment": "Button: reveal the field for a web link (e.g. a video call) attached to a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إضافة رابط"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Add link"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir enlace"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un lien"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "लिंक जोड़ें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi link"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクを追加"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar link"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加链接"
+          }
+        }
+      }
+    },
+    "event.allDay": {
+      "comment": "Switch: the calendar event lasts the whole day, with no start or end time.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "طوال اليوم"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganztägig"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "All-day"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo el día"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Journée entière"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूरे दिन"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto il giorno"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終日"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dia inteiro"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全天"
+          }
+        }
+      }
+    },
+    "event.clear": {
+      "comment": "Accessibility label: erase the content being encoded and start over.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مسح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Löschen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Clear"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Borrar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Effacer"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साफ़ करें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancella"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "消去"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除"
+          }
+        }
+      }
+    },
+    "event.ends": {
+      "comment": "Label before the end date and time of a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الانتهاء"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ende"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Ends"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termina"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fin"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "समाप्ति"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fine"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "終了"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Término"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "结束"
+          }
+        }
+      }
+    },
+    "event.keepAsText": {
+      "comment": "Button: undo the automatic conversion of pasted text into a calendar event, and encode the original text instead.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإبقاء كنص"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Text behalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Keep as text"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantener como texto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garder en texte"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टेक्स्ट ही रखें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantieni come testo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テキストのままにする"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manter como texto"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留为文本"
+          }
+        }
+      }
+    },
+    "event.location.placeholder": {
+      "comment": "Placeholder: where a calendar event takes place — an address or a venue, as in Apple Calendar.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الموقع"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ort"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Location"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ubicación"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lieu"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्थान"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Luogo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "場所"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Localização"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
+          }
+        }
+      }
+    },
+    "event.starts": {
+      "comment": "Label before the start date and time of a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "البدء"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beginn"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Starts"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empieza"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Début"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "आरंभ"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inizio"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開始"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Início"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开始"
+          }
+        }
+      }
+    },
+    "event.suggestion.accept": {
+      "comment": "Button: turn the entered text into a calendar event (appointment) that the QR code adds to the calendar.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إنشاء حدث"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ereignis erstellen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Make an event"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crear evento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Créer un événement"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इवेंट बनाएँ"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crea evento"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "イベントを作成"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criar evento"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建日程"
+          }
+        }
+      }
+    },
+    "event.suggestion.dismiss": {
+      "comment": "Accessibility label: decline turning the entered text into a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الإبقاء كنص"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Als Text behalten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Keep as text"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantener como texto"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Garder en texte"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "टेक्स्ट ही रखें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mantieni come testo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テキストのままにする"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manter como texto"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留为文本"
+          }
+        }
+      }
+    },
+    "event.suggestion.title": {
+      "comment": "Hint under the QR code: the text the user entered contains a date or time and could become a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يبدو أنه تاريخ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sieht aus wie ein Datum"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Looks like a date"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parece una fecha"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On dirait une date"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह एक तारीख़ लगती है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sembra una data"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日時が含まれています"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parece uma data"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "看起来像日期"
+          }
+        }
+      }
+    },
+    "event.title.placeholder": {
+      "comment": "Placeholder: the name of a calendar appointment, e.g. “Dinner with Marie”.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "العنوان"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titel"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Title"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titre"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "शीर्षक"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titolo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "タイトル"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Título"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "标题"
+          }
+        }
+      }
+    },
+    "event.url.placeholder": {
+      "comment": "Placeholder: a web address attached to a calendar event, such as a video-call link.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عنوان URL"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "URL"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL"
           }
         }
       }
@@ -22572,13 +23430,13 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "الحدث على %@"
+            "value": "حدث في %@"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Veranstaltung am %@"
+            "value": "Ereignis am %@"
           }
         },
         "en": {
@@ -22602,7 +23460,7 @@
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ पर कार्यक्रम"
+            "value": "%@ को इवेंट"
           }
         },
         "it": {
@@ -22626,7 +23484,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "活动 %@"
+            "value": "日程：%@"
           }
         }
       }

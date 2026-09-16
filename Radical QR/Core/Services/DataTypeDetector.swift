@@ -361,10 +361,9 @@ nonisolated extension DataTypeDetector {
             for line in fullText.components(separatedBy: .newlines) {
                 let l = line.trimmingCharacters(in: .whitespaces)
                 if l.hasPrefix("SUMMARY:") {
-                    eventSummary = String(l.dropFirst(8)).trimmingCharacters(in: .whitespaces)
-                } else if l.hasPrefix("DTSTART"), let colonIdx = l.firstIndex(of: ":") {
-                    let dateValue = String(l[l.index(after: colonIdx)...]).trimmingCharacters(in: .whitespaces)
-                    startDate = formatICalendarDate(dateValue)
+                    eventSummary = EventDraft.unescape(String(l.dropFirst(8))).trimmingCharacters(in: .whitespaces)
+                } else if l.hasPrefix("DTSTART") {
+                    startDate = formatICalendarDate(l)
                 }
             }
 
@@ -395,45 +394,14 @@ nonisolated extension DataTypeDetector {
             return "\(trimmed.prefix(47))..."
         }
     }
-    /// Formats an iCalendar date string into a human-readable format
-    /// Handles formats like: 20240115, 20240115T090000, 20240115T090000Z
-    private static func formatICalendarDate(_ dateString: String) -> String? {
-        // Remove any timezone suffix (Z or +/-offset)
-        var cleanDate = dateString.replacingOccurrences(of: "Z", with: "")
-        if let plusIndex = cleanDate.firstIndex(of: "+") {
-            cleanDate = String(cleanDate[..<plusIndex])
-        }
-        if let minusIndex = cleanDate.lastIndex(of: "-"), cleanDate.distance(from: minusIndex, to: cleanDate.endIndex) <= 5 {
-            cleanDate = String(cleanDate[..<minusIndex])
-        }
-
-        // Remove time component if present (after T)
-        if let tIndex = cleanDate.firstIndex(of: "T") {
-            cleanDate = String(cleanDate[..<tIndex])
-        }
-
-        // Parse YYYYMMDD format
-        guard cleanDate.count == 8,
-              let year = Int(cleanDate.prefix(4)),
-              let month = Int(cleanDate.dropFirst(4).prefix(2)),
-              let day = Int(cleanDate.dropFirst(6).prefix(2)) else {
-            return nil
-        }
-
-        // Create date components and format
-        var components = DateComponents()
-        components.year = year
-        components.month = month
-        components.day = day
-
-        guard let date = Calendar.current.date(from: components) else {
-            return nil
-        }
-
+    /// Formats a `DTSTART` line for display: the day alone for an all-day
+    /// event, day and time otherwise, converted from UTC or its `TZID`.
+    private static func formatICalendarDate(_ line: String) -> String? {
+        guard let parsed = ICalendarDate.parse(line) else { return nil }
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter.string(from: date)
+        formatter.timeStyle = parsed.isAllDay ? .none : .short
+        return formatter.string(from: parsed.date)
     }
 }
 

@@ -28,6 +28,16 @@ final class GeneratorViewModel: ObservableObject {
     /// Current error if any
     @Published var error: GeneratorError?
 
+    /// The event being edited, when the input is one — the QR content is
+    /// regenerated from it on every change.
+    @Published private(set) var eventDraft: EventDraft?
+
+    /// A date found in the text but not clearly enough to switch on our own.
+    @Published private(set) var eventSuggestion: EventDraft?
+
+    /// Bumped when the input just turned into an event, so the view opens the editor.
+    @Published private(set) var eventEditorRequest = 0
+
     // MARK: - Services
 
     private let generator = QRCodeGenerator()
@@ -39,6 +49,17 @@ final class GeneratorViewModel: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
     private var generateTask: Task<Void, Never>?
+    private var eventDetectionTask: Task<Void, Never>?
+
+    /// The text an event was made from, restored by "Keep as text".
+    private(set) var eventSourceText: String?
+    /// Texts the user chose to keep as text — never offered again this session.
+    private var declinedEventSources: Set<String> = []
+    /// The last VEVENT we wrote, so our own writes are not re-analysed.
+    private var lastEncodedEvent: String?
+
+    /// Typed text waits for a pause before a suggestion appears.
+    private let typingDetectionDelay: Duration = .milliseconds(600)
 
     // Preview size for live preview
     private let previewSize: CGFloat = 300
@@ -106,6 +127,14 @@ final class GeneratorViewModel: ObservableObject {
     // MARK: - Setup
 
     private func setupBindings() {
+        // Read before the change lands: `inputText` still holds the old value here.
+        $inputText
+            .removeDuplicates()
+            .sink { [weak self] text in
+                self?.inputWillChange(to: text)
+            }
+            .store(in: &cancellables)
+
         // Detect data type as user types
         $inputText
             .map { text -> DataType in
@@ -280,6 +309,88 @@ final class GeneratorViewModel: ObservableObject {
     func clearInput() {
         inputText = ""
         previewImage = nil
+    }
+
+    // MARK: - Events
+
+    /// Decides whether new input is, might be, or has stopped being an event.
+    private func inputWillChange(to text: String) {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmed != lastEncodedEvent else { return }
+
+        let previous = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        eventDetectionTask?.cancel()
+        eventSuggestion = nil
+        eventDraft = nil
+        eventSourceText = nil
+        lastEncodedEvent = nil
+        guard !trimmed.isEmpty else { return }
+
+        let type = DataTypeDetector.detect(trimmed)
+        if type == .icalendar {
+            // From history, a file or a share: editable when we could have written it.
+            eventDraft = EventDraft(icalendar: trimmed)
+            return
+        }
+        guard type == .text || type == .phone, !declinedEventSources.contains(trimmed) else { return }
+
+        // Same rule the scroll anchoring uses: a paste, drop or share arrives whole.
+        let arrivedWhole = previous.isEmpty || abs(trimmed.count - previous.count) > 5
+        eventDetectionTask = Task { [weak self, typingDetectionDelay] in
+            if !arrivedWhole {
+                try? await Task.sleep(for: typingDetectionDelay)
+            } else {
+                await Task.yield()
+            }
+            guard !Task.isCancelled, let self,
+                  self.inputText.trimmingCharacters(in: .whitespacesAndNewlines) == trimmed,
+                  let detection = EventDetector.detect(in: trimmed, requireFullCoverage: type == .phone) else { return }
+
+            if detection.confidence == .high && arrivedWhole {
+                self.applyEvent(detection.draft, from: trimmed)
+            } else {
+                self.eventSuggestion = detection.draft
+            }
+        }
+    }
+
+    /// Turns the offered suggestion into the event being edited.
+    func acceptEventSuggestion() {
+        guard let draft = eventSuggestion else { return }
+        applyEvent(draft, from: inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+    }
+
+    func dismissEventSuggestion() {
+        declinedEventSources.insert(inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+        eventSuggestion = nil
+    }
+
+    func updateEventDraft(_ draft: EventDraft) {
+        guard eventDraft != nil else { return }
+        eventDraft = draft
+        encode(draft)
+    }
+
+    /// Puts back what was pasted and stops reading it as an event.
+    func keepAsText() {
+        guard let source = eventSourceText else { return }
+        declinedEventSources.insert(source)
+        lastEncodedEvent = nil
+        inputText = source
+    }
+
+    private func applyEvent(_ draft: EventDraft, from source: String) {
+        eventSuggestion = nil
+        eventDraft = draft
+        encode(draft)
+        eventSourceText = source
+        eventEditorRequest += 1
+    }
+
+    private func encode(_ draft: EventDraft) {
+        let content = draft.icalendar
+        lastEncodedEvent = content
+        inputText = content
     }
 
     // MARK: - History

@@ -123,6 +123,10 @@ struct GeneratorView: View {
                 dismissButton: .default(Text(String(localized: "error.dismiss", defaultValue: "OK")))
             )
         }
+        .onChange(of: viewModel.eventEditorRequest) { _, _ in
+            // Pasted text just became an event: open it, the title is still to write.
+            withAnimation(.easeInOut(duration: 0.25)) { isEditingInput = true }
+        }
         .onChange(of: deepLinkHandler.pendingContent) { _, newContent in
             guard let content = newContent else { return }
             Task { @MainActor in
@@ -176,7 +180,7 @@ struct GeneratorView: View {
                         Group {
                             if viewModel.hasValidInput {
                                 // Re-editing content that already parses: just the field.
-                                inputSection
+                                editorSection
                             } else {
                                 launchCard
                             }
@@ -227,7 +231,7 @@ struct GeneratorView: View {
                 HStack(alignment: .top, spacing: metrics.sectionGap) {
                     VStack(spacing: metrics.sectionGap) {
                         if showsInputZone {
-                            inputSection
+                            editorSection
                                 .transition(.opacity.combined(with: .move(edge: .top)))
                         }
                         previewCard
@@ -330,6 +334,22 @@ struct GeneratorView: View {
 
     // MARK: - Input
 
+    /// The event editor when the content is an event, the plain field otherwise.
+    @ViewBuilder
+    private var editorSection: some View {
+        if let draft = viewModel.eventDraft {
+            EventEditorCard(
+                draft: draft,
+                onChange: { viewModel.updateEventDraft($0) },
+                onKeepAsText: viewModel.eventSourceText == nil ? nil : { viewModel.keepAsText() },
+                onClear: { viewModel.clearInput() }
+            )
+            .id(inputAnchorID)
+        } else {
+            inputSection
+        }
+    }
+
     private var inputSection: some View {
         InputZone(
             text: $viewModel.inputText,
@@ -401,6 +421,15 @@ struct GeneratorView: View {
             scannabilityWarning
                 .animation(.easeInOut(duration: 0.25), value: viewModel.scannability)
 
+            if let suggestion = viewModel.eventSuggestion {
+                EventSuggestionBanner(
+                    draft: suggestion,
+                    onAccept: { viewModel.acceptEventSuggestion() },
+                    onDismiss: { withAnimation { viewModel.dismissEventSuggestion() } }
+                )
+                .transition(.opacity)
+            }
+
             contentPill
         }
         .frame(maxWidth: .infinity)
@@ -455,7 +484,7 @@ struct GeneratorView: View {
                     .frame(width: 20)
 
                 VStack(alignment: .leading, spacing: 1) {
-                    Text(viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines))
+                    Text(pillTitle)
                         .font(.subheadline.weight(.medium))
                         .lineLimit(1)
                         .truncationMode(.middle)
@@ -484,10 +513,21 @@ struct GeneratorView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(String(localized: "generator.editContent", defaultValue: "Edit content"))
-        .accessibilityValue(viewModel.inputText)
+        .accessibilityValue(pillTitle)
+    }
+
+    /// A VEVENT or vCard blob reads as "BEGIN:VEVENT" — show its summary instead.
+    private var pillTitle: String {
+        if let detail = viewModel.inputSummaryOverride?.detail, !detail.isEmpty {
+            return detail
+        }
+        return viewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     private var contentDetail: String? {
+        if viewModel.inputSummaryOverride?.detail?.isEmpty == false {
+            return viewModel.detectedDataType.displayName
+        }
         if let platform = viewModel.urlMetadata?.platform {
             return platform
         }

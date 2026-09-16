@@ -74,6 +74,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Core/Models/DataType.swift,
+				Core/Models/EventDraft.swift,
 				Core/Models/ExportFormat.swift,
 				Core/Models/QRCodeConfiguration.swift,
 				Core/Models/URLMetadata.swift,
