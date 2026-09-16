@@ -61,6 +61,66 @@ final class EventDetectorTests: XCTestCase {
         XCTAssertEqual(detection.confidence, .medium)
     }
 
+    // MARK: - Address
+
+    func testAddressBecomesTheLocation() throws {
+        let detection = try XCTUnwrap(
+            EventDetector.detect(in: "rdv lundi 10h chez Paul, 12 rue de Rivoli 75001 Paris", now: now)
+        )
+        XCTAssertEqual(detection.draft.location, "12 rue de Rivoli 75001 Paris")
+        XCTAssertEqual(detection.draft.title, "rdv chez Paul")
+    }
+
+    func testMultilineAddressIsJoinedAndDoesNotCountAsProse() throws {
+        let detection = try XCTUnwrap(
+            EventDetector.detect(in: "Dîner chez Marie\n12 rue de Rivoli\n75001 Paris\nsamedi 20h", now: now)
+        )
+        XCTAssertEqual(detection.draft.location, "12 rue de Rivoli, 75001 Paris")
+        XCTAssertEqual(detection.draft.title, "Dîner chez Marie")
+        XCTAssertEqual(detection.confidence, .high)
+    }
+
+    func testWeekdayTakenByTheAddressGoesBackToTheDate() throws {
+        let detection = try XCTUnwrap(
+            EventDetector.detect(in: "Dinner at 221B Baker Street, London Friday 8pm", now: now)
+        )
+        XCTAssertEqual(detection.draft.location, "221B Baker Street, London")
+        XCTAssertEqual(detection.draft.title, "Dinner")
+        let start = Calendar.current.dateComponents([.weekday, .hour], from: detection.draft.start)
+        XCTAssertEqual([start.weekday, start.hour], [6, 20])
+    }
+
+    func testAddressAfterTheDate() throws {
+        let detection = try XCTUnwrap(
+            EventDetector.detect(in: "Apéro 16/09/2099 19h au 5 place de la République, Lyon", now: now)
+        )
+        XCTAssertEqual(detection.draft.location, "5 place de la République, Lyon")
+        XCTAssertEqual(detection.draft.title, "Apéro")
+    }
+
+    func testHouseNumberIsNotReadAsMinutes() throws {
+        let detection = try XCTUnwrap(EventDetector.detect(in: "16/09/2099 21h 10 rue de la Paix", now: now))
+        XCTAssertEqual(detection.draft.location, "10 rue de la Paix")
+        XCTAssertEqual(Calendar.current.dateComponents([.hour, .minute], from: detection.draft.start).minute, 0)
+        // Without a street after it, "21h 10" is ten past nine.
+        let plain = try XCTUnwrap(EventDetector.detect(in: "16/09/2099 21h 10", now: now))
+        XCTAssertEqual(Calendar.current.dateComponents([.minute], from: plain.draft.start).minute, 10)
+    }
+
+    func testSpanishAddressAndGlueWord() throws {
+        let detection = try XCTUnwrap(
+            EventDetector.detect(in: "Cena en Calle de Alcalá 42, 28014 Madrid viernes 21:00", now: now)
+        )
+        XCTAssertEqual(detection.draft.title, "Cena")
+        XCTAssertEqual(detection.draft.location, "Calle de Alcalá 42, 28014 Madrid")
+    }
+
+    func testNoAddressLeavesTheLocationEmpty() throws {
+        let detection = try XCTUnwrap(EventDetector.detect(in: "Réunion salle 3 bâtiment B 16/09/2099 10h", now: now))
+        XCTAssertEqual(detection.draft.location, "")
+        XCTAssertEqual(detection.draft.title, "Réunion salle 3 bâtiment B")
+    }
+
     // MARK: - Not events
 
     func testProseWithoutDigitsIsIgnored() {

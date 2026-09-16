@@ -18,8 +18,8 @@ nonisolated struct EventDetection: Equatable, Sendable {
 /// Dates are found by `NSDataDetector` — on-device, no network — which reads
 /// English, French, German, Spanish, Italian and Portuguese phrasing and
 /// numeric dates in any script. It does not read 年月日 dates, so those have
-/// a small parser of their own. Whatever the date and link leave behind
-/// becomes the title.
+/// a small parser of their own. A street address becomes the location, and
+/// whatever the date, address and link leave behind becomes the title.
 nonisolated enum EventDetector {
     /// Long pasted prose that happens to mention a date is not an event.
     private static let maxInputLength = 280
@@ -34,17 +34,20 @@ nonisolated enum EventDetector {
         let nsText = text as NSString
         let fullRange = NSRange(location: 0, length: nsText.length)
 
-        guard let found = CJKDateParser.find(in: text, now: now) ?? detectorDate(in: text, range: fullRange) else {
+        guard var found = CJKDateParser.find(in: text, now: now) ?? detectorDate(in: text, range: fullRange) else {
             return nil
         }
+        // Before reading the date: the address may hand back words it took from it.
+        let address = firstAddress(in: text, range: fullRange, date: &found)
 
         let matchedText = nsText.substring(with: found.range)
         // A date needs a number to be one: "demain" alone in "merci pour demain" is prose.
         guard matchedText.rangeOfCharacter(from: .decimalDigits) != nil else { return nil }
 
         var coveredRanges = [found.range]
-        let link = firstLink(in: text, range: fullRange, excluding: found.range)
+        let link = firstLink(in: text, range: fullRange, excluding: [found.range] + (address.map { [$0.range] } ?? []))
         if let link { coveredRanges.append(link.range) }
+        if let address { coveredRanges.append(address.range) }
 
         let dateCoverage = Double(nonSpaceCount(matchedText)) / Double(max(nonSpaceCount(text), 1))
         if requireFullCoverage && dateCoverage < 0.9 { return nil }
@@ -55,10 +58,15 @@ nonisolated enum EventDetector {
             duration: found.duration,
             hasTime: hasTime,
             title: TitleCleaner.title(from: text, removing: coveredRanges),
+            location: address?.location ?? "",
             url: link?.url.absoluteString ?? ""
         )
 
-        let lineCount = text.components(separatedBy: .newlines).filter { !$0.isEmpty }.count
+        // An address pasted from a signature spans two or three lines on its own;
+        // it should not make the text look like prose.
+        let textWithoutAddress = address.map { nsText.replacingCharacters(in: $0.range, with: " ") } ?? text
+        let lineCount = textWithoutAddress.components(separatedBy: .newlines)
+            .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }.count
         guard draft.title.count <= maxSuggestedTitle, lineCount <= 4 else { return nil }
 
         let startOfToday = Calendar.current.startOfDay(for: now)
@@ -88,11 +96,27 @@ nonisolated enum EventDetector {
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue) else {
             return nil
         }
-        let matches = detector.matches(in: text, range: range).filter { $0.date != nil }
+        var matches = detector.matches(in: text, range: range).filter { $0.date != nil }
+        var offset = 0
+        if matches.isEmpty {
+            // The detector can lose a plain date to what precedes it: "salle 3 bâtiment B
+            // 16/09 10h" finds nothing, "16/09 10h" is found. Retry without the leading words.
+            let words = wordPattern?.matches(in: text, range: range).dropFirst().prefix(12) ?? []
+            for word in words {
+                let suffix = (text as NSString).substring(from: word.range.location)
+                let found = detector.matches(in: suffix, range: NSRange(location: 0, length: (suffix as NSString).length))
+                    .filter { $0.date != nil }
+                if !found.isEmpty {
+                    matches = found
+                    offset = word.range.location
+                    break
+                }
+            }
+        }
         guard let longest = matches.max(by: { $0.range.length < $1.range.length }),
               let date = longest.date else { return nil }
         return FoundDate(
-            range: longest.range,
+            range: NSRange(location: longest.range.location + offset, length: longest.range.length),
             date: date,
             duration: longest.duration,
             hasTime: nil,
@@ -100,28 +124,148 @@ nonisolated enum EventDetector {
         )
     }
 
-    private static func firstLink(in text: String, range: NSRange, excluding dateRange: NSRange) -> (range: NSRange, url: URL)? {
+    private static let wordPattern = try? NSRegularExpression(pattern: #"\S+"#)
+
+    /// Drops the spaces and punctuation a range ends with.
+    private static func trimmingTrailingPunctuation(_ range: NSRange, in text: NSString) -> NSRange {
+        var trimmed = range
+        while trimmed.length > 0,
+              let last = Unicode.Scalar(text.character(at: NSMaxRange(trimmed) - 1)),
+              TitleCleaner.edgePunctuation.contains(last) {
+            trimmed.length -= 1
+        }
+        return trimmed
+    }
+
+    /// Reads `text` as a date only if the detector takes all of it.
+    private static func wholeDate(_ text: String) -> NSTextCheckingResult? {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue) else {
+            return nil
+        }
+        let whole = NSRange(location: 0, length: (text as NSString).length)
+        return detector.matches(in: text, range: whole).first { $0.range == whole && $0.date != nil }
+    }
+
+    private static func firstLink(in text: String, range: NSRange, excluding taken: [NSRange]) -> (range: NSRange, url: URL)? {
         guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
             return nil
         }
         for match in detector.matches(in: text, range: range) {
             guard let url = match.url,
                   let scheme = url.scheme?.lowercased(), scheme == "http" || scheme == "https",
-                  NSIntersectionRange(match.range, dateRange).length == 0 else { continue }
+                  !taken.contains(where: { NSIntersectionRange(match.range, $0).length > 0 }) else { continue }
             return (match.range, url)
         }
         return nil
     }
 
-    private static func makeDraft(date: Date, duration: TimeInterval, hasTime: Bool, title: String, url: String) -> EventDraft {
+    /// The first street address that is not the date itself, written on one line.
+    ///
+    /// The address detector reads greedily: in "221B Baker Street, London Friday 8pm"
+    /// it takes "London Friday" for the city and leaves the date only "8pm". When
+    /// the address's last words and the date that follows read as one date, they
+    /// go back to the date.
+    private static func firstAddress(in text: String, range: NSRange, date: inout FoundDate) -> (range: NSRange, location: String)? {
+        guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.address.rawValue) else {
+            return nil
+        }
+        let nsText = text as NSString
+        if let lent = houseNumberTakenByDate(in: nsText, date: date, detector: detector) {
+            date = lent.date
+            return (lent.address, singleLine(nsText.substring(with: lent.address)))
+        }
+        for match in detector.matches(in: text, range: range) {
+            guard NSIntersectionRange(match.range, date.range).length == 0 else { continue }
+            var addressRange = match.range
+            if date.hasTime == nil, let reclaimed = reclaimDateWords(in: nsText, address: addressRange, date: date) {
+                addressRange = reclaimed.address
+                date = reclaimed.date
+            }
+            let location = singleLine(nsText.substring(with: addressRange))
+            guard !location.isEmpty else { continue }
+            return (addressRange, location)
+        }
+        return nil
+    }
+
+    /// "12 rue de Rivoli⏎75001 Paris" → "12 rue de Rivoli, 75001 Paris".
+    private static func singleLine(_ address: String) -> String {
+        address
+            .components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: TitleCleaner.edgePunctuation) }
+            .filter { !$0.isEmpty }
+            .joined(separator: ", ")
+            .split(whereSeparator: { $0 == " " || $0 == "\t" })
+            .joined(separator: " ")
+    }
+
+    /// The other greedy reading: in "16/09 21h 10 rue de la Paix" the date takes the
+    /// house number for minutes (21:10). When an address starts at the date's last
+    /// word and the rest still reads as a date, the number goes to the address.
+    private static func houseNumberTakenByDate(
+        in text: NSString, date: FoundDate, detector: NSDataDetector
+    ) -> (address: NSRange, date: FoundDate)? {
+        guard date.hasTime == nil,
+              let last = wordPattern?.matches(in: text as String, range: date.range).last,
+              last.range.location > date.range.location,
+              text.substring(with: last.range).allSatisfy(\.isNumber) else { return nil }
+
+        let tail = NSRange(location: last.range.location, length: text.length - last.range.location)
+        let tailText = text.substring(with: tail)
+        guard let address = detector.matches(in: tailText, range: NSRange(location: 0, length: tail.length))
+                .first(where: { $0.range.location == 0 }) else { return nil }
+
+        let shortened = trimmingTrailingPunctuation(
+            NSRange(location: date.range.location, length: last.range.location - date.range.location), in: text
+        )
+        guard shortened.length > 0,
+              let match = wholeDate(text.substring(with: shortened)),
+              let newDate = match.date else { return nil }
+
+        return (
+            NSRange(location: tail.location, length: address.range.length),
+            FoundDate(range: shortened, date: newDate, duration: match.duration, hasTime: nil, alternatives: date.alternatives)
+        )
+    }
+
+    private static func reclaimDateWords(in text: NSString, address: NSRange, date: FoundDate) -> (address: NSRange, date: FoundDate)? {
+        let addressEnd = NSMaxRange(address)
+        guard addressEnd <= date.range.location,
+              text.substring(with: NSRange(location: addressEnd, length: date.range.location - addressEnd))
+                .trimmingCharacters(in: .whitespaces).isEmpty,
+              let wordPattern else {
+            return nil
+        }
+        // At most the last two words: a weekday, or "next Friday".
+        let words = wordPattern.matches(in: text as String, range: address).suffix(2)
+        for word in words where word.range.location > address.location {
+            let candidate = NSRange(location: word.range.location, length: NSMaxRange(date.range) - word.range.location)
+            guard let match = wholeDate(text.substring(with: candidate)), let newDate = match.date else { continue }
+
+            // What stays an address, minus the comma or space that led into the date.
+            let kept = trimmingTrailingPunctuation(
+                NSRange(location: address.location, length: word.range.location - address.location), in: text
+            )
+            guard kept.length > 0 else { return nil }
+            let found = FoundDate(
+                range: candidate, date: newDate, duration: match.duration, hasTime: nil, alternatives: date.alternatives
+            )
+            return (kept, found)
+        }
+        return nil
+    }
+
+    private static func makeDraft(
+        date: Date, duration: TimeInterval, hasTime: Bool, title: String, location: String, url: String
+    ) -> EventDraft {
         let calendar = Calendar.current
         if hasTime {
             let end = date.addingTimeInterval(duration > 0 ? duration : EventDraft.defaultDuration)
-            return EventDraft(title: title, start: date, end: end, isAllDay: false, url: url)
+            return EventDraft(title: title, start: date, end: end, isAllDay: false, location: location, url: url)
         }
         let day = calendar.startOfDay(for: date)
         let lastDay = calendar.startOfDay(for: date.addingTimeInterval(max(duration, 0)))
-        return EventDraft(title: title, start: day, end: max(lastDay, day), isAllDay: true, url: url)
+        return EventDraft(title: title, start: day, end: max(lastDay, day), isAllDay: true, location: location, url: url)
     }
 
     private static func nonSpaceCount(_ text: String) -> Int {
@@ -184,13 +328,13 @@ nonisolated enum TitleCleaner {
     private static let edgeWords: Set<String> = [
         "le", "la", "à", "a", "au", "du", "de", "des", "ce", "pour",
         "on", "at", "the", "in", "from",
-        "am", "um", "ab", "den", "vom",
-        "el", "los", "las", "para",
+        "am", "um", "ab", "den", "vom", "im", "an",
+        "el", "en", "los", "las", "para",
         "il", "alle", "dalle", "per",
         "em", "às", "no", "na"
     ]
 
-    private static let edgePunctuation = CharacterSet.whitespacesAndNewlines
+    static let edgePunctuation = CharacterSet.whitespacesAndNewlines
         .union(CharacterSet(charactersIn: ",;:–—-·|/@()[]•.!?"))
 
     static func title(from text: String, removing ranges: [NSRange]) -> String {

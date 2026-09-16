@@ -155,8 +155,17 @@ The app automatically detects and optimizes QR encoding for:
 ### Events from free text
 
 Text (or a "phone number" that is really `16.09.2026`) goes through
-`EventDetector`: `NSDataDetector` finds the date and link on-device, a small
-parser covers 年月日 dates it misses, and what is left becomes the title.
+`EventDetector`: `NSDataDetector` finds the date, street address and link
+on-device, a small parser covers 年月日 dates it misses, the address becomes
+the location (on one line) and what is left becomes the title.
+
+Both detectors read greedily, and the detector corrects the two collisions:
+an address that swallowed the weekday ("London **Friday** 8pm") gives it back
+to the date, and a date that took a house number as minutes ("21h **10** rue
+de la Paix") gives it to the address. When nothing is found, it retries
+without the leading words ("salle 3 bâtiment B 16/09 10h" hides the date).
+Known misses: a German noun before the street joins it ("Treffen Hauptstraße 5"),
+and Japanese/Chinese addresses are not detected.
 
 - **High confidence** — a time *and* a day ("21h mercredi 16/09", "demain 14h30"),
   one date only, not in the past, short title. On a paste/drop/share the input
