@@ -26,7 +26,8 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 |---|---|
 | [`00-growth-plan.md`](00-growth-plan.md) | La stratégie globale + les KPI. **Vue d'ensemble.** |
 | [`01-aso-audit.md`](01-aso-audit.md) | Audit de la fiche App Store + textes optimisés prêts à coller |
-| [`02-video-scripts.md`](02-video-scripts.md) | 10 storyboards vidéo faceless + setup de tournage |
+| [`02-video-scripts.md`](02-video-scripts.md) | 10 storyboards vidéo faceless (réseaux sociaux) + setup de tournage |
+| [`06-app-preview-videos.md`](06-app-preview-videos.md) | 2 storyboards **App Preview** (vidéos App Store, autoplay recherche → tap-through) |
 | [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads (référence stratégique) |
 | [`04-campaign-setup-US.md`](04-campaign-setup-US.md) | **Runbook exécutable — USA, marché n°1** (50 €/mois) ← à lancer en premier |
 | [`05-campaign-setup-FR.md`](05-campaign-setup-FR.md) | Runbook France — marché secondaire, à lancer plus tard |
