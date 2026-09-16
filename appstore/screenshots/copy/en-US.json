@@ -179,5 +179,19 @@
       "Four of your own styles, one tap away",
       "from the generator."
     ]
+  },
+  "paste": {
+    "headline": [
+      "Paste it as written.",
+      "The form fills itself in."
+    ],
+    "subtitle": [
+      "An appointment, a Wi-Fi card, a signature",
+      "or an address becomes the right code."
+    ],
+    "pastedLabel": "Pasted",
+    "pastedExample": "Dinner Saturday 8pm, 350 Fifth Avenue, New York",
+    "exampleTitle": "Dinner",
+    "exampleLocation": "350 Fifth Avenue, New York"
   }
 }

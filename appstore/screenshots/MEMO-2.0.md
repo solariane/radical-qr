@@ -60,10 +60,11 @@ qu'il faut mettre à jour — pas chaque scène.
 
 ## Les scènes
 
-| iPhone (7) | iPad (5) | Mac (5) |
+| iPhone (8) | iPad (5) | Mac (5) |
 |---|---|---|
 | `01-hero` | `p01-hero` | `m01-hero` |
 | `02-launch` — écran de lancement | `p02-brand` — logo + légende | `m02-services` — clic droit |
+| `02b-paste` — **2.1** : texte collé → formulaire d'événement | | |
 | `03-duplicate` — **nouveau** | `p03-customization` | `m03-customization` |
 | `04-customization` | `p04-duplicate` — **nouveau** | `m04-history` |
 | `05-brand` — logo + légende | `p05-privacy` | `m05-privacy` |
@@ -71,6 +72,18 @@ qu'il faut mettre à jour — pas chaque scène.
 | `07-privacy` | | |
 
 App Store Connect n'affiche que 10 captures par appareil : il reste de la marge.
+
+**`02b-paste` (2.1)** — nommé ainsi pour arriver 3ᵉ, dans les trois captures
+visibles en résultat de recherche. Deux règles propres à cette scène :
+
+- Les libellés d'interface (« Début », « Journée entière », « Garder en texte »…)
+  ne sont pas dans `copy/` : `lib/app-strings.mjs` les lit dans
+  `Localizable.xcstrings`, par la clé Swift. Ils ne peuvent donc pas diverger de
+  l'app, dans aucune langue. Les dates passent par `Intl` dans la locale.
+- L'exemple collé (`pastedExample`, `exampleTitle`, `exampleLocation`) est dans
+  `NEVER_TRANSLATE` : c'est une promesse que l'app le reconnaît, vérifiée en
+  en-US et fr-FR seulement. Les autres langues montrent l'exemple anglais.
+  Pour en ajouter un, le passer d'abord dans `EventDetector`.
 
 ## Les textes
 

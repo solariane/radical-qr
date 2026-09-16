@@ -111,5 +111,14 @@
   "styles": {
     "headline": ["Enregistrez un style.", "Réutilisez-le toujours."],
     "subtitle": ["Quatre styles à vous, à un geste", "depuis le générateur."]
+  },
+
+  "paste": {
+    "headline": ["Collez-le tel quel.", "Le formulaire se remplit."],
+    "subtitle": ["Un rendez-vous, un accès Wi-Fi, une signature", "ou une adresse devient le bon code."],
+    "pastedLabel": "Collé",
+    "pastedExample": "Dîner samedi 20h, 12 rue de Rivoli, Paris",
+    "exampleTitle": "Dîner",
+    "exampleLocation": "12 rue de Rivoli, Paris"
   }
 }

@@ -128,6 +128,20 @@ const PATHS = {
     <path d="M58 42 A18 18 0 0 1 58 66 L42 82 A18 18 0 0 1 16 56 L26 46"
       fill="none" stroke="CURRENT" stroke-width="${w}" stroke-linecap="round"/>`,
 
+  // Content forms (EditorCardChrome, EventEditorCard)
+  calendar: (w) => `
+    <rect x="10" y="16" width="80" height="74" rx="14" fill="none" stroke="CURRENT" stroke-width="${w}"/>
+    <path d="M10 38 H90" stroke="CURRENT" stroke-width="${w}"/>
+    <path d="M30 8 V24 M70 8 V24" stroke="CURRENT" stroke-width="${w}" stroke-linecap="round"/>
+    ${[30, 50, 70].flatMap((x) => [54, 72].map((y) => `<circle cx="${x}" cy="${y}" r="5" fill="CURRENT"/>`)).join("")}`,
+
+  "xmark.circle.fill": () => `
+    <circle cx="50" cy="50" r="46" fill="CURRENT"/>
+    <path d="M35 35 L65 65 M65 35 L35 65" stroke="#ffffff" stroke-width="9" stroke-linecap="round"/>`,
+
+  plus: (w) => `
+    <path d="M50 16 V84 M16 50 H84" stroke="CURRENT" stroke-width="${w}" stroke-linecap="round"/>`,
+
   // macOS sidebar
   qrcode: () => `
     <rect x="8" y="8" width="26" height="26" rx="3" fill="none" stroke="CURRENT" stroke-width="8"/>

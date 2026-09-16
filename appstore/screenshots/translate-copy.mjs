@@ -57,6 +57,11 @@ const NEVER_TRANSLATE = new Set([
   "readValue",        // a URL shown inside a mockup
   "captionValue",     // ditto
   "selection",        // ditto
+  // A pasted example is a claim that the app reads it. en-US and fr-FR were run
+  // through the detectors; a machine translation of them has not been.
+  "pastedExample",
+  "exampleTitle",
+  "exampleLocation",
 ]);
 
 /** Sent to DeepL as `context` so short interface words land in the right sense. */
