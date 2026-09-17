@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""edit.py sb1|sb2 LANG -> out/<name>-<locale>.mp4 (886x1920, 30 fps, H.264, stereo AAC).
+"""edit.py sb1|sb2 LANG [mac] -> out/[mac-]<name>-<locale>.mp4
+(iPhone 886x1920 or Mac 1920x1080; 30 fps, H.264, stereo AAC).
 
 The raw simulator recording only holds frames where the screen changed, and every
 action in it was preceded by a wall-clock mark written by the UI test. For each
@@ -9,11 +10,18 @@ holds the settled state. So XCTest's own latency never reaches the cut."""
 import json, os, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-S = os.environ.get("PREVIEW_WORK", "/tmp/radicalqr-previews")
+MAC = len(sys.argv) > 3 and sys.argv[3] == "mac"
+S = os.environ.get("PREVIEW_WORK", "/tmp/radicalqr-previews-mac" if MAC else "/tmp/radicalqr-previews")
 POST = f"{S}/layers"
 OUTNAMES = {"sb1": "preview-1-paste", "sb2": "preview-2-style"}
 LOCALES = {"en": "en-US", "fr": "fr-FR", "de": "de-DE", "es": "es-ES"}
-SCREEN_X, SCREEN_Y, SCREEN_W, SCREEN_H = 109, 394, 668, 1452
+# Where the recording goes in the composite (see assets.py).
+SCREEN_X, SCREEN_Y, SCREEN_W, SCREEN_H = (554, 60, 1330, 960) if MAC else (109, 394, 668, 1452)
+LAYER = "mac_" if MAC else ""
+MARK_SLACK = 0.9 if MAC else 0.0
+# Apple asks Mac previews for 10-12 Mbps; the phone ones compress on quality.
+VIDEO_RATE = (["-b:v", "10M", "-minrate", "10M", "-maxrate", "10M", "-bufsize", "10M",
+               "-x264-params", "nal-hrd=cbr"] if MAC else ["-crf", "16"])
 FPS = 30
 
 # (mark, still seconds held once settled, caption key, driven by a change)
@@ -41,7 +49,7 @@ FADE = 0.16
 # into the form in slow motion so the eye can follow it.
 FORM_BEATS = {"sb1": {"event", "wifi", "signature", "address"}}
 RAW_HOLD = 0.7      # seconds on the pasted, still unstructured text
-SLOW = 0.55         # playback speed of the raw -> form transition
+SLOW = 1.0 if MAC else 0.55   # the Mac already takes its time (a spinner while it draws)
 TARGETS = {"sb1": 22.0}
 
 
@@ -72,15 +80,22 @@ def form_ranges(beat, frames, nxt):
             groups[-1].append((t, sc))
         else:
             groups.append([(t, sc)])
-    final = max(groups, key=lambda g: max(sc for _, sc in g))   # the switch to the form
+    k = max(range(len(groups)), key=lambda i: max(sc for _, sc in groups[i]))
+    final = groups[k]                                           # the switch to the form
     big = [t for t, sc in final if sc >= 0.1]                   # skips encoded-text flashes
     start, settle = (big[0] if big else final[0][0]), final[-1][0]
+    later = groups[k + 1:]
     ranges = []
     # The typed-in text barely changes the frame; an encoded block replacing it does.
     if beat == "event" and frames[0][1] < 0.02 and frames[0][0] < start - 0.05:
         raw_t = frames[0][0]
         ranges.append(Range(raw_t - LEAD, min(raw_t + 0.05, start - 0.01), forced=LEAD + RAW_HOLD))
-    ranges.append(Range(start + 0.001, min(settle + TAIL, nxt), speed=SLOW))
+    ranges.append(Range(start + 0.001, min(settle + (KEEP if later else TAIL), nxt), speed=SLOW))
+    # What still changes after the switch (a Mac draws the code a moment later,
+    # behind a spinner) plays at normal speed, with the waits squeezed out.
+    for j, g in enumerate(later):
+        end = g[-1][0] + (KEEP if j < len(later) - 1 else TAIL)
+        ranges.append(Range(g[0][0] - 0.04, min(end, nxt)))
     return ranges
 
 def run(cmd):
@@ -104,6 +119,26 @@ def scene_scores(raw, cache):
     return rows
 
 
+def drop_blank_frames(body, work):
+    """A Mac cross-fades the launch card out before the form fades in, leaving a
+    few frames with an empty window. Each is replaced by the frame before it —
+    dropped from the stream with its timestamp kept, so fps refills the gap and
+    nothing downstream moves."""
+    w, h = 124, 100
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", body, "-vf", f"crop=iw*0.8:ih*0.9:iw*0.2:ih*0.03,scale={w}:{h}",
+                          "-f", "rawvideo", "-pix_fmt", "gray", "-"], capture_output=True).stdout
+    blank = [i for i in range(len(raw) // (w * h))
+             if sum(1 for v in raw[i * w * h:(i + 1) * w * h:3] if v > 200) < 40]
+    if not blank:
+        return body
+    keep = "+".join(f"eq(n,{i})" for i in blank)
+    clean = f"{work}/body-clean.mp4"
+    run(["ffmpeg", "-v", "error", "-y", "-i", body, "-vf", f"select='not({keep})',fps={FPS}",
+         "-c:v", "libx264", "-preset", "medium", "-crf", "14", "-r", str(FPS), clean])
+    print(f"replaced {len(blank)} blank frame(s)")
+    return clean
+
+
 def main(sb, lang):
     name = f"{sb}_{lang}"
     raw = f"{S}/raw/{name}.mov"
@@ -122,12 +157,19 @@ def main(sb, lang):
     plan = PLANS[sb]
     forms = FORM_BEATS.get(sb, set())
     report, beats = [], []
+    prev_end = 0.0
     for i, (beat, hold, cap, on_change) in enumerate(plan):
         if beat not in marks:
             sys.exit(f"{name}: mark '{beat}' missing")
         m = marks[beat]
         nxt = marks[plan[i + 1][0]] if i + 1 < len(plan) else marks.get("end", m + 30)
-        frames = [(t, sc) for t, sc in scores if m < t < nxt and sc > THRESHOLD] if on_change else []
+        # screencapture starts a variable ~0.7 s after it is launched, so on a Mac
+        # a mark can land after its own change: look a little earlier, but never
+        # back into the previous beat's animation.
+        lo = max(m - MARK_SLACK, prev_end + 0.05) if on_change else m
+        frames = [(t, sc) for t, sc in scores if lo < t < nxt and sc > THRESHOLD] if on_change else []
+        if frames:
+            prev_end = frames[-1][0]
         sig = [t for t, _ in frames]
         if not sig:
             if on_change:
@@ -184,6 +226,8 @@ def main(sb, lang):
     body = f"{work}/body.mp4"
     run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", listfile, "-c", "copy", body])
     total = sum(d for _, d, _ in segs)
+    if MAC:
+        body = drop_blank_frames(body, work)
 
     groups, t = [], 0.0
     for _, d, cap in segs:
@@ -194,11 +238,11 @@ def main(sb, lang):
         t += d
 
     loop = ["-loop", "1", "-framerate", str(FPS), "-t", f"{total:.3f}"]
-    inputs = [*loop, "-i", f"{POST}/bg.png", "-i", body, *loop, "-i", f"{POST}/mask.png"]
+    inputs = [*loop, "-i", f"{POST}/{LAYER}bg.png", "-i", body, *loop, "-i", f"{POST}/{LAYER}mask.png"]
     fg = ["[1:v]format=rgba[b1]", "[2:v]format=gray[mk]", "[b1][mk]alphamerge[scr]",
           f"[0:v][scr]overlay={SCREEN_X}:{SCREEN_Y}:shortest=1[v0]"]
     for k2, (cap, a, b) in enumerate(groups):
-        inputs += [*loop, "-i", f"{POST}/cap/{sb}_{lang}_{cap}.png"]
+        inputs += [*loop, "-i", f"{POST}/cap/{LAYER}{sb}_{lang}_{cap}.png"]
         idx = 3 + k2
         chain = "format=rgba"
         if k2 > 0:
@@ -210,11 +254,11 @@ def main(sb, lang):
     fg.append(f"[v{len(groups)}]fps={FPS},format=yuv420p[vout]")
     out_dir = f"{HERE}/out"
     os.makedirs(out_dir, exist_ok=True)
-    out = f"{out_dir}/{OUTNAMES[sb]}-{LOCALES[lang]}.mp4"
+    out = f"{out_dir}/{'mac-' if MAC else ''}{OUTNAMES[sb]}-{LOCALES[lang]}.mp4"
     run(["ffmpeg", "-v", "error", "-y", *inputs,
          "-f", "lavfi", "-t", f"{total:.3f}", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000",
          "-filter_complex", ";".join(fg), "-map", "[vout]", "-map", f"{3 + len(groups)}:a",
-         "-c:v", "libx264", "-profile:v", "high", "-preset", "slow", "-crf", "16", "-r", str(FPS),
+         "-c:v", "libx264", "-profile:v", "high", "-preset", "slow", *VIDEO_RATE, "-r", str(FPS),
          "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "256k", "-ac", "2", "-ar", "48000",
          "-t", f"{total:.3f}", "-movflags", "+faststart", out])
     with open(f"{work}/report.txt", "w") as fh:

@@ -73,7 +73,9 @@ if [ "${1:-}" = "validate" ]; then
   exit 0
 fi
 jobs=()
-if [ $# -eq 2 ]; then jobs=("$1 $2"); else for sb in sb1 sb2; do for l in en fr de es; do jobs+=("$sb $l"); done; done; fi
+if [ $# -eq 2 ]; then jobs=("$1 $2")
+elif [ $# -eq 1 ]; then for l in en fr de es; do jobs+=("$1 $l"); done
+else for sb in sb1 sb2; do for l in en fr de es; do jobs+=("$sb $l"); done; done; fi
 for job in "${jobs[@]}"; do
   set -- $job
   for attempt in 1 2; do

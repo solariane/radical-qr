@@ -1,5 +1,5 @@
 diff --git a/Radical QR/Features/Generator/LaunchCard.swift b/Radical QR/Features/Generator/LaunchCard.swift
-index 0861502..4998d51 100644
+index 0861502..ad7ab97 100644
 --- a/Radical QR/Features/Generator/LaunchCard.swift	
 +++ b/Radical QR/Features/Generator/LaunchCard.swift	
 @@ -82,6 +82,21 @@ struct LaunchCard: View {
@@ -25,7 +25,7 @@ index 0861502..4998d51 100644
          .fullScreenCover(isPresented: $showScanner) {
              CodeScannerSheet(
 diff --git a/Radical QR/Features/Generator/BrandGroupView.swift b/Radical QR/Features/Generator/BrandGroupView.swift
-index 22b3725..7371fcf 100644
+index 22b3725..4d45acc 100644
 --- a/Radical QR/Features/Generator/BrandGroupView.swift	
 +++ b/Radical QR/Features/Generator/BrandGroupView.swift	
 @@ -19,6 +19,20 @@ struct BrandGroupView: View {
@@ -49,3 +49,73 @@ index 22b3725..7371fcf 100644
      }
  
      // MARK: - Logo
+diff --git a/Radical QR/ContentView.swift b/Radical QR/ContentView.swift
+index 7363b95..6edcc1e 100644
+--- a/Radical QR/ContentView.swift	
++++ b/Radical QR/ContentView.swift	
+@@ -1,4 +1,7 @@
+ import SwiftUI
++#if os(macOS)
++import AppKit
++#endif
+ 
+ struct ContentView: View {
+     @EnvironmentObject private var purchaseManager: PurchaseManager
+@@ -38,6 +41,9 @@ struct ContentView: View {
+             GeneratorView()
+         }
+         .frame(minWidth: 780, minHeight: 620)
++        #if DEBUG
++        .modifier(DemoWindowFrame())
++        #endif
+         .sheet(isPresented: $showingHistory) {
+             if purchaseManager.isPro {
+                 HistoryView()
+@@ -123,3 +129,27 @@ struct ContentView: View {
+         .environmentObject(PurchaseManager.shared)
+         .environment(DeepLinkHandler())
+ }
++
++#if DEBUG && os(macOS)
++
++/// App Preview capture only (scratch copy): puts the window at the frame the
++/// capture region expects, given as "x,y,w,h" in top-left screen points.
++struct DemoWindowFrame: ViewModifier {
++    func body(content: Content) -> some View {
++        content.task {
++            guard let spec = ProcessInfo.processInfo.environment["DEMO_WINDOW"] else { return }
++            let v = spec.split(separator: ",").compactMap { Double($0) }
++            guard v.count == 4 else { return }
++            for _ in 0..<40 {
++                if let window = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil }),
++                   let screen = NSScreen.screens.first {
++                    let frame = NSRect(x: v[0], y: screen.frame.height - v[1] - v[3], width: v[2], height: v[3])
++                    window.setFrame(frame, display: true, animate: false)
++                    return
++                }
++                try? await Task.sleep(for: .milliseconds(100))
++            }
++        }
++    }
++}
++#endif
+diff --git a/Radical QR/RadicalQRApp.swift b/Radical QR/RadicalQRApp.swift
+index ffbad86..3bf423d 100644
+--- a/Radical QR/RadicalQRApp.swift	
++++ b/Radical QR/RadicalQRApp.swift	
+@@ -24,6 +24,15 @@ struct RadicalQRApp: App {
+             StylePreset.self
+         ])
+         let log = Logger(subsystem: "radicalsolution.com.Radical-QR", category: "ModelContainer")
++        #if DEBUG
++        // App Preview capture only (scratch copy): an empty, throwaway history, so
++        // the recording never shows the developer's own codes.
++        if ProcessInfo.processInfo.environment["DEMO_EMPTY_HISTORY"] != nil,
++           let container = try? ModelContainer(for: schema, configurations: [
++               ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)]) {
++            return container
++        }
++        #endif
+ 
+         // 1. Preferred: private CloudKit database so Pro history + style presets
+         // sync across the user's devices. Requires the iCloud capability (+

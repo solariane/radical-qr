@@ -1,12 +1,15 @@
 # App Previews (App Store videos)
 
-Two iPhone 6.9″ App Previews, in en-US, fr-FR, de-DE and es-ES, filmed from the
-real app in the simulator and edited automatically.
+Two App Previews — for iPhone 6.9″ and for Mac — in en-US, fr-FR, de-DE and
+es-ES, filmed from the real app (simulator / the Mac itself) and edited
+automatically.
 
 | File | Storyboard | Length |
 |---|---|---|
 | `out/preview-1-paste-<locale>.mp4` | **Paste it as written** — an appointment, a Wi-Fi card, a signature and an address each become their form (the change played in slow motion); ends on a gradient | 22 s |
 | `out/preview-2-style-<locale>.mp4` | **Make it yours** — a link, two gradients, rounded modules and eyes, the logo and its caption, SVG at 4096 px | ~24 s |
+| `out/mac-preview-1-paste-<locale>.mp4` | Mac, same storyboard (transition at normal speed: the Mac shows a spinner while it draws) | 22 s |
+| `out/mac-preview-2-style-<locale>.mp4` | Mac, same storyboard | ~24 s |
 
 Every file matches Apple's App Preview specification for the 6.9″ slot (which
 also covers 6.7″ and 6.5″): 886×1920 portrait, H.264, 30 fps, stereo AAC 48 kHz
@@ -17,6 +20,10 @@ Final Cut Pro if you want it, it only plays once the viewer taps the preview.
 iPhone 6.9″ → drag the files for each localization, then pick the poster frame
 there (a still with the finished form or the styled code works best).
 
+Mac files: 1920×1080 landscape, H.264 at ~10 Mbps (Apple's Mac target), 30 fps,
+stereo AAC. The window (1440×1040 pt: the tallest form fits with its code, and all five export tiles) sits
+on the right, the caption in a column on the left. Upload them to the Mac slot.
+
 ## Re-shooting (e.g. after a UI change)
 
 ```bash
@@ -24,6 +31,17 @@ there (a still with the finished form or the styled code works best).
 ./appstore/previews/shoot.sh sb2 de       # one storyboard, one language
 ./appstore/previews/shoot.sh validate     # check the pasted examples still become forms
 ```
+
+```bash
+./appstore/previews/shoot-mac.sh          # the 8 Mac videos (~25 min) — leave the Mac alone
+./appstore/previews/shoot-mac.sh sb1 fr
+```
+
+The Mac run needs, once: `sudo automationmodetool enable-automationmode-without-authentication`
+(undo with `disable-…`), plus Screen Recording and Accessibility for the app that
+launches the script. It builds the demo **with its own bundle identifier
+(`….preview`), no iCloud entitlement and an in-memory history**: the recording
+can never show the developer's own codes (an early take did, before this).
 
 Requires ffmpeg, Python 3 with Pillow, SF Pro Display in `/Library/Fonts`, and
 the "iPhone 17 Pro Max" simulator (override with `PREVIEW_DEVICE`). Scratch

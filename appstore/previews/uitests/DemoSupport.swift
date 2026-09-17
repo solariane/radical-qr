@@ -41,6 +41,11 @@ let logoSource = workDir + "/logo.png"
     try? FileManager.default.removeItem(atPath: logoDrop)
     app.launchEnvironment["DEMO_PASTE_FILE"] = pasteFile
     app.launchEnvironment["DEMO_LOGO_FILE"] = logoDrop
+    app.launchEnvironment["DEMO_EMPTY_HISTORY"] = "1"
+    // Mac only: where the window goes, so the screen recording frames it.
+    if let frame = ProcessInfo.processInfo.environment["DEMO_WINDOW"] {
+        app.launchEnvironment["DEMO_WINDOW"] = frame
+    }
     app.launch()
     return app
 }
