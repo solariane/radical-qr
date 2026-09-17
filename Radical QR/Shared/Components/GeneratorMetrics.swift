@@ -118,8 +118,34 @@ struct GeneratorMetrics: Equatable, Sendable {
 
         var metrics = split
         metrics.preview = min(420, metrics.preview + max(0, height - 760) * 0.45)
+        // The settings column must hold the widest row — five export tokens —
+        // whole. A taller canvas grows the preview column, and with a fixed 940pt
+        // cap that used to squeeze the settings until "4096" and "SVG" slid out
+        // of view. So the cap grows with the preview, and where the canvas has no
+        // width for that, the preview gives the width back.
+        let available = width - 32
+        let overflow = metrics.splitWidthNeeded - max(available, metrics.contentWidth)
+        if overflow > 0 {
+            metrics.preview = max(split.preview, metrics.preview - overflow)
+        }
         metrics.previewColumn = metrics.preview + metrics.cardPadding * 2 + 24
+        metrics.contentWidth = max(split.contentWidth, metrics.splitWidthNeeded)
         return metrics
+    }
+
+    /// Settings column wide enough for the widest tile row, inside its panel.
+    var settingsColumnNeeded: CGFloat {
+        let tokens = CGFloat(max(ExportSize.allSizes.count, ExportFormat.allCases.count))
+        return tokens * tokenWidth + (tokens - 1) * tileGap + panelPadding * 2 + 8
+    }
+
+    /// Content width a split layout needs so neither column is squeezed.
+    var splitWidthNeeded: CGFloat {
+        previewColumnFor(preview: preview) + sectionGap + settingsColumnNeeded
+    }
+
+    private func previewColumnFor(preview: CGFloat) -> CGFloat {
+        preview + cardPadding * 2 + 24
     }
 }
 

@@ -113,7 +113,14 @@ export function fittingMetrics(width, height) {
 
   const metrics = { ...METRICS_SPLIT };
   metrics.preview = Math.min(420, metrics.preview + Math.max(0, height - 760) * 0.45);
+  // Same rule as GeneratorMetrics.fitting: the cap grows so the settings column
+  // holds five export tokens whole; without the width, the preview shrinks.
+  const needed = (m) => m.preview + m.cardPadding * 2 + 24 + m.sectionGap
+    + 5 * m.tokenWidth + 4 * m.tileGap + m.panelPadding * 2 + 8;
+  const overflow = needed(metrics) - Math.max(width - 32, METRICS_SPLIT.contentWidth);
+  if (overflow > 0) metrics.preview = Math.max(METRICS_SPLIT.preview, metrics.preview - overflow);
   metrics.previewColumn = metrics.preview + metrics.cardPadding * 2 + 24;
+  metrics.contentWidth = Math.max(METRICS_SPLIT.contentWidth, needed(metrics));
   return metrics;
 }
 
