@@ -5,7 +5,7 @@ real app in the simulator and edited automatically.
 
 | File | Storyboard | Length |
 |---|---|---|
-| `out/preview-1-paste-<locale>.mp4` | **Paste it as written** — an appointment, a Wi-Fi card, a signature and an address each become their form; ends on a gradient | ~20 s |
+| `out/preview-1-paste-<locale>.mp4` | **Paste it as written** — an appointment, a Wi-Fi card, a signature and an address each become their form (the change played in slow motion); ends on a gradient | 22 s |
 | `out/preview-2-style-<locale>.mp4` | **Make it yours** — a link, two gradients, rounded modules and eyes, the logo and its caption, SVG at 4096 px | ~24 s |
 
 Every file matches Apple's App Preview specification for the 6.9″ slot (which
@@ -50,6 +50,11 @@ files go to `PREVIEW_WORK` (default `/tmp/radicalqr-previews`).
    busy machine inserts, holds the settled state, then composites the screen
    into the phone frame with the captions (`captions.json`, rendered by
    `assets.py` in the style of the store screenshots).
+   In preview 1 each paste plays its change into the form at 0.55× (`SLOW`),
+   after a pause on the appointment's text as pasted (`RAW_HOLD`); the encoded
+   flashes the field passes through (`BEGIN:VEVENT`, `WIFI:T:…`) are cut, and the
+   final holds shrink so the preview stays at 22 s (`TARGETS`). Wi-Fi, contacts
+   and places show no raw text: the app re-encodes them before the first frame.
 
 To change a caption, edit `captions.json` and re-run `edit.py sb1 fr` — no
 re-shoot needed as long as `PREVIEW_WORK` still holds the recording.

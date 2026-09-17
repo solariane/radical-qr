@@ -36,6 +36,52 @@ LEAD = 0.10
 TAIL = 0.35         # lets the last animation finish before the still hold
 FADE = 0.16
 
+# Preview 1's pastes: pause on an appointment's text as pasted, skip the encoded
+# flashes (BEGIN:VEVENT, WIFI:T:…) the field passes through, then play the change
+# into the form in slow motion so the eye can follow it.
+FORM_BEATS = {"sb1": {"event", "wifi", "signature", "address"}}
+RAW_HOLD = 0.7      # seconds on the pasted, still unstructured text
+SLOW = 0.55         # playback speed of the raw -> form transition
+TARGETS = {"sb1": 22.0}
+
+
+class Range:
+    """A stretch of the recording: source [r0, r1], played at speed, or frozen
+    to a forced output length (the last frame is held)."""
+    def __init__(self, r0, r1, speed=1.0, forced=None):
+        self.r0, self.r1, self.speed, self.forced = r0, r1, speed, forced
+
+    @property
+    def out(self):
+        return self.forced if self.forced is not None else (self.r1 - self.r0) / self.speed
+
+    def __str__(self):
+        extra = f" x{self.speed}" if self.speed != 1 else (f" hold{self.forced:.2f}" if self.forced else "")
+        return f"[{self.r0:.2f}-{self.r1:.2f}{extra}]"
+
+
+def form_ranges(beat, frames, nxt):
+    """frames: (time, score) of the real changes after a paste mark.
+
+    Only an appointment shows the text as pasted: it stays in the field while
+    the date is read. Wi-Fi, contacts and places are re-encoded at once, so the
+    field never shows the human text and there is nothing honest to pause on."""
+    groups = []
+    for t, sc in frames:
+        if groups and t - groups[-1][-1][0] <= STALL:
+            groups[-1].append((t, sc))
+        else:
+            groups.append([(t, sc)])
+    final = max(groups, key=lambda g: max(sc for _, sc in g))   # the switch to the form
+    big = [t for t, sc in final if sc >= 0.1]                   # skips encoded-text flashes
+    start, settle = (big[0] if big else final[0][0]), final[-1][0]
+    ranges = []
+    # The typed-in text barely changes the frame; an encoded block replacing it does.
+    if beat == "event" and frames[0][1] < 0.02 and frames[0][0] < start - 0.05:
+        raw_t = frames[0][0]
+        ranges.append(Range(raw_t - LEAD, min(raw_t + 0.05, start - 0.01), forced=LEAD + RAW_HOLD))
+    ranges.append(Range(start + 0.001, min(settle + TAIL, nxt), speed=SLOW))
+    return ranges
 
 def run(cmd):
     r = subprocess.run(cmd, capture_output=True, text=True)
@@ -74,53 +120,63 @@ def main(sb, lang):
     scores = scene_scores(raw, f"{work}/scores.txt")
     pts = [t for t, _ in scores]
     plan = PLANS[sb]
+    forms = FORM_BEATS.get(sb, set())
     report, beats = [], []
     for i, (beat, hold, cap, on_change) in enumerate(plan):
         if beat not in marks:
             sys.exit(f"{name}: mark '{beat}' missing")
         m = marks[beat]
         nxt = marks[plan[i + 1][0]] if i + 1 < len(plan) else marks.get("end", m + 30)
-        sig = [t for t, sc in scores if m < t < nxt and sc > THRESHOLD] if on_change else []
+        frames = [(t, sc) for t, sc in scores if m < t < nxt and sc > THRESHOLD] if on_change else []
+        sig = [t for t, _ in frames]
         if not sig:
             if on_change:
                 report.append(f"WARNING no change after {beat}")
-            ranges = [[m, m]]
+            ranges = [Range(m, m)]
+        elif beat in forms and len(frames) > 1:
+            ranges = form_ranges(beat, frames, nxt)
         else:
             ranges, cur, prev = [], sig[0] - LEAD, sig[0]
             for t in sig[1:]:
                 if t - prev > STALL:
-                    ranges.append([cur, prev + KEEP])
+                    ranges.append(Range(cur, prev + KEEP))
                     cur = t - 0.04
                 prev = t
-            ranges.append([cur, min(prev + TAIL, nxt)])
+            ranges.append(Range(cur, min(prev + TAIL, nxt)))
         beats.append({"beat": beat, "ranges": ranges, "hold": hold, "cap": cap})
 
-    # Keep the preview inside Apple's 15-30 s by scaling the still holds.
-    fixed = sum(r[1] - r[0] for b in beats for r in b["ranges"])
+    # Keep the preview at its target length (always inside Apple's 15-30 s) by
+    # scaling the still holds: slower transitions leave less of the final state.
+    fixed = sum(r.out for b in beats for r in b["ranges"])
     holds = sum(b["hold"] for b in beats)
-    target = min(max(fixed + holds, 16.0), 29.0)
-    k = (target - fixed) / holds
+    target = TARGETS.get(sb) or fixed + holds
+    target = min(max(target, 16.0), 29.0)
+    k = max((target - fixed) / holds, 0.2)
 
     segs, n = [], 0
     for b in beats:
-        b["ranges"][-1][1] += b["hold"] * k
-        for r0, r1 in b["ranges"]:
-            frames = round((r1 - r0) * FPS)
-            if frames < 1:
+        last = b["ranges"][-1]
+        if last.speed == 1 and last.forced is None:
+            last.r1 += b["hold"] * k
+        else:
+            b["ranges"].append(Range(last.r1, last.r1 + b["hold"] * k))
+        for r in b["ranges"]:
+            count = round(r.out * FPS)
+            if count < 1:
                 continue
-            dur = frames / FPS
-            before = [p for p in pts if p <= r0]
+            dur = count / FPS
+            before = [p for p in pts if p <= r.r0]
             p0 = before[-1] if before else 0.0
             seg = f"{work}/seg{n:03d}.mp4"
             n += 1
-            vf = (f"fps={FPS},trim=start={r0 - p0:.4f},setpts=PTS-STARTPTS,"
-                  f"tpad=stop_mode=clone:stop_duration={dur + 1:.3f},trim=end_frame={frames},"
+            vf = (f"setpts=(PTS-STARTPTS)/{r.speed},fps={FPS},trim=start={(r.r0 - p0) / r.speed:.4f},"
+                  f"setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration={dur + 1:.3f},trim=end_frame={count},"
                   f"scale={SCREEN_W}:{SCREEN_H}:flags=lanczos,setsar=1,format=yuv420p")
             run(["ffmpeg", "-v", "error", "-y", "-ss", f"{max(p0 - 0.001, 0):.4f}", "-i", raw,
-                 "-t", f"{r0 - p0 + dur + 0.5:.4f}", "-vf", vf, "-an",
+                 "-t", f"{r.r1 - p0 + 0.5:.4f}", "-vf", vf, "-an",
                  "-c:v", "libx264", "-preset", "medium", "-crf", "14", "-r", str(FPS), seg])
             segs.append((seg, dur, b["cap"]))
-        report.append(f"{b['beat']:10s} " + " ".join(f"[{x:.2f}-{y:.2f}]" for x, y in b["ranges"]))
+        report.append(f"{b['beat']:10s} " + " ".join(str(r) for r in b["ranges"]))
 
     listfile = f"{work}/list.txt"
     with open(listfile, "w") as fh:

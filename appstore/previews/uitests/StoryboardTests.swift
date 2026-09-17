@@ -34,6 +34,12 @@ final class StoryboardTests: XCTestCase {
         let tile = rows[row][index]
         mark(beat)
         tile.tap()
+        // A tap can be swallowed while the machine is busy: the tile says whether it took.
+        if !waitFor(4, { tile.isSelected }) {
+            mark("retap \(beat)")
+            tile.tap()
+            if !waitFor(4, { tile.isSelected }) { mark("MISSING selection \(beat)") }
+        }
     }
 
     @MainActor func tapRail(_ app: XCUIApplication, _ id: String, beat: String) {
