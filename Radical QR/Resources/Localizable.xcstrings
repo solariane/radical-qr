@@ -118,6 +118,64 @@
         }
       }
     },
+    "•": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "-"
+          }
+        }
+      }
+    },
     "Aa": {
       "localizations": {
         "ar": {
@@ -172,64 +230,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aa"
-          }
-        }
-      }
-    },
-    "PRO": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "المحترفون"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PRO"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PRO"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PRO"
-          }
-        },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "पेशेवर"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PRO"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PRO"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "PRO"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "专业"
           }
         }
       }
@@ -2922,71 +2922,6 @@
         }
       }
     },
-    "comparison.gradientTypes": {
-      "extractionState": "extracted_with_value",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "أنواع التدرج"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gradiententypen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Gradient Types"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipos de gradiente"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Types de gradients"
-          }
-        },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ढलान के प्रकार"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipi di gradiente"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "勾配の種類"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tipos de gradiente"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "渐变类型"
-          }
-        }
-      }
-    },
     "comparison.gradients": {
       "extractionState": "extracted_with_value",
       "localizations": {
@@ -3048,6 +2983,71 @@
           "stringUnit": {
             "state": "translated",
             "value": "梯度"
+          }
+        }
+      }
+    },
+    "comparison.gradientTypes": {
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أنواع التدرج"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gradiententypen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Gradient Types"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipos de gradiente"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Types de gradients"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ढलान के प्रकार"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipi di gradiente"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "勾配の種類"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tipos de gradiente"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "渐变类型"
           }
         }
       }
@@ -3969,72 +3969,6 @@
         }
       }
     },
-    "contact.addWebsite": {
-      "comment": "Button: reveal the field for the website of a contact card.",
-      "extractionState": "extracted_with_value",
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "إضافة موقع ويب"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Website hinzufügen"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Add website"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Añadir sitio web"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ajouter un site web"
-          }
-        },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "वेबसाइट जोड़ें"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aggiungi sito web"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Webサイトを追加"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adicionar site"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "添加网站"
-          }
-        }
-      }
-    },
     "contact.address.placeholder": {
       "comment": "Placeholder: a postal address on a contact card.",
       "extractionState": "extracted_with_value",
@@ -4097,6 +4031,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "地址"
+          }
+        }
+      }
+    },
+    "contact.addWebsite": {
+      "comment": "Button: reveal the field for the website of a contact card.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "إضافة موقع ويب"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Website hinzufügen"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Add website"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añadir sitio web"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajouter un site web"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वेबसाइट जोड़ें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aggiungi sito web"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Webサイトを追加"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar site"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加网站"
           }
         }
       }
@@ -11105,7 +11105,7 @@
       }
     },
     "generator.help": {
-      "extractionState": "extracted_with_value",
+      "extractionState": "stale",
       "localizations": {
         "ar": {
           "stringUnit": {
@@ -14623,6 +14623,600 @@
         }
       }
     },
+    "help.recognition.ask.detail": {
+      "comment": "Step 3 detail. “Keep as text” is the button labelled editor.keepAsText — use the same wording.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يقدم السطر الموجود أسفل الكود النص للاطلاع عليه بدلاً من فرضه. إذا رفضته، أو استخدمت خيار «الإبقاء كنص» في النموذج، فستحصل على النص الذي كتبته بالضبط."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Zeile unter dem Code bietet die Lesehilfe an, anstatt sie aufzuzwingen. Lehnen Sie sie ab oder verwenden Sie „Als Text behalten“ im Formular, und Sie erhalten genau das zurück, was Sie geschrieben haben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "A line under the code offers the reading rather than imposing it. Decline it, or use “Keep as text” in the form, and you get back exactly what you wrote."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una línea debajo del código ofrece la lectura en lugar de imponerla. Si la rechazas o utilizas «Mantener como texto» en el formulario, obtendrás exactamente lo que escribiste."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une ligne sous le code propose cette lecture sans l’imposer. Refusez-la ou utilisez « Garder en texte » dans le formulaire, et vous récupérerez exactement ce que vous avez écrit."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "कोड के नीचे की एक रेखा इसे थोपने के बजाय पढ़ने का विकल्प देती है। इसे अस्वीकार करें, या फॉर्म में “टेक्स्ट ही रखें” का उपयोग करें, और आपको बिल्कुल वही वापस मिलेगा जो आपने लिखा था।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una riga sotto il codice propone la lettura anziché imporla. Se la si rifiuta, oppure si utilizza “Mantieni come testo” nel modulo, si ottiene esattamente ciò che si è scritto."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コードの下にある行は、強制するのではなく、読み方を提示するものです。これを拒否するか、フォーム内の「テキストのままにする」を使用すれば、入力した内容そのままが返されます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma linha abaixo do código sugere a leitura, em vez de impô-la. Se você recusar essa sugestão ou usar “Manter como texto” no formulário, receberá de volta exatamente o que escreveu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "代码下方的提示语仅供参考，而非强制要求。若拒绝该提示，或在表单中选择“保留为文本”，您将原样收到所写的内容。"
+          }
+        }
+      }
+    },
+    "help.recognition.ask.title": {
+      "comment": "Step 3: when the text only might be an event/Wi-Fi/contact/address, the app offers instead of deciding.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ويطلب منك الاختيار عندما يكون غير متأكد"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie fragt nach, wenn sie sich nicht sicher ist."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "It asks when it is unsure"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pregunta cuando no está segura."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elle demande confirmation lorsqu'elle n'est pas sûre."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह तब पूछता है जब यह अनिश्चित होता है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiede conferma quando non è sicura"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "判断できない場合は、ユーザーに確認を求めます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ela pergunta quando não tem certeza"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当不确定时，它会征询用户意见"
+          }
+        }
+      }
+    },
+    "help.recognition.form.detail": {
+      "comment": "Step 2 detail.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التاريخ والوقت والمكان والرابط الخاص بالموعد؛ شبكة الواي فاي وكلمة المرور؛ الاسم ورقم الهاتف والبريد الإلكتروني لجهة الاتصال. قم بتصحيح أي شيء، وأضف عنوانًا، وسيتم تحديث الرمز تلقائيًا بعد كل تعديل."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datum, Uhrzeit, Ort und Link für einen Termin; Netzwerk und Passwort für WLAN; Name, Telefonnummer und E-Mail-Adresse eines Ansprechpartners. Korrigieren Sie alles, fügen Sie eine Überschrift hinzu, und der Code passt sich jeder Änderung an."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Date, time, place and link for an appointment; network and password for Wi-Fi; name, phone and email for a contact. Correct anything, add a title, and the code follows every edit."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fecha, hora, lugar y enlace de una cita; red y contraseña de la red Wi-Fi; nombre, teléfono y correo electrónico de un contacto. Corrige lo que sea necesario, añade un título y el código se actualiza tras cada modificación."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date, heure, lieu et lien pour un rendez-vous ; réseau et mot de passe pour le Wi-Fi ; nom, numéro de téléphone et e-mail d'un contact. Corrigez ce que vous voulez, ajoutez un titre, et le code s'adapte à chaque modification."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अपॉइंटमेंट की तारीख, समय, स्थान और लिंक; वाई-फाई के लिए नेटवर्क और पासवर्ड; संपर्क के लिए नाम, फोन और ईमेल। किसी भी चीज़ को सही करें, एक शीर्षक जोड़ें, और कोड हर संपादन का अनुसरण करता है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data, ora, luogo e link per un appuntamento; rete e password per il Wi-Fi; nome, numero di telefono e indirizzo e-mail per un contatto. Correggi qualsiasi dato, aggiungi un titolo e il codice si aggiorna automaticamente dopo ogni modifica."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予約の日時、場所、リンク、Wi-Fiのネットワーク名とパスワード、連絡先の氏名、電話番号、メールアドレス。内容を修正したり、タイトルを追加したりすると、編集内容に応じてコードが自動的に更新されます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data, hora, local e link para um compromisso; rede e senha para o Wi-Fi; nome, telefone e e-mail de um contato. Corrija o que for necessário, adicione um título, e o código é atualizado a cada alteração."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "约会的日期、时间、地点和链接；Wi-Fi的网络名称和密码；联系人的姓名、电话和电子邮箱。修改任何内容、添加标题后，代码会随每次编辑自动更新。"
+          }
+        }
+      }
+    },
+    "help.recognition.form.title": {
+      "comment": "Step 2: the app turns the text into an editable form (event, Wi-Fi, contact, place) with the values it found.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يصل النموذج وقد تم ملؤه مسبقًا"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Formular wird bereits ausgefüllt angezeigt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "A form arrives already filled in"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El formulario aparece ya rellenado"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un formulaire s'affiche, déjà prérempli"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक फॉर्म पहले से ही भरा हुआ आता है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Il modulo viene visualizzato già compilato"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "あらかじめ入力済みのフォームが届きます"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um formulário é exibido já preenchido"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "表单发送时已预先填好内容"
+          }
+        }
+      }
+    },
+    "help.recognition.local.detail": {
+      "comment": "Step 4 detail.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يقوم النظام بقراءة التواريخ والعناوين والأسماء من جهازك. لا يتم إرسال أي شيء إلى أي مكان — لا يتم البحث عن العنوان، بل يتم كتابته في الرمز كما قمت بكتابته."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daten, Adressen und Namen werden vom System auf Ihrem Gerät gelesen. Es wird nichts an einen anderen Ort gesendet – eine Adresse wird nicht nachgeschlagen, sondern so in den Code geschrieben, wie Sie sie eingegeben haben."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Dates, addresses and names are read by the system on your device. Nothing is sent anywhere — an address is not looked up, it is written into the code as you typed it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El sistema lee las fechas, direcciones y nombres en tu dispositivo. No se envía nada a ningún sitio: no se busca ninguna dirección, sino que se introduce en el código tal y como la has escrito."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les dates, adresses et noms sont lus par le système sur votre appareil. Aucune donnée n'est transmise où que ce soit : une adresse n'est pas recherchée, elle est directement intégrée au code tel que vous l'avez saisie."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "तिथियाँ, पते और नाम आपके डिवाइस पर सिस्टम द्वारा पढ़े जाते हैं। कुछ भी कहीं नहीं भेजा जाता — कोई पता खोजा नहीं जाता, इसे आप जैसे ही टाइप करते हैं, कोड में लिखा जाता है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date, indirizzi e nomi vengono letti dal sistema sul tuo dispositivo. Nulla viene inviato da nessuna parte: un indirizzo non viene cercato, ma viene inserito nel codice così come lo hai digitato."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日付、住所、名前は、お使いのデバイス上のシステムによって読み取られます。どこにもデータは送信されません。住所は検索されるのではなく、入力した通りにコードに書き込まれます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Datas, endereços e nomes são lidos pelo sistema no seu dispositivo. Nada é enviado para lugar algum — um endereço não é pesquisado, ele é gravado no código exatamente como você o digitou."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日期、地址和姓名由您设备上的系统读取。没有任何信息会被发送至任何地方——地址不会被查询，而是您输入时直接写入代码中。"
+          }
+        }
+      }
+    },
+    "help.recognition.local.title": {
+      "comment": "Step 4: the recognition happens locally; nothing is sent to a server, not even an address.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "كل ذلك على جهازك"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alles findet auf Ihrem Gerät statt"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "All of it on your device"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todo ello en tu dispositivo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tout se passe sur votre appareil"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "यह सब आपके डिवाइस पर"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tutto avviene sul tuo dispositivo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてが端末上で処理されます"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tudo isso no seu aparelho"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有操作均在您的设备上完成"
+          }
+        }
+      }
+    },
+    "help.recognition.paste.detail": {
+      "comment": "Step 1 detail. The quoted examples are what the app recognizes; keep them plausible in your language.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«عشاء يوم السبت الساعة 8 مساءً، 350 فيفث أفينيو»، «شبكة Wi-Fi: CafeGuest / كلمة المرور: welcome»، توقيع بريد إلكتروني، عنوان. لا توجد تنسيقات للاختيار من بينها، ولا حاجة للبحث عن أي شيء."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "„Abendessen Samstag 20 Uhr, 350 Fifth Avenue“, „WLAN: CafeGuest / Passwort: welcome“, eine E-Mail-Signatur, eine Adresse. Es gibt kein Format zur Auswahl, nichts muss nachgeschlagen werden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "“Dinner Saturday 8pm, 350 Fifth Avenue”, “Wi-Fi: CafeGuest / Password: welcome”, an email signature, an address. No format to choose, nothing to look up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Cena el sábado a las 20:00 h, 350 Fifth Avenue», «Wi-Fi: CafeGuest / Contraseña: welcome», una firma de correo electrónico, una dirección. No hay que elegir ningún formato ni buscar nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "« Dîner samedi à 20 h, 350 Fifth Avenue », « Wi-Fi : CafeGuest / Mot de passe : welcome », une signature d’e-mail, une adresse. Pas de format à choisir, rien à rechercher."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "\"शनिवार रात 8 बजे डिनर, 350 फिफ्थ एवेन्यू\", \"वाइ-फ़ाई: CafeGuest / पासवर्ड: welcome\", एक ईमेल हस्ताक्षर, एक पता। चुनने के लिए कोई प्रारूप नहीं, खोजने के लिए कुछ भी नहीं।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Cena sabato alle 20:00, 350 Fifth Avenue”, “Wi-Fi: CafeGuest / Password: welcome”, una firma e-mail, un indirizzo. Nessun formato da scegliere, nulla da cercare."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「土曜日の夕食 午後8時、350 Fifth Avenue」、「Wi-Fi：CafeGuest / パスワード：welcome」、メールの署名、住所など。選択すべき書式はなく、調べる必要もありません。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“Jantar no sábado às 20h, 350 Fifth Avenue”, “Wi-Fi: CafeGuest / Senha: welcome”, uma assinatura de e-mail, um endereço. Não há formato a ser escolhido, nada para pesquisar."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“周六晚上8点晚餐，第五大道350号”、“Wi-Fi：CafeGuest / 密码：welcome”、一封电子邮件的签名、一个地址。无需选择格式，也无需查阅任何内容。"
+          }
+        }
+      }
+    },
+    "help.recognition.paste.title": {
+      "comment": "Step 1 of how recognition works: the user writes ordinary text instead of a technical format.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "الصق النص أو اكتبه بشكل عادي"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fügen Sie ihn ein oder geben Sie ihn einfach ein"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Paste or type it plainly"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pégalo o escríbelo sin formato."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collez-le ou saisissez-le tel quel"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इसे साधारण रूप में पेस्ट या टाइप करें"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incollalo o digitalo in modo semplice"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "そのテキストを貼り付けるか、そのまま入力してください。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cole ou digite-o de forma simples"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "直接粘贴或输入普通文本即可"
+          }
+        }
+      }
+    },
+    "help.recognition.title": {
+      "comment": "Heading of the section explaining that the app reads ordinary text — an appointment, Wi-Fi details, a signature, an address — and fills in a form.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اكتبه كما لو كنت تكتب إلى صديق"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schreibe es so, wie du es einem Freund schreiben würdest"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Write it as you would to a friend"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escríbelo como se lo escribirías a un amigo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Écrivez-le comme vous le feriez à un ami"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "इसे वैसे ही लिखें जैसे आप किसी दोस्त को लिखते"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scrivilo come faresti con un amico"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "友達に書くのと同じように書いてください"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escreva como se fosse para um amigo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "就像给朋友写信一样写"
+          }
+        }
+      }
+    },
     "help.section.customization": {
       "comment": "A section title for customization options in the help view.",
       "extractionState": "extracted_with_value",
@@ -16629,6 +17223,534 @@
           "stringUnit": {
             "state": "translated",
             "value": "WiFi 网络"
+          }
+        }
+      }
+    },
+    "help.writtenContact.description": {
+      "comment": "Entry description for the contact-from-text format.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يتحول توقيع البريد الإلكتروني إلى بطاقة اتصال: الاسم، رقم الهاتف، البريد الإلكتروني، الشركة، المسمى الوظيفي، الموقع الإلكتروني، العنوان."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine E-Mail-Signatur wird zu einer Kontaktkarte: Name, Telefonnummer, E-Mail-Adresse, Firma, Berufsbezeichnung, Website, Adresse."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "An email signature becomes a contact card: name, phone, email, company, job title, website, address."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una firma de correo electrónico se convierte en una ficha de contacto: nombre, teléfono, correo electrónico, empresa, cargo, página web y dirección."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une signature d'e-mail devient une fiche de contact : nom, téléphone, e-mail, entreprise, fonction, site web, adresse."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक ईमेल हस्ताक्षर एक संपर्क कार्ड बन जाता है: नाम, फोन, ईमेल, कंपनी, पदनाम, वेबसाइट, पता।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una firma e-mail diventa una scheda di contatto: nome, numero di telefono, e-mail, azienda, posizione lavorativa, sito web, indirizzo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メールの署名が連絡先カードになります：氏名、電話番号、メールアドレス、会社名、役職、ウェブサイト、住所。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma assinatura de e-mail se transforma em um cartão de contato: nome, telefone, e-mail, empresa, cargo, site, endereço."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "电子邮件签名将转化为联系人卡片：姓名、电话、电子邮箱、公司、职位、网站、地址。"
+          }
+        }
+      }
+    },
+    "help.writtenContact.title": {
+      "comment": "Format list entry: an email signature or a line of contact details, which becomes a contact card.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جهة اتصال، من التوقيع"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kontakt aus einer Signatur"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Contact, from a signature"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contacto, a partir de una firma"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact, à partir d'une signature"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "हस्ताक्षर से संपर्क"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contatto, da una firma"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "署名からの連絡先"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contato, a partir de uma assinatura"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "联系人（来自签名）"
+          }
+        }
+      }
+    },
+    "help.writtenEvent.description": {
+      "comment": "Entry description for the appointment-from-text format.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يصبح اليوم والوقت حدثًا في التقويم: العنوان، ووقت البدء، ووقت الانتهاء، والمكان، ورابط الاجتماع، في نموذج يمكنك تعديله."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Tag und eine Uhrzeit werden zu einem Kalendertermin: Titel, Beginn, Ende, Ort und Link zur Besprechung – in einer Form, die Sie anpassen können."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "A day and a time become a calendar event: title, start, end, place and meeting link, in a form you can adjust."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un día y una hora se convierten en un evento del calendario: título, hora de inicio, hora de finalización, lugar y enlace a la reunión, en un formato que puedes personalizar."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une date et une heure sont transformées en événement de calendrier : titre, heure de début, heure de fin, lieu et lien vers la réunion, sous une forme que vous pouvez personnaliser."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "एक दिन और समय एक कैलेंडर इवेंट बन जाते हैं: शीर्षक, आरंभ, समाप्ति, स्थान और मीटिंग लिंक, एक ऐसे प्रारूप में जिसे आप समायोजित कर सकते हैं।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un giorno e un orario diventano un evento del calendario: titolo, ora di inizio, ora di fine, luogo e link alla riunione, in un formato personalizzabile."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日付と時刻がカレンダーの予定として登録されます。タイトル、開始時刻、終了時刻、場所、会議リンクなどが、自由に調整可能な形式で表示されます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um dia e um horário se transformam em um evento no calendário: título, início, fim, local e link da reunião, em um formato que você pode ajustar."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日期和时间将转化为日历事件：标题、开始时间、结束时间、地点和会议链接，其格式可由您自行调整。"
+          }
+        }
+      }
+    },
+    "help.writtenEvent.title": {
+      "comment": "Format list entry: an appointment written as ordinary text, which becomes a calendar event.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "موعد، بعبارات بسيطة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termin, in einfachen Worten"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Appointment, in plain words"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cita, en pocas palabras"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rendez-vous, en termes simples"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "साधारण शब्दों में अपॉइंटमेंट"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appuntamento, in parole semplici"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "予定、平易な言葉で説明すると"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compromisso, em linguagem simples"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预约，通俗来说"
+          }
+        }
+      }
+    },
+    "help.writtenPlace.description": {
+      "comment": "Entry description for the address format. Maps is Apple's app, under its local name.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "يصبح العنوان بمفرده رمزًا يفتح التطبيق الخرائط عند إدخاله. ويتم كتابته في الرمز كما كتبته — ولا يتم البحث عن أي شيء."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Adresse allein wird zu einem Code, der sie in Karten öffnet. Sie wird so in den Code geschrieben, wie du sie eingegeben hast – es wird nichts nachgeschlagen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "An address alone becomes a code that opens it in Maps. It is written into the code as you typed it — nothing is looked up."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una dirección por sí sola se convierte en un código que la abre en Mapas. Se introduce en el código tal y como la has escrito; no se busca nada."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une adresse seule devient un code qui permet de l'ouvrir dans Plans. Elle est intégrée au code telle que vous l'avez saisie — aucune recherche n'est effectuée."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "केवल एक पता ही एक कोड बन जाता है जो इसे मैप्स में खोलता है। इसे ठीक वैसे ही कोड में लिखा जाता है जैसे आपने इसे टाइप किया था — कुछ भी खोजा नहीं जाता।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un indirizzo da solo diventa un codice che lo apre in Mappe. Viene inserito nel codice così come lo hai digitato — non viene effettuata alcuna ricerca."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所のみを入力すると、マップでその場所を開くためのコードになります。入力した通りの形でコードに書き込まれ、検索は行われません。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um endereço por si só se transforma em um código que o abre no Mapas. Ele é inserido no código exatamente como você o digitou — nada é pesquisado."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅输入地址即可生成一个代码，该代码可在“地图”中打开该位置。地址会按您输入的原文写入代码中——不会进行任何查找。"
+          }
+        }
+      }
+    },
+    "help.writtenPlace.title": {
+      "comment": "Format list entry: a postal address on its own, which becomes a code that opens it in Maps.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "العنوان بمفرده"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse, für sich allein"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Address, on its own"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dirección, por sí sola"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adresse, seule"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पता, अपने आप में"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indirizzo, da solo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "住所（単独）"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Endereço, isoladamente"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅包含地址"
+          }
+        }
+      }
+    },
+    "help.writtenWiFi.description": {
+      "comment": "Entry description for the Wi-Fi-from-text format.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انسخ اسم الشبكة وكلمة المرور كما هما مكتوبان. مسح الرمز ضوئيًا يؤدي إلى الانضمام إلى الشبكة."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geben Sie den Netzwerknamen und das Passwort genau so ein, wie sie notiert sind. Durch Scannen des Codes werden Sie mit dem Netzwerk verbunden."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Copy the network and password the way they are written down. Scanning the code joins the network."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia la red y la contraseña tal y como aparecen escritas. Al escanear el código, te conectarás a la red."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copiez le nom du réseau et le mot de passe tels qu'ils sont indiqués. Scannez le code pour vous connecter au réseau."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "नेटवर्क और पासवर्ड को ठीक वैसे ही कॉपी करें जैसे वे लिखे गए हैं। कोड स्कैन करने पर नेटवर्क से जुड़ जाता है।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copia il nome della rete e la password così come sono riportati. Scansionando il codice ti connetti alla rete."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ネットワーク名とパスワードは、記載されている通りにコピーしてください。コードをスキャンすると、そのネットワークに接続されます。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copie o nome da rede e a senha exatamente como estão escritos. Ao escanear o código, você se conecta à rede."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请按原样复制网络名称和密码。扫描二维码即可连接该网络。"
+          }
+        }
+      }
+    },
+    "help.writtenWiFi.title": {
+      "comment": "Format list entry: Wi-Fi details written as ordinary text (labels like “Password:”), which become a code that joins the network.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "شبكة Wi-Fi، كما هي مكتوبة على البطاقة"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WLAN, wie auf der Karte angegeben"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Wi-Fi, as written on the card"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi, tal y como aparece en la tarjeta"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi, tel qu'indiqué sur la carte"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "वाइ-फ़ाई, जैसा कि कार्ड पर लिखा है"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi, come riportato sulla scheda"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カードに記載されているWi-Fi情報"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi, conforme consta no cartão"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wi-Fi，如卡片上所示"
           }
         }
       }
@@ -19977,6 +21099,64 @@
         }
       }
     },
+    "PRO": {
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "المحترفون"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पेशेवर"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRO"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "专业"
+          }
+        }
+      }
+    },
     "purchase.error.productNotFound": {
       "extractionState": "extracted_with_value",
       "localizations": {
@@ -20243,13 +21423,13 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "دائري بالكامل"
+            "value": ""
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ganz rund"
+            "value": ""
           }
         },
         "en": {
@@ -20261,43 +21441,43 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Totalmente redondo"
+            "value": ""
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Coins ronds"
+            "value": ""
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "पूरी तरह गोल"
+            "value": ""
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Completamente tondo"
+            "value": ""
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "完全な円形"
+            "value": ""
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Totalmente redondo"
+            "value": ""
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "完全圆形"
+            "value": ""
           }
         }
       }
@@ -20442,13 +21622,13 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "زوايا مستديرة"
+            "value": ""
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abgerundete Ecken"
+            "value": ""
           }
         },
         "en": {
@@ -20460,43 +21640,43 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esquinas redondeadas"
+            "value": ""
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Coins arrondis"
+            "value": ""
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "गोल कोने"
+            "value": ""
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Angoli arrotondati"
+            "value": ""
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "角丸"
+            "value": ""
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cantos arredondados"
+            "value": ""
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "圆角"
+            "value": ""
           }
         }
       }
@@ -25012,6 +26192,72 @@
         }
       }
     },
+    "toolbar.formats": {
+      "comment": "Menu item opening the screen that lists what the app recognizes — free text turned into an event, Wi-Fi, contact or address — with copyable examples.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "التنسيقات والتعرف"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Formate & Erkennung"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Formats & Recognition"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Formatos y reconocimiento"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Formats et reconnaissance"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "स्वरूप और मान्यता"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Formati e riconoscimento"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォーマットと認識"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Formatos e reconhecimento"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "格式与识别"
+          }
+        }
+      }
+    },
     "toolbar.help": {
       "comment": "A label for the help button in the toolbar.",
       "extractionState": "extracted_with_value",
@@ -25474,7 +26720,7 @@
       }
     },
     "wifi.security.none": {
-      "comment": "Wi-Fi security option: an open network with no password (la sécurité : aucune).",
+      "comment": "Wi-Fi security option: an open network with no password.",
       "extractionState": "extracted_with_value",
       "localizations": {
         "ar": {
@@ -25667,64 +26913,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "看起来像 Wi-Fi 信息"
-          }
-        }
-      }
-    },
-    "•": {
-      "localizations": {
-        "ar": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "-"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "hi": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "it": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "ja": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "•"
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "-"
           }
         }
       }

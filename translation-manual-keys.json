@@ -35,6 +35,9 @@
     "contact.company.placeholder": "The employer (Entreprise, Firma) — “company” alone comes back as companionship or a military unit.",
     "place.hint": "Maps is Apple's app and takes its localized name (Plans, Karten, Mappe, マップ), not the common noun “maps”/“cartes”.",
     "place.suggestion.accept": "Same: the app's name (lien Plans, Karten-Link), not “a map link”.",
-    "place.title": "A place someone goes to (Lieu, Ort, 場所) — alone “Place” comes back as a town square (Place, Platz, Plaza) or the verb."
+    "place.title": "A place someone goes to (Lieu, Ort, 場所) — alone “Place” comes back as a town square (Place, Platz, Plaza) or the verb.",
+    "help.recognition.ask.detail": "Quotes the button editor.keepAsText — copy that translation verbatim, or the help names a button the app does not have.",
+    "help.writtenPlace.description": "Maps is Apple's app under its local name (Plans, Karten, Mappe, マップ), never the English “Maps”.",
+    "help.recognition.local.detail": "Same: if it names Maps, use the app's local name."
   }
 }
