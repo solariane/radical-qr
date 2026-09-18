@@ -71,20 +71,11 @@
   </g>
   <g transform="translate(188 0)">
     
-    <g>
-    <g><circle cx="22.416666666666664" cy="36.416666666666664" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="31.583333333333332" cy="36.416666666666664" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="22.416666666666664" cy="45.58333333333333" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="29.291666666666664" cy="43.291666666666664" r="1.375" fill="#ffffff" opacity="1"/><circle cx="33.875" cy="43.291666666666664" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="29.291666666666664" cy="47.875" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="33.875" cy="47.875" r="1.375" fill="#ffffff" opacity="1"/></g>
-    <text x="47" y="46.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="start" opacity="1">Radical QR</text>
-    <circle cx="939" cy="41" r="17" fill="#ffffff" fill-opacity="0.18"/>
-    <g transform="translate(931.5 33.5) scale(0.15)">
-    <path d="M31 33 A19 19 0 1 1 50 58 L50 66"
-      fill="none" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
-    <circle cx="50" cy="84" r="6.5" fill="#ffffff"/></g>
-  </g>
     
     <g>
-    <rect x="16" y="183.08505154639175" width="367.13917525773195" height="398.13917525773195" rx="26" ry="26" fill="#ffffff"/>
-    <rect x="39" y="200.08505154639175" width="321.13917525773195" height="321.13917525773195" rx="14" ry="14" fill="#ffffff"/>
-    <g transform="translate(45 206.08505154639175)"><g>
+    <rect x="16" y="159.58505154639175" width="367.13917525773195" height="398.13917525773195" rx="26" ry="26" fill="#ffffff"/>
+    <rect x="39" y="176.58505154639175" width="321.13917525773195" height="321.13917525773195" rx="14" ry="14" fill="#ffffff"/>
+    <g transform="translate(45 182.58505154639175)"><g>
     <defs><linearGradient id="macCustomQR" x1="0.8535533905932737" y1="0.1464466094067262" x2="0.14644660940672627" y2="0.8535533905932737">
       <stop offset="0" stop-color="#3B82F6"/>
       <stop offset="1" stop-color="#38C8D5"/>
@@ -94,130 +85,130 @@
     <path d="M9.972231459926837,44.87504156967077 a34.90281010974393,34.90281010974393 0 0 1 34.90281010974393,-34.90281010974393 h0 a34.90281010974393,34.90281010974393 0 0 1 34.90281010974393,34.90281010974393 v0 a34.90281010974393,34.90281010974393 0 0 1 -34.90281010974393,34.90281010974393 h0 a34.90281010974393,34.90281010974393 0 0 1 -34.90281010974393,-34.90281010974393zM19.944462919853674,44.87504156967077 a24.930578649817093,24.930578649817093 0 0 1 24.930578649817093,-24.930578649817093 h0 a24.930578649817093,24.930578649817093 0 0 1 24.930578649817093,24.930578649817093 v0 a24.930578649817093,24.930578649817093 0 0 1 -24.930578649817093,24.930578649817093 h0 a24.930578649817093,24.930578649817093 0 0 1 -24.930578649817093,-24.930578649817093zM29.91669437978051,44.87504156967077 a14.958347189890258,14.958347189890258 0 0 1 14.958347189890258,-14.958347189890258 h0 a14.958347189890258,14.958347189890258 0 0 1 14.958347189890258,14.958347189890258 v0 a14.958347189890258,14.958347189890258 0 0 1 -14.958347189890258,14.958347189890258 h0 a14.958347189890258,14.958347189890258 0 0 1 -14.958347189890258,-14.958347189890258zM229.36132357831724,44.87504156967077 a34.90281010974393,34.90281010974393 0 0 1 34.90281010974393,-34.90281010974393 h0 a34.90281010974393,34.90281010974393 0 0 1 34.90281010974393,34.90281010974393 v0 a34.90281010974393,34.90281010974393 0 0 1 -34.90281010974393,34.90281010974393 h0 a34.90281010974393,34.90281010974393 0 0 1 -34.90281010974393,-34.90281010974393zM239.33355503824407,44.87504156967077 a24.930578649817093,24.930578649817093 0 0 1 24.930578649817093,-24.930578649817093 h0 a24.930578649817093,24.930578649817093 0 0 1 24.930578649817093,24.930578649817093 v0 a24.930578649817093,24.930578649817093 0 0 1 -24.930578649817093,24.930578649817093 h0 a24.930578649817093,24.930578649817093 0 0 1 -24.930578649817093,-24.930578649817093zM249.3057864981709,44.87504156967077 a14.958347189890258,14.958347189890258 0 0 1 14.958347189890258,-14.958347189890258 h0 a14.958347189890258,14.958347189890258 0 0 1 14.958347189890258,14.958347189890258 v0 a14.958347189890258,14.958347189890258 0 0 1 -14.958347189890258,14.958347189890258 h0 a14.958347189890258,14.958347189890258 0 0 1 -14.958347189890258,-14.958347189890258zM9.972231459926837,264.2641336880612 a34.90281010974393,34.90281010974393 0 0 1 34.90281010974393,-34.90281010974393 h0 a34.90281010974393,34.90281010974393 0 0 1 34.90281010974393,34.90281010974393 v0 a34.90281010974393,34.90281010974393 0 0 1 -34.90281010974393,34.90281010974393 h0 a34.90281010974393,34.90281010974393 0 0 1 -34.90281010974393,-34.90281010974393zM19.944462919853674,264.2641336880612 a24.930578649817093,24.930578649817093 0 0 1 24.930578649817093,-24.930578649817093 h0 a24.930578649817093,24.930578649817093 0 0 1 24.930578649817093,24.930578649817093 v0 a24.930578649817093,24.930578649817093 0 0 1 -24.930578649817093,24.930578649817093 h0 a24.930578649817093,24.930578649817093 0 0 1 -24.930578649817093,-24.930578649817093zM29.91669437978051,264.2641336880612 a14.958347189890258,14.958347189890258 0 0 1 14.958347189890258,-14.958347189890258 h0 a14.958347189890258,14.958347189890258 0 0 1 14.958347189890258,14.958347189890258 v0 a14.958347189890258,14.958347189890258 0 0 1 -14.958347189890258,14.958347189890258 h0 a14.958347189890258,14.958347189890258 0 0 1 -14.958347189890258,-14.958347189890258z" fill="url(#macCustomQR)" fill-rule="evenodd"/>
   </g></g>
     
-    <rect x="33" y="534.2242268041236" width="333.13917525773195" height="30" rx="15" ry="15" fill="#F1F0F6"/>
-    <text x="45" y="553.7242268041236" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B45A8" text-anchor="start" opacity="1" letter-spacing="0.5">URL</text>
-    <text x="75.99196" y="553.7242268041236" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#6C6C70" text-anchor="start" opacity="1">radicalsolution.com/radical-qr</text>
+    <rect x="33" y="510.7242268041237" width="333.13917525773195" height="30" rx="15" ry="15" fill="#F1F0F6"/>
+    <text x="45" y="530.2242268041236" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B45A8" text-anchor="start" opacity="1" letter-spacing="0.5">URL</text>
+    <text x="75.99196" y="530.2242268041236" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#6C6C70" text-anchor="start" opacity="1">radicalsolution.com/radical-qr</text>
   </g>
     <g>
-    <rect x="16" y="596.2242268041236" width="227.13917525773195" height="58" rx="29" ry="29" fill="#ffffff"/>
-    <g transform="translate(54.553587628865984 616.7242268041236) scale(0.17)">
+    <rect x="16" y="572.7242268041236" width="227.13917525773195" height="58" rx="29" ry="29" fill="#ffffff"/>
+    <g transform="translate(54.553587628865984 593.2242268041236) scale(0.17)">
     <path d="M50 8 L50 62 M32 45 L50 63 L68 45"
       fill="none" stroke="#4B3A86" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M22 40 L16 40 A9 9 0 0 0 7 49 L7 83 A9 9 0 0 0 16 92 L84 92 A9 9 0 0 0 93 83 L93 49 A9 9 0 0 0 84 40 L78 40"
       fill="none" stroke="#4B3A86" stroke-width="9.5" stroke-linecap="round"/></g>
-    <text x="80.55358762886598" y="630.9842268041236" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#4B3A86" text-anchor="start" opacity="1">Guardar código QR</text>
-    <circle cx="284.13917525773195" cy="625.2242268041236" r="29" fill="#ffffff" fill-opacity="0.2"/>
-    <g transform="translate(275.13917525773195 616.2242268041236) scale(0.18)">
+    <text x="80.55358762886598" y="607.4842268041236" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#4B3A86" text-anchor="start" opacity="1">Guardar código QR</text>
+    <circle cx="284.13917525773195" cy="601.7242268041236" r="29" fill="#ffffff" fill-opacity="0.2"/>
+    <g transform="translate(275.13917525773195 592.7242268041236) scale(0.18)">
     <rect x="28" y="8" width="65" height="60" rx="12" ry="12"
       fill="none" stroke="#ffffff" stroke-width="8"/>
     <path d="M72 68 L72 80 A12 12 0 0 1 60 92 L19 92 A12 12 0 0 1 7 80 L7 40 A12 12 0 0 1 19 28 L28 28"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></g>
-    <circle cx="354.13917525773195" cy="625.2242268041236" r="29" fill="#ffffff" fill-opacity="0.2"/>
-    <g transform="translate(345.13917525773195 616.2242268041236) scale(0.18)">
+    <circle cx="354.13917525773195" cy="601.7242268041236" r="29" fill="#ffffff" fill-opacity="0.2"/>
+    <g transform="translate(345.13917525773195 592.7242268041236) scale(0.18)">
     <path d="M50 66 L50 12 M32 29 L50 11 L68 29"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M22 40 L16 40 A9 9 0 0 0 7 49 L7 83 A9 9 0 0 0 16 92 L84 92 A9 9 0 0 0 93 83 L93 49 A9 9 0 0 0 84 40 L78 40"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/></g>
   </g>
-    <g><rect x="398.13917525773195" y="183.08505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(440.52525773195873 202.08505154639175) scale(0.18)">
+    <g><rect x="398.13917525773195" y="159.58505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(440.52525773195873 178.58505154639175) scale(0.18)">
     <path d="M50 12 L61 38 L89 41 L68 60 L74 88 L50 74 L26 88 L32 60 L11 41 L39 38 Z"
-      fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/></g><rect x="511.91134020618557" y="183.08505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="1"/><g transform="translate(554.2974226804124 202.08505154639175) scale(0.18)">
+      fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/></g><rect x="511.91134020618557" y="159.58505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="1"/><g transform="translate(554.2974226804124 178.58505154639175) scale(0.18)">
     <path d="M50 12 C25 12 8 30 8 51 C8 72 25 88 46 88 C55 88 58 83 55 78
              C51 71 55 65 63 65 L74 65 C84 65 92 58 92 47 C92 27 74 12 50 12 Z"
       fill="none" stroke="#5B45A8" stroke-width="8" stroke-linejoin="round"/>
     <circle cx="28" cy="45" r="6" fill="#5B45A8"/>
     <circle cx="44" cy="31" r="6" fill="#5B45A8"/>
     <circle cx="64" cy="34" r="6" fill="#5B45A8"/>
-    <circle cx="76" cy="49" r="6" fill="#5B45A8"/></g><rect x="508.91134020618557" y="180.08505154639175" width="108.77216494845361" height="62" rx="19" ry="19" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="3"/><rect x="625.6835051546392" y="183.08505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><rect x="668.169587628866" y="202.18505154639175" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="678.169587628866" y="202.18505154639175" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="668.169587628866" y="212.18505154639175" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="678.169587628866" y="212.18505154639175" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="739.4556701030928" y="183.08505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(781.8417525773195 202.08505154639175) scale(0.18)">
+    <circle cx="76" cy="49" r="6" fill="#5B45A8"/></g><rect x="508.91134020618557" y="156.58505154639175" width="108.77216494845361" height="62" rx="19" ry="19" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="3"/><rect x="625.6835051546392" y="159.58505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><rect x="668.169587628866" y="178.68505154639175" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="678.169587628866" y="178.68505154639175" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="668.169587628866" y="188.68505154639175" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="678.169587628866" y="188.68505154639175" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="739.4556701030928" y="159.58505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(781.8417525773195 178.58505154639175) scale(0.18)">
     <rect x="7" y="20" width="86" height="60" rx="13" ry="13"
       fill="none" stroke="#ffffff" stroke-width="8"/>
     <path d="M12 71 L36 47 L54 65 L68 53 L88 71"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="66" cy="37" r="7" fill="#ffffff"/></g><rect x="853.2278350515464" y="183.08505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(895.6139175257732 202.08505154639175) scale(0.18)">
+    <circle cx="66" cy="37" r="7" fill="#ffffff"/></g><rect x="853.2278350515464" y="159.58505154639175" width="102.77216494845361" height="56" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(895.6139175257732 178.58505154639175) scale(0.18)">
     <path d="M50 8 L50 62 M32 45 L50 63 L68 45"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M22 40 L16 40 A9 9 0 0 0 7 49 L7 83 A9 9 0 0 0 16 92 L84 92 A9 9 0 0 0 93 83 L93 49 A9 9 0 0 0 84 40 L78 40"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/></g></g>
     <g>
-    <rect x="398.13917525773195" y="254.08505154639175" width="557.860824742268" height="282.99999999999994" rx="24" ry="24" fill="#ffffff" fill-opacity="0.15"/>
-    <defs><clipPath id="rowClip17220"><rect x="407.13917525773195" y="254.08505154639175"
-    width="539.860824742268" height="10000"/></clipPath></defs><text x="414.13917525773195" y="279.08505154639175" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">COLOR LISO</text><g clip-path="url(#rowClip17220)"><g>
-    <rect x="414.13917525773195" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><circle cx="441.13917525773195" cy="316.0850515463917" r="17.28" fill="#000000"/></g>
+    <rect x="398.13917525773195" y="230.58505154639175" width="557.860824742268" height="282.99999999999994" rx="24" ry="24" fill="#ffffff" fill-opacity="0.15"/>
+    <defs><clipPath id="rowClip16820"><rect x="407.13917525773195" y="230.58505154639175"
+    width="539.860824742268" height="10000"/></clipPath></defs><text x="414.13917525773195" y="255.58505154639175" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">COLOR LISO</text><g clip-path="url(#rowClip16820)"><g>
+    <rect x="414.13917525773195" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><circle cx="441.13917525773195" cy="292.5850515463917" r="17.28" fill="#000000"/></g>
   </g><g>
-    <rect x="480.13917525773195" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><circle cx="507.13917525773195" cy="316.0850515463917" r="17.28" fill="#1E3A5F"/></g>
+    <rect x="480.13917525773195" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><circle cx="507.13917525773195" cy="292.5850515463917" r="17.28" fill="#1E3A5F"/></g>
   </g><g>
-    <rect x="546.139175257732" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><circle cx="573.139175257732" cy="316.0850515463917" r="17.28" fill="#2D5A3D"/></g>
+    <rect x="546.139175257732" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><circle cx="573.139175257732" cy="292.5850515463917" r="17.28" fill="#2D5A3D"/></g>
   </g><g>
-    <rect x="612.139175257732" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><circle cx="639.139175257732" cy="316.0850515463917" r="17.28" fill="#722F37"/></g>
+    <rect x="612.139175257732" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><circle cx="639.139175257732" cy="292.5850515463917" r="17.28" fill="#722F37"/></g>
   </g><g>
-    <rect x="678.139175257732" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><circle cx="705.139175257732" cy="316.0850515463917" r="17.28" fill="#36454F"/></g>
+    <rect x="678.139175257732" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><circle cx="705.139175257732" cy="292.5850515463917" r="17.28" fill="#36454F"/></g>
   </g><g>
-    <rect x="744.139175257732" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><circle cx="771.139175257732" cy="316.0850515463917" r="17.28" fill="#4B0082"/></g>
+    <rect x="744.139175257732" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><circle cx="771.139175257732" cy="292.5850515463917" r="17.28" fill="#4B0082"/></g>
   </g><g>
-    <rect x="810.139175257732" y="289.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <rect x="810.139175257732" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="0.5"><defs><linearGradient id="wheel1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
-    <circle cx="837.139175257732" cy="316.0850515463917" r="17.28" fill="url(#wheel1)"/></g>
-    <circle cx="854.639175257732" cy="298.58505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
-    <g transform="translate(850.389175257732 294.33505154639175) scale(0.085)">
+    <circle cx="837.139175257732" cy="292.5850515463917" r="17.28" fill="url(#wheel1)"/></g>
+    <circle cx="854.639175257732" cy="275.08505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
+    <g transform="translate(850.389175257732 270.83505154639175) scale(0.085)">
     <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
     <path d="M32 44 L32 32 A18 18 0 0 1 68 32 L68 44"
       fill="none" stroke="#474747" stroke-width="11"/></g>
   
-  </g></g><text x="414.13917525773195" y="365.08505154639175" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">DEGRADADO</text><g clip-path="url(#rowClip17220)"><g>
-    <rect x="414.13917525773195" y="375.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+  </g></g><text x="414.13917525773195" y="341.58505154639175" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">DEGRADADO</text><g clip-path="url(#rowClip16820)"><g>
+    <rect x="414.13917525773195" y="351.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="1"><defs><linearGradient id="gsw1" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#667EEA"/><stop offset="1" stop-color="#764BA2"/>
     </linearGradient></defs>
-    <circle cx="441.13917525773195" cy="402.0850515463917" r="17.28" fill="url(#gsw1)"/></g>
+    <circle cx="441.13917525773195" cy="378.5850515463917" r="17.28" fill="url(#gsw1)"/></g>
   </g><g>
-    <rect x="480.13917525773195" y="375.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="1"/>
+    <rect x="480.13917525773195" y="351.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="1"/>
     <g opacity="1"><defs><linearGradient id="gsw2" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#38C8D5"/>
     </linearGradient></defs>
-    <circle cx="507.13917525773195" cy="402.0850515463917" r="17.28" fill="url(#gsw2)"/></g>
-    <rect x="477.13917525773195" y="372.08505154639175" width="60" height="60" rx="19.2" ry="19.2" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
-    <rect x="474.63917525773195" y="369.58505154639175" width="65" height="65" rx="21.7" ry="21.7" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
+    <circle cx="507.13917525773195" cy="378.5850515463917" r="17.28" fill="url(#gsw2)"/></g>
+    <rect x="477.13917525773195" y="348.58505154639175" width="60" height="60" rx="19.2" ry="19.2" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
+    <rect x="474.63917525773195" y="346.08505154639175" width="65" height="65" rx="21.7" ry="21.7" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
   
   </g><g>
-    <rect x="546.139175257732" y="375.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <rect x="546.139175257732" y="351.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="1"><defs><linearGradient id="gsw3" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#F97316"/><stop offset="1" stop-color="#EC4E8D"/>
     </linearGradient></defs>
-    <circle cx="573.139175257732" cy="402.0850515463917" r="17.28" fill="url(#gsw3)"/></g>
+    <circle cx="573.139175257732" cy="378.5850515463917" r="17.28" fill="url(#gsw3)"/></g>
   </g><g>
-    <rect x="612.139175257732" y="375.08505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
+    <rect x="612.139175257732" y="351.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="0.5"><defs><linearGradient id="wheel2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
-    <circle cx="639.139175257732" cy="402.0850515463917" r="17.28" fill="url(#wheel2)"/></g>
-    <circle cx="656.639175257732" cy="384.58505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
-    <g transform="translate(652.389175257732 380.33505154639175) scale(0.085)">
+    <circle cx="639.139175257732" cy="378.5850515463917" r="17.28" fill="url(#wheel2)"/></g>
+    <circle cx="656.639175257732" cy="361.08505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
+    <g transform="translate(652.389175257732 356.83505154639175) scale(0.085)">
     <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
     <path d="M32 44 L32 32 A18 18 0 0 1 68 32 L68 44"
       fill="none" stroke="#474747" stroke-width="11"/></g>
   
-  </g></g><text x="414.13917525773195" y="451.08505154639175" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">FONDO</text><g clip-path="url(#rowClip17220)"><g>
-    <rect x="414.13917525773195" y="461.08505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="1"/>
+  </g></g><text x="414.13917525773195" y="427.58505154639175" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">FONDO</text><g clip-path="url(#rowClip16820)"><g>
+    <rect x="414.13917525773195" y="437.58505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="1"/>
     <g opacity="1"><g>
-    <defs><clipPath id="bgClip9164"><rect x="425.83917525773194" y="472.78505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
-    <rect x="425.83917525773194" y="472.78505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="#ffffff"/>
-    <g clip-path="url(#bgClip9164)"></g>
-    <rect x="425.83917525773194" y="472.78505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
+    <defs><clipPath id="bgClip8858"><rect x="425.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
+    <rect x="425.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="#ffffff"/>
+    <g clip-path="url(#bgClip8858)"></g>
+    <rect x="425.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
   </g></g>
-    <rect x="411.13917525773195" y="458.08505154639175" width="66" height="66" rx="21" ry="21" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
-    <rect x="408.63917525773195" y="455.58505154639175" width="71" height="71" rx="23.5" ry="23.5" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
+    <rect x="411.13917525773195" y="434.58505154639175" width="66" height="66" rx="21" ry="21" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
+    <rect x="408.63917525773195" y="432.08505154639175" width="71" height="71" rx="23.5" ry="23.5" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
   
   </g><g>
-    <rect x="486.13917525773195" y="461.08505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="0.68"/>
+    <rect x="486.13917525773195" y="437.58505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="1"><g>
-    <defs><clipPath id="bgClip9668"><rect x="497.83917525773194" y="472.78505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
-    <rect x="497.83917525773194" y="472.78505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="#ffffff"/>
-    <g clip-path="url(#bgClip9668)"><rect x="497.83917525773194" y="472.78505154639174" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="516.139175257732" y="472.78505154639174" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="506.9891752577319" y="481.9350515463917" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="525.2891752577319" y="481.9350515463917" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="497.83917525773194" y="491.08505154639175" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="516.139175257732" y="491.08505154639175" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="506.9891752577319" y="500.23505154639173" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="525.2891752577319" y="500.23505154639173" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/></g>
-    <rect x="497.83917525773194" y="472.78505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
+    <defs><clipPath id="bgClip9362"><rect x="497.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
+    <rect x="497.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="#ffffff"/>
+    <g clip-path="url(#bgClip9362)"><rect x="497.83917525773194" y="449.28505154639174" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="516.139175257732" y="449.28505154639174" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="506.9891752577319" y="458.4350515463917" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="525.2891752577319" y="458.4350515463917" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="497.83917525773194" y="467.58505154639175" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="516.139175257732" y="467.58505154639175" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="506.9891752577319" y="476.73505154639173" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="525.2891752577319" y="476.73505154639173" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/></g>
+    <rect x="497.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
   </g></g>
   </g></g>
   </g>

@@ -40,7 +40,6 @@ struct GeneratorMetrics: Equatable, Sendable {
     var cardPadding: CGFloat
     var railHeight: CGFloat
     var actionHeight: CGFloat
-    var headerHeight: CGFloat
     /// Widest the content block gets. A phone fills its screen; a regular-width
     /// canvas centers a column instead of stretching one card across 992pt.
     var contentWidth: CGFloat = .infinity
@@ -59,7 +58,7 @@ struct GeneratorMetrics: Equatable, Sendable {
         tokenWidth: 72, tokenHeight: 48,
         tileGap: 10, labelGap: 5, rowGap: 10, sectionGap: 11,
         panelPadding: 12, cardPadding: 14,
-        railHeight: 46, actionHeight: 54, headerHeight: 30
+        railHeight: 46, actionHeight: 54
     )
 
     /// Short screens — iPhone SE and 8, and any window squeezed to that height.
@@ -70,7 +69,7 @@ struct GeneratorMetrics: Equatable, Sendable {
         tokenWidth: 64, tokenHeight: 42,
         tileGap: 8, labelGap: 3, rowGap: 7, sectionGap: 8,
         panelPadding: 10, cardPadding: 11,
-        railHeight: 42, actionHeight: 48, headerHeight: 28
+        railHeight: 42, actionHeight: 48
     )
 
     /// A canvas that is both wide and tall — an iPad held upright, or a Mac
@@ -81,7 +80,7 @@ struct GeneratorMetrics: Equatable, Sendable {
         tokenWidth: 94, tokenHeight: 60,
         tileGap: 14, labelGap: 7, rowGap: 15, sectionGap: 17,
         panelPadding: 18, cardPadding: 19,
-        railHeight: 60, actionHeight: 62, headerHeight: 34,
+        railHeight: 60, actionHeight: 62,
         contentWidth: 640
     )
 
@@ -94,7 +93,7 @@ struct GeneratorMetrics: Equatable, Sendable {
         tokenWidth: 86, tokenHeight: 56,
         tileGap: 12, labelGap: 6, rowGap: 13, sectionGap: 15,
         panelPadding: 16, cardPadding: 17,
-        railHeight: 56, actionHeight: 58, headerHeight: 32,
+        railHeight: 56, actionHeight: 58,
         contentWidth: 940, previewColumn: 358, layout: .split
     )
 

@@ -27,7 +27,7 @@ import {
   POINTS, SAFE_TOP, SAFE_BOTTOM, GUTTER, CONTENT_W, FONT as POSTER_FONT, escapeXML,
 } from "../lib/phone-frame.mjs";
 import {
-  METRICS as M, INK, header, previewCard, actionRow, text, estimateTextWidth, fitFontSize,
+  METRICS as M, NAV_HEIGHT, INK, header, previewCard, actionRow, text, estimateTextWidth, fitFontSize,
 } from "../lib/app-ui.mjs";
 
 const LOCALE = process.argv[2] || "en-US";
@@ -135,8 +135,8 @@ function editorCard(x, y, w) {
 
 // --- The screen ---------------------------------------------------------------
 
-const headerY = SAFE_TOP + M.sectionGap;
-const cardY = headerY + M.headerHeight + M.sectionGap;
+const headerY = SAFE_TOP;
+const cardY = headerY + NAV_HEIGHT + M.sectionGap;
 const card = editorCard(GUTTER, cardY, CONTENT_W);
 const previewY = cardY + card.height + M.sectionGap;
 const actionY = POINTS.h - SAFE_BOTTOM - M.sectionGap - M.actionHeight;

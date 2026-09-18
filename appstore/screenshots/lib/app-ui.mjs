@@ -59,7 +59,7 @@ export const METRICS = {
   tokenWidth: 72, tokenHeight: 48,
   tileGap: 10, labelGap: 5, rowGap: 10, sectionGap: 11,
   panelPadding: 12, cardPadding: 14,
-  railHeight: 46, actionHeight: 54, headerHeight: 30,
+  railHeight: 46, actionHeight: 54,
   contentWidth: Infinity, previewColumn: 0, layout: "column",
 };
 
@@ -69,7 +69,7 @@ export const METRICS_COMPACT = {
   tokenWidth: 64, tokenHeight: 42,
   tileGap: 8, labelGap: 3, rowGap: 7, sectionGap: 8,
   panelPadding: 10, cardPadding: 11,
-  railHeight: 42, actionHeight: 48, headerHeight: 28,
+  railHeight: 42, actionHeight: 48,
   contentWidth: Infinity, previewColumn: 0, layout: "column",
 };
 
@@ -79,7 +79,7 @@ export const METRICS_EXPANDED = {
   tokenWidth: 94, tokenHeight: 60,
   tileGap: 14, labelGap: 7, rowGap: 15, sectionGap: 17,
   panelPadding: 18, cardPadding: 19,
-  railHeight: 60, actionHeight: 62, headerHeight: 34,
+  railHeight: 60, actionHeight: 62,
   contentWidth: 640, previewColumn: 0, layout: "column",
 };
 
@@ -89,7 +89,7 @@ export const METRICS_SPLIT = {
   tokenWidth: 86, tokenHeight: 56,
   tileGap: 12, labelGap: 6, rowGap: 13, sectionGap: 15,
   panelPadding: 16, cardPadding: 17,
-  railHeight: 56, actionHeight: 58, headerHeight: 32,
+  railHeight: 56, actionHeight: 58,
   contentWidth: 940, previewColumn: 358, layout: "split",
 };
 
@@ -451,14 +451,23 @@ export function panel(x, y, width, height, inner) {
 
 // MARK: - Screen chrome
 
-/** GeneratorView.headerSection — the mark, the name, and the help button. */
-export function header({ x, y, width, m = METRICS }) {
-  const mid = y + m.headerHeight / 2;
+/** The navigation bar `ContentView` fills: the mark and the name as its
+ * principal item, the overflow menu at the trailing edge. 2.1.1 moved them
+ * there from a row of their own, which is ~41pt the content keeps. */
+export const NAV_HEIGHT = 44;
+
+export function header({ x, y, width }) {
+  const mid = y + NAV_HEIGHT / 2;
+  const label = "Radical QR";
+  const labelWidth = estimateTextWidth(label, 17);
+  // Mark and name are centred as a pair in the bar, as `.principal` places them.
+  const blockX = x + (width - (22 + 9 + labelWidth)) / 2;
+  const menuX = x + width - 15;
   return `<g>
-    ${appMark(x, mid - 11, 22, "#ffffff")}
-    ${text(x + 31, mid + 5.5, "Radical QR", { size: 15, weight: 600, fill: "#ffffff" })}
-    <circle cx="${x + width - 17}" cy="${mid}" r="17" fill="#ffffff" fill-opacity="0.18"/>
-    ${symbol("questionmark", x + width - 17, mid, 15, "#ffffff", "semibold")}
+    ${appMark(blockX, mid - 11, 22, "#ffffff")}
+    ${text(blockX + 31, mid + 6, label, { size: 17, weight: 600, fill: "#ffffff" })}
+    <circle cx="${menuX}" cy="${mid}" r="13" fill="none" stroke="#ffffff" stroke-width="1.6"/>
+    ${[-5, 0, 5].map((d) => `<circle cx="${menuX + d}" cy="${mid}" r="1.7" fill="#ffffff"/>`).join("")}
   </g>`;
 }
 

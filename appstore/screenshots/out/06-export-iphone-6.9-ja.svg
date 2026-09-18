@@ -62,18 +62,15 @@
     <rect x="253" y="718" width="784" height="1644" fill="url(#appG)"/>
     <g transform="translate(253 718) scale(2)">
   <g>
-    <g><circle cx="22.416666666666664" cy="80.41666666666667" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="31.583333333333332" cy="80.41666666666667" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="22.416666666666664" cy="89.58333333333333" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="29.291666666666664" cy="87.29166666666667" r="1.375" fill="#ffffff" opacity="1"/><circle cx="33.875" cy="87.29166666666667" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="29.291666666666664" cy="91.875" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="33.875" cy="91.875" r="1.375" fill="#ffffff" opacity="1"/></g>
-    <text x="47" y="90.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#ffffff" text-anchor="start" opacity="1">Radical QR</text>
-    <circle cx="359" cy="85" r="17" fill="#ffffff" fill-opacity="0.18"/>
-    <g transform="translate(351.5 77.5) scale(0.15)">
-    <path d="M31 33 A19 19 0 1 1 50 58 L50 66"
-      fill="none" stroke="#ffffff" stroke-width="9.5" stroke-linecap="round"/>
-    <circle cx="50" cy="84" r="6.5" fill="#ffffff"/></g>
+    <g><circle cx="146.62241666666668" cy="76.41666666666667" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="155.78908333333337" cy="76.41666666666667" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="146.62241666666668" cy="85.58333333333333" r="4.216666666666666" fill="none" stroke="#ffffff" stroke-width="2.108333333333333"/><circle cx="153.49741666666668" cy="83.29166666666667" r="1.375" fill="#ffffff" opacity="1"/><circle cx="158.08075000000002" cy="83.29166666666667" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="153.49741666666668" cy="87.875" r="1.375" fill="#ffffff" opacity="0.6"/><circle cx="158.08075000000002" cy="87.875" r="1.375" fill="#ffffff" opacity="1"/></g>
+    <text x="171.20575000000002" y="87" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#ffffff" text-anchor="start" opacity="1">Radical QR</text>
+    <circle cx="361" cy="81" r="13" fill="none" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="356" cy="81" r="1.7" fill="#ffffff"/><circle cx="361" cy="81" r="1.7" fill="#ffffff"/><circle cx="366" cy="81" r="1.7" fill="#ffffff"/>
   </g>
   <g>
-    <rect x="16" y="111" width="360" height="266" rx="26" ry="26" fill="#ffffff"/>
-    <rect x="97" y="125" width="198" height="198" rx="14" ry="14" fill="#ffffff"/>
-    <g transform="translate(103 131)"><g>
+    <rect x="16" y="114" width="360" height="266" rx="26" ry="26" fill="#ffffff"/>
+    <rect x="97" y="128" width="198" height="198" rx="14" ry="14" fill="#ffffff"/>
+    <g transform="translate(103 134)"><g>
     <defs><linearGradient id="exportQR" x1="0.8535533905932737" y1="0.1464466094067262" x2="0.14644660940672627" y2="0.8535533905932737">
       <stop offset="0" stop-color="#F97316"/>
       <stop offset="1" stop-color="#EC4E8D"/>
@@ -83,67 +80,67 @@
     <path d="M8.1,16.604999999999997 a8.504999999999999,8.504999999999999 0 0 1 8.504999999999999,-8.504999999999999 h20.79 a8.504999999999999,8.504999999999999 0 0 1 8.504999999999999,8.504999999999999 v20.79 a8.504999999999999,8.504999999999999 0 0 1 -8.504999999999999,8.504999999999999 h-20.79 a8.504999999999999,8.504999999999999 0 0 1 -8.504999999999999,-8.504999999999999zM13.5,19.575 a6.074999999999999,6.074999999999999 0 0 1 6.074999999999999,-6.074999999999999 h14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 6.074999999999999,6.074999999999999 v14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 -6.074999999999999,6.074999999999999 h-14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 -6.074999999999999,-6.074999999999999zM18.9,22.544999999999998 a3.644999999999999,3.644999999999999 0 0 1 3.644999999999999,-3.644999999999999 h8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 3.644999999999999,3.644999999999999 v8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 -3.644999999999999,3.644999999999999 h-8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 -3.644999999999999,-3.644999999999999zM140.1,16.604999999999997 a8.504999999999999,8.504999999999999 0 0 1 8.504999999999999,-8.504999999999999 h20.79 a8.504999999999999,8.504999999999999 0 0 1 8.504999999999999,8.504999999999999 v20.79 a8.504999999999999,8.504999999999999 0 0 1 -8.504999999999999,8.504999999999999 h-20.79 a8.504999999999999,8.504999999999999 0 0 1 -8.504999999999999,-8.504999999999999zM145.5,19.575 a6.074999999999999,6.074999999999999 0 0 1 6.074999999999999,-6.074999999999999 h14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 6.074999999999999,6.074999999999999 v14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 -6.074999999999999,6.074999999999999 h-14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 -6.074999999999999,-6.074999999999999zM150.9,22.544999999999998 a3.644999999999999,3.644999999999999 0 0 1 3.644999999999999,-3.644999999999999 h8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 3.644999999999999,3.644999999999999 v8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 -3.644999999999999,3.644999999999999 h-8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 -3.644999999999999,-3.644999999999999zM8.1,148.605 a8.504999999999999,8.504999999999999 0 0 1 8.504999999999999,-8.504999999999999 h20.79 a8.504999999999999,8.504999999999999 0 0 1 8.504999999999999,8.504999999999999 v20.79 a8.504999999999999,8.504999999999999 0 0 1 -8.504999999999999,8.504999999999999 h-20.79 a8.504999999999999,8.504999999999999 0 0 1 -8.504999999999999,-8.504999999999999zM13.5,151.575 a6.074999999999999,6.074999999999999 0 0 1 6.074999999999999,-6.074999999999999 h14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 6.074999999999999,6.074999999999999 v14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 -6.074999999999999,6.074999999999999 h-14.849999999999998 a6.074999999999999,6.074999999999999 0 0 1 -6.074999999999999,-6.074999999999999zM18.9,154.54500000000002 a3.644999999999999,3.644999999999999 0 0 1 3.644999999999999,-3.644999999999999 h8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 3.644999999999999,3.644999999999999 v8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 -3.644999999999999,3.644999999999999 h-8.909999999999997 a3.644999999999999,3.644999999999999 0 0 1 -3.644999999999999,-3.644999999999999z" fill="url(#exportQR)" fill-rule="evenodd"/>
   </g></g>
     
-    <rect x="30" y="333" width="332" height="30" rx="15" ry="15" fill="#F1F0F6"/>
-    <text x="42" y="352.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B45A8" text-anchor="start" opacity="1" letter-spacing="0.5">URL</text>
-    <text x="72.99196" y="352.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#6C6C70" text-anchor="start" opacity="1">radicalsolution.com/radical-qr</text>
+    <rect x="30" y="336" width="332" height="30" rx="15" ry="15" fill="#F1F0F6"/>
+    <text x="42" y="355.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B45A8" text-anchor="start" opacity="1" letter-spacing="0.5">URL</text>
+    <text x="72.99196" y="355.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="500" fill="#6C6C70" text-anchor="start" opacity="1">radicalsolution.com/radical-qr</text>
   </g>
-  <g><rect x="16" y="388" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(39.4 402) scale(0.18)">
+  <g><rect x="16" y="391" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(39.4 405) scale(0.18)">
     <path d="M50 12 L61 38 L89 41 L68 60 L74 88 L50 74 L26 88 L32 60 L11 41 L39 38 Z"
-      fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/></g><rect x="89.8" y="388" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(113.19999999999999 402) scale(0.18)">
+      fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/></g><rect x="89.8" y="391" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(113.19999999999999 405) scale(0.18)">
     <path d="M50 12 C25 12 8 30 8 51 C8 72 25 88 46 88 C55 88 58 83 55 78
              C51 71 55 65 63 65 L74 65 C84 65 92 58 92 47 C92 27 74 12 50 12 Z"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linejoin="round"/>
     <circle cx="28" cy="45" r="6" fill="#ffffff"/>
     <circle cx="44" cy="31" r="6" fill="#ffffff"/>
     <circle cx="64" cy="34" r="6" fill="#ffffff"/>
-    <circle cx="76" cy="49" r="6" fill="#ffffff"/></g><rect x="163.6" y="388" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><rect x="187.1" y="402.1" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="197.1" y="402.1" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="187.1" y="412.1" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="197.1" y="412.1" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="237.39999999999998" y="388" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(260.79999999999995 402) scale(0.18)">
+    <circle cx="76" cy="49" r="6" fill="#ffffff"/></g><rect x="163.6" y="391" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><rect x="187.1" y="405.1" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="197.1" y="405.1" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="187.1" y="415.1" width="7.8" height="7.8" rx="1.248" ry="1.248" fill="#ffffff"/><rect x="197.1" y="415.1" width="7.8" height="7.8" rx="3.9" ry="3.9" fill="#ffffff"/><rect x="237.39999999999998" y="391" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="0.18"/><g transform="translate(260.79999999999995 405) scale(0.18)">
     <rect x="7" y="20" width="86" height="60" rx="13" ry="13"
       fill="none" stroke="#ffffff" stroke-width="8"/>
     <path d="M12 71 L36 47 L54 65 L68 53 L88 71"
       fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="66" cy="37" r="7" fill="#ffffff"/></g><rect x="311.2" y="388" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="1"/><g transform="translate(334.59999999999997 402) scale(0.18)">
+    <circle cx="66" cy="37" r="7" fill="#ffffff"/></g><rect x="311.2" y="391" width="64.8" height="46" rx="16" ry="16" fill="#ffffff" fill-opacity="1"/><g transform="translate(334.59999999999997 405) scale(0.18)">
     <path d="M50 8 L50 62 M32 45 L50 63 L68 45"
       fill="none" stroke="#5B45A8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M22 40 L16 40 A9 9 0 0 0 7 49 L7 83 A9 9 0 0 0 16 92 L84 92 A9 9 0 0 0 93 83 L93 49 A9 9 0 0 0 84 40 L78 40"
-      fill="none" stroke="#5B45A8" stroke-width="8" stroke-linecap="round"/></g><rect x="308.2" y="385" width="70.8" height="52" rx="19" ry="19" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="3"/></g>
+      fill="none" stroke="#5B45A8" stroke-width="8" stroke-linecap="round"/></g><rect x="308.2" y="388" width="70.8" height="52" rx="19" ry="19" fill="none" stroke="#ffffff" stroke-opacity="0.9" stroke-width="3"/></g>
   <g>
-    <rect x="16" y="445" width="360" height="166" rx="24" ry="24" fill="#ffffff" fill-opacity="0.15"/>
-    <defs><clipPath id="rowClip8421"><rect x="21" y="445"
-    width="350" height="10000"/></clipPath></defs><text x="28" y="466" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">サイズ</text><g clip-path="url(#rowClip8421)"><g>
-    <rect x="-36" y="475" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="0" y="503.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">256</text></g>
+    <rect x="16" y="448" width="360" height="166" rx="24" ry="24" fill="#ffffff" fill-opacity="0.15"/>
+    <defs><clipPath id="rowClip8472"><rect x="21" y="448"
+    width="350" height="10000"/></clipPath></defs><text x="28" y="469" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">サイズ</text><g clip-path="url(#rowClip8472)"><g>
+    <rect x="-36" y="478" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="0" y="506.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">256</text></g>
   </g><g>
-    <rect x="46" y="475" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="82" y="503.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">512</text></g>
+    <rect x="46" y="478" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="82" y="506.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">512</text></g>
   </g><g>
-    <rect x="128" y="475" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="164" y="503.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">1024</text></g>
+    <rect x="128" y="478" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="164" y="506.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">1024</text></g>
   </g><g>
-    <rect x="210" y="475" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="246" y="503.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">2048</text></g>
+    <rect x="210" y="478" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="246" y="506.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">2048</text></g>
   </g><g>
-    <rect x="292" y="475" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="1"/>
-    <g opacity="1"><text x="328" y="503.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">4096</text></g>
-    <rect x="289" y="472" width="78" height="54" rx="17.4" ry="17.4" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
-    <rect x="286.5" y="469.5" width="83" height="59" rx="19.9" ry="19.9" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
+    <rect x="292" y="478" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="1"/>
+    <g opacity="1"><text x="328" y="506.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">4096</text></g>
+    <rect x="289" y="475" width="78" height="54" rx="17.4" ry="17.4" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
+    <rect x="286.5" y="472.5" width="83" height="59" rx="19.9" ry="19.9" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
   
-  </g></g><text x="28" y="542" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">形式</text><g clip-path="url(#rowClip8421)"><g>
-    <rect x="-36" y="551" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="0" y="579.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">PNG</text></g>
+  </g></g><text x="28" y="545" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#ffffff" text-anchor="start" opacity="0.72" letter-spacing="0.7">形式</text><g clip-path="url(#rowClip8472)"><g>
+    <rect x="-36" y="554" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="0" y="582.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">PNG</text></g>
   </g><g>
-    <rect x="46" y="551" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="82" y="579.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">JPEG</text></g>
+    <rect x="46" y="554" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="82" y="582.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">JPEG</text></g>
   </g><g>
-    <rect x="128" y="551" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="164" y="579.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">WEBP</text></g>
+    <rect x="128" y="554" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="164" y="582.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">WEBP</text></g>
   </g><g>
-    <rect x="210" y="551" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="1"><text x="246" y="579.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">PDF</text></g>
+    <rect x="210" y="554" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="1"><text x="246" y="582.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">PDF</text></g>
   </g><g>
-    <rect x="292" y="551" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="1"/>
-    <g opacity="1"><text x="328" y="579.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">SVG</text></g>
-    <rect x="289" y="548" width="78" height="54" rx="17.4" ry="17.4" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
-    <rect x="286.5" y="545.5" width="83" height="59" rx="19.9" ry="19.9" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
+    <rect x="292" y="554" width="72" height="48" rx="14.399999999999999" ry="14.399999999999999" fill="#ffffff" fill-opacity="1"/>
+    <g opacity="1"><text x="328" y="582.5" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#241F31" text-anchor="middle" opacity="1">SVG</text></g>
+    <rect x="289" y="551" width="78" height="54" rx="17.4" ry="17.4" fill="none" stroke="#ffffff" stroke-opacity="0.95" stroke-width="3"/>
+    <rect x="286.5" y="548.5" width="83" height="59" rx="19.9" ry="19.9" fill="none" stroke="#ffffff" stroke-opacity="0.34" stroke-width="2.5"/>
   
   </g></g>
   </g>

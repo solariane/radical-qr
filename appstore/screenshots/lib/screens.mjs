@@ -20,7 +20,7 @@
  */
 
 import {
-  METRICS, header, previewCard, familyRail, actionRow, launchCard,
+  METRICS, NAV_HEIGHT, header, previewCard, familyRail, actionRow, launchCard,
   launchCardMetrics, launchWidthFor, inlineNote, recentStrip,
   shapeFamily, colorFamily, brandFamily, exportFamily, stylesFamily,
 } from "./app-ui.mjs";
@@ -29,19 +29,6 @@ const FAMILY_BUILDER = {
   shape: shapeFamily, color: colorFamily, brand: brandFamily,
   export: exportFamily, styles: stylesFamily,
 };
-
-/**
- * The NavigationStack bar `ContentView` adds above the generator: no title, one
- * overflow menu. Drawn only where the device really has it.
- */
-export function navBar({ x, y, width, height = 44 }) {
-  const cx = x + width - 22;
-  const cy = y + height / 2;
-  return `<g opacity="0.95">
-    <circle cx="${cx}" cy="${cy}" r="13" fill="none" stroke="#ffffff" stroke-width="1.6"/>
-    ${[-5, 0, 5].map((d) => `<circle cx="${cx + d}" cy="${cy}" r="1.7" fill="#ffffff"/>`).join("")}
-  </g>`;
-}
 
 /**
  * `contentColumn(width:)` — cap the column and centre what is left over.
@@ -70,19 +57,21 @@ export function generatorScreen({
   qr, previewSize, kind, content, logo = null, caption = null,
   showsNavBar = false, originX = 0, m = METRICS,
 }) {
-  const navH = showsNavBar ? 44 : 0;
   const { x: colX, width } = column({ gutter, points, cap: m.contentWidth });
-  const headerY = safeTop + navH + m.sectionGap;
-  const chrome = showsNavBar ? navBar({ x: colX, y: safeTop, width }) : "";
+  // iPhone and iPad put the mark and the name in the navigation bar; the Mac
+  // window has its title bar and the generator draws no header at all. Either
+  // way `contentY` is where the first card starts.
+  const contentY = safeTop + (showsNavBar ? NAV_HEIGHT + m.sectionGap : m.sectionGap);
+  const chrome = showsNavBar ? header({ x: colX, y: safeTop, width }) : "";
   const build = FAMILY_BUILDER[family];
 
   const body = m.layout === "split"
     ? splitBody({
-        points, safeBottom, colX, width, headerY, copy, build, familyOptions,
+        points, safeBottom, colX, width, contentY, copy, build, familyOptions,
         qr, previewSize, kind, content, logo, caption, family, m,
       })
     : columnBody({
-        points, safeBottom, colX, width, headerY, copy, build, familyOptions,
+        points, safeBottom, colX, width, contentY, copy, build, familyOptions,
         qr, previewSize, kind, content, logo, caption, family, m,
       });
 
@@ -90,17 +79,16 @@ export function generatorScreen({
   // sidebar, and everything inside it is laid out from zero as usual.
   return `<g transform="translate(${originX} 0)">
     ${chrome}
-    ${header({ x: colX, y: headerY, width, m })}
     ${body}
   </g>`;
 }
 
 /** Header, card, rail, panel — and the save row pinned to the bottom. */
 function columnBody({
-  points, safeBottom, colX, width, headerY, copy, build, familyOptions,
+  points, safeBottom, colX, width, contentY, copy, build, familyOptions,
   qr, previewSize, kind, content, logo, caption, family, m,
 }) {
-  const previewY = headerY + m.headerHeight + m.sectionGap;
+  const previewY = contentY;
   const railY = previewY + previewCardHeight(previewSize, m) + m.sectionGap;
   const panelY = railY + m.railHeight + m.sectionGap;
   const actionY = points.h - safeBottom - m.sectionGap - m.actionHeight;
@@ -121,7 +109,7 @@ function columnBody({
  * fixed `previewColumn` wide; the right takes what is left.
  */
 function splitBody({
-  points, colX, width, headerY, copy, build, familyOptions,
+  points, colX, width, contentY, copy, build, familyOptions,
   qr, previewSize, kind, content, logo, caption, family, m,
 }) {
   const leftW = m.previewColumn;
@@ -137,7 +125,7 @@ function splitBody({
   const rightH = m.railHeight + m.sectionGap + probe.height;
 
   const blockH = Math.max(leftH, rightH);
-  const top = headerY + m.headerHeight + m.sectionGap;
+  const top = contentY;
   const blockY = top + Math.max(0, (points.h - m.sectionGap - top - blockH) / 2);
 
   const group = build({ x: rightX, y: blockY + m.railHeight + m.sectionGap, width: rightW, copy, m, ...familyOptions });
@@ -161,10 +149,8 @@ export function launchScreen({
   points, safeTop, gutter, copy, privacyNote, recents = null, recentsLabel = "Recent",
   showsNavBar = false, originX = 0, m = METRICS,
 }) {
-  const navH = showsNavBar ? 44 : 0;
   const { x: colX, width } = column({ gutter, points, cap: launchWidthFor(m) });
-  const headerY = safeTop + navH + m.sectionGap;
-  const cardY = headerY + m.headerHeight + m.sectionGap;
+  const cardY = safeTop + (showsNavBar ? NAV_HEIGHT + m.sectionGap : m.sectionGap);
   const stripY = cardY + launchCardMetrics(copy, width).height + m.sectionGap;
 
   const strip = recents
@@ -172,8 +158,7 @@ export function launchScreen({
     : { svg: "", height: -m.sectionGap };
 
   return `<g transform="translate(${originX} 0)">
-    ${showsNavBar ? navBar({ x: colX, y: safeTop, width }) : ""}
-    ${header({ x: colX, y: headerY, width, m })}
+    ${showsNavBar ? header({ x: colX, y: safeTop, width }) : ""}
     ${launchCard({ x: colX, y: cardY, width, copy, m })}
     ${strip.svg}
     ${inlineNote({

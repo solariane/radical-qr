@@ -16,7 +16,7 @@ import {
   SAFE_TOP, GUTTER, CONTENT_W,
 } from "../lib/phone-frame.mjs";
 import {
-  METRICS as M, header, launchCard, launchCardMetrics, recentStrip, inlineNote,
+  METRICS as M, NAV_HEIGHT, header, launchCard, launchCardMetrics, recentStrip, inlineNote,
 } from "../lib/app-ui.mjs";
 import { renderQR } from "../lib/qr-svg.mjs";
 
@@ -25,8 +25,8 @@ const L = copyFor("launch", LOCALE);
 const P = copyFor("privacy", LOCALE);
 const H = copyFor("history", LOCALE);
 
-const headerY = SAFE_TOP + M.sectionGap;
-const cardY = headerY + M.headerHeight + M.sectionGap;
+const headerY = SAFE_TOP;
+const cardY = headerY + NAV_HEIGHT + M.sectionGap;
 const stripY = cardY + launchCardMetrics(L, CONTENT_W).height + M.sectionGap;
 
 /** Four real payloads, so the strip shows four different codes as the app does. */

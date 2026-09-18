@@ -15,15 +15,15 @@ import {
   SAFE_TOP, GUTTER, CONTENT_W,
 } from "../lib/phone-frame.mjs";
 import {
-  METRICS as M, header, launchCard, launchCardMetrics, inlineNote,
+  METRICS as M, NAV_HEIGHT, header, launchCard, launchCardMetrics, inlineNote,
 } from "../lib/app-ui.mjs";
 
 const LOCALE = process.argv[2] || "en-US";
 const L = copyFor("privacy", LOCALE);
 const LAUNCH = copyFor("launch", LOCALE);
 
-const headerY = SAFE_TOP + M.sectionGap;
-const cardY = headerY + M.headerHeight + M.sectionGap;
+const headerY = SAFE_TOP;
+const cardY = headerY + NAV_HEIGHT + M.sectionGap;
 const noteY = cardY + launchCardMetrics(LAUNCH, CONTENT_W).height + M.sectionGap + 12;
 
 const screen = `

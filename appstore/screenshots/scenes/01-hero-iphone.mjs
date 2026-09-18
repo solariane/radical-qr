@@ -17,7 +17,7 @@ import {
   POINTS, SAFE_TOP, SAFE_BOTTOM, GUTTER, CONTENT_W,
 } from "../lib/phone-frame.mjs";
 import {
-  METRICS as M, header, previewCard, familyRail, panel, actionRow,
+  METRICS as M, NAV_HEIGHT, header, previewCard, familyRail, panel, actionRow,
   rowLabel, settingTile, moduleShapeGlyph, eyeShapeGlyph, eyeScaleGlyph,
 } from "../lib/app-ui.mjs";
 
@@ -26,8 +26,8 @@ const L = copyFor("hero", LOCALE);
 
 // --- The app screen, in points ---------------------------------------------
 
-const headerY = SAFE_TOP + M.sectionGap;
-const previewY = headerY + M.headerHeight + M.sectionGap;
+const headerY = SAFE_TOP;
+const previewY = headerY + NAV_HEIGHT + M.sectionGap;
 const previewH = M.cardPadding * 2 + (M.preview + 12) + M.rowGap + 30;
 const railY = previewY + previewH + M.sectionGap;
 const panelY = railY + M.railHeight + M.sectionGap;
