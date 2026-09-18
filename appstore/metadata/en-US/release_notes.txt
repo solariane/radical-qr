@@ -1,16 +1,7 @@
-Radical QR 2.1 — paste it the way you wrote it.
+Radical QR 2.1.1
 
-• Appointments. Paste "Dinner Saturday 8pm, 350 Fifth Avenue, New York" and get a calendar event: date, time, place and meeting link are already filled in. Add a title, and it is ready to scan into a calendar.
+• Fixed a crash on iOS 26 and later: choosing the roundest modules could close the app while a code was on screen. The shape is unchanged; it is the drawing that was asking for an impossible corner.
 
-• Wi-Fi from the card on the table. "Wi-Fi: CafeGuest / Password: …" becomes a code that joins the network. Name, password and security in one small form.
+• More room for the code. The name and the mark moved into the navigation bar, so a form and its QR code fit on screen together — it matters on a small iPhone and on a long contact card.
 
-• Contacts from a signature. Paste an email signature and get a contact card: name, phone, email, company, job title, website, address.
-
-• Addresses. An address on its own becomes a code that opens it in Maps. Nothing is looked up from your device.
-
-• Asks when unsure. If the text only might be one of these, the app offers instead of deciding — and "Keep as text" always gives you back exactly what you pasted.
-
-Fixed: typing on the start screen no longer loses the field after the first letter.
-Fixed: a few Arabic, Japanese and Chinese translations.
-
-As always: no tracking, no accounts — everything stays on your device.
+• Help rewritten around what 2.1 does: how text written for people becomes an event, a Wi-Fi code, a contact or an address, with examples you can copy. It now lives in the ⋯ menu, next to Settings.

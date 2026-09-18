@@ -1,16 +1,7 @@
-Radical QR 2.1 — cole do jeito que você escreveu.
+Radical QR 2.1.1
 
-• Compromissos. Cole "Jantar sábado 20h, Avenida Paulista 1578, São Paulo" e obtenha um evento de calendário: data, hora, local e link da reunião já preenchidos. Adicione um título e está pronto para escanear no calendário.
+• Corrigido um travamento no iOS 26 e posterior: escolher os módulos mais arredondados podia fechar o app enquanto um código estava na tela. A forma não mudou; o que mudava era o desenho pedindo um canto impossível.
 
-• Wi-Fi do cartão na mesa. "Wi-Fi: CafeConvidado / Senha: …" vira um código que conecta à rede. Nome, senha e segurança em um único formulário pequeno.
+• Mais espaço para o código. O nome e a marca foram para a barra de navegação, então um formulário e seu código QR cabem juntos na tela — isso importa em um iPhone pequeno e em um cartão de contato longo.
 
-• Contatos de uma assinatura. Cole uma assinatura de e-mail e obtenha um cartão de contato: nome, telefone, e-mail, empresa, cargo, site, endereço.
-
-• Endereços. Um endereço sozinho vira um código que o abre no Mapas. Nada é consultado do seu dispositivo.
-
-• Pergunta quando não tem certeza. Se o texto apenas pode ser uma dessas opções, o app oferece em vez de decidir — e "Manter como texto" sempre devolve exatamente o que você colou.
-
-Corrigido: digitar na tela inicial não perde mais o campo após a primeira letra.
-Corrigido: algumas traduções em árabe, japonês e chinês.
-
-Como sempre: sem rastreamento, sem contas — tudo fica no seu dispositivo.
+• Ajuda reescrita em torno do que o 2.1 faz: como texto escrito para pessoas se torna um evento, um código Wi-Fi, um contato ou um endereço, com exemplos que você pode copiar. Agora fica no menu ⋯, ao lado de Configurações.

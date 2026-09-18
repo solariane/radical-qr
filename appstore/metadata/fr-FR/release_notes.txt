@@ -1,16 +1,7 @@
-Radical QR 2.1 — collez-le comme vous l'avez écrit.
+Radical QR 2.1.1
 
-• Rendez-vous. Collez « dîner samedi 20h, 12 rue de Rivoli » et obtenez un événement : date, heure, lieu et lien de visio sont déjà remplis. Ajoutez un titre, il est prêt à être scanné dans un calendrier.
+• Correction d'un plantage sous iOS 26 et suivants : choisir les modules les plus ronds pouvait fermer l'app alors qu'un code était à l'écran. La forme n'a pas changé ; c'est le tracé qui demandait un angle impossible.
 
-• Le Wi-Fi de la carte posée sur la table. « Wi-Fi : Livebox-A1B2 / Mot de passe : … » devient un code qui connecte au réseau. Nom, mot de passe et sécurité dans un petit formulaire.
+• Plus de place pour le code. Le nom et la marque sont passés dans la barre de navigation : un formulaire et son QR code tiennent désormais ensemble à l'écran — cela compte sur un petit iPhone et sur une fiche contact un peu longue.
 
-• Des contacts depuis une signature. Collez une signature d'e-mail et obtenez une fiche contact : nom, téléphone, e-mail, entreprise, poste, site web, adresse.
-
-• Des adresses. Une adresse seule devient un code qui l'ouvre dans Plans. Rien n'est recherché depuis votre appareil.
-
-• Une question en cas de doute. Quand le texte n'est peut-être qu'un de ces cas, l'app propose au lieu de décider — et « Garder en texte » vous rend toujours exactement ce que vous avez collé.
-
-Corrigé : en tapant sur l'écran d'accueil, le champ ne disparaît plus après la première lettre.
-Corrigé : quelques traductions en arabe, en japonais et en chinois.
-
-Comme toujours : aucun pistage, aucun compte — tout reste sur votre appareil.
+• Aide réécrite autour de ce que fait la 2.1 : comment un texte écrit normalement devient un événement, un code Wi-Fi, un contact ou une adresse, avec des exemples à copier. Elle est maintenant dans le menu ⋯, à côté des réglages.
