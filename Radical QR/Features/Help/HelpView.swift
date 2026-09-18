@@ -233,6 +233,8 @@ struct FormatHelpContent: View {
                 Text(String(localized: "help.intro", defaultValue: "QR codes can encode different types of data. The app automatically detects and optimizes the format for you."))
                     .foregroundStyle(.secondary)
 
+                recognitionSteps
+
                 ForEach(FormatExample.allExamples, id: \.type) { example in
                     FormatExampleCard(example: example)
                 }
@@ -243,6 +245,48 @@ struct FormatHelpContent: View {
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         #endif
+    }
+
+    /// How the app reads text written for people, in the order it happens. The
+    /// formats below are what it produces; this is what the user actually does.
+    private var recognitionSteps: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text(String(localized: "help.recognition.title", defaultValue: "Write it as you would to a friend",
+                        comment: "Heading of the section explaining that the app reads ordinary text — an appointment, Wi-Fi details, a signature, an address — and fills in a form."))
+                .font(.headline)
+
+            HelpRow(
+                icon: "text.cursor",
+                title: String(localized: "help.recognition.paste.title", defaultValue: "Paste or type it plainly",
+                              comment: "Step 1 of how recognition works: the user writes ordinary text instead of a technical format."),
+                detail: String(localized: "help.recognition.paste.detail", defaultValue: "“Dinner Saturday 8pm, 350 Fifth Avenue”, “Wi-Fi: CafeGuest / Password: welcome”, an email signature, an address. No format to choose, nothing to look up.",
+                               comment: "Step 1 detail. The quoted examples are what the app recognizes; keep them plausible in your language.")
+            )
+
+            HelpRow(
+                icon: "rectangle.and.pencil.and.ellipsis",
+                title: String(localized: "help.recognition.form.title", defaultValue: "A form arrives already filled in",
+                              comment: "Step 2: the app turns the text into an editable form (event, Wi-Fi, contact, place) with the values it found."),
+                detail: String(localized: "help.recognition.form.detail", defaultValue: "Date, time, place and link for an appointment; network and password for Wi-Fi; name, phone and email for a contact. Correct anything, add a title, and the code follows every edit.",
+                               comment: "Step 2 detail.")
+            )
+
+            HelpRow(
+                icon: "questionmark.bubble",
+                title: String(localized: "help.recognition.ask.title", defaultValue: "It asks when it is unsure",
+                              comment: "Step 3: when the text only might be an event/Wi-Fi/contact/address, the app offers instead of deciding."),
+                detail: String(localized: "help.recognition.ask.detail", defaultValue: "A line under the code offers the reading rather than imposing it. Decline it, or use “Keep as text” in the form, and you get back exactly what you wrote.",
+                               comment: "Step 3 detail. “Keep as text” is the button labelled editor.keepAsText — use the same wording.")
+            )
+
+            HelpRow(
+                icon: "lock.shield",
+                title: String(localized: "help.recognition.local.title", defaultValue: "All of it on your device",
+                              comment: "Step 4: the recognition happens locally; nothing is sent to a server, not even an address."),
+                detail: String(localized: "help.recognition.local.detail", defaultValue: "Dates, addresses and names are read by the system on your device. Nothing is sent anywhere — an address is not looked up, it is written into the code as you typed it.",
+                               comment: "Step 4 detail.")
+            )
+        }
     }
 }
 

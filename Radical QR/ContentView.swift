@@ -6,6 +6,7 @@ struct ContentView: View {
     @State private var showingHistory = false
     @State private var showingSettings = false
     @State private var showingHelp = false
+    @State private var showingFormats = false
 
     var body: some View {
         #if os(iOS)
@@ -26,6 +27,9 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showingHelp) {
                     HelpView()
+                }
+                .sheet(isPresented: $showingFormats) {
+                    FormatHelpView()
                 }
         }
         .onOpenURL { url in
@@ -53,6 +57,19 @@ struct ContentView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
+        // The mark and the name live in the bar the system already draws, instead
+        // of a row of their own under it: on a short screen those ~41pt were the
+        // difference between seeing the whole code and scrolling for it.
+        ToolbarItem(placement: .principal) {
+            HStack(spacing: 9) {
+                AppMarkGlyph(color: .white)
+                    .frame(width: 22, height: 22)
+                Text(verbatim: "Radical QR")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+        }
+
         ToolbarItem(placement: .primaryAction) {
             Menu {
                 Button {
@@ -62,6 +79,14 @@ struct ContentView: View {
                 }
 
                 Divider()
+
+                Button {
+                    showingFormats = true
+                } label: {
+                    Label(String(localized: "toolbar.formats", defaultValue: "Formats & Recognition",
+                                 comment: "Menu item opening the screen that lists what the app recognizes — free text turned into an event, Wi-Fi, contact or address — with copyable examples."),
+                          systemImage: "text.viewfinder")
+                }
 
                 Button {
                     showingHelp = true
@@ -77,6 +102,9 @@ struct ContentView: View {
             } label: {
                 Image(systemName: "ellipsis.circle")
             }
+            // The bar is transparent over the gradient: the accent tint reads as
+            // disabled there, white as a button.
+            .tint(.white)
         }
     }
 

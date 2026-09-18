@@ -23,7 +23,6 @@ struct GeneratorView: View {
     @Environment(\.modelContext) private var modelContext
 
     @State private var copiedFeedback = false
-    @State private var showHelpSheet = false
     @State private var selectedFormat: ExportFormat = .png
     @State private var selectedSize: ExportSize = .medium
     @State private var isExporting = false
@@ -104,15 +103,15 @@ struct GeneratorView: View {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
         .navigationBarTitleDisplayMode(.inline)
+        // The mark and the name sit in the bar now; a material behind them would
+        // put white on near-white, and the gradient is the app's backdrop anyway.
+        .toolbarBackground(.hidden, for: .navigationBar)
         .sheet(isPresented: $showShareSheet) {
             if let url = exportedFileURL {
                 ShareSheet(items: [url])
             }
         }
         #endif
-        .sheet(isPresented: $showHelpSheet) {
-            FormatHelpView()
-        }
         .sheet(item: $paywallFeature) { feature in
             PaywallView(feature: feature)
         }
@@ -174,8 +173,6 @@ struct GeneratorView: View {
         VStack(spacing: 0) {
             scrollArea {
                 VStack(spacing: metrics.sectionGap) {
-                    headerSection
-
                     if showsInputZone {
                         Group {
                             if viewModel.hasValidInput {
@@ -224,8 +221,6 @@ struct GeneratorView: View {
     private var splitLayout: some View {
         scrollArea {
             VStack(spacing: metrics.sectionGap) {
-                headerSection
-
                 Spacer(minLength: 0)
 
                 HStack(alignment: .top, spacing: metrics.sectionGap) {
@@ -304,35 +299,6 @@ struct GeneratorView: View {
                 proxy.scrollTo(inputAnchorID, anchor: .top)
             }
         }
-    }
-
-    // MARK: - Header
-
-    private var headerSection: some View {
-        HStack(spacing: 9) {
-            AppMarkGlyph(color: .white)
-                .frame(width: 22, height: 22)
-
-            Text(verbatim: "Radical QR")
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundStyle(.white)
-
-            Spacer()
-
-            Button {
-                showHelpSheet = true
-            } label: {
-                Image(systemName: "questionmark")
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .frame(width: 34, height: 34)
-                    .background(Circle().fill(.white.opacity(0.18)))
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(String(localized: "generator.help", defaultValue: "Formats and tips"))
-        }
-        .frame(height: metrics.headerHeight)
-        .id(inputAnchorID)
     }
 
     // MARK: - Input
@@ -991,6 +957,59 @@ struct FormatExample: Identifiable {
     let examples: [(label: String, value: String)]
 
     static let allExamples: [FormatExample] = [
+        // What 2.1 added, first: text written for people. The examples are ones
+        // EventDetector, WiFiDetector, ContactDetector and PlaceDetector read —
+        // see the tests. A translated example must be checked the same way.
+        FormatExample(
+            type: "writtenEvent",
+            icon: "calendar.badge.plus",
+            title: String(localized: "help.writtenEvent.title", defaultValue: "Appointment, in plain words",
+                          comment: "Format list entry: an appointment written as ordinary text, which becomes a calendar event."),
+            description: String(localized: "help.writtenEvent.description", defaultValue: "A day and a time become a calendar event: title, start, end, place and meeting link, in a form you can adjust.",
+                                comment: "Entry description for the appointment-from-text format."),
+            examples: [
+                ("Day and time", "Dinner Saturday 8pm"),
+                ("With a place", "Dinner Saturday 8pm, 350 Fifth Avenue, New York"),
+                ("With a call link", "Team call Monday 10am https://meet.google.com/abc-defg-hij"),
+                ("A whole day", "16/10/2026")
+            ]
+        ),
+        FormatExample(
+            type: "writtenWiFi",
+            icon: "wifi",
+            title: String(localized: "help.writtenWiFi.title", defaultValue: "Wi-Fi, as written on the card",
+                          comment: "Format list entry: Wi-Fi details written as ordinary text (labels like “Password:”), which become a code that joins the network."),
+            description: String(localized: "help.writtenWiFi.description", defaultValue: "Copy the network and password the way they are written down. Scanning the code joins the network.",
+                                comment: "Entry description for the Wi-Fi-from-text format."),
+            examples: [
+                ("Two lines", "Wi-Fi: CafeGuest\nPassword: welcome2024"),
+                ("One line", "SSID: CafeGuest / Password: welcome2024")
+            ]
+        ),
+        FormatExample(
+            type: "writtenContact",
+            icon: "person.crop.circle.badge.plus",
+            title: String(localized: "help.writtenContact.title", defaultValue: "Contact, from a signature",
+                          comment: "Format list entry: an email signature or a line of contact details, which becomes a contact card."),
+            description: String(localized: "help.writtenContact.description", defaultValue: "An email signature becomes a contact card: name, phone, email, company, job title, website, address.",
+                                comment: "Entry description for the contact-from-text format."),
+            examples: [
+                ("A signature", "Emma Carter – Creative Director\nNorthwind Studio\n+1 415 555 0132 | emma@northwind.studio"),
+                ("One line", "John Smith, (415) 555-0132, john@acme.com")
+            ]
+        ),
+        FormatExample(
+            type: "writtenPlace",
+            icon: "mappin.and.ellipse",
+            title: String(localized: "help.writtenPlace.title", defaultValue: "Address, on its own",
+                          comment: "Format list entry: a postal address on its own, which becomes a code that opens it in Maps."),
+            description: String(localized: "help.writtenPlace.description", defaultValue: "An address alone becomes a code that opens it in Maps. It is written into the code as you typed it — nothing is looked up.",
+                                comment: "Entry description for the address format. Maps is Apple's app, under its local name."),
+            examples: [
+                ("Street and city", "350 Fifth Avenue, New York, NY 10118"),
+                ("Two lines", "12 rue de Rivoli\n75001 Paris")
+            ]
+        ),
         FormatExample(
             type: "url",
             icon: "link",
