@@ -250,11 +250,7 @@ nonisolated final class QRCodeRenderer: Sendable {
 
                 if let exclusion = exclusionRect, exclusion.intersects(rect) { continue }
 
-                if roundness > 0 {
-                    dataPath.addRoundedRect(in: rect, cornerWidth: cornerRadius, cornerHeight: cornerRadius)
-                } else {
-                    dataPath.addRect(rect)
-                }
+                addRounded(to: dataPath, rect: rect, radius: roundness > 0 ? cornerRadius : 0)
             }
         }
 
@@ -360,7 +356,23 @@ nonisolated final class QRCodeRenderer: Sendable {
         let r = (rect.width / 2) * style.cornerFraction
         if style.isLeaf {
             addCornerRect(to: path, rect: rect, tl: 0, tr: r, br: r, bl: r)
-        } else if r > 0 {
+        } else {
+            addRounded(to: path, rect: rect, radius: r)
+        }
+    }
+
+    /// The one way this renderer adds a rounded module.
+    ///
+    /// `CGPathAddRoundedRect` asserts when a corner radius passes half the
+    /// rect — iOS 26 and before clamped it quietly, iOS 26.x/27 aborts the
+    /// process. The data modules hit exactly that at full roundness: the radius
+    /// is half a module (0.50) while the rect is inset to 0.96 of one (0.48).
+    /// Clamping here keeps the drawing identical and the app alive.
+    private func addRounded(to path: CGMutablePath, rect: CGRect, radius: CGFloat) {
+        guard rect.width > 0, rect.height > 0, rect.isNull == false, rect.isInfinite == false else { return }
+        let limit = min(rect.width, rect.height) / 2
+        let r = min(max(radius, 0), limit)
+        if r > 0 {
             path.addRoundedRect(in: rect, cornerWidth: r, cornerHeight: r)
         } else {
             path.addRect(rect)
@@ -371,6 +383,10 @@ nonisolated final class QRCodeRenderer: Sendable {
     /// so it is correct regardless of the (flipped) context orientation.
     private func addCornerRect(to path: CGMutablePath, rect: CGRect,
                               tl: CGFloat, tr: CGFloat, br: CGFloat, bl: CGFloat) {
+        // Same limit as `addRounded`: an arc radius past half the rect is not a
+        // shape CoreGraphics will draw.
+        let limit = min(rect.width, rect.height) / 2
+        let (tl, tr, br, bl) = (min(tl, limit), min(tr, limit), min(br, limit), min(bl, limit))
         let (minX, minY, maxX, maxY) = (rect.minX, rect.minY, rect.maxX, rect.maxY)
         let topL = CGPoint(x: minX, y: minY), topR = CGPoint(x: maxX, y: minY)
         let botR = CGPoint(x: maxX, y: maxY), botL = CGPoint(x: minX, y: maxY)
