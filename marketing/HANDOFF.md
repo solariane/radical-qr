@@ -31,6 +31,7 @@ Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner),
 | [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads (référence stratégique) |
 | [`04-campaign-setup-US.md`](04-campaign-setup-US.md) | **Runbook exécutable — USA, marché n°1** (50 €/mois) ← à lancer en premier |
 | [`05-campaign-setup-FR.md`](05-campaign-setup-FR.md) | Runbook France — marché secondaire, à lancer plus tard |
+| [`07-google-search-mac.md`](07-google-search-mac.md) | Test Google Search pour la version Mac (~50 €, lien de campagne App Store) |
 | `HANDOFF.md` | Ce fichier — statut & checklist de reprise |
 
 ## ✅ État au 2026-09-02 (ce qui est fait)
