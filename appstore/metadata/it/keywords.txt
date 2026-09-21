@@ -1,1 +1,1 @@
-scansione,duplica,gradiente,vcard,wifi,url,contatto,evento,menu,svg,pdf,codice a barre,offline
+scansione,duplicato,logo,personalizzato,gradiente,vcard,wifi,url,contatto,evento,menu,svg,pdf

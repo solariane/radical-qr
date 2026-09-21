@@ -1,1 +1,1 @@
-duplicar,gradiente,vcard,wifi,url,contato,evento,cardapio,svg,pdf,codigo de barras,offline,criador
+duplicar,logo,personalizado,gradiente,vcard,wifi,url,contato,evento,cardápio,svg,pdf

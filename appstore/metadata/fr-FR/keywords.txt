@@ -1,1 +1,1 @@
-scanner,dupliquer,degrade,vcard,wifi,url,contact,evenement,menu,svg,pdf,creer,createur,prive
+code,scanner,dupliquer,logo,personnalise,degrade,vcard,wifi,url,contact,evenement,menu,svg,pdf
