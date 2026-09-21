@@ -34,14 +34,14 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 
 ## ✅ État au 2026-09-21
 
-- [x] **Version 2.1** (texte collé → formulaires) : Mac soumis ; iOS 2.1 en préparation — **soumission par Nicolas**.
+- [x] **Versions 2.1 puis 2.1.1** en vente sur iOS et Mac (synchronisées). Phone Number Cleaner : 3.0.1 en vente sur iOS et Mac.
 - [x] **App Previews en ligne** sur la 2.1 : iPhone 6.9″ + Mac, 2 vidéos × **en-US, fr-FR, de-DE, es-ES** (`06-app-preview-videos.md`, outillage `appstore/previews/`, envoi `node appstore-previews.mjs`).
 - [x] **Correctif Mac** : les tuiles Export (4096, SVG) ne sont plus coupées en fenêtre haute (build Mac 2.1 (9)).
 - [x] **Apple Search Ads USA** : lancé le 4 sept → **à mettre en pause** (voir leçons ci-dessous).
 - [x] **Apple Search Ads France + Allemagne** : fichier d'import prêt (`~/Downloads/RadicalQR_FR_DE_campagnes.xlsx`, 2,50 €/j chacune, 3 groupes) + mots-clés et exclusions FR/DE — **à importer puis coller les mots-clés en Exact**.
 - [x] **Test Google Search Mac** rédigé (`07-google-search-mac.md`) — **à lancer**.
 - [x] Promotion croisée avec Phone Number Cleaner : déjà en place.
-- [ ] **ASO non appliqué** : le sous-titre est toujours `Auto-detect. Private. Elegant.` (reco `01` : `Custom QR Maker with Logo`).
+- [x] **ASO préparé** (commit `0766373`) : sous-titre `Custom QR Maker with Logo` / `QR code personnalisé et logo` + mots-clés dédoublonnés, 10 langues. **Part avec la prochaine version** (`./updAppStore.sh` une fois la version créée dans App Store Connect).
 - [ ] Comptes TikTok / Instagram de la marque : à vérifier ou créer (compte **Business** sur TikTok).
 - [ ] Vidéos sociales faceless (`02`) : pas encore tournées — l'outillage des App Previews peut produire les plans.
 - [ ] Mémo App Previews pour Phone Number Cleaner : commité dans ce dépôt-là (`APP_PREVIEWS_MEMO.md`), session à lancer.
@@ -59,7 +59,7 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Lancer le test Google Search Mac** (`07`) avec le lien de campagne App Store.
-4. **Appliquer l'ASO** (sous-titre) avec la prochaine version.
+4. **Prochaine version (2.1.2 / 2.2)** : créer la version dans App Store Connect, puis `./updAppStore.sh --push-only` pour envoyer le nouveau sous-titre et les mots-clés.
 5. **Fin sept** : bilan ASA FR/DE + Google Mac (rappel planifié le **28 sept**).
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
