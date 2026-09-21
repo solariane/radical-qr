@@ -1,103 +1,103 @@
 # HANDOFF — reprise marketing Radical QR
 
-> **Lis ce fichier en premier quand tu reviens.** Il te dit où tu en es, quoi faire, et dans quel ordre.
-> Dernière mise à jour : 2026-09-02. Tu changes de machine pour ~1 mois — tout est dans ce dossier `marketing/` (versionné avec le repo, donc te suit).
+> **Lis ce fichier en premier quand tu reviens.** Il dit où on en est, ce qu'on a appris, et quoi faire ensuite.
+> Dernière mise à jour : **2026-09-21**.
 
-## 📉 Baseline chiffrée (point zéro AVANT marketing)
+## 📉 Baseline chiffrée (point zéro avant marketing)
 
-Source : App Store Connect, RadicalQR **seul** (isolé de Phone Number Cleaner), 90 jours 4 juin → 1 sept 2026.
+Source : App Store Connect, Radical QR **seul** (isolé de Phone Number Cleaner), 90 jours du 4 juin au 1 sept 2026.
 
 | Métrique | Valeur | Note |
 |---|---|---|
-| Téléchargements | **40** sur 90 j (~13-15/mois) | +233 % vs trimestre précédent (12) — en accélération |
-| Achats Pro | **4** | tous entre juillet et fin août, ~1 vente / 2-3 sem |
-| **Conversion download → Pro** | **10 %** | excellent pour un utilitaire (marché : 1-5 %) |
-| Prix Pro | **4,99 € / $4.99** ✅ confirmé | $21,63 brut ÷ 4 ≈ 5,40 $ ≈ 4,99 € |
-| Revenu Pro brut | **21,63 $** sur 90 j (~7 $/mois) | net ≈ 18 $ (small business 85 %) |
-| CVR fiche (page→install) | à mesurer | go/no-go des ads |
+| Téléchargements | **40** sur 90 j (~13-15/mois) | +233 % vs trimestre précédent |
+| Achats Pro | **4** | ~1 vente toutes les 2-3 semaines |
+| **Conversion téléchargement → Pro** | **10 %** | excellent pour un utilitaire (marché : 1-5 %) |
+| Prix Pro | **4,99 € / $4.99** | achat unique |
+| Revenu Pro brut | 21,63 $ sur 90 j | net ≈ 18 $ (small business 85 %) |
 
-**Diagnostic : l'entonnoir convertit (10 %), il manque le débit en haut.** Économie unitaire : valeur d'un install ≈ 10 % × ~4,24 $ net ≈ **0,42 $** → seuil CPI ≈ 0,42 $, tolérable ~0,60-0,80 $. La math des docs (`03-apple-search-ads.md`) est calibrée juste — rien à réécrire.
+**Économie unitaire** : un install vaut ≈ 10 % × ~4,24 $ net ≈ **0,42 €**. Toute pub dont l'install coûte plus de ~0,80 € perd de l'argent.
 
-> ⚠️ Ne pas confondre avec l'écran "Tendances 26 sem." qui **agrège les 2 apps** (RadicalQR + Phone Number Cleaner) : 66 unités / 65 $ y mélangent les deux. La baseline ci-dessus est RadicalQR pur.
+> ⚠️ L'écran « Tendances 26 sem. » d'App Store Connect **agrège les 2 apps** (Radical QR + Phone Number Cleaner). La baseline ci-dessus est Radical QR seul.
+
+## 📈 Ce que les stats de septembre ont appris
+
+App Analytics, mi-septembre (après la V2 du 2 sept) :
+
+| Étape | Valeur | Lecture |
+|---|---|---|
+| Impressions | 6 730 (**+373 %**) | l'effet « nouvelle version » : la V2 a relancé la visibilité |
+| → Vues de la fiche | 130 (**1,9 %**) | ⚠️ **le goulot** : on voit l'app mais on ne clique pas |
+| → Téléchargements | 46 (**+475 %**, 35 % des vues) | la fiche convertit bien |
+| → Achats Pro | ~10-12 % | la monétisation marche |
+
+**Leçons** : la croissance vient de l'**organique + des sorties de version**, pas de la pub. Le levier n°1 est le passage **impression → clic** (icône, 1er screenshot, **App Preview** qui passe en autoplay dans la recherche). Sortir une version toutes les 4-6 semaines relance la visibilité gratuitement.
+
+## ✅ État au 2026-09-21
+
+- [x] **Version 2.1** (texte collé → formulaires) : Mac soumis ; iOS 2.1 en préparation — **soumission par Nicolas**.
+- [x] **App Previews en ligne** sur la 2.1 : iPhone 6.9″ + Mac, 2 vidéos × **en-US, fr-FR, de-DE, es-ES** (`06-app-preview-videos.md`, outillage `appstore/previews/`, envoi `node appstore-previews.mjs`).
+- [x] **Correctif Mac** : les tuiles Export (4096, SVG) ne sont plus coupées en fenêtre haute (build Mac 2.1 (9)).
+- [x] **Apple Search Ads USA** : lancé le 4 sept → **à mettre en pause** (voir leçons ci-dessous).
+- [x] **Apple Search Ads France + Allemagne** : fichier d'import prêt (`~/Downloads/RadicalQR_FR_DE_campagnes.xlsx`, 2,50 €/j chacune, 3 groupes) + mots-clés et exclusions FR/DE — **à importer puis coller les mots-clés en Exact**.
+- [x] **Test Google Search Mac** rédigé (`07-google-search-mac.md`) — **à lancer**.
+- [x] Promotion croisée avec Phone Number Cleaner : déjà en place.
+- [ ] **ASO non appliqué** : le sous-titre est toujours `Auto-detect. Private. Elegant.` (reco `01` : `Custom QR Maker with Logo`).
+- [ ] Comptes TikTok / Instagram de la marque : à vérifier ou créer (compte **Business** sur TikTok).
+- [ ] Vidéos sociales faceless (`02`) : pas encore tournées — l'outillage des App Previews peut produire les plans.
+- [ ] Mémo App Previews pour Phone Number Cleaner : commité dans ce dépôt-là (`APP_PREVIEWS_MEMO.md`), session à lancer.
+
+## 🧪 Leçons Apple Search Ads (USA, 4-20 sept)
+
+1. **Correspondance Broad sur un terme court comme « qr »** : la moitié des impressions partait sur des **noms d'autres apps** (qoder, qring, koder, zeno, wifiman). TTR apparent 1 %.
+2. **Passage en Exact** : **0 impression en une semaine**, même sur `qr code` à 1,00 €. Le marché US se paie bien plus cher — même en Broad, la pub n'était jamais sortie sur les vraies requêtes « qr code » / « qr code generator ».
+3. **Conclusion** : les USA sont **trop chers pour une app à 4,99 €**. Ce n'est pas un problème de configuration. On bascule sur **FR + DE**, moins chers.
+4. Les **exclusions en correspondance Large** ne bloquent pas nos mots-clés Exact (vérifié : aucun conflit sur US, FR, DE).
+5. Les 0 install « attribués » des premiers jours n'étaient pas un bug : la pub n'avait tout simplement rien produit.
+
+## 🎯 Prochaines étapes, dans l'ordre
+
+1. **Mettre la campagne ASA US en pause.**
+2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
+3. **Lancer le test Google Search Mac** (`07`) avec le lien de campagne App Store.
+4. **Appliquer l'ASO** (sous-titre) avec la prochaine version.
+5. **Fin sept** : bilan ASA FR/DE + Google Mac (rappel planifié le **28 sept**).
+
+## 📊 Suivi hebdomadaire (vendredi, ~20 min)
+
+Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les liens `ct=`), Apple Search Ads, Google Ads. Aucun SDK.
+
+| Semaine | Installs | Impr. → vues fiche | Achats Pro | Dépense ASA FR/DE | Dépense Google Mac | Coût/install | Notes |
+|---|---|---|---|---|---|---|---|
+| Baseline (juin-août) | ~13-15/mois | ? | 4 / 90 j | 0 € | 0 € | — | organique pur |
+| Mi-sept (V2) | 46 / période | 1,9 % | ~10-12 % | — | — | — | effet version |
+| S39 (21-27 sept) | | | | | | | FR/DE + Google lancés |
+| S40 | | | | | | | |
+| S41 | | | | | | | |
+
+**Seuils** : coût par install < 0,80 € (idéal < 0,50 €) → garder / monter ; > 1 € → couper. North Star = achats Pro/mois.
 
 ## 📁 Les documents
 
 | Fichier | Contenu |
 |---|---|
-| [`00-growth-plan.md`](00-growth-plan.md) | La stratégie globale + les KPI. **Vue d'ensemble.** |
-| [`01-aso-audit.md`](01-aso-audit.md) | Audit de la fiche App Store + textes optimisés prêts à coller |
-| [`02-video-scripts.md`](02-video-scripts.md) | 10 storyboards vidéo faceless (réseaux sociaux) + setup de tournage |
-| [`06-app-preview-videos.md`](06-app-preview-videos.md) | 2 storyboards **App Preview** (vidéos App Store, autoplay recherche → tap-through) |
-| [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure de campagne Apple Search Ads (référence stratégique) |
-| [`04-campaign-setup-US.md`](04-campaign-setup-US.md) | **Runbook exécutable — USA, marché n°1** (50 €/mois) ← à lancer en premier |
-| [`05-campaign-setup-FR.md`](05-campaign-setup-FR.md) | Runbook France — marché secondaire, à lancer plus tard |
-| [`07-google-search-mac.md`](07-google-search-mac.md) | Test Google Search pour la version Mac (~50 €, lien de campagne App Store) |
-| `HANDOFF.md` | Ce fichier — statut & checklist de reprise |
+| [`00-growth-plan.md`](00-growth-plan.md) | Stratégie globale + KPI |
+| [`01-aso-audit.md`](01-aso-audit.md) | Audit de la fiche App Store + textes prêts à coller |
+| [`02-video-scripts.md`](02-video-scripts.md) | 10 storyboards de vidéos sociales faceless |
+| [`03-apple-search-ads.md`](03-apple-search-ads.md) | Structure Apple Search Ads (référence) |
+| [`04-campaign-setup-US.md`](04-campaign-setup-US.md) | Runbook USA — **abandonné** (trop cher), gardé pour mémoire |
+| [`05-campaign-setup-FR.md`](05-campaign-setup-FR.md) | Runbook France — base des campagnes FR/DE |
+| [`06-app-preview-videos.md`](06-app-preview-videos.md) | App Previews : storyboards, specs, état (en ligne) |
+| [`07-google-search-mac.md`](07-google-search-mac.md) | Test Google Search pour la version Mac |
+| `../appstore/previews/` | Outillage de tournage et de montage des App Previews (iPhone + Mac) |
 
-## ✅ État au 2026-09-02 (ce qui est fait)
+## 🔑 Outils / accès
 
-- [x] Stratégie définie et documentée (contraintes : 1-2 h/sem, faceless, 100-150 €/mois)
-- [x] Audit ASO réalisé, textes optimisés rédigés (pas encore appliqués)
-- [x] 10 storyboards vidéo écrits (pas encore tournés)
-- [x] Structure Apple Search Ads définie (`03`) + **runbook exécutable 50 €/mois prêt à copier-coller** (`04`, compte pas encore créé)
-- [ ] **RIEN n'est encore exécuté** — tout est prêt à lancer
+- **App Store Connect** : analytics, liens de campagne, métadonnées (`./updAppStore.sh`), App Previews (`node appstore-previews.mjs`) ; identifiants dans `../.env`.
+- **Apple Search Ads Advanced** : searchads.apple.com.
+- **Google Ads** : pour le test Mac.
+- **TikTok** : compte Business, planificateur intégré (l'API de publication exige un audit TikTok ; sans audit, les vidéos restent privées).
+- **Mac, mode automatisation** : toujours actif après le tournage des vidéos Mac → `sudo automationmodetool disable-automationmode-without-authentication`.
 
-## ❓ À confirmer avant de lancer
+## 💡 Idée notée
 
-- ~~**Prix du Pro**~~ ✅ **Confirmé 4,99 € / $4.99** (cf. baseline ci-dessus). La math CPI des docs tient.
-- **Décision sur le keyword `scan`** : le garder en ASO (volume) ou le remplacer par `print` (irréprochable) — cf. `01-aso-audit.md`.
-
-## 🎯 Ordre d'exécution recommandé (quand tu reviens)
-
-### Semaine 1 — Fondations (le plus important)
-1. **Optimiser la fiche App Store** (45 min) — applique les textes de `01-aso-audit.md` :
-   - Édite `appstore/metadata/en-US/subtitle.txt` (Option B : `Custom QR Maker with Logo`)
-   - Édite `appstore/metadata/en-US/keywords.txt` (version 99 car.)
-   - Idem fr-FR à la main
-   - `./updAppStore.sh --dry-run` puis `./updAppStore.sh`
-   - ⚠️ subtitle/keywords ne s'appliquent qu'à la **prochaine build soumise**
-2. **Créer les comptes sociaux** (20 min) — @radicalsolution sur TikTok + Instagram, réserver les autres handles.
-3. **Vérifier la CVR fiche** dans App Store Connect (baseline actuelle) — c'est le go/no-go pour les ads.
-
-### Semaine 2 — Lancer le moteur
-4. **Apple Search Ads — USA d'abord** (1 h setup) — suis le runbook prêt à copier-coller `04-campaign-setup-US.md` : compte Advanced, 1 campagne **United States** à 1,70 €/j (50 €/mois), 3 groupes (Exact-Intent / Discovery / Brand), mots-clés + négatifs déjà rédigés. La France (`05`) attend que les USA soient rentables.
-5. Pose un **rappel hebdo vendredi** (20 min de pilotage).
-
-### Quand tu as un samedi libre (pas dans le rythme hebdo)
-6. **Tourner la banque de 10 vidéos** (`02-video-scripts.md`), monter, programmer.
-7. **Préparer Product Hunt** (recycle un clip en GIF de démo).
-
-## 📊 Tableau de suivi KPI (à remplir chaque vendredi)
-
-Copie ce tableau et remplis-le chaque semaine. Source : App Store Connect + dashboard Apple Search Ads (aucun SDK).
-
-> Rappel baseline pré-marketing (RadicalQR seul, 90 j) : ~13-15 installs/mois · conversion 10 % · ~1-1,5 Pro/mois · 0 € ads. C'est le point zéro à battre.
-
-| Semaine | Installs | CVR fiche | Achats Pro | Dépense ads | CPI | Notes |
-|---|---|---|---|---|---|---|
-| Baseline (90j→sept) | ~13-15/mois | ? | 4 (sur 90j) | 0 € | — | organique pur, avant marketing |
-| S1 | | | | | | |
-| S2 | | | | | | |
-| S3 | | | | | | |
-| S4 | | | | | | |
-
-**Rappels de seuils :**
-- CVR fiche cible ≥ 25 % (sinon retravaille l'ASO avant de dépenser)
-- CPI cible < 1 € (idéal < 0,50 €). Si < 0,50 € → monte le budget. Si > 1,50 € → problème de fiche.
-- North Star = achats Pro/mois. Cibles : 5 (M+1), 18 (M+3).
-
-## 🔑 Outils / accès nécessaires
-
-- **App Store Connect** : analytics + A/B screenshots (Product Page Optimization) + soumission métadonnées
-- **Apple Search Ads Advanced** : searchads.apple.com (compte séparé, gratuit)
-- **Pipeline métadonnées** : `./updAppStore.sh` (credentials déjà dans `../.env` : DEEPL_API_KEY, ASC_*)
-- **CapCut** (gratuit) pour le montage vidéo
-- **TikTok + Meta Business Suite** pour la programmation des posts
-
-## 💡 Idée liée déjà notée
-
-- Prompt de notation App Store toutes les X générations de QR (cf. mémoire projet `idea-appstore-rating-prompt`) → à implémenter : améliore la note = meilleure CVR = ads plus rentables. **Synergie directe avec ce plan.**
-
----
-
-*Quand tu reviens et que tu as avancé : mets à jour la section « État » et le tableau KPI de ce fichier, puis relance une session avec Claude en pointant ce dossier.*
+- Demander une note App Store toutes les X générations de QR (mémoire `idea-appstore-rating-prompt`) : meilleure note → meilleur taux de clic et de conversion.
