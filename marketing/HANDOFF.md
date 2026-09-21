@@ -41,7 +41,7 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 - [x] **Apple Search Ads France + Allemagne** : fichier d'import prêt (`~/Downloads/RadicalQR_FR_DE_campagnes.xlsx`, 2,50 €/j chacune, 3 groupes) + mots-clés et exclusions FR/DE — **à importer puis coller les mots-clés en Exact**.
 - [x] **Test Google Search Mac** rédigé (`07-google-search-mac.md`) — **à lancer**.
 - [x] Promotion croisée avec Phone Number Cleaner : déjà en place.
-- [x] **ASO préparé** (commit `0766373`) : sous-titre `Custom QR Maker with Logo` / `QR code personnalisé et logo` + mots-clés dédoublonnés, 10 langues. **Part avec la prochaine version** (`./updAppStore.sh` une fois la version créée dans App Store Connect).
+- [x] **Sous-titre conservé** : `Auto-detect. Private. Elegant.` est un choix de positionnement (différenciation, promesse privacy), pas un champ SEO. **Ne pas proposer de sous-titre utilitaire** (tenté puis annulé le 21 sept).
 - [ ] Comptes TikTok / Instagram de la marque : à vérifier ou créer (compte **Business** sur TikTok).
 - [ ] Vidéos sociales faceless (`02`) : pas encore tournées — l'outillage des App Previews peut produire les plans.
 - [ ] Mémo App Previews pour Phone Number Cleaner : commité dans ce dépôt-là (`APP_PREVIEWS_MEMO.md`), session à lancer.
@@ -59,8 +59,7 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Lancer le test Google Search Mac** (`07`) avec le lien de campagne App Store.
-4. **Prochaine version (2.1.2 / 2.2)** : créer la version dans App Store Connect, puis `./updAppStore.sh --push-only` pour envoyer le nouveau sous-titre et les mots-clés.
-5. **Fin sept** : bilan ASA FR/DE + Google Mac (rappel planifié le **28 sept**).
+4. **Fin sept** : bilan ASA FR/DE + Google Mac (rappel planifié le **28 sept**).
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 

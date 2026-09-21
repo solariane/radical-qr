@@ -15,7 +15,9 @@
 
 ## Les 3 problèmes prioritaires
 
-### 1. Le sous-titre brûle 30 caractères indexés sur des adjectifs
+> ✅ **Décision du founder : on garde `Auto-detect. Private. Elegant.`** Le sous-titre est un choix de positionnement (ce qui distingue l'app, sa promesse privacy), pas un champ de mots-clés. Un sous-titre utilitaire et neutre (« Custom QR Maker with Logo ») la rendrait interchangeable avec des dizaines d'autres, pour un gain SEO non démontré. Tenté puis annulé le 21 sept 2026 (`0766373`, revert). **Ne plus proposer ce changement.** La recommandation ci-dessous est conservée pour mémoire.
+
+### 1. (écarté) Le sous-titre brûle 30 caractères indexés sur des adjectifs
 `Private` et `Elegant` ne sont quasiment jamais tapés dans la recherche App Store. `Auto-detect` non plus. Le sous-titre doit **combiner mots-clés à volume + bénéfice**, pas faire de la poésie de marque.
 
 **Options proposées (toutes ≤ 30 car.) :**
@@ -74,7 +76,7 @@ Tu édites la **source de vérité** (en-US et fr-FR sont hand-written), puis le
 
 ## Checklist ASO (à cocher)
 
-- [ ] Remplacer le sous-titre en-US (Option B ou C)
+- [x] ~~Remplacer le sous-titre en-US~~ — écarté, décision de positionnement (voir plus haut)
 - [ ] Remplacer le champ keywords en-US (version 99 car.)
 - [ ] Décider du sort de `scan` (garder / remplacer par `print`)
 - [ ] Faire de même à la main pour fr-FR
