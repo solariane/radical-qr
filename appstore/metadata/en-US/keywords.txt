@@ -1,1 +1,1 @@
-scan,duplicate,logo,custom,gradient,vcard,wifi,url,contact,event,menu,svg,pdf,barcode,maker,offline
+scan,duplicate,gradient,vcard,wifi,url,contact,event,menu,svg,pdf,barcode,offline,creator,business

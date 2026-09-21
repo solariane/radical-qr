@@ -1,1 +1,1 @@
-scannen,duplikat,logo,angepasst,farbverlauf,vcard,wifi,url,kontakt,termin,menü,svg,pdf,barcode
+scannen,duplizieren,gradient,vcard,wifi,url,kontakt,ereignis,menü,svg,pdf,barcode,offline,ersteller
