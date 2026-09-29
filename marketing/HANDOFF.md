@@ -54,6 +54,26 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 4. Les **exclusions en correspondance Large** ne bloquent pas nos mots-clés Exact (vérifié : aucun conflit sur US, FR, DE).
 5. Les 0 install « attribués » des premiers jours n'étaient pas un bug : la pub n'avait tout simplement rien produit.
 
+## 🧪 Première semaine ASA France + Allemagne (22-28 sept)
+
+| Campagne | Groupe | Impr. | Taps | TTR | Installs | Dépense | CPT moy. (max) | Coût/install |
+|---|---|---|---|---|---|---|---|---|
+| DE | Brand | 0 | 0 | — | 0 | 0 € | — (0,30) | — |
+| DE | Discovery | 29 | 3 | 10,3 % | 1 | 1,02 € | 0,34 (0,40) | 1,02 € |
+| DE | Exact – Intent | 64 | 9 | 14,1 % | 6 (5 tap + 1 view) | 4,59 € | 0,51 (0,60) | 0,76 € |
+| **DE** | **total** | **93** | **12** | **12,9 %** | **7** | **5,61 €** | 0,47 | **0,80 €** |
+| FR | Brand | 0 | 0 | — | 0 | 0 € | — (0,30) | — |
+| FR | Discovery | 13 | 1 | 7,7 % | 0 | 0,29 € | 0,29 (0,40) | — |
+| FR | Exact – Intent | 34 | 2 | 5,9 % | 0 | 1,06 € | 0,53 (0,55) | — |
+| **FR** | **total** | **47** | **3** | **6,4 %** | **0** | **1,35 €** | 0,45 | — |
+
+Lecture :
+1. **Le budget n'est pas la limite** : 7 € dépensés sur 35 € prévus. Ce sont les **enchères** qui bornent le volume (en FR le CPT moyen colle au plafond : 0,53 pour 0,55).
+2. **L'Allemagne marche** : TTR 13 %, 58 % des taps installent, 0,80 €/install — pile au seuil.
+3. **La France ne sort presque pas** : 47 impressions, TTR 6 %. Même fiche traduite et mêmes vidéos : l'écart vient des enchères et des mots-clés FR, pas du produit.
+4. **Brand = 0 partout** : normal, personne ne cherche encore « Radical QR ».
+5. Échantillon minuscule (7 installs) : aucune conclusion définitive avant 2-3 semaines.
+
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
@@ -69,7 +89,7 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 |---|---|---|---|---|---|---|---|
 | Baseline (juin-août) | ~13-15/mois | ? | 4 / 90 j | 0 € | 0 € | — | organique pur |
 | Mi-sept (V2) | 46 / période | 1,9 % | ~10-12 % | — | — | — | effet version |
-| S39 (21-27 sept) | | | | | | | FR/DE + Google lancés |
+| S39 (22-28 sept) | 7 via ASA DE (total ASC ?) | ? | ? | FR 1,35 € / DE 5,61 € | ? | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
 | S40 | | | | | | | |
 | S41 | | | | | | | |
 
