@@ -17,6 +17,8 @@ Source : App Store Connect, Radical QR **seul** (isolé de Phone Number Cleaner)
 
 **Économie unitaire** : un install vaut ≈ 10 % × ~4,24 $ net ≈ **0,42 €**. Toute pub dont l'install coûte plus de ~0,80 € perd de l'argent.
 
+> Révisé le 29 sept (cohortes de revenus ASC) : téléchargement → payant **8,5 % à J1, 10,5 % à J7, 16 % à J60** ; bénéfice cumulé par téléchargement **0,37 $ à J1, 0,47 $ à J7, 0,72 $ à J60**. Un install vaut donc plutôt **≈ 0,60 €** à 60 jours (les cohortes J60 sont anciennes et petites : ordre de grandeur, pas une certitude).
+
 > ⚠️ L'écran « Tendances 26 sem. » d'App Store Connect **agrège les 2 apps** (Radical QR + Phone Number Cleaner). La baseline ci-dessus est Radical QR seul.
 
 ## 📈 Ce que les stats de septembre ont appris
@@ -73,13 +75,21 @@ Lecture :
 3. **La France ne sort presque pas** : 47 impressions, TTR 6 %. Même fiche traduite et mêmes vidéos : l'écart vient des enchères et des mots-clés FR, pas du produit.
 4. **Brand = 0 partout** : normal, personne ne cherche encore « Radical QR ».
 5. Échantillon minuscule (7 installs) : aucune conclusion définitive avant 2-3 semaines.
+6. **Termes de recherche** — Discovery DE : « Pentacode » (nom d'une autre app) + 1 terme à faible volume ; Exact DE : « qr code generator » (en anglais) + 4 termes à faible volume.
+7. **Ventes** (ASC, version 2.1.1, Europe, 30 j) : Allemagne **9 unités** sur 15, dont l'essentiel du pic du 23 sept → la pub fait la majorité des installs allemands. Bénéfices par territoire : Allemagne 5 $ (≈ 1 achat Pro), soit à peu près les 5,61 € dépensés. Attribution non prouvée (pas de SDK).
+
+Décisions du 29 sept :
+- **DE** : inchangé. Exclure « pentacode » en Discovery (nom d'une app concurrente, intention faible).
+- **FR** : enchère Exact passée à **0,70 €** pour une semaine (jusqu'au 5 oct). Moins de 2 installs → pause, et on reporte sur un autre pays germanophone.
+- **Pays suivant** : **Autriche**, puis **Suisse** (clones de la campagne DE : même langue, mêmes mots-clés, fiche et vidéos déjà en allemand). **Pas les Pays-Bas** : ni l'app ni la fiche ne sont en néerlandais.
+- **Google Search Mac** : pas lancé.
 
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
-3. **Lancer le test Google Search Mac** (`07`) avec le lien de campagne App Store.
-4. **Fin sept** : bilan ASA FR/DE + Google Mac (rappel planifié le **28 sept**).
+3. **Google Search Mac** (`07`) : pas lancé au 29 sept — optionnel, à décider.
+4. **5 oct** : bilan FR à 0,70 € → garder ou remplacer par l'Autriche / la Suisse.
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 
@@ -89,7 +99,7 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 |---|---|---|---|---|---|---|---|
 | Baseline (juin-août) | ~13-15/mois | ? | 4 / 90 j | 0 € | 0 € | — | organique pur |
 | Mi-sept (V2) | 46 / période | 1,9 % | ~10-12 % | — | — | — | effet version |
-| S39 (22-28 sept) | 7 via ASA DE (total ASC ?) | ? | ? | FR 1,35 € / DE 5,61 € | ? | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
+| S39 (22-28 sept) | 7 via ASA DE (9 unités DE sur 30 j) | ? | ≈ 1 en DE | FR 1,35 € / DE 5,61 € | non lancé | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
 | S40 | | | | | | | |
 | S41 | | | | | | | |
 
