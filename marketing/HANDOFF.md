@@ -83,13 +83,15 @@ Décisions du 29 sept :
 - **FR** : enchère Exact passée à **0,70 €** pour une semaine (jusqu'au 5 oct). Moins de 2 installs → pause, et on reporte sur un autre pays germanophone.
 - **Pays suivant** : **Autriche**, puis **Suisse** (clones de la campagne DE : même langue, mêmes mots-clés, fiche et vidéos déjà en allemand). **Pas les Pays-Bas** : ni l'app ni la fiche ne sont en néerlandais.
 - **Google Search Mac** : pas lancé.
+- **Autriche lancée le 29 sept** (clone de la campagne DE), en parallèle de l'essai FR — le budget n'était pas la limite.
+- **Effet sur le classement** : à chaque bilan, calculer les installs **naturels** DE (unités ASC − installs Apple Ads). S'ils montent sur 3-4 semaines alors que FR stagne, la pub pousse aussi le référencement.
 
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Google Search Mac** (`07`) : pas lancé au 29 sept — optionnel, à décider.
-4. **5 oct** : bilan FR à 0,70 € → garder ou remplacer par l'Autriche / la Suisse.
+4. **5 oct** (rappel planifié) : bilan FR à 0,70 € (garder ou couper) + première semaine Autriche + installs naturels DE.
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 
