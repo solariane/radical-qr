@@ -13,7 +13,7 @@
 | Pays | États-Unis, Royaume-Uni, Canada, Australie |
 | Langue | Anglais |
 | **Appareils** | **Ordinateurs uniquement** : ajustement −100 % sur mobiles et tablettes |
-| Budget | **2,50 €/jour** (≈ 50 € sur 3 semaines) |
+| Budget | **5 €/jour** au lancement du 5 oct (plan initial : 2,50 €/jour, ≈ 50 € sur 3 semaines) |
 | Enchères | **CPC manuel**, 0,60 € par défaut (ou « Maximiser les clics » avec un plafond de CPC à 0,80 €) |
 | URL finale | le lien de campagne App Store ci-dessous |
 

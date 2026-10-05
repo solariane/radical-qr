@@ -41,7 +41,7 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 - [x] **Correctif Mac** : les tuiles Export (4096, SVG) ne sont plus coupées en fenêtre haute (build Mac 2.1 (9)).
 - [x] **Apple Search Ads USA** : lancé le 4 sept → **à mettre en pause** (voir leçons ci-dessous).
 - [x] **Apple Search Ads France + Allemagne** : fichier d'import prêt (`~/Downloads/RadicalQR_FR_DE_campagnes.xlsx`, 2,50 €/j chacune, 3 groupes) + mots-clés et exclusions FR/DE — **à importer puis coller les mots-clés en Exact**.
-- [x] **Test Google Search Mac** rédigé (`07-google-search-mac.md`) — **à lancer**.
+- [x] **Test Google Search Mac** rédigé (`07-google-search-mac.md`) — **créé le 5 oct** (voir point 3 plus bas).
 - [x] Promotion croisée avec Phone Number Cleaner : déjà en place.
 - [x] **Sous-titre conservé** : `Auto-detect. Private. Elegant.` est un choix de positionnement (différenciation, promesse privacy), pas un champ SEO. **Ne pas proposer de sous-titre utilitaire** (tenté puis annulé le 21 sept).
 - [ ] Comptes TikTok / Instagram de la marque : à vérifier ou créer (compte **Business** sur TikTok).
@@ -82,7 +82,7 @@ Décisions du 29 sept :
 - **DE** : inchangé. Exclure « pentacode » en Discovery (nom d'une app concurrente, intention faible).
 - **FR** : enchère Exact passée à **0,70 €** pour une semaine (jusqu'au 5 oct). Moins de 2 installs → pause, et on reporte sur un autre pays germanophone.
 - **Pays suivant** : **Autriche**, puis **Suisse** (clones de la campagne DE : même langue, mêmes mots-clés, fiche et vidéos déjà en allemand). **Pas les Pays-Bas** : ni l'app ni la fiche ne sont en néerlandais.
-- **Google Search Mac** : pas lancé.
+- **Google Search Mac** : campagne créée le 5 oct (compte 164-143-7637), en attente d'examen des annonces.
 - **Autriche lancée le 29 sept** (clone de la campagne DE), en parallèle de l'essai FR — le budget n'était pas la limite.
 - **Effet sur le classement** : à chaque bilan, calculer les installs **naturels** DE (unités ASC − installs Apple Ads). S'ils montent sur 3-4 semaines alors que FR stagne, la pub pousse aussi le référencement.
 
@@ -147,7 +147,7 @@ Lecture :
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
-3. **Google Search Mac** (`07`) : **décidé le 5 oct**, à lancer avec le plan du doc (~50 € sur 3 semaines, stop au-delà de 1 €/install).
+3. **Google Search Mac** (`07`) : **créée le 5 oct** (compte 164-143-7637). Écarts au plan : budget **5 €/jour** (au lieu de 2,50 €, pour avoir des chiffres plus vite), « Maximiser les clics » plafonné à **0,80 €/clic**, langues anglais + français. Réseau de Recherche seul, zones en « Présence », mobiles et tablettes à −100 %. URL finale : `https://apps.apple.com/app/apple-store/id6763236391?pt=346600&ct=google-mac-en&mt=12`. Google a ajouté un objectif « Lead par téléphone » par défaut : sans effet, les enchères ne s'appuient pas sur les conversions. **Point le 12 oct** : plus de 15 € dépensés sans aucun install Mac (ASC → Campagnes → `google-mac-en`) → couper ou corriger.
 4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée, 2 variantes Exact ajoutées). Autriche activée le 5 oct.
 5. **12 oct** : première vraie semaine Autriche + installs naturels DE/AT (ventes ASC).
 
