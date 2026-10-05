@@ -111,7 +111,7 @@ Lecture :
    - **« qr code » seul : 0 impression même à 0,70 €**, comme aux USA. Ce terme générique coûte bien plus cher.
 3. **L'Allemagne a ralenti** : 43 impressions au lieu de 93, 2 installs au lieu de 7, mais toujours sous le seuil (0,71 €). Discovery DE passe de 29 à 12 impressions : cohérent avec l'exclusion de « pentacode », qui en faisait une bonne part.
 4. **L'Autriche n'a jamais diffusé** : la campagne est **en pause** depuis sa création le 29 sept (ses groupes sont actifs). Zéro impression : il n'y a pas de première semaine à juger.
-5. **Discovery FR** : 0,78 € pour 2 taps, 0 install. Petit montant ; on garde une semaine de plus et on regarde ses termes de recherche.
+5. **Discovery FR** : 0,78 € pour 2 taps, 0 install. Petit montant ; on garde une semaine de plus. Le rapport des termes de recherche Discovery est **vide** en FR comme en DE : Apple masque les termes à trop faible volume. On ne peut donc pas savoir ce que Discovery a acheté, ni vérifier par ce biais l'exclusion de « pentacode ».
 6. Le budget n'est toujours pas la limite : 7,43 € dépensés sur 35 € (FR + DE).
 
 Décisions du 5 oct :
