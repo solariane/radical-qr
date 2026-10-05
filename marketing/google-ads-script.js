@@ -10,7 +10,7 @@
  * so a missed day fixes itself). Costs are in the account currency, not micros.
  */
 
-var SPREADSHEET_URL = ''; // empty on the first run: the script creates the sheet
+var SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/1gBeDud_bxmOBoBItpawgwvSug8TBDkqcefaMEbjBORo/edit'; // empty: the script creates a new sheet
 var SPREADSHEET_NAME = 'Radical Solution – Google Ads (export quotidien)';
 var START_DATE = '2026-10-05'; // launch of the Mac Search test
 
