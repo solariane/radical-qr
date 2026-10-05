@@ -115,8 +115,8 @@ Lecture :
 6. Le budget n'est toujours pas la limite : 7,43 € dépensés sur 35 € (FR + DE).
 
 Décisions du 5 oct :
-- **FR** : on garde, mots-clés Exact à 0,70 €. Ne pas monter « qr code » pour le faire sortir : il faudrait payer plus que ce que rapporte un install.
-- **AT** : **activer la campagne** ; premier vrai bilan le 12 oct.
+- **FR** : on garde, mots-clés Exact à 0,70 €. Ne pas monter « qr code » pour le faire sortir : il faudrait payer plus que ce que rapporte un install. Ajout en Exact à 0,70 € de deux variantes du mot-clé gagnant : « générateur qr code » et « créateur de qr code ».
+- **AT** : campagne **activée le 5 oct** ; premier vrai bilan le 12 oct.
 - **DE** : inchangé (une semaine creuse ne suffit pas pour décider).
 - **Suisse** : la règle « FR < 2 installs → Suisse » n'est pas déclenchée. Elle reste le pays suivant, à lancer une fois que l'Autriche aura une semaine de données.
 - **Installs naturels DE/AT** : en attente des ventes ASC (Europe, 30 j, onglet Territoire).
@@ -126,7 +126,7 @@ Décisions du 5 oct :
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Google Search Mac** (`07`) : pas lancé au 29 sept — optionnel, à décider.
-4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée). **Activer la campagne Autriche** (en pause depuis le 29 sept).
+4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée, 2 variantes Exact ajoutées). Autriche activée le 5 oct.
 5. **12 oct** : première vraie semaine Autriche + installs naturels DE/AT (ventes ASC).
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
