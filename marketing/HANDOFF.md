@@ -43,6 +43,7 @@ App Analytics, mi-septembre (après la V2 du 2 sept) :
 - [x] **Apple Search Ads France + Allemagne** : fichier d'import prêt (`~/Downloads/RadicalQR_FR_DE_campagnes.xlsx`, 2,50 €/j chacune, 3 groupes) + mots-clés et exclusions FR/DE — **à importer puis coller les mots-clés en Exact**.
 - [x] **Test Google Search Mac** rédigé (`07-google-search-mac.md`) — **créé le 5 oct** (voir point 3 plus bas).
 - [x] Promotion croisée avec Phone Number Cleaner : déjà en place.
+- [ ] **Apple Ads Phone Number Cleaner : ne pas relancer en l'état** (vu le 5 oct par l'API). Les 3 campagnes de sept. (Tiers 1 EN, Tiers 1 EU, expat) ont coûté **205 €** pour 363 taps et **0 install**. L'app est payante (5,99 €), sans aucune note : on tape sur la pub, on voit le prix, on repart. La hausse des vues de fiche fin sept. est donc naturelle. Préalable à toute relance : revoir le modèle (gratuit + achat Pro, comme Radical QR) ou au moins obtenir des notes.
 - [x] **Sous-titre conservé** : `Auto-detect. Private. Elegant.` est un choix de positionnement (différenciation, promesse privacy), pas un champ SEO. **Ne pas proposer de sous-titre utilitaire** (tenté puis annulé le 21 sept).
 - [ ] Comptes TikTok / Instagram de la marque : à vérifier ou créer (compte **Business** sur TikTok).
 - [ ] Vidéos sociales faceless (`02`) : pas encore tournées — l'outillage des App Previews peut produire les plans.
