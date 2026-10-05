@@ -11,8 +11,10 @@
  * ONGOING gives daily files from the request on; ONE_TIME_SNAPSHOT backfills
  * the history once.
  *
- * Credentials: ASC_ISSUER_ID, ASC_KEY_ID, ASC_KEY_PATH from the environment or
- * ../.env. The key needs the Admin role to create report requests.
+ * Credentials, from the environment or ../.env: ASC_STATS_KEY_ID and
+ * ASC_STATS_KEY_PATH (a "Sales and Reports" key, enough to download), falling
+ * back to ASC_KEY_ID / ASC_KEY_PATH; ASC_ISSUER_ID is shared. Creating a report
+ * request (`request`) needs an Admin key, once per app.
  *
  * Usage:
  *   node appstore-stats.mjs apps                      # list the account's apps
@@ -57,20 +59,19 @@ if (fs.existsSync(envFile)) {
     if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
   }
 }
-let KEY_PATH = process.env.ASC_KEY_PATH;
+// The metadata key (ASC_*) cannot read analytics: a "Sales and Reports" key
+// goes in ASC_STATS_* and wins when present.
+const ISSUER_ID = process.env.ASC_STATS_ISSUER_ID || process.env.ASC_ISSUER_ID;
+const KEY_ID = process.env.ASC_STATS_KEY_ID || process.env.ASC_KEY_ID;
+let KEY_PATH = process.env.ASC_STATS_KEY_PATH || process.env.ASC_KEY_PATH;
 if (KEY_PATH?.startsWith("~/")) KEY_PATH = path.join(os.homedir(), KEY_PATH.slice(2));
 
 const fail = (m) => { console.error(`Error: ${m}`); process.exit(1); };
-if (!process.env.ASC_ISSUER_ID || !process.env.ASC_KEY_ID || !KEY_PATH) {
-  fail("ASC_ISSUER_ID, ASC_KEY_ID and ASC_KEY_PATH are required (environment or ../.env).");
+if (!ISSUER_ID || !KEY_ID || !KEY_PATH) {
+  fail("ASC_STATS_KEY_ID + ASC_STATS_KEY_PATH (or ASC_KEY_ID + ASC_KEY_PATH) and ASC_ISSUER_ID are required (environment or ../.env).");
 }
 
-const asc = createAscClient({
-  issuerId: process.env.ASC_ISSUER_ID,
-  keyId: process.env.ASC_KEY_ID,
-  keyPath: KEY_PATH,
-  fail,
-});
+const asc = createAscClient({ issuerId: ISSUER_ID, keyId: KEY_ID, keyPath: KEY_PATH, fail });
 
 // Follows `links.next` so a long list of instances comes back whole.
 async function getAll(pathname) {

@@ -182,6 +182,7 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 ## 🔑 Outils / accès
 
 - **App Store Connect** : analytics, liens de campagne, métadonnées (`./updAppStore.sh`), App Previews (`node appstore-previews.mjs`) ; identifiants dans `../.env`.
+- **Statistiques App Store Connect par API** : `node appstore-stats.mjs fetch` puis `summary` (téléchargements par pays, appareil, source et campagne `ct=` ; découverte ; achats), fichiers dans `marketing/stats/data/` (non versionnés). Rapports demandés le 5 oct (ONGOING + historique) pour Radical QR, Phone Number Cleaner, Trouver un vin et DrumGloves avec une clé Admin temporaire. Le téléchargement n'a besoin que d'une clé « Ventes et rapports » (`ASC_STATS_*` dans `../.env`, à défaut la clé `ASC_*` des métadonnées, qui n'a pas ce droit). Premiers fichiers 1 à 2 jours après la demande.
 - **Apple Search Ads Advanced** : searchads.apple.com.
 - **Google Ads** : pour le test Mac.
 - **TikTok** : compte Business, planificateur intégré (l'API de publication exige un audit TikTok ; sans audit, les vidéos restent privées).
