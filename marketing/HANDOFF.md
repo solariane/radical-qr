@@ -119,6 +119,7 @@ Décisions du 5 oct :
 - **AT** : campagne **activée le 5 oct** ; premier vrai bilan le 12 oct.
 - **DE** : inchangé (une semaine creuse ne suffit pas pour décider).
 - **Suisse** : la règle « FR < 2 installs → Suisse » n'est pas déclenchée. Elle reste le pays suivant, à lancer une fois que l'Autriche aura une semaine de données.
+- **Recommandations de mots-clés Apple Ads** (export du 5 oct, ~200 termes FR/DE) : **aucune retenue**. Ce sont des noms d'autres apps (TikTok, Snapchat, Telekom, 1xbet, CamScanner…), la même impasse que le Broad « qr » aux USA. Les seules liées au QR sont des requêtes « scanner » (« qr code scanner kostenlos » à 2,20 €), alors que l'app génère et ne scanne pas. Ne pas importer l'onglet « Targeted Keywords » du fichier.
 - **Installs naturels DE/AT** : en attente des ventes ASC (Europe, 30 j, onglet Territoire).
 
 ## 🎯 Prochaines étapes, dans l'ordre
