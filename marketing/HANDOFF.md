@@ -1,7 +1,7 @@
 # HANDOFF — reprise marketing Radical QR
 
 > **Lis ce fichier en premier quand tu reviens.** Il dit où on en est, ce qu'on a appris, et quoi faire ensuite.
-> Dernière mise à jour : **2026-09-21**.
+> Dernière mise à jour : **2026-10-05**.
 
 ## 📉 Baseline chiffrée (point zéro avant marketing)
 
@@ -86,12 +86,45 @@ Décisions du 29 sept :
 - **Autriche lancée le 29 sept** (clone de la campagne DE), en parallèle de l'essai FR — le budget n'était pas la limite.
 - **Effet sur le classement** : à chaque bilan, calculer les installs **naturels** DE (unités ASC − installs Apple Ads). S'ils montent sur 3-4 semaines alors que FR stagne, la pub pousse aussi le référencement.
 
+## 🧪 Deuxième semaine ASA (28 sept-4 oct) — bilan du 5 oct
+
+Exports Apple Ads du 28 sept au 4 oct (UTC) : la période empiète d'un jour sur S39 (le 28 sept).
+
+| Campagne | Groupe | Impr. | Taps | TTR | Installs | Dépense | CPT moy. (max) | Coût/install |
+|---|---|---|---|---|---|---|---|---|
+| DE | Brand | 0 | 0 | — | 0 | 0 € | — (0,30) | — |
+| DE | Discovery | 12 | 0 | 0 % | 0 | 0 € | — (0,40) | — |
+| DE | Exact – Intent | 31 | 3 | 9,7 % | 2 | 1,43 € | 0,48 (0,60) | 0,71 € |
+| **DE** | **total** | **43** | **3** | **7,0 %** | **2** | **1,43 €** | 0,48 | **0,71 €** |
+| FR | Brand | 0 | 0 | — | 0 | 0 € | — (0,30) | — |
+| FR | Discovery | 58 | 2 | 3,4 % | 0 | 0,78 € | 0,39 (0,40) | — |
+| FR | Exact – Intent | 80 | 10 | 12,5 % | 7 | 5,23 € | 0,52 (0,55 sur le groupe) | 0,75 € |
+| **FR** | **total** | **138** | **12** | **8,7 %** | **7** | **6,01 €** | 0,50 | **0,86 €** |
+| AT | tous | 0 | 0 | — | 0 | 0 € | — | — |
+| **Total** | | **181** | **15** | **8,3 %** | **9** | **7,43 €** | 0,50 | **0,83 €** |
+
+Lecture :
+1. **La France a basculé** : 0 → 7 installs, Exact à 0,75 €/install, TTR 12,5 %, 70 % des taps installent. Le seuil (≥ 2 installs) est largement passé.
+2. **L'enchère 0,70 € n'apparaît pas dans l'export** : le groupe Exact FR est toujours à 0,55 € par défaut et le CPT moyen (0,52) reste sous 0,55. Soit la hausse a été faite au niveau des mots-clés, soit elle n'a pas été appliquée et la France a décollé à 0,55 €. À vérifier.
+3. **L'Allemagne a ralenti** : 43 impressions au lieu de 93, 2 installs au lieu de 7, mais toujours sous le seuil (0,71 €). Discovery DE passe de 29 à 12 impressions : cohérent avec l'exclusion de « pentacode », qui en faisait une bonne part.
+4. **L'Autriche n'a jamais diffusé** : la campagne est **en pause** depuis sa création le 29 sept (ses groupes sont actifs). Zéro impression : il n'y a pas de première semaine à juger.
+5. **Discovery FR** : 0,78 € pour 2 taps, 0 install. Petit montant ; on garde une semaine de plus et on regarde ses termes de recherche.
+6. Le budget n'est toujours pas la limite : 7,43 € dépensés sur 35 € (FR + DE).
+
+Décisions du 5 oct :
+- **FR** : on garde. Vérifier l'enchère des mots-clés Exact (0,55 ou 0,70).
+- **AT** : **activer la campagne** ; premier vrai bilan le 12 oct.
+- **DE** : inchangé (une semaine creuse ne suffit pas pour décider).
+- **Suisse** : la règle « FR < 2 installs → Suisse » n'est pas déclenchée. Elle reste le pays suivant, à lancer une fois que l'Autriche aura une semaine de données.
+- **Installs naturels DE/AT** : en attente des ventes ASC (Europe, 30 j, onglet Territoire).
+
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Google Search Mac** (`07`) : pas lancé au 29 sept — optionnel, à décider.
-4. **5 oct** (rappel planifié) : bilan FR à 0,70 € (garder ou couper) + première semaine Autriche + installs naturels DE.
+4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée). **Activer la campagne Autriche** (en pause depuis le 29 sept).
+5. **12 oct** : première vraie semaine Autriche + installs naturels DE/AT (ventes ASC).
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 
@@ -102,7 +135,7 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 | Baseline (juin-août) | ~13-15/mois | ? | 4 / 90 j | 0 € | 0 € | — | organique pur |
 | Mi-sept (V2) | 46 / période | 1,9 % | ~10-12 % | — | — | — | effet version |
 | S39 (22-28 sept) | 7 via ASA DE (9 unités DE sur 30 j) | ? | ≈ 1 en DE | FR 1,35 € / DE 5,61 € | non lancé | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
-| S40 | | | | | | | |
+| S40 (28 sept-4 oct) | 9 via ASA (FR 7, DE 2, AT 0) ; naturels : ASC à fournir | ? | ? | FR 6,01 € / DE 1,43 € / AT 0 € | non lancé | FR 0,86 € (Exact 0,75 €) · DE 0,71 € | AT jamais diffusée (campagne en pause) ; 7,43 € dépensés sur 35 € |
 | S41 | | | | | | | |
 
 **Seuils** : coût par install < 0,80 € (idéal < 0,50 €) → garder / monter ; > 1 € → couper. North Star = achats Pro/mois.
