@@ -147,7 +147,7 @@ Lecture :
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
-3. **Google Search Mac** (`07`) : pas lancé au 29 sept — optionnel, à décider.
+3. **Google Search Mac** (`07`) : **décidé le 5 oct**, à lancer avec le plan du doc (~50 € sur 3 semaines, stop au-delà de 1 €/install).
 4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée, 2 variantes Exact ajoutées). Autriche activée le 5 oct.
 5. **12 oct** : première vraie semaine Autriche + installs naturels DE/AT (ventes ASC).
 

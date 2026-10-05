@@ -1,7 +1,7 @@
 # (c-quater) Google Search — test pour la version Mac
 
 > **Pourquoi Google et pourquoi le Mac** : Apple Search Ads ne diffuse pas sur le **Mac App Store**. Quelqu'un qui tape « qr code generator mac » sur Google a une vraie intention d'app Mac, avec moins de concurrence que sur « qr code generator » (dominé par des sites gratuits).
-> **Test borné** : ~50 € sur 3 semaines. **Stop** si un install coûte plus de ~1 € (valeur d'un install ≈ 0,42 €, cf. `HANDOFF.md`).
+> **Test borné** : ~50 € sur 3 semaines. **Stop** si un install coûte plus de ~1 € (valeur d'un install ≈ 0,60 € à 60 jours, révisée le 29 sept, cf. `HANDOFF.md`).
 
 ## Réglages de la campagne
 
