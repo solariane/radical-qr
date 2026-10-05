@@ -122,6 +122,27 @@ Décisions du 5 oct :
 - **Recommandations de mots-clés Apple Ads** (export du 5 oct, ~200 termes FR/DE) : **aucune retenue**. Ce sont des noms d'autres apps (TikTok, Snapchat, Telekom, 1xbet, CamScanner…), la même impasse que le Broad « qr » aux USA. Les seules liées au QR sont des requêtes « scanner » (« qr code scanner kostenlos » à 2,20 €), alors que l'app génère et ne scanne pas. Ne pas importer l'onglet « Targeted Keywords » du fichier.
 - **Installs naturels DE/AT** : en attente des ventes ASC (Europe, 30 j, onglet Territoire).
 
+### Point App Store Connect, 90 jours (4 juil-1 oct)
+
+Les données du 2 et du 3 oct n'étaient pas encore publiées. Radical QR seul :
+
+| Métrique | Valeur | vs 90 j précédents |
+|---|---|---|
+| Premiers téléchargements | **62** (+1 retéléchargement) | +313 % |
+| Impressions | 8 180 | +278 % |
+| Vues de la fiche | 171 (**2,1 %** des impressions) | +171 % |
+| Fiche → téléchargement | ~36 % | — |
+| Achats Pro | **6** · bénéfice **27 $** | baseline : 4 achats · ~18 $ |
+| Achat après téléchargement | 7,9 % · 10,3 % · 12,9 % (3 fenêtres, en ordre croissant) | cohérent avec les cohortes du 29 sept |
+
+Sources des téléchargements : **Recherche App Store 43** (69 %, Apple Ads compris), **App référente 16** (25 %, quasi sûrement la promo croisée depuis Phone Number Cleaner), autres 4.
+
+Lecture :
+1. Le **goulot reste impression → vue de fiche** (2,1 %, comme les 1,9 % de septembre). La fiche, elle, convertit bien.
+2. La **promo croisée** pèse un quart des téléchargements. Dans l'autre sens, elle rapporte aussi à Phone Number Cleaner (10 $ de ventes « App référente » sur 90 j).
+3. Coût Apple Ads cumulé depuis le 21 sept : ~14,40 € pour ~16 installs, soit **~0,90 €/install** (Discovery compris : ~2,10 € pour 1 install). En Exact seul, on est sous le seuil depuis S40.
+4. Ces écrans ne donnent pas les pays : pour les installs naturels DE/AT, il faut Téléchargements, source « Recherche dans l'App Store », avec le filtre **Territoire**.
+
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
