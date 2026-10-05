@@ -105,14 +105,17 @@ Exports Apple Ads du 28 sept au 4 oct (UTC) : la période empiète d'un jour sur
 
 Lecture :
 1. **La France a basculé** : 0 → 7 installs, Exact à 0,75 €/install, TTR 12,5 %, 70 % des taps installent. Le seuil (≥ 2 installs) est largement passé.
-2. **L'enchère 0,70 € n'apparaît pas dans l'export** : le groupe Exact FR est toujours à 0,55 € par défaut et le CPT moyen (0,52) reste sous 0,55. Soit la hausse a été faite au niveau des mots-clés, soit elle n'a pas été appliquée et la France a décollé à 0,55 €. À vérifier.
+2. **L'enchère 0,70 € est bien appliquée, mot-clé par mot-clé** (le groupe garde 0,55 € par défaut, sans effet). On paie pourtant 0,51 € en moyenne : l'enchère plus haute fait gagner plus d'enchères sans payer le plafond.
+   - **Un seul mot-clé fait tout** : « générateur de qr code » → 57 impressions, 9 taps, **7 installs à 0,66 €**.
+   - « faire un qr code » : 1 tap, 0 install (0,62 €). « code qr » (9 impr.), « créer qr code » (5), « qr code wifi » (4) : impressions sans taps.
+   - **« qr code » seul : 0 impression même à 0,70 €**, comme aux USA. Ce terme générique coûte bien plus cher.
 3. **L'Allemagne a ralenti** : 43 impressions au lieu de 93, 2 installs au lieu de 7, mais toujours sous le seuil (0,71 €). Discovery DE passe de 29 à 12 impressions : cohérent avec l'exclusion de « pentacode », qui en faisait une bonne part.
 4. **L'Autriche n'a jamais diffusé** : la campagne est **en pause** depuis sa création le 29 sept (ses groupes sont actifs). Zéro impression : il n'y a pas de première semaine à juger.
 5. **Discovery FR** : 0,78 € pour 2 taps, 0 install. Petit montant ; on garde une semaine de plus et on regarde ses termes de recherche.
 6. Le budget n'est toujours pas la limite : 7,43 € dépensés sur 35 € (FR + DE).
 
 Décisions du 5 oct :
-- **FR** : on garde. Vérifier l'enchère des mots-clés Exact (0,55 ou 0,70).
+- **FR** : on garde, mots-clés Exact à 0,70 €. Ne pas monter « qr code » pour le faire sortir : il faudrait payer plus que ce que rapporte un install.
 - **AT** : **activer la campagne** ; premier vrai bilan le 12 oct.
 - **DE** : inchangé (une semaine creuse ne suffit pas pour décider).
 - **Suisse** : la règle « FR < 2 installs → Suisse » n'est pas déclenchée. Elle reste le pays suivant, à lancer une fois que l'Autriche aura une semaine de données.
