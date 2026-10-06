@@ -593,6 +593,12 @@ xcodebuild -importLocalizations -localizationPath ./Localizations/<lang>.xcloc -
 ./updScreenshots.sh --upload-only
 ./updScreenshots.sh --dry-run
 
+# Release — archive, export, validate, then upload both platforms (docs in release.sh)
+#   Bump MARKETING_VERSION + CURRENT_PROJECT_VERSION for "Radical QR" AND RadicalQRShare first.
+#   The App Store Connect version must exist on each platform before updAppStore.sh can write to it.
+./release.sh both                  # validate only, nothing sent
+./release.sh both --reuse --upload # send the archives from the last run
+
 # Generate app icon (requires source 1024x1024)
 # Use Asset Catalog for automatic generation
 ```
