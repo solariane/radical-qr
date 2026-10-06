@@ -1,7 +1,5 @@
-Radical QR 2.1.1
+Radical QR 2.1.2
 
-• Correction d'un plantage sous iOS 26 et suivants : choisir les modules les plus ronds pouvait fermer l'app alors qu'un code était à l'écran. La forme n'a pas changé ; c'est le tracé qui demandait un angle impossible.
+• Une nouvelle image pour la fiche App Store. Cette version la porte ; rien ne change dans l'app elle-même.
 
-• Plus de place pour le code. Le nom et la marque sont passés dans la barre de navigation : un formulaire et son QR code tiennent désormais ensemble à l'écran — cela compte sur un petit iPhone et sur une fiche contact un peu longue.
-
-• Aide réécrite autour de ce que fait la 2.1 : comment un texte écrit normalement devient un événement, un code Wi-Fi, un contact ou une adresse, avec des exemples à copier. Elle est maintenant dans le menu ⋯, à côté des réglages.
+• Comme en 2.1.1 : un texte écrit normalement devient un événement, un code Wi-Fi, un contact ou une adresse, et l'aide du menu ⋯ montre comment, avec des exemples à copier.
