@@ -26,8 +26,24 @@ appstore/
 │   ├── ar-SA/                         #
 │   ├── hi/                            #
 │   └── zh-Hans/                       #
+├── creative/                          # Universal creative asset (iOS 27 product page)
+│   ├── universal.mjs                  # draws out/universal.svg — no text, serves all locales
+│   └── render.sh                      # → out/universal.jpg + the two crop previews
 └── .appstore-signatures.json          # per-field SHA256 of source, auto-managed
 ```
+
+## Universal creative asset (header + search results)
+
+Since iOS 27 a product page can show one image, 5244 × 2950 (16:9), that the
+App Store crops itself: 2.33:1 for the header banner, 3:2 for search results.
+`appstore/creative/render.sh` draws it from the screenshot library (same QR
+renderer, same symbols) and writes a JPEG without alpha, which is the only
+form App Store Connect accepts. It carries no text, so one file serves the
+ten locales, and no price, as Apple requires. Check `out/preview-header.png`
+and `out/preview-search.png` before uploading: everything must sit inside
+the 4425 × 2248 intersection of the two centred crops, and the lower part of
+the header is covered by the icon, name and Get button. Rendered files are
+not versioned; upload is manual in App Store Connect (no API for it yet).
 
 ## Workflow
 
