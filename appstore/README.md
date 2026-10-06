@@ -27,8 +27,10 @@ appstore/
 │   ├── hi/                            #
 │   └── zh-Hans/                       #
 ├── creative/                          # Universal creative asset (iOS 27 product page)
-│   ├── universal.mjs                  # draws out/universal.svg — no text, serves all locales
-│   └── render.sh                      # → out/universal.jpg + the two crop previews
+│   ├── lib.mjs                        # canvas, background, input chips, QR card — shared
+│   ├── universal.mjs                  # "styles" variant: inputs → QR → three styles
+│   ├── universal-privacy.mjs          # "privacy" variant: inputs → shielded QR, nothing out
+│   └── render.sh                      # → out/<variant>.jpg + the two crop previews
 └── .appstore-signatures.json          # per-field SHA256 of source, auto-managed
 ```
 
@@ -38,9 +40,13 @@ Since iOS 27 a product page can show one image, 5244 × 2950 (16:9), that the
 App Store crops itself: 2.33:1 for the header banner, 3:2 for search results.
 `appstore/creative/render.sh` draws it from the screenshot library (same QR
 renderer, same symbols) and writes a JPEG without alpha, which is the only
-form App Store Connect accepts. It carries no text, so one file serves the
-ten locales, and no price, as Apple requires. Check `out/preview-header.png`
-and `out/preview-search.png` before uploading: everything must sit inside
+form App Store Connect accepts. Two variants exist and only one is uploaded:
+`universal` tells the generator story (five content types in, an elegant QR,
+three styles), `universal-privacy` the privacy one (the same five inputs
+enter a shield around the QR, a padlock seals it, and a struck-out cloud,
+eye and antenna say nothing leaves). It carries no text, so one file serves the
+ten locales, and no price, as Apple requires. Check `out/<variant>-preview-header.png`
+and `out/<variant>-preview-search.png` before uploading: everything must sit inside
 the 4425 × 2248 intersection of the two centred crops, and the lower part of
 the header is covered by the icon, name and Get button. Rendered files are
 not versioned; upload is manual in App Store Connect (no API for it yet).
