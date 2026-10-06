@@ -6,47 +6,22 @@
  * contient la carte QR, un cadenas le scelle ; à droite, trois pictos
  * barrés — nuage, œil, antenne — disent que rien n'en sort : pas de serveur,
  * pas de regard, pas d'envoi. Les filets ne traversent pas le bouclier.
+ * universal-shield.mjs combine ce bouclier avec les trois styles.
  *
  *   node universal-privacy.mjs   →  out/universal-privacy.svg
  */
 
 import { symbol } from "../screenshots/lib/symbols.mjs";
-import { cx, cy, white, QR_GRADIENT, CHIP_R, chip, inputColumn, qrCard, writeSvg } from "./lib.mjs";
+import { cx, cy, white, CHIP_R, chip, shield, inputColumn, qrCard, writeSvg } from "./lib.mjs";
 
-// --- Le bouclier ---------------------------------------------------------------
+// --- Le bouclier, la carte dedans ------------------------------------------------
 
-const sw = 1760, sh = 1720;           // haut à y = 440 : la zone sûre commence à 351, et le bandeau respire
-const top = cy - sh / 2, bottom = cy + sh / 2, hw = sw / 2;
-const shoulder = sw * 0.14;
-const waist = cy - sh * 0.06;          // où les flancs quittent la verticale
-
-const shield = `M ${cx - hw + shoulder} ${top}
-  H ${cx + hw - shoulder}
-  Q ${cx + hw} ${top} ${cx + hw} ${top + shoulder}
-  V ${waist}
-  C ${cx + hw} ${cy + sh * 0.42}, ${cx + sw * 0.17} ${bottom - sh * 0.09}, ${cx} ${bottom}
-  C ${cx - sw * 0.17} ${bottom - sh * 0.09}, ${cx - hw} ${cy + sh * 0.42}, ${cx - hw} ${waist}
-  V ${top + shoulder}
-  Q ${cx - hw} ${top} ${cx - hw + shoulder} ${top} Z`;
-
-// La carte vit dans la partie haute, large, du bouclier.
-const card = 1060;
-const cardY = cy - 70;
-const centre = qrCard({ y: cardY, card, radius: 90, qr: 880, logo: 220 });
-
-// Le cadenas sur la pointe : un disque blanc, le cadenas aux couleurs du QR.
-const lockR = 150;
-const lockY = bottom - 40;
-const lock = `
-  <g filter="url(#shadow)"><circle cx="${cx}" cy="${lockY}" r="${lockR}" fill="${white}"/></g>
-  <linearGradient id="lockFill" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="${QR_GRADIENT.start}"/><stop offset="1" stop-color="${QR_GRADIENT.end}"/>
-  </linearGradient>
-  ${symbol("lock.fill", cx, lockY + 6, lockR * 1.1, "url(#lockFill)")}`;
+const guard = shield();
+const centre = qrCard({ y: guard.cardY, card: 1060, radius: 90, qr: 880, logo: 220 });
 
 // --- Gauche : ce qui entre. Les filets s'arrêtent au bord du bouclier. --------
 
-const inputs = inputColumn({ x: cx - 1360, lineEnd: cx - hw - 60, converge: 0.3 });
+const inputs = inputColumn({ x: cx - 1360, lineEnd: cx - guard.hw - 60, converge: 0.3 });
 
 // --- Droite : ce qui ne sort pas -------------------------------------------------
 
@@ -104,12 +79,7 @@ const refusals = [
 
 // --- Assemblage ---------------------------------------------------------------
 
-const defs = inputs.defs + centre.defs + refusals.map((r) => r.defs).join("");
-const body = `
-  ${inputs.body}
-  ${refusals.map((r) => r.body).join("")}
-  <path d="${shield}" fill="${white}" fill-opacity="0.12" stroke="${white}" stroke-opacity="0.6" stroke-width="12" stroke-linejoin="round"/>
-  ${centre.body}
-  ${lock}`;
+const defs = inputs.defs + guard.defs + centre.defs + refusals.map((r) => r.defs).join("");
+const body = inputs.body + refusals.map((r) => r.body).join("") + guard.outline + centre.body + guard.lock;
 
 writeSvg("universal-privacy", defs, body);

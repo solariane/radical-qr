@@ -157,6 +157,72 @@ export function qrCard({ x = cx, y = cy, card = 1500, radius = 120, qr = 1240, l
   return { defs, body };
 }
 
+// --- Trois styles, le même contenu --------------------------------------------
+
+/** Une colonne de trois tuiles blanches, chacune avec le même code autrement habillé. */
+export function styleTiles({ x = cx + 1360, gap = 480 } = {}) {
+  const tile = 400;
+  const tileRadius = 56;
+  const tileX = x - tile / 2;
+  const tileGap = gap;
+  const styles = [
+    { color: "#000000", roundness: 0, eyeStyle: "square", eyeScale: 1 },
+    { gradient: { start: "#2563EB", end: "#06B6D4", angle: 135 }, roundness: 0.3, eyeStyle: "rounded", eyeScale: 0.9 },
+    { gradient: { start: "#F97316", end: "#EC4899", angle: 135 }, roundness: 1.0, eyeStyle: "dot", eyeScale: 0.85 },
+  ];
+  const t0 = cy - (tileGap * (styles.length - 1)) / 2;
+
+  return styles.map((style, i) => {
+    const y = t0 + i * tileGap - tile / 2;
+    const inner = tile - 60;
+    const qr = renderQR({
+      content: "radicalsolution.com",
+      size: inner,
+      errorCorrection: "L",
+      gradientId: `tile${i}`,
+      ...style,
+    });
+    return `
+      <g filter="url(#shadow)">
+        <rect x="${tileX}" y="${y}" width="${tile}" height="${tile}" rx="${tileRadius}" fill="${white}"/>
+      </g>
+      <g transform="translate(${tileX + 30} ${y + 30})">${qr}</g>`;
+  }).join("");
+}
+
+// --- Le bouclier et son cadenas ------------------------------------------------
+
+/**
+ * Un bouclier centré sur (cx, cy) : épaules arrondies, flancs qui se referment
+ * en pointe, et un cadenas aux couleurs du QR sur la pointe. La carte vit dans
+ * la partie haute, large ; `cardY` est le centre qui lui convient.
+ */
+export function shield({ sw = 1760, sh = 1720 } = {}) {
+  const top = cy - sh / 2, bottom = cy + sh / 2, hw = sw / 2;
+  const shoulder = sw * 0.14;
+  const waist = cy - sh * 0.06;          // où les flancs quittent la verticale
+  const path = `M ${cx - hw + shoulder} ${top}
+    H ${cx + hw - shoulder}
+    Q ${cx + hw} ${top} ${cx + hw} ${top + shoulder}
+    V ${waist}
+    C ${cx + hw} ${cy + sh * 0.42}, ${cx + sw * 0.17} ${bottom - sh * 0.09}, ${cx} ${bottom}
+    C ${cx - sw * 0.17} ${bottom - sh * 0.09}, ${cx - hw} ${cy + sh * 0.42}, ${cx - hw} ${waist}
+    V ${top + shoulder}
+    Q ${cx - hw} ${top} ${cx - hw + shoulder} ${top} Z`;
+  const lockR = 150;
+  const lockY = bottom - 40;
+  const defs = `
+    <linearGradient id="lockFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${QR_GRADIENT.start}"/><stop offset="1" stop-color="${QR_GRADIENT.end}"/>
+    </linearGradient>`;
+  const outline = `
+  <path d="${path}" fill="${white}" fill-opacity="0.12" stroke="${white}" stroke-opacity="0.6" stroke-width="12" stroke-linejoin="round"/>`;
+  const lock = `
+  <g filter="url(#shadow)"><circle cx="${cx}" cy="${lockY}" r="${lockR}" fill="${white}"/></g>
+  ${symbol("lock.fill", cx, lockY + 6, lockR * 1.1, "url(#lockFill)")}`;
+  return { defs, outline, lock, hw, top, bottom, cardY: cy - 70 };
+}
+
 export function writeSvg(name, defs, body) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">

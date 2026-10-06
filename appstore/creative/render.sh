@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Rend chaque variante du visuel universel en PNG puis en JPEG (sans couche
 # alpha, que l'App Store refuse), et produit deux aperçus des recadrages.
-#   ./render.sh                     # les deux variantes
+#   ./render.sh                     # les trois variantes
 #   ./render.sh universal-privacy   # une seule
 set -euo pipefail
 cd "$(dirname "$0")"
 VARIANTS=("$@")
-[ ${#VARIANTS[@]} -eq 0 ] && VARIANTS=(universal universal-privacy)
+[ ${#VARIANTS[@]} -eq 0 ] && VARIANTS=(universal universal-privacy universal-shield)
 for v in "${VARIANTS[@]}"; do
   node "$v.mjs"
   rsvg-convert -w 5244 -h 2950 "out/$v.svg" -o "out/$v.png"
