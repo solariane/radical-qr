@@ -22,7 +22,15 @@
  *   node appstore-stats.mjs status                    # requests and available reports per app
  *   node appstore-stats.mjs fetch [--app=<id|name>]   # download new daily files to marketing/stats/data
  *   node appstore-stats.mjs summary --report=downloads --from=2026-10-05 --to=2026-10-11
- *        [--app=<id|name>] [--by="Territory,Device,Source Type,Campaign"] [--where="Campaign=google-mac-en"]
+ *        [--app=<id|name>] [--by="Territory,Device,Source Type"] [--where="Download Type=First-time download"]
+ *   node appstore-stats.mjs summary --report=downloads-detailed --by=Campaign --where="Campaign=google-mac-en"
+ *
+ * "Standard" reports are the daily backbone. The "Detailed" variants add
+ * Source Info, Campaign (the ct= of a product-page link) and Page Title; Apple
+ * produces them later and, for downloads, so far only weekly/monthly. Only DAILY
+ * instances are saved: a weekly file would double-count the same rows.
+ * Downloads mix First-time download, Auto-update, Redownload…: filter on
+ * Download Type to count installs.
  */
 
 import fs from "node:fs";
@@ -40,6 +48,9 @@ const REPORTS = {
   downloads: "App Downloads Standard",
   discovery: "App Store Discovery and Engagement Standard",
   purchases: "App Store Purchases Standard",
+  "downloads-detailed": "App Downloads Detailed",
+  "discovery-detailed": "App Store Discovery and Engagement Detailed",
+  "purchases-detailed": "App Store Purchases Detailed",
 };
 
 const [command = "status", ...rest] = process.argv.slice(2);
@@ -193,7 +204,7 @@ async function cmdFetch() {
 function cmdSummary() {
   const short = args.report || "downloads";
   if (!REPORTS[short]) fail(`--report must be one of ${Object.keys(REPORTS).join(", ")}`);
-  const by = (typeof args.by === "string" ? args.by : "Territory,Device,Source Type,Campaign").split(",").map((s) => s.trim());
+  const by = (typeof args.by === "string" ? args.by : "Territory,Device,Source Type").split(",").map((s) => s.trim());
   const where = typeof args.where === "string"
     ? args.where.split(",").map((w) => w.split("=").map((s) => s.trim()))
     : [];
