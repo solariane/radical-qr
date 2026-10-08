@@ -26,6 +26,9 @@
  *   node appstore-screenshots.mjs --dry-run
  *   node appstore-screenshots.mjs                 # envoie tout
  *   node appstore-screenshots.mjs --only=fr-FR,de-DE
+ *
+ * Les captures iPhone Duo (`-duo-`) n'ont pas de type classique : elles passent
+ * par l'Asset Library, voir appstore/lib/asset-library.mjs.
  *   node appstore-screenshots.mjs --keep          # ajoute sans supprimer l'existant
  */
 
@@ -34,6 +37,10 @@ import path from "node:path";
 import os from "node:os";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
+import {
+  DUO_MAX, assetLibraryId, duoPlacements, clearDuoPlacements,
+  uploadLibraryImage, placeDuoScreenshot, orderDuoPlacements,
+} from "./appstore/lib/asset-library.mjs";
 import { createAscClient } from "./appstore/lib/asc.mjs";
 
 const args = Object.fromEntries(
@@ -132,6 +139,69 @@ function filesFor(displayType, locale) {
     .readdirSync(OUT_DIR)
     .filter((f) => f.endsWith(`-${locale}.png`) && displayType.match.test(f))
     .sort();
+}
+
+// --- iPhone Duo -------------------------------------------------------------
+//
+// Fichiers `-duo-` (écran intérieur, 2007×2853) rendus par render.sh à partir
+// des scènes iPad. Envoyés pour la plateforme IOS seulement.
+
+const DUO = { match: /-duo-/, size: "2007×2853" };
+let libraryId; // résolu au premier envoi Duo
+
+async function sendDuo({ appId, locId, locale }) {
+  const label = `IOS / ${locale} / iPhone Duo`;
+  const files = filesFor(DUO, locale);
+  if (!files.length) {
+    dim(`${label} : aucun fichier`);
+    return { uploaded: 0, failed: 0 };
+  }
+
+  if (LIST_ONLY) {
+    const online = await duoPlacements({ asc, locId });
+    info(`${label} : ${online.length} en ligne, ${files.length} en local`);
+    return { uploaded: 0, failed: 0 };
+  }
+
+  if (DRY_RUN) {
+    info(`(à blanc) ${label} : ${files.length} fichier(s)`);
+    files.forEach((f) => dim(`  ${f}`));
+    return { uploaded: 0, failed: 0 };
+  }
+
+  if (libraryId === undefined) libraryId = await assetLibraryId({ asc, appId });
+  if (!libraryId) {
+    warn(`${label} : Asset Library inaccessible pour cette app, captures Duo ignorées`);
+    return { uploaded: 0, failed: 0 };
+  }
+
+  // Même règle que les jeux classiques : on remplace, sauf --keep.
+  const placementIds = KEEP
+    ? (await duoPlacements({ asc, locId })).map((p) => p.id)
+    : (await clearDuoPlacements({ asc, locId }), []);
+
+  const room = DUO_MAX - placementIds.length;
+  if (files.length > room) {
+    warn(`${label} : ${files.length} fichiers pour ${room} place(s), les suivants sont ignorés`);
+  }
+
+  let uploaded = 0, failed = 0;
+  process.stdout.write(`  ${label} `);
+  for (const file of files.slice(0, Math.max(0, room))) {
+    const result = await uploadLibraryImage({ asc, fetchRetry, libraryId, filePath: path.join(OUT_DIR, file) });
+    if (result.state === "FAILED" || result.state === "TIMEOUT") {
+      failed += 1;
+      process.stdout.write("✗");
+      warn(`\n    ${file} → ${result.state} ${result.errors ?? ""}`);
+      continue;
+    }
+    placementIds.push(await placeDuoScreenshot({ asc, imageId: result.id, locId }));
+    uploaded += 1;
+    process.stdout.write(".");
+  }
+  await orderDuoPlacements({ asc, locId, placementIds });
+  console.log(` ${uploaded} envoyée(s)`);
+  return { uploaded, failed };
 }
 
 // --- Envoi d'un fichier ----------------------------------------------------
@@ -305,6 +375,12 @@ async function main() {
           else { failed += 1; process.stdout.write("✗"); warn(`\n    ${file} → ${result.state} ${result.errors ?? ""}`); }
         }
         console.log(` ${files.length} envoyée(s)`);
+      }
+
+      if (platform === "IOS") {
+        const duo = await sendDuo({ appId: app.id, locId, locale });
+        uploaded += duo.uploaded;
+        failed += duo.failed;
       }
     }
   }

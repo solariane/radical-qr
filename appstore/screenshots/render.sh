@@ -63,10 +63,15 @@ for LOCALE in "${LOCALES[@]}"; do
         rsvg-convert -w 1284 -h 2778 "$svg" -o "$OUT/${base/-iphone-6.9-/-iphone-6.5-}.png"
     done
 
-    echo "  iPad → 2064×2752"
+    # iPhone Duo (écran intérieur, 2007×2853) : la scène iPad sur une toile
+    # allongée, voir lib/duo-canvas.mjs. Envoyée par l'Asset Library.
+    echo "  iPad → 2064×2752 + iPhone Duo 2007×2853"
     for svg in "$OUT"/*-ipad-"$LOCALE".svg; do
         [ -f "$svg" ] || continue
         rsvg-convert -w 2064 -h 2752 "$svg" -o "${svg%.svg}.png"
+        duo="${svg/-ipad-/-duo-}"
+        node "$SCRIPT_DIR/lib/duo-canvas.mjs" "$svg" "$duo"
+        rsvg-convert -w 2007 -h 2853 "$duo" -o "${duo%.svg}.png"
     done
 
     echo "  Mac → 2880×1800"
