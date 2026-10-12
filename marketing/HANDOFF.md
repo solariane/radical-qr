@@ -1,7 +1,7 @@
 # HANDOFF — reprise marketing Radical QR
 
 > **Lis ce fichier en premier quand tu reviens.** Il dit où on en est, ce qu'on a appris, et quoi faire ensuite.
-> Dernière mise à jour : **2026-10-05**.
+> Dernière mise à jour : **2026-10-12**.
 
 ## 📉 Baseline chiffrée (point zéro avant marketing)
 
@@ -144,13 +144,38 @@ Lecture :
 3. Coût Apple Ads cumulé depuis le 21 sept : ~14,40 € pour ~16 installs, soit **~0,90 €/install** (Discovery compris : ~2,10 € pour 1 install). En Exact seul, on est sous le seuil depuis S40.
 4. Ces écrans ne donnent pas les pays : pour les installs naturels DE/AT, il faut Téléchargements, source « Recherche dans l'App Store », avec le filtre **Territoire**.
 
+## 🧪 Troisième semaine (5-11 oct) — bilan du 12 oct
+
+Sources : `appleads-stats.mjs`, Google Sheet (mise à jour le 12 oct à 5 h 32, le script quotidien tourne), `appstore-stats.mjs` (téléchargements jusqu'au 10 oct ; rapport `downloads-detailed` quotidien toujours absent, donc la colonne `Campaign` n'est lisible que dans `discovery-detailed`).
+
+| Campagne | Groupe | Impr. | Clics/taps | Installs | Dépense | CPC/CPT moy. | Coût/install |
+|---|---|---|---|---|---|---|---|
+| FR | Exact – Intent | 388 | 42 | 31 | 22,17 € | 0,53 | **0,72 €** |
+| FR | Discovery | 23 | 1 | 1 | 0,37 € | 0,37 | 0,37 € |
+| DE | Exact + Discovery | 23 | 0 | 0 | 0 € | — | — |
+| AT | tous | 1 | 0 | 0 | 0 € | — | — |
+| Google Mac | Groupe d'annonces 1 | 363 | 13 (3,6 %) | **0 tracé** | 10,02 € | 0,77 (plafond 0,80) | — |
+
+Lecture :
+1. **La France triple** : 32 installs à 0,70 €. Les deux variantes ajoutées le 5 oct font l'essentiel : « générateur qr code » 12 installs à 0,76 €, « créateur de qr code » 12 à 0,75 €, « générateur de qr code » 7 à 0,49 €. ⚠️ Les deux variantes sont en **Broad** (pas en Exact comme prévu), dans le groupe Exact ; les termes réels sont masqués. Tant que le coût/install reste < 0,80 €, on laisse.
+2. **FR a dépensé 22,54 €**, soit plus que 2,50 €/j × 7 : vérifier le budget quotidien affiché. Désormais c'est le volume qui suit l'enchère, plus le budget.
+3. **Installs naturels** : ASC FR ≈ 26 téléchargements « Recherche » (5-10 oct) pour 32 installs Apple Ads (5-11 oct, retéléchargements compris) → naturels FR ≈ 0. DE et AT : 0 téléchargement ASC en S41 ; en S40, DE 2 téléchargements pour 3 installs Apple Ads (chiffre révisé) → naturels 0. Aucun effet visible sur le classement.
+4. **DE s'est éteinte** (23 impressions, 0 tap) et **AT n'a quasiment pas diffusé** (1 impression en une semaine d'activité) : à 0,60 €, on ne gagne plus les enchères allemandes.
+5. **Google Mac** : 10,02 € dépensés, sous le seuil de 15 €. Aucun téléchargement ni vue de fiche attribués à `google-mac-en` dans ASC ; un seul premier téléchargement Mac sur la semaine (Chine). Le budget de 5 €/j n'est pas atteint (1,67 €/j) : c'est le plafond de 0,80 € qui borne. **Les exclusions de la campagne ne sont pas actives** : des termes « scanner », « scan », « reader », « free », « in word » ont déclenché l'annonce (surtout via « qr code app for mac » en expression).
+
+Décisions proposées le 12 oct (à valider) :
+- **Google Mac** : ajouter la liste d'exclusions de `07-google-search-mac.md` au niveau campagne. Le seuil de 15 € sera atteint vers le 15-16 oct : sans install Mac `google-mac-en` à ce moment-là → **couper**. Vérifier aussi dans ASC → Campagnes que `google-mac-en` remonte (sinon la mesure Mac ne marche pas, cf. l'avertissement de `07`).
+- **Discovery FR** : garder (1 install à 0,37 €). **Discovery DE** : mettre en pause (16 impressions en deux semaines, 0 tap).
+- **FR** : inchangée, enchère 0,70 €. Garder les deux variantes en Broad tant que le coût/install < 0,80 €.
+- **DE + AT** : passer les mots-clés Exact de 0,60 € à **0,70 €** pour une semaine, comme la FR. Toujours rien le 19 oct → pause, et la Suisse ne se lance pas.
+
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
-3. **Google Search Mac** (`07`) : **créée le 5 oct** (compte 164-143-7637). Écarts au plan : budget **5 €/jour** (au lieu de 2,50 €, pour avoir des chiffres plus vite), « Maximiser les clics » plafonné à **0,80 €/clic**, langues anglais + français. Réseau de Recherche seul, zones en « Présence », mobiles et tablettes à −100 %. URL finale : `https://apps.apple.com/app/apple-store/id6763236391?pt=346600&ct=google-mac-en&mt=12`. Google a ajouté un objectif « Lead par téléphone » par défaut : sans effet, les enchères ne s'appuient pas sur les conversions. **Point le 12 oct** : plus de 15 € dépensés sans aucun install Mac (ASC → Campagnes → `google-mac-en`) → couper ou corriger.
+3. **Google Search Mac** (`07`) : **créée le 5 oct** (compte 164-143-7637). Écarts au plan : budget **5 €/jour** (au lieu de 2,50 €, pour avoir des chiffres plus vite), « Maximiser les clics » plafonné à **0,80 €/clic**, langues anglais + français. Réseau de Recherche seul, zones en « Présence », mobiles et tablettes à −100 %. URL finale : `https://apps.apple.com/app/apple-store/id6763236391?pt=346600&ct=google-mac-en&mt=12`. Google a ajouté un objectif « Lead par téléphone » par défaut : sans effet, les enchères ne s'appuient pas sur les conversions. **Point le 12 oct** : plus de 15 € dépensés sans aucun install Mac (ASC → Campagnes → `google-mac-en`) → couper ou corriger. **12 oct** : 10,02 € dépensés, 0 install tracé, exclusions inactives → les ajouter ; décision à 15 € (vers le 15-16 oct).
 4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée, 2 variantes Exact ajoutées). Autriche activée le 5 oct.
-5. **12 oct** : première vraie semaine Autriche + installs naturels DE/AT (ventes ASC).
+5. ~~**12 oct** : première vraie semaine Autriche + installs naturels DE/AT~~ → fait (AT : 1 impression ; naturels DE/AT : 0). **19 oct** : DE/AT à 0,70 €, Google Mac tranché.
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 
@@ -161,8 +186,8 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 | Baseline (juin-août) | ~13-15/mois | ? | 4 / 90 j | 0 € | 0 € | — | organique pur |
 | Mi-sept (V2) | 46 / période | 1,9 % | ~10-12 % | — | — | — | effet version |
 | S39 (22-28 sept) | 7 via ASA DE (9 unités DE sur 30 j) | ? | ≈ 1 en DE | FR 1,35 € / DE 5,61 € | non lancé | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
-| S40 (28 sept-4 oct) | 9 via ASA (FR 7, DE 2, AT 0) ; naturels : ASC à fournir | ? | ? | FR 6,01 € / DE 1,43 € / AT 0 € | non lancé | FR 0,86 € (Exact 0,75 €) · DE 0,71 € | AT jamais diffusée (campagne en pause) ; 7,43 € dépensés sur 35 € |
-| S41 | | | | | | | |
+| S40 (28 sept-4 oct) | 9 via ASA (FR 7, DE 2, AT 0) ; ASC : 15 premiers téléchargements (FR 9, DE 2, AT 0) → naturels DE 0, AT 0, FR ≈ 1 | ? | ? | FR 6,01 € / DE 1,43 € / AT 0 € | non lancé | FR 0,86 € (Exact 0,75 €) · DE 0,71 € | AT jamais diffusée (campagne en pause) ; 7,43 € dépensés sur 35 € |
+| S41 (5-11 oct) | 33 via ASA (FR 32, DE 0, AT 0) ; ASC (5-10 oct) : 30 premiers téléchargements (FR 27, DE 0, AT 0, Mac 1) ; Google Mac : 0 tracé | ? | ASC à fournir | FR 22,54 € / DE 0 € / AT 0 € | 10,02 € (13 clics) | FR 0,70 € · Google — | FR décolle avec les 2 variantes ; DE/AT à l'arrêt ; Google sous le seuil de 15 € |
 
 **Seuils** : coût par install < 0,80 € (idéal < 0,50 €) → garder / monter ; > 1 € → couper. North Star = achats Pro/mois.
 
