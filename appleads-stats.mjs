@@ -2,9 +2,10 @@
 /**
  * appleads-stats.mjs
  *
- * Reads Apple Ads (Search Ads) reports through the Campaign Management API v5,
- * with a read-only API user. Prints campaign, ad group, keyword and search-term
- * totals for a period and saves the raw JSON in marketing/stats/data/appleads/.
+ * Reads Apple Ads (Search Ads) reports through the Campaign Management API v5.
+ * Prints campaign, ad group, keyword and search-term totals for a period and
+ * saves the raw JSON in marketing/stats/data/appleads/. Also lists keyword bids
+ * and changes them (the API user needs the "API Campaign Manager" role for that).
  *
  * Auth: a client secret (JWT, ES256) signed with ../appleads_private_key.pem is
  * exchanged at appleid.apple.com for a one-hour access token.
@@ -18,6 +19,9 @@
  *   node appleads-stats.mjs acls                              # check access, list orgs
  *   node appleads-stats.mjs report --from=2026-10-05 --to=2026-10-11
  *        [--levels=campaigns,adgroups,keywords,searchterms] [--campaign=<name part>]
+ *   node appleads-stats.mjs bids [--campaign=<name part>]      # every keyword, its bid and status
+ *   node appleads-stats.mjs set-bid --campaign="QR – DE" --adgroup=Intent --bid=0.70 [--match=EXACT] [--apply]
+ *        # without --apply, only prints what would change
  */
 
 import fs from "node:fs";
@@ -86,9 +90,9 @@ async function token() {
   return accessToken;
 }
 
-async function api(pathname, body = null) {
+async function api(pathname, body = null, method = body ? "POST" : "GET") {
   const res = await fetch(`${API}${pathname}`, {
-    method: body ? "POST" : "GET",
+    method,
     headers: {
       Authorization: `Bearer ${await token()}`,
       "X-AP-Context": `orgId=${ASA_ORG_ID}`,
@@ -97,7 +101,7 @@ async function api(pathname, body = null) {
     body: body ? JSON.stringify(body) : undefined,
   });
   const json = await res.json().catch(() => null);
-  if (!res.ok) fail(`${body ? "POST" : "GET"} ${pathname} → HTTP ${res.status} ${JSON.stringify(json?.error ?? json)}`);
+  if (!res.ok) fail(`${method} ${pathname} → HTTP ${res.status} ${JSON.stringify(json?.error ?? json)}`);
   return json;
 }
 
@@ -190,6 +194,60 @@ async function cmdReport() {
   console.log(`\nJSON brut : ${path.relative(SCRIPT_DIR, outDir)}`);
 }
 
-const COMMANDS = { acls: cmdAcls, report: cmdReport };
+// --- Bids ------------------------------------------------------------------
+
+// Keywords from the management API, not the reports: a keyword with no
+// impression yet still has a bid.
+async function keywordsOf(campaignFilter) {
+  const filter = typeof campaignFilter === "string" ? campaignFilter.toLowerCase() : null;
+  const campaigns = (await api("/campaigns?limit=1000")).data
+    .filter((c) => !filter || c.name.toLowerCase().includes(filter));
+  const out = [];
+  for (const c of campaigns) {
+    for (const g of (await api(`/campaigns/${c.id}/adgroups?limit=1000`)).data ?? []) {
+      for (const k of (await api(`/campaigns/${c.id}/adgroups/${g.id}/targetingkeywords?limit=1000`)).data ?? []) {
+        if (k.deleted) continue;
+        out.push({ campaign: c, adGroup: g, keyword: k });
+      }
+    }
+  }
+  return out;
+}
+
+async function cmdBids() {
+  const rows = await keywordsOf(args.campaign);
+  printTable("Enchères", rows.map(({ campaign, adGroup, keyword }) => ({
+    campaign: campaign.name, adGroup: adGroup.name, keyword: keyword.text, match: keyword.matchType,
+    bid: keyword.bidAmount?.amount, status: keyword.status,
+  })));
+}
+
+async function cmdSetBid() {
+  if (typeof args.campaign !== "string") fail("--campaign=<name part> is required");
+  // Required so a brand group at a lower bid is never raised by accident.
+  if (typeof args.adgroup !== "string") fail("--adgroup=<name part> is required");
+  const adGroup = args.adgroup.toLowerCase();
+  const bid = Number(args.bid);
+  if (!(bid > 0 && bid < 10)) fail("--bid=<amount> is required, e.g. --bid=0.70");
+  const match = typeof args.match === "string" ? args.match.toUpperCase() : "EXACT";
+  const changes = (await keywordsOf(args.campaign))
+    .filter(({ adGroup: g, keyword }) => g.name.toLowerCase().includes(adGroup)
+      && keyword.matchType === match && Number(keyword.bidAmount?.amount) !== bid);
+  printTable(`${args.apply ? "Changement" : "Simulation"} : ${match} → ${bid.toFixed(2)}`,
+    changes.map(({ campaign, keyword }) => ({
+      campaign: campaign.name, keyword: keyword.text, from: keyword.bidAmount?.amount, to: bid.toFixed(2),
+    })));
+  if (!args.apply || !changes.length) return;
+  const byGroup = Map.groupBy(changes, ({ campaign, adGroup }) => `${campaign.id}/${adGroup.id}`);
+  for (const [ids, list] of byGroup) {
+    const [cid, gid] = ids.split("/");
+    await api(`/campaigns/${cid}/adgroups/${gid}/targetingkeywords/bulk`, list.map(({ keyword }) => ({
+      id: keyword.id, bidAmount: { amount: bid.toFixed(2), currency: keyword.bidAmount?.currency ?? "EUR" },
+    })), "PUT");
+  }
+  console.log(`\n${changes.length} enchère(s) modifiée(s).`);
+}
+
+const COMMANDS = { acls: cmdAcls, report: cmdReport, bids: cmdBids, "set-bid": cmdSetBid };
 if (!COMMANDS[command]) fail(`unknown command "${command}" (${Object.keys(COMMANDS).join(", ")})`);
 await COMMANDS[command]();
