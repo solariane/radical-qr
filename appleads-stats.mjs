@@ -2,7 +2,8 @@
 /**
  * appleads-stats.mjs
  *
- * Reads Apple Ads (Search Ads) reports through the Campaign Management API v5.
+ * Reads Apple Ads reports through the Apple Ads Platform API v1 (the Campaign
+ * Management API v5 it replaced stops working on 26 January 2027).
  * Prints campaign, ad group, keyword and search-term totals for a period and
  * saves the raw JSON in marketing/stats/data/appleads/. Also lists keyword bids
  * and changes them (the API user needs the "API Campaign Manager" role for that).
@@ -13,10 +14,10 @@
  * Credentials (environment or ../.env):
  *   ASA_CLIENT_ID, ASA_TEAM_ID, ASA_KEY_ID  — shown in Apple Ads → Account Settings → API
  *   ASA_KEY_PATH                           — the EC P-256 private key whose public half is uploaded there
- *   ASA_ORG_ID                             — the account's org id
+ *   ASA_ORG_ID                             — the ad account id (`acls` lists it; same number as the old org id)
  *
  * Usage:
- *   node appleads-stats.mjs acls                              # check access, list orgs
+ *   node appleads-stats.mjs acls                              # check access, list ad accounts
  *   node appleads-stats.mjs report --from=2026-10-05 --to=2026-10-11
  *        [--levels=campaigns,adgroups,keywords,searchterms] [--campaign=<name part>]
  *   node appleads-stats.mjs bids [--campaign=<name part>]      # every keyword, its bid and status
@@ -32,7 +33,7 @@ import { fileURLToPath } from "node:url";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(SCRIPT_DIR, "marketing", "stats", "data", "appleads");
-const API = "https://api.searchads.apple.com/api/v5";
+const API = "https://api.ads.apple.com/v1";
 
 const [command = "acls", ...rest] = process.argv.slice(2);
 const args = Object.fromEntries(
@@ -95,7 +96,7 @@ async function api(pathname, body = null, method = body ? "POST" : "GET") {
     method,
     headers: {
       Authorization: `Bearer ${await token()}`,
-      "X-AP-Context": `orgId=${ASA_ORG_ID}`,
+      "X-AP-Context": `adAccountId=${ASA_ORG_ID}`,
       ...(body ? { "Content-Type": "application/json" } : {}),
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -105,24 +106,39 @@ async function api(pathname, body = null, method = body ? "POST" : "GET") {
   return json;
 }
 
-// --- Reports ---------------------------------------------------------------
-
-// Totals over the period (no daily rows): one request per level and campaign.
-function reportBody(from, to, orderBy) {
-  return {
-    startTime: from,
-    endTime: to,
-    selector: { orderBy: [{ field: orderBy, sortOrder: "ASCENDING" }], pagination: { offset: 0, limit: 1000 } },
-    timeZone: "ORTZ",
-    returnRecordsWithNoMetrics: false,
-    returnRowTotals: true,
-    returnGrandTotals: true,
-  };
+// Every list is a POST to a /query endpoint; pages until a short page comes back.
+async function query(pathname, filters = [], pageSize = 1000) {
+  const out = [];
+  for (let offset = 0; ; offset += pageSize) {
+    const page = (await api(pathname, { filters, pagination: { offset, pageSize } })).result ?? [];
+    out.push(...page);
+    if (page.length < pageSize) return out;
+  }
 }
 
-const rowsOf = (json) => json?.data?.reportingDataResponse?.row ?? [];
+const byCampaign = (id) => [{ field: "campaignId", operator: "EQUALS", value: id }];
 
-// v5 renamed installs (tapInstalls / totalInstalls); read whichever is there.
+// --- Reports ---------------------------------------------------------------
+
+// Totals over the period (no granularity, so no daily rows): one request per
+// level and campaign. Rows: { metadata, totalMetrics }.
+async function report(level, from, to, filters = []) {
+  const pageSize = 5000;
+  const rows = [];
+  for (let offset = 0; ; offset += pageSize) {
+    const json = await api(`/reports/apps/${level}/query`, {
+      timeRange: { start: from, end: to, timeZone: "ORTZ" },
+      filters,
+      pagination: { offset, pageSize },
+    });
+    const page = json.result?.rows ?? [];
+    rows.push(...page);
+    if (page.length < pageSize) return rows;
+  }
+}
+
+const byName = (key) => (a, b) => String(a[key]).localeCompare(String(b[key]));
+
 function metrics(t = {}) {
   const installs = t.totalInstalls ?? t.tapInstalls ?? t.installs ?? 0;
   const spend = Number(t.localSpend?.amount ?? 0);
@@ -145,8 +161,8 @@ function printTable(title, rows) {
 
 async function cmdAcls() {
   const json = await api("/acls");
-  for (const o of json.data ?? []) {
-    console.log(`${o.orgId}  ${o.orgName}  ${o.currency}  ${o.paymentModel}  roles: ${(o.roleNames ?? []).join(", ")}`);
+  for (const { adAccount: a, roles } of json.result?.acls ?? []) {
+    console.log(`${a.id}  ${a.name}  org ${a.orgId}  roles: ${(roles ?? []).join(", ")}`);
   }
 }
 
@@ -161,34 +177,35 @@ async function cmdReport() {
   fs.mkdirSync(outDir, { recursive: true });
   const save = (name, json) => fs.writeFileSync(path.join(outDir, `${name}.json`), JSON.stringify(json, null, 2));
 
-  const campaignsJson = await api("/reports/campaigns", reportBody(from, to, "campaignName"));
-  save("campaigns", campaignsJson);
-  const campaigns = rowsOf(campaignsJson)
-    .map((r) => ({ id: r.metadata.campaignId, name: r.metadata.campaignName, status: r.metadata.displayStatus, ...metrics(r.total) }))
-    .filter((c) => !filter || c.name.toLowerCase().includes(filter));
+  const campaignRows = await report("campaigns", from, to);
+  save("campaigns", campaignRows);
+  const campaigns = campaignRows
+    .map((r) => ({ id: r.metadata.id, name: r.metadata.name, status: r.metadata.displayStatus, ...metrics(r.totalMetrics) }))
+    .filter((c) => !filter || c.name.toLowerCase().includes(filter))
+    .sort(byName("name"));
   if (levels.has("campaigns")) printTable(`Campagnes ${from} → ${to}`, campaigns.map(({ id, ...c }) => c));
 
   for (const c of campaigns) {
     if (levels.has("adgroups")) {
-      const json = await api(`/reports/campaigns/${c.id}/adgroups`, reportBody(from, to, "adGroupName"));
-      save(`adgroups-${c.id}`, json);
-      printTable(`Groupes — ${c.name}`, rowsOf(json).map((r) => ({ adGroup: r.metadata.adGroupName, ...metrics(r.total) })));
+      const rows = await report("adgroups", from, to, byCampaign(c.id));
+      save(`adgroups-${c.id}`, rows);
+      printTable(`Groupes — ${c.name}`, rows.map((r) => ({ adGroup: r.metadata.name, ...metrics(r.totalMetrics) })).sort(byName("adGroup")));
     }
     if (levels.has("keywords")) {
-      const json = await api(`/reports/campaigns/${c.id}/keywords`, reportBody(from, to, "keyword"));
-      save(`keywords-${c.id}`, json);
-      printTable(`Mots-clés — ${c.name}`, rowsOf(json).map((r) => ({
-        keyword: r.metadata.keyword, match: r.metadata.matchType, adGroup: r.metadata.adGroupName,
-        bid: r.metadata.bidAmount?.amount, ...metrics(r.total),
-      })));
+      const rows = await report("keywords", from, to, byCampaign(c.id));
+      save(`keywords-${c.id}`, rows);
+      printTable(`Mots-clés — ${c.name}`, rows.map((r) => ({
+        keyword: r.metadata.text, match: r.metadata.matchType, adGroup: r.metadata.adGroup?.name,
+        bid: r.metadata.bid?.amount, ...metrics(r.totalMetrics),
+      })).sort(byName("keyword")));
     }
     if (levels.has("searchterms")) {
-      const json = await api(`/reports/campaigns/${c.id}/searchterms`, reportBody(from, to, "impressions"));
-      save(`searchterms-${c.id}`, json);
-      printTable(`Termes de recherche — ${c.name}`, rowsOf(json).map((r) => ({
+      const rows = await report("searchterms", from, to, byCampaign(c.id));
+      save(`searchterms-${c.id}`, rows);
+      printTable(`Termes de recherche — ${c.name}`, rows.map((r) => ({
         term: r.metadata.searchTermText ?? "(volume faible, masqué)", source: r.metadata.searchTermSource,
-        keyword: r.metadata.keyword, adGroup: r.metadata.adGroupName, ...metrics(r.total),
-      })));
+        keyword: r.metadata.keyword?.text, adGroup: r.metadata.adGroup?.name, ...metrics(r.totalMetrics),
+      })).sort((a, b) => b.impressions - a.impressions));
     }
   }
   console.log(`\nJSON brut : ${path.relative(SCRIPT_DIR, outDir)}`);
@@ -200,15 +217,16 @@ async function cmdReport() {
 // impression yet still has a bid.
 async function keywordsOf(campaignFilter) {
   const filter = typeof campaignFilter === "string" ? campaignFilter.toLowerCase() : null;
-  const campaigns = (await api("/campaigns?limit=1000")).data
-    .filter((c) => !filter || c.name.toLowerCase().includes(filter));
+  const campaigns = (await query("/campaigns/query"))
+    .filter((c) => !filter || c.name.toLowerCase().includes(filter))
+    .sort(byName("name"));
   const out = [];
   for (const c of campaigns) {
-    for (const g of (await api(`/campaigns/${c.id}/adgroups?limit=1000`)).data ?? []) {
-      for (const k of (await api(`/campaigns/${c.id}/adgroups/${g.id}/targetingkeywords?limit=1000`)).data ?? []) {
-        if (k.deleted) continue;
-        out.push({ campaign: c, adGroup: g, keyword: k });
-      }
+    const groups = new Map((await query("/adgroups/query", byCampaign(c.id))).map((g) => [g.id, g]));
+    for (const k of await query("/keywords/query", byCampaign(c.id))) {
+      const g = groups.get(k.adGroupId);
+      if (k.deleted || !g) continue;
+      out.push({ campaign: c, adGroup: g, keyword: k });
     }
   }
   return out;
@@ -218,7 +236,7 @@ async function cmdBids() {
   const rows = await keywordsOf(args.campaign);
   printTable("Enchères", rows.map(({ campaign, adGroup, keyword }) => ({
     campaign: campaign.name, adGroup: adGroup.name, keyword: keyword.text, match: keyword.matchType,
-    bid: keyword.bidAmount?.amount, status: keyword.status,
+    bid: keyword.bid?.amount, status: keyword.status,
   })));
 }
 
@@ -232,19 +250,21 @@ async function cmdSetBid() {
   const match = typeof args.match === "string" ? args.match.toUpperCase() : "EXACT";
   const changes = (await keywordsOf(args.campaign))
     .filter(({ adGroup: g, keyword }) => g.name.toLowerCase().includes(adGroup)
-      && keyword.matchType === match && Number(keyword.bidAmount?.amount) !== bid);
+      && keyword.matchType === match && Number(keyword.bid?.amount) !== bid);
   printTable(`${args.apply ? "Changement" : "Simulation"} : ${match} → ${bid.toFixed(2)}`,
     changes.map(({ campaign, keyword }) => ({
-      campaign: campaign.name, keyword: keyword.text, from: keyword.bidAmount?.amount, to: bid.toFixed(2),
+      campaign: campaign.name, keyword: keyword.text, from: keyword.bid?.amount, to: bid.toFixed(2),
     })));
   if (!args.apply || !changes.length) return;
-  const byGroup = Map.groupBy(changes, ({ campaign, adGroup }) => `${campaign.id}/${adGroup.id}`);
-  for (const [ids, list] of byGroup) {
-    const [cid, gid] = ids.split("/");
-    await api(`/campaigns/${cid}/adgroups/${gid}/targetingkeywords/bulk`, list.map(({ keyword }) => ({
-      id: keyword.id, bidAmount: { amount: bid.toFixed(2), currency: keyword.bidAmount?.currency ?? "EUR" },
-    })), "PUT");
-  }
+  // All or nothing (no allowPartialSuccess): one bad item rejects the batch.
+  const json = await api("/keywords/bulk-update", {
+    items: changes.map(({ keyword }, i) => ({
+      correlationId: i,
+      data: { id: keyword.id, bid: { amount: bid.toFixed(2), currency: keyword.bid?.currency ?? "EUR" } },
+    })),
+  });
+  const failed = (json.result ?? []).filter((r) => !r.success);
+  if (failed.length) fail(`${failed.length} enchère(s) refusée(s) : ${JSON.stringify(failed)}`);
   console.log(`\n${changes.length} enchère(s) modifiée(s).`);
 }
 
