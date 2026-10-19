@@ -171,7 +171,7 @@ Décisions proposées le 12 oct (à valider) :
 
 ## 🧪 Quatrième semaine (12-18 oct) — bilan du 19 oct
 
-Sources : `appleads-stats.mjs` (enchères vérifiées : Exact – Intent DE et AT à 0,70 €), Google Sheet (mise à jour le 19 oct à 5 h 32, période 5-18 oct), `appstore-stats.mjs` (téléchargements jusqu'au 17 oct, le 17 incomplet ; découverte détaillée jusqu'au 16 oct). ⚠️ Chaque fichier quotidien ASC contient deux jours (J-2 et J-1) : `summary` renvoie vide sur cette période, les chiffres ci-dessous sont recalculés à la main en gardant pour chaque date le fichier le plus récent.
+Sources : `appleads-stats.mjs` (enchères vérifiées : Exact – Intent DE et AT à 0,70 €), Google Sheet (mise à jour le 19 oct à 5 h 32, période 5-18 oct), `appstore-stats.mjs` (téléchargements jusqu'au 17 oct, le 17 incomplet ; découverte détaillée jusqu'au 16 oct). Chaque fichier quotidien ASC contient deux jours (J-2 et J-1) ; `summary` lit désormais chaque date dans le fichier le plus récent et accepte `--app=<id>` (corrigé le 19 oct ; auparavant `--app=6763236391` renvoyait vide).
 
 | Campagne | Impr. | Taps/clics | Installs | Dépense | Coût/install |
 |---|---|---|---|---|---|
@@ -184,13 +184,13 @@ Lecture :
 1. **FR repasse au-dessus du seuil** : 0,96 €/install contre 0,70 € en S41. Les deux Broad dérapent : « générateur qr code » 1,23 € (5 installs), « créateur de qr code » 0,92 € (5). Les Exact restent bons (« créer qr code » 0,44 €, « créer un qr code » 0,34 €). Dépense quotidienne : 2,83 / 2,43 / 2,38 / 2,82 / 2,66 / 0 / 2,25 € → **trois jours au-dessus de 2,50 €** (Apple tolère un dépassement), mais la semaine reste sous le budget (15,36 € pour 17,50 €).
 2. **Le 17 oct, aucune diffusion** (0 impression FR et DE) ; les deux campagnes ont été modifiées ce jour-là à 21 h 10. ASC confirme : 1 seul premier téléchargement le 17.
 3. **DE** : 1 install en 7 jours à 0,70 € (2,27 €/install). **AT** : aucune impression de la semaine, même à 0,70 €. Discovery DE toujours active (7 impr., 1 tap, 0,33 €).
-4. **Google Mac** : la feuille n'a **plus aucune ligne après le 12 oct** alors qu'elle couvre jusqu'au 18 → la campagne ne diffuse plus depuis le 13 (pause ou blocage à vérifier). Total du test : **12,42 €, 16 clics, 414 impressions, 0 install attribué à `google-mac-en`** (aucune ligne `Campaign` dans les rapports détaillés ASC). Seule trace possible : 1 premier téléchargement Mac au Royaume-Uni le 12/10, source « Web referrer », non attribué à la campagne. Les exclusions n'ont pas pu être vérifiées : aucun terme de recherche après le 12/10.
+4. **Google Mac** : la feuille n'a **plus aucune ligne après le 12 oct** alors qu'elle couvre jusqu'au 18 → la campagne s'est arrêtée le 13, **budget atteint** (confirmé par Nicolas). Total du test : **12,42 €, 16 clics, 414 impressions, 0 install visible pour `google-mac-en`**. ⚠️ ASC n'affiche une campagne qu'à partir de **5 comptes Apple différents** l'ayant installée : moins de 5 installs restent invisibles. Donc entre 0 et 4 installs, soit au mieux ~3 € l'install. Seule trace possible : 1 premier téléchargement Mac au Royaume-Uni le 12/10, source « Web referrer », non attribué à la campagne. Les exclusions de `07` avaient bien été ajoutées (confirmé par Nicolas ; invisible dans la feuille, faute de diffusion après le 12/10). Lien de campagne vérifié dans ASC.
 5. **ASC (12-17 oct)** : 24 premiers téléchargements (FR 14, DE 4, autres 6 ; iPhone 13, iPad 5, Mac 6). FR : 14 « Recherche » pour 13 installs Apple Ads du 12 au 16 → naturels FR ≈ 0. DE : 4 dont 2 Mac (naturels, Apple Ads ne diffuse pas sur Mac) → naturels DE ≈ 3.
 6. **2 achats Pro**, tous deux sur Mac et naturels : DE le 16/10 (6,84 $), US le 17/10 (4,99 $).
 
 Décisions proposées le 19 oct (à valider) :
 - **AT** : mettre en pause (0 impression). **DE** : mettre en pause aussi : 1 install à 2,27 €, au-delà du seuil de 1 €. La Suisse ne se lance pas. Les installs DE viennent surtout du Mac, que la pub ne touche pas.
-- **Google Mac** : couper pour de bon (ne pas relancer) : 12,42 € pour 0 install mesuré, et la mesure `ct=google-mac-en` n'a jamais rien remonté.
+- **Google Mac** : ne pas relancer en l'état : 12,42 € pour 0 à 4 installs (seuil d'affichage ASC de 5), soit au mieux ~3 € l'install. À revoir avec la question des seuils plus souples.
 - **FR** : passer les deux Broad (« générateur qr code », « créateur de qr code ») de 0,70 € à **0,55 €**, garder les Exact à 0,70 €. Rejuger le 26 oct : Broad toujours > 0,80 € → pause.
 
 ## 🎯 Prochaines étapes, dans l'ordre
@@ -212,7 +212,7 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 | S39 (22-28 sept) | 7 via ASA DE (9 unités DE sur 30 j) | ? | ≈ 1 en DE | FR 1,35 € / DE 5,61 € | non lancé | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
 | S40 (28 sept-4 oct) | 9 via ASA (FR 7, DE 2, AT 0) ; ASC : 15 premiers téléchargements (FR 9, DE 2, AT 0) → naturels DE 0, AT 0, FR ≈ 1 | ? | ? | FR 6,01 € / DE 1,43 € / AT 0 € | non lancé | FR 0,86 € (Exact 0,75 €) · DE 0,71 € | AT jamais diffusée (campagne en pause) ; 7,43 € dépensés sur 35 € |
 | S41 (5-11 oct) | 33 via ASA (FR 32, DE 0, AT 0) ; ASC (5-10 oct) : 30 premiers téléchargements (FR 27, DE 0, AT 0, Mac 1) ; Google Mac : 0 tracé | ? | ASC à fournir | FR 22,54 € / DE 0 € / AT 0 € | 10,02 € (13 clics) | FR 0,70 € · Google — | FR décolle avec les 2 variantes ; DE/AT à l'arrêt ; Google sous le seuil de 15 € |
-| S42 (12-18 oct) | 17 via ASA (FR 16, DE 1, AT 0) ; ASC (12-17 oct) : 24 premiers téléchargements (FR 14, DE 4, Mac 6) ; Google Mac : 0 tracé | ? | 2 (Mac DE + US, naturels) | FR 15,36 € / DE 2,27 € / AT 0 € | 2,40 € (12/10 seul, total test 12,42 €) | FR 0,96 € · DE 2,27 € | FR au-dessus du seuil (Broad à 0,92-1,23 €) ; AT 0 impression ; Google ne diffuse plus depuis le 13/10 ; aucune diffusion ASA le 17/10 |
+| S42 (12-18 oct) | 17 via ASA (FR 16, DE 1, AT 0) ; ASC (12-17 oct) : 24 premiers téléchargements (FR 14, DE 4, Mac 6) ; Google Mac : 0 tracé | ? | 2 (Mac DE + US, naturels) | FR 15,36 € / DE 2,27 € / AT 0 € | 2,40 € (12/10 seul, total test 12,42 €) | FR 0,96 € · DE 2,27 € | FR au-dessus du seuil (Broad à 0,92-1,23 €) ; AT 0 impression ; Google arrêté le 13/10 (budget) ; aucune diffusion ASA le 17/10 |
 
 **Seuils** : coût par install < 0,80 € (idéal < 0,50 €) → garder / monter ; > 1 € → couper. North Star = achats Pro/mois.
 

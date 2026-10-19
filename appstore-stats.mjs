@@ -198,9 +198,13 @@ async function cmdFetch() {
   console.log(`${written} new file(s) in ${path.relative(SCRIPT_DIR, DATA_DIR)}`);
 }
 
-// Sums the "Counts" column (and "Unique Counts" when present) over the saved
+// Sums the "Counts" column (and "Unique Counts" when present; "Purchases" and
+// "Paying Users" for the purchases reports) over the saved
 // files, grouped by the requested columns. Rows are filtered on their own Date,
-// not on the file's processing date.
+// not on the file's processing date. Each daily file holds two days (J-2 and a
+// J-1 that the next file may revise), so a date is read from the newest file
+// that carries it, never summed across files.
+// --app takes a name or the numeric Apple ID (matched on "App Apple Identifier").
 function cmdSummary() {
   const short = args.report || "downloads";
   if (!REPORTS[short]) fail(`--report must be one of ${Object.keys(REPORTS).join(", ")}`);
@@ -211,33 +215,43 @@ function cmdSummary() {
   const from = args.from || "0000-00-00";
   const to = args.to || "9999-99-99";
   const wantedApp = typeof args.app === "string" ? args.app.toLowerCase() : null;
+  const wantedId = wantedApp && /^\d+$/.test(wantedApp) ? wantedApp : null;
 
   if (!fs.existsSync(DATA_DIR)) fail("no data yet → node appstore-stats.mjs fetch");
   const totals = new Map();
-  const seen = new Set();
   for (const appDir of fs.readdirSync(DATA_DIR)) {
-    if (wantedApp && !appDir.includes(slug(wantedApp))) continue;
+    if (wantedApp && !wantedId && !appDir.includes(slug(wantedApp))) continue;
     const dir = path.join(DATA_DIR, appDir, short);
     if (!fs.existsSync(dir)) continue;
-    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".tsv"))) {
+    // Files are named by processing date, so name order is age order: a later
+    // file overwrites the rows of every date it carries.
+    const byDate = new Map();
+    for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".tsv")).sort()) {
       const [head, ...lines] = fs.readFileSync(path.join(dir, file), "utf8").split("\n").filter(Boolean);
+      if (!head) continue;
       const cols = head.split("\t");
-      const idx = (c) => cols.indexOf(c);
       for (const c of [...by, ...where.map(([c]) => c)]) {
-        if (idx(c) === -1) fail(`column "${c}" not in ${short} (columns: ${cols.join(", ")})`);
+        if (!cols.includes(c)) fail(`column "${c}" not in ${short} (columns: ${cols.join(", ")})`);
       }
+      const inFile = new Map();
       for (const line of lines) {
-        // A snapshot and a daily file can overlap: count each row once.
-        if (seen.has(`${appDir}\t${line}`)) continue;
-        seen.add(`${appDir}\t${line}`);
         const v = line.split("\t");
-        const date = v[idx("Date")];
-        if (date < from || date > to) continue;
-        if (where.some(([c, val]) => v[idx(c)] !== val)) continue;
-        const key = [appDir, ...by.map((c) => v[idx(c)] || "—")].join("\t");
+        const row = Object.fromEntries(cols.map((c, i) => [c, v[i]]));
+        if (!inFile.has(row.Date)) inFile.set(row.Date, []);
+        inFile.get(row.Date).push(row);
+      }
+      for (const [date, rows] of inFile) byDate.set(date, rows);
+    }
+    for (const [date, rows] of byDate) {
+      if (date < from || date > to) continue;
+      for (const row of rows) {
+        if (wantedId && row["App Apple Identifier"] !== wantedId) continue;
+        if (where.some(([c, val]) => row[c] !== val)) continue;
+        const key = [appDir, ...by.map((c) => row[c] || "—")].join("\t");
         const t = totals.get(key) ?? { counts: 0, unique: 0 };
-        t.counts += Number(v[idx("Counts")]) || 0;
-        if (idx("Unique Counts") !== -1) t.unique += Number(v[idx("Unique Counts")]) || 0;
+        // The purchases reports count in "Purchases" / "Paying Users" instead.
+        t.counts += Number(row.Counts ?? row.Purchases) || 0;
+        t.unique += Number(row["Unique Counts"] ?? row["Paying Users"]) || 0;
         totals.set(key, t);
       }
     }
