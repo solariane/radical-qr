@@ -169,13 +169,37 @@ Décisions proposées le 12 oct (à valider) :
 - **FR** : inchangée, enchère 0,70 €. Garder les deux variantes en Broad tant que le coût/install < 0,80 €.
 - **DE + AT** : passer les mots-clés Exact de 0,60 € à **0,70 €** pour une semaine, comme la FR. Toujours rien le 19 oct → pause, et la Suisse ne se lance pas.
 
+## 🧪 Quatrième semaine (12-18 oct) — bilan du 19 oct
+
+Sources : `appleads-stats.mjs` (enchères vérifiées : Exact – Intent DE et AT à 0,70 €), Google Sheet (mise à jour le 19 oct à 5 h 32, période 5-18 oct), `appstore-stats.mjs` (téléchargements jusqu'au 17 oct, le 17 incomplet ; découverte détaillée jusqu'au 16 oct). ⚠️ Chaque fichier quotidien ASC contient deux jours (J-2 et J-1) : `summary` renvoie vide sur cette période, les chiffres ci-dessous sont recalculés à la main en gardant pour chaque date le fichier le plus récent.
+
+| Campagne | Impr. | Taps/clics | Installs | Dépense | Coût/install |
+|---|---|---|---|---|---|
+| FR | 348 | 29 | 16 | 15,36 € | **0,96 €** |
+| DE | 50 | 4 | 1 (« qr code erstellen ») | 2,27 € | 2,27 € |
+| AT | 0 | 0 | 0 | 0 € | — |
+| Google Mac (12/10 seul) | 51 | 3 | 0 tracé | 2,40 € | — |
+
+Lecture :
+1. **FR repasse au-dessus du seuil** : 0,96 €/install contre 0,70 € en S41. Les deux Broad dérapent : « générateur qr code » 1,23 € (5 installs), « créateur de qr code » 0,92 € (5). Les Exact restent bons (« créer qr code » 0,44 €, « créer un qr code » 0,34 €). Dépense quotidienne : 2,83 / 2,43 / 2,38 / 2,82 / 2,66 / 0 / 2,25 € → **trois jours au-dessus de 2,50 €** (Apple tolère un dépassement), mais la semaine reste sous le budget (15,36 € pour 17,50 €).
+2. **Le 17 oct, aucune diffusion** (0 impression FR et DE) ; les deux campagnes ont été modifiées ce jour-là à 21 h 10. ASC confirme : 1 seul premier téléchargement le 17.
+3. **DE** : 1 install en 7 jours à 0,70 € (2,27 €/install). **AT** : aucune impression de la semaine, même à 0,70 €. Discovery DE toujours active (7 impr., 1 tap, 0,33 €).
+4. **Google Mac** : la feuille n'a **plus aucune ligne après le 12 oct** alors qu'elle couvre jusqu'au 18 → la campagne ne diffuse plus depuis le 13 (pause ou blocage à vérifier). Total du test : **12,42 €, 16 clics, 414 impressions, 0 install attribué à `google-mac-en`** (aucune ligne `Campaign` dans les rapports détaillés ASC). Seule trace possible : 1 premier téléchargement Mac au Royaume-Uni le 12/10, source « Web referrer », non attribué à la campagne. Les exclusions n'ont pas pu être vérifiées : aucun terme de recherche après le 12/10.
+5. **ASC (12-17 oct)** : 24 premiers téléchargements (FR 14, DE 4, autres 6 ; iPhone 13, iPad 5, Mac 6). FR : 14 « Recherche » pour 13 installs Apple Ads du 12 au 16 → naturels FR ≈ 0. DE : 4 dont 2 Mac (naturels, Apple Ads ne diffuse pas sur Mac) → naturels DE ≈ 3.
+6. **2 achats Pro**, tous deux sur Mac et naturels : DE le 16/10 (6,84 $), US le 17/10 (4,99 $).
+
+Décisions proposées le 19 oct (à valider) :
+- **AT** : mettre en pause (0 impression). **DE** : mettre en pause aussi : 1 install à 2,27 €, au-delà du seuil de 1 €. La Suisse ne se lance pas. Les installs DE viennent surtout du Mac, que la pub ne touche pas.
+- **Google Mac** : couper pour de bon (ne pas relancer) : 12,42 € pour 0 install mesuré, et la mesure `ct=google-mac-en` n'a jamais rien remonté.
+- **FR** : passer les deux Broad (« générateur qr code », « créateur de qr code ») de 0,70 € à **0,55 €**, garder les Exact à 0,70 €. Rejuger le 26 oct : Broad toujours > 0,80 € → pause.
+
 ## 🎯 Prochaines étapes, dans l'ordre
 
 1. **Mettre la campagne ASA US en pause.**
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Google Search Mac** (`07`) : **créée le 5 oct** (compte 164-143-7637). Écarts au plan : budget **5 €/jour** (au lieu de 2,50 €, pour avoir des chiffres plus vite), « Maximiser les clics » plafonné à **0,80 €/clic**, langues anglais + français. Réseau de Recherche seul, zones en « Présence », mobiles et tablettes à −100 %. URL finale : `https://apps.apple.com/app/apple-store/id6763236391?pt=346600&ct=google-mac-en&mt=12`. Google a ajouté un objectif « Lead par téléphone » par défaut : sans effet, les enchères ne s'appuient pas sur les conversions. **Point le 12 oct** : plus de 15 € dépensés sans aucun install Mac (ASC → Campagnes → `google-mac-en`) → couper ou corriger. **12 oct** : 10,02 € dépensés, 0 install tracé, exclusions inactives → les ajouter ; décision à 15 € (vers le 15-16 oct).
 4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée, 2 variantes Exact ajoutées). Autriche activée le 5 oct.
-5. ~~**12 oct** : première vraie semaine Autriche + installs naturels DE/AT~~ → fait (AT : 1 impression ; naturels DE/AT : 0). **19 oct** : DE/AT à 0,70 €, Google Mac tranché.
+5. ~~**12 oct** : première vraie semaine Autriche + installs naturels DE/AT~~ → fait (AT : 1 impression ; naturels DE/AT : 0). ~~**19 oct** : DE/AT à 0,70 €, Google Mac tranché~~ → bilan fait : pause DE/AT et arrêt Google proposés (à valider). **26 oct** : FR avec les Broad à 0,55 €.
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 
@@ -188,6 +212,7 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 | S39 (22-28 sept) | 7 via ASA DE (9 unités DE sur 30 j) | ? | ≈ 1 en DE | FR 1,35 € / DE 5,61 € | non lancé | DE 0,80 € · FR — | ASA FR/DE : 7 € dépensés sur 35 € de budget |
 | S40 (28 sept-4 oct) | 9 via ASA (FR 7, DE 2, AT 0) ; ASC : 15 premiers téléchargements (FR 9, DE 2, AT 0) → naturels DE 0, AT 0, FR ≈ 1 | ? | ? | FR 6,01 € / DE 1,43 € / AT 0 € | non lancé | FR 0,86 € (Exact 0,75 €) · DE 0,71 € | AT jamais diffusée (campagne en pause) ; 7,43 € dépensés sur 35 € |
 | S41 (5-11 oct) | 33 via ASA (FR 32, DE 0, AT 0) ; ASC (5-10 oct) : 30 premiers téléchargements (FR 27, DE 0, AT 0, Mac 1) ; Google Mac : 0 tracé | ? | ASC à fournir | FR 22,54 € / DE 0 € / AT 0 € | 10,02 € (13 clics) | FR 0,70 € · Google — | FR décolle avec les 2 variantes ; DE/AT à l'arrêt ; Google sous le seuil de 15 € |
+| S42 (12-18 oct) | 17 via ASA (FR 16, DE 1, AT 0) ; ASC (12-17 oct) : 24 premiers téléchargements (FR 14, DE 4, Mac 6) ; Google Mac : 0 tracé | ? | 2 (Mac DE + US, naturels) | FR 15,36 € / DE 2,27 € / AT 0 € | 2,40 € (12/10 seul, total test 12,42 €) | FR 0,96 € · DE 2,27 € | FR au-dessus du seuil (Broad à 0,92-1,23 €) ; AT 0 impression ; Google ne diffuse plus depuis le 13/10 ; aucune diffusion ASA le 17/10 |
 
 **Seuils** : coût par install < 0,80 € (idéal < 0,50 €) → garder / monter ; > 1 € → couper. North Star = achats Pro/mois.
 
