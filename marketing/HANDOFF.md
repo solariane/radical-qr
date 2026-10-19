@@ -188,10 +188,11 @@ Lecture :
 5. **ASC (12-17 oct)** : 24 premiers téléchargements (FR 14, DE 4, autres 6 ; iPhone 13, iPad 5, Mac 6). FR : 14 « Recherche » pour 13 installs Apple Ads du 12 au 16 → naturels FR ≈ 0. DE : 4 dont 2 Mac (naturels, Apple Ads ne diffuse pas sur Mac) → naturels DE ≈ 3.
 6. **2 achats Pro**, tous deux sur Mac et naturels : DE le 16/10 (6,84 $), US le 17/10 (4,99 $).
 
-Décisions proposées le 19 oct (à valider) :
-- **AT** : mettre en pause (0 impression). **DE** : mettre en pause aussi : 1 install à 2,27 €, au-delà du seuil de 1 €. La Suisse ne se lance pas. Les installs DE viennent surtout du Mac, que la pub ne touche pas.
-- **Google Mac** : ne pas relancer en l'état : 12,42 € pour 0 à 4 installs (seuil d'affichage ASC de 5), soit au mieux ~3 € l'install. À revoir avec la question des seuils plus souples.
-- **FR** : passer les deux Broad (« générateur qr code », « créateur de qr code ») de 0,70 € à **0,55 €**, garder les Exact à 0,70 €. Rejuger le 26 oct : Broad toujours > 0,80 € → pause.
+Décisions du 19 oct, revues avec la nouvelle règle (cf. « Règle de pilotage des pubs » plus bas) :
+- **FR** : on ne touche à rien. Sur 4 semaines (22/09-18/10) : 45,26 € pour 55 installs = **0,82 €**. Broad « générateur qr code » 0,90 € (17 installs), « créateur de qr code » 0,80 € (17) : sous le seuil de coupe. La proposition de baisser les Broad à 0,55 € est abandonnée.
+- **DE** : on garde. Sur 4 semaines : 9,31 € pour 10 installs = **0,93 €**. La mauvaise S42 (1 install à 2,27 €) pèse peu dans le cumul.
+- **AT** : mettre en pause. 1 impression en 4 semaines : la campagne ne coûte rien, mais elle ne rapporte rien non plus. La Suisse attend toujours.
+- **Google Mac** : 12,42 € pour 0 à 4 installs. Impossible à juger : ASC masque les campagnes sous 5 installs. Relancer seulement dans l'enveloppe « tests » (voir la règle), avec un budget total borné, et compter les premiers téléchargements Mac « Web referrer » des pays ciblés.
 
 ## 🎯 Prochaines étapes, dans l'ordre
 
@@ -199,7 +200,7 @@ Décisions proposées le 19 oct (à valider) :
 2. **Importer** `RadicalQR_FR_DE_campagnes.xlsx` (Apple Search Ads → import de feuille de calcul), puis **coller les mots-clés en Exact** et les **exclusions au niveau campagne** (listes dans la conversation du 21 sept ; FR aussi dans `05-campaign-setup-FR.md`).
 3. **Google Search Mac** (`07`) : **créée le 5 oct** (compte 164-143-7637). Écarts au plan : budget **5 €/jour** (au lieu de 2,50 €, pour avoir des chiffres plus vite), « Maximiser les clics » plafonné à **0,80 €/clic**, langues anglais + français. Réseau de Recherche seul, zones en « Présence », mobiles et tablettes à −100 %. URL finale : `https://apps.apple.com/app/apple-store/id6763236391?pt=346600&ct=google-mac-en&mt=12`. Google a ajouté un objectif « Lead par téléphone » par défaut : sans effet, les enchères ne s'appuient pas sur les conversions. **Point le 12 oct** : plus de 15 € dépensés sans aucun install Mac (ASC → Campagnes → `google-mac-en`) → couper ou corriger. **12 oct** : 10,02 € dépensés, 0 install tracé, exclusions inactives → les ajouter ; décision à 15 € (vers le 15-16 oct).
 4. ~~**5 oct** : bilan FR à 0,70 €~~ → fait (FR gardée, 2 variantes Exact ajoutées). Autriche activée le 5 oct.
-5. ~~**12 oct** : première vraie semaine Autriche + installs naturels DE/AT~~ → fait (AT : 1 impression ; naturels DE/AT : 0). ~~**19 oct** : DE/AT à 0,70 €, Google Mac tranché~~ → bilan fait : pause DE/AT et arrêt Google proposés (à valider). **26 oct** : FR avec les Broad à 0,55 €.
+5. ~~**12 oct** : première vraie semaine Autriche + installs naturels DE/AT~~ → fait (AT : 1 impression ; naturels DE/AT : 0). ~~**19 oct** : DE/AT à 0,70 €, Google Mac tranché~~ → bilan fait ; décisions revues avec la nouvelle règle : FR et DE gardées, AT en pause, Google à relancer seulement dans l'enveloppe tests. **16 nov** : premier jugement sur 4 semaines (20/10-16/11).
 
 ## 📊 Suivi hebdomadaire (vendredi, ~20 min)
 
@@ -214,7 +215,25 @@ Sources : App Store Connect (Analyses de l'app, dont **Campagnes** pour les lien
 | S41 (5-11 oct) | 33 via ASA (FR 32, DE 0, AT 0) ; ASC (5-10 oct) : 30 premiers téléchargements (FR 27, DE 0, AT 0, Mac 1) ; Google Mac : 0 tracé | ? | ASC à fournir | FR 22,54 € / DE 0 € / AT 0 € | 10,02 € (13 clics) | FR 0,70 € · Google — | FR décolle avec les 2 variantes ; DE/AT à l'arrêt ; Google sous le seuil de 15 € |
 | S42 (12-18 oct) | 17 via ASA (FR 16, DE 1, AT 0) ; ASC (12-17 oct) : 24 premiers téléchargements (FR 14, DE 4, Mac 6) ; Google Mac : 0 tracé | ? | 2 (Mac DE + US, naturels) | FR 15,36 € / DE 2,27 € / AT 0 € | 2,40 € (12/10 seul, total test 12,42 €) | FR 0,96 € · DE 2,27 € | FR au-dessus du seuil (Broad à 0,92-1,23 €) ; AT 0 impression ; Google arrêté le 13/10 (budget) ; aucune diffusion ASA le 17/10 |
 
-**Seuils** : coût par install < 0,80 € (idéal < 0,50 €) → garder / monter ; > 1 € → couper. North Star = achats Pro/mois.
+## 📏 Règle de pilotage des pubs (depuis le 19 oct)
+
+**Pourquoi la règle change** : à nos volumes (15-30 installs par semaine), une semaine ne veut rien dire. En FR, l'install est passé de 0,70 € à 0,96 € d'une semaine à l'autre sans que rien ne change. Le bouche-à-oreille ne peut pas encore jouer. Et l'enjeu financier est petit : quelques dizaines d'euros par mois. On accepte donc de payer un install plus cher que ce qu'il rapporte tout de suite, comme un investissement. Mais on garde deux garde-fous : un budget plafonné et le suivi des achats Pro.
+
+1. **Budget mensuel plafonné : 100 € par mois, toutes pubs confondues** (Apple Ads + Google). Répartition indicative : FR ~65 €, DE ~15 €, tests ~20 € (Google Mac, nouveau pays). La somme des budgets quotidiens ne doit pas dépasser ~3,30 € par jour. Si on atteint le plafond avant la fin du mois, on coupe d'abord les tests, puis la DE.
+2. **Jugement sur 4 semaines cumulées**, jamais sur une seule semaine. Le point hebdomadaire sert seulement à repérer les pannes : 0 impression, une journée sans diffusion, une dépense qui dérape. Sur 4 semaines, par campagne et par mot-clé ayant au moins 5 installs :
+   - coût par install **≤ 1,20 €** → on garde ;
+   - **1,20 à 2 €** → on baisse l'enchère de 0,10 € ;
+   - **> 2 €** → on met en pause.
+   - Un mot-clé avec moins de 5 installs n'est pas jugé, sauf s'il a dépensé plus de 10 € sans aucun install.
+3. **Suivi des achats Pro venus des pubs** (North Star : achats Pro par mois). Sans SDK, on suit un indicateur indirect : les achats Pro faits sur **iPhone et iPad**, dans les **pays où la pub tourne** (FR, DE), avec la source « App Store search ». On les compare aux installs Apple Ads de la même période. La pub ne touche pas le Mac : les achats Mac sont toujours naturels.
+   ```
+   node appstore-stats.mjs summary --report=purchases --app=6763236391 --from=AAAA-MM-JJ --by="Territory,Device,Source Type"
+   ```
+   - **Point de départ** : depuis le 21/09, 1 achat Pro tracé (FR, iPhone, 7/10) pour environ 65 premiers téléchargements iPhone/iPad FR+DE, soit ~1,5 %. Les achats naturels sont à ~10 %. Les rapports ASC peuvent masquer des lignes à petit volume : c'est un ordre de grandeur.
+   - **Garde-fou, le 16 nov** (8 semaines de pub) : si les pays de pub restent sous **3 % d'achat Pro sur iOS**, les installs payés ne valent pas leur prix. On ramène alors le plafond à 50 € et le seuil de coût par install à 0,80 €, et on regarde la fiche ou le paywall avant d'acheter du trafic.
+
+Anciens seuils, jusqu'au 19 oct : < 0,80 € → garder, > 1 € → couper, jugés chaque semaine.
+
 
 ## 📁 Les documents
 
