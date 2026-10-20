@@ -23,6 +23,7 @@
  *   node appleads-stats.mjs bids [--campaign=<name part>]      # every keyword, its bid and status
  *   node appleads-stats.mjs set-bid --campaign="QR – DE" --adgroup=Intent --bid=0.70 [--match=EXACT] [--apply]
  *        # without --apply, only prints what would change
+ *   node appleads-stats.mjs set-status --campaign="QR – AT" --status=PAUSED|ENABLED [--apply]
  */
 
 import fs from "node:fs";
@@ -268,6 +269,24 @@ async function cmdSetBid() {
   console.log(`\n${changes.length} enchère(s) modifiée(s).`);
 }
 
-const COMMANDS = { acls: cmdAcls, report: cmdReport, bids: cmdBids, "set-bid": cmdSetBid };
+// --- Campaign status -------------------------------------------------------
+
+async function cmdSetStatus() {
+  if (typeof args.campaign !== "string") fail("--campaign=<name part> is required");
+  const status = typeof args.status === "string" ? args.status.toUpperCase() : "";
+  if (!["PAUSED", "ENABLED"].includes(status)) fail("--status=PAUSED or --status=ENABLED is required");
+  const filter = args.campaign.toLowerCase();
+  const matches = (await query("/campaigns/query")).filter((c) => !c.deleted && c.name.toLowerCase().includes(filter));
+  // One campaign at a time: a loose filter must never pause several.
+  if (matches.length !== 1) fail(`--campaign matches ${matches.length} campaigns: ${matches.map((c) => c.name).join(", ") || "none"}`);
+  const [c] = matches;
+  console.log(`${c.name} : ${c.status} → ${status}${args.apply ? "" : " (simulation, --apply pour écrire)"}`);
+  if (!args.apply || c.status === status) return;
+  // Campaigns have no bulk endpoint; PUT changes only the fields sent.
+  const { result } = await api(`/campaigns/${c.id}`, { status }, "PUT");
+  console.log(`Fait : ${result?.status}`);
+}
+
+const COMMANDS = { acls: cmdAcls, report: cmdReport, bids: cmdBids, "set-bid": cmdSetBid, "set-status": cmdSetStatus };
 if (!COMMANDS[command]) fail(`unknown command "${command}" (${Object.keys(COMMANDS).join(", ")})`);
 await COMMANDS[command]();
