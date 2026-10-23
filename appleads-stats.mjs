@@ -24,6 +24,9 @@
  *   node appleads-stats.mjs set-bid --campaign="QR – DE" --adgroup=Intent --bid=0.70 [--match=EXACT] [--apply]
  *        # without --apply, only prints what would change
  *   node appleads-stats.mjs set-status --campaign="QR – AT" --status=PAUSED|ENABLED [--apply]
+ *   node appleads-stats.mjs create-campaign --spec=marketing/appleads/ch.json [--apply]
+ *        # Radical QR search campaign from a JSON spec (name, country, dailyBudget,
+ *        # adGroups[{ name, bid, keywords[] }]); Exact keywords, iPhone + iPad, no Search Match
  */
 
 import fs from "node:fs";
@@ -287,6 +290,51 @@ async function cmdSetStatus() {
   console.log(`Fait : ${result?.status}`);
 }
 
-const COMMANDS = { acls: cmdAcls, report: cmdReport, bids: cmdBids, "set-bid": cmdSetBid, "set-status": cmdSetStatus };
+// --- New campaign ----------------------------------------------------------
+
+const RADICAL_QR = "6763236391";
+
+async function cmdCreateCampaign() {
+  if (typeof args.spec !== "string") fail("--spec=<file.json> is required");
+  const spec = JSON.parse(fs.readFileSync(path.resolve(args.spec), "utf8"));
+  const eur = (amount) => ({ amount, currency: "EUR" });
+  const groups = spec.adGroups ?? [];
+  const total = groups.reduce((n, g) => n + g.keywords.length, 0);
+  console.log(`${spec.name} — ${spec.country}, ${spec.dailyBudget} €/jour`);
+  for (const g of groups) console.log(`  ${g.name} (${g.bid} €) : ${g.keywords.join(", ")}`);
+  if ((await query("/campaigns/query")).some((c) => !c.deleted && c.name === spec.name)) fail(`"${spec.name}" existe déjà`);
+  if (!args.apply) { console.log(`\nSimulation : ${total} mots-clés Exact. --apply pour créer.`); return; }
+
+  // Created paused, enabled only once every keyword is in.
+  const startTime = new Date(Date.now() + 5 * 60e3).toISOString().slice(0, 23);
+  const bidStrategy = { bidStrategyType: "MANUAL_CPT", bidStrategyGoal: "TAP" };
+  const campaign = (await api("/campaigns", {
+    name: spec.name, adAccountId: Number(ASA_ORG_ID), startTime, status: "PAUSED", billingEvent: "TAPS",
+    promotedObjectType: "APPSTORE_APP", promotedObjectId: RADICAL_QR, dailyBudget: { value: eur(spec.dailyBudget) },
+    targeting: { countryOrRegion: { include: [spec.country] }, supplyPlacement: { include: ["APPSTORE_SEARCH_RESULTS"] } },
+    bidStrategy,
+  })).result;
+  console.log(`\nCampagne ${campaign.id} créée (en pause)`);
+  const items = [];
+  for (const g of groups) {
+    const group = (await api("/adgroups", {
+      name: g.name, campaignId: campaign.id, pricingModel: "CPT", status: "ENABLED", startTime,
+      automatedKeywordsOptIn: false, bidStrategy: { ...bidStrategy, bid: eur(g.bid) },
+      targeting: { deviceClass: { include: ["IPAD", "IPHONE"] } },
+    })).result;
+    for (const text of g.keywords) items.push({ adGroupId: group.id, text, matchType: "EXACT", bid: eur(g.bid) });
+  }
+  const results = (await api("/keywords/bulk-create", { items: items.map((data, i) => ({ correlationId: i, data })) })).result ?? [];
+  const failed = results.filter((r) => !r.success);
+  console.log(`Mots-clés : ${results.length - failed.length} / ${items.length}`);
+  if (failed.length) fail(`campagne laissée en pause, refusés : ${JSON.stringify(failed)}`);
+  const { result } = await api(`/campaigns/${campaign.id}`, { status: "ENABLED" }, "PUT");
+  console.log(`Campagne ${result.status}`);
+}
+
+const COMMANDS = {
+  acls: cmdAcls, report: cmdReport, bids: cmdBids, "set-bid": cmdSetBid, "set-status": cmdSetStatus,
+  "create-campaign": cmdCreateCampaign,
+};
 if (!COMMANDS[command]) fail(`unknown command "${command}" (${Object.keys(COMMANDS).join(", ")})`);
 await COMMANDS[command]();

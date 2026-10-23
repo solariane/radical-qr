@@ -1,0 +1,10 @@
+{
+  "name": "RadicalQR – CH – Search",
+  "country": "CH",
+  "dailyBudget": "1.00",
+  "adGroups": [
+    { "name": "DE – Intent", "bid": "0.70", "keywords": ["qr code generator", "qr-code generator", "qr code erstellen", "qr code selbst erstellen", "qr code ersteller", "qr code mit logo", "qr code logo", "qr code app", "qr code", "qr code wlan", "wlan qr code", "qr code visitenkarte"] },
+    { "name": "FR – Intent", "bid": "0.70", "keywords": ["générateur qr", "générateur de qr code", "générateur code qr", "créer qr code", "créer un qr code", "faire un qr code", "qr code personnalisé", "qr code avec logo", "code qr", "qr code wifi", "qr code vcard", "générateur qr code", "créateur de qr code"] },
+    { "name": "Brand", "bid": "0.30", "keywords": ["radical qr", "radical qr code", "radicalsolution"] }
+  ]
+}
