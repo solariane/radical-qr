@@ -104,7 +104,8 @@ Radical QR/
 │       └── ScrollEdgeFade.swift         # Fades a scroll edge while there is more past it
 └── Resources/
     ├── Localizable.xcstrings            # 7 languages
-    └── InfoPlist.xcstrings              # Plist display name translations
+    ├── InfoPlist.xcstrings              # Plist display name translations
+    └── ServicesMenu.xcstrings           # macOS Services item ("Generate QR Code"), hand-translated
 
 RadicalQRShare/                          # Share Extension (iOS + macOS)
 ├── Info.plist                           # Activation rule (text, URL, vCard, iCal)
@@ -480,7 +481,11 @@ listing starts showing a UI the app no longer has.
 ### Services (right-click menu)
 
 Declared in `Info.plist` under `NSServices`. The `ServicesProvider` class handles
-the `generateQR` selector. Supported pasteboard types:
+the `generateQR` selector. The item's name is localized by `ServicesMenu.xcstrings`
+(compiled to `ServicesMenu.strings`, keyed by the English `NSMenuItem`). The same
+names appear in `help.services.detail` (kept from DeepL in
+`translation-manual-keys.json`) and in the m02 Mac screenshot, which reads them
+from the catalog: rename the item in all three places at once. Supported pasteboard types:
 - `public.url`, `public.plain-text`, `public.utf8-plain-text`
 - `public.vcard`, `com.apple.ical.ics`
 

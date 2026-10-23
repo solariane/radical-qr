@@ -8,11 +8,11 @@ Built for the people who use QR codes every day — freelancers, restaurants, as
 WHY RADICAL QR
 
 • Auto-detect: paste a URL, a phone number, an email, a vCard, an iCalendar event, a Wi-Fi network — the app understands and produces the right QR, with the right encoding.
+• Right-click on the Mac, in any app: select a link, an address or any text and choose Services › Generate QR Code. In Finder it works on contact cards (.vcf) and calendar events (.ics) too — no need to open Radical QR first.
 • Written the way people write: paste "Dinner Saturday 8pm", "Wi-Fi: CafeGuest / Password: …", an email signature or an address, and get a calendar event, a Wi-Fi code, a contact card or a Maps link — filled in, in a small form you can adjust.
 • Settings you can see: every option draws its own result. Pick the corner you want, the eye you want, the size you want — there is nothing to read and nothing to guess.
 • Duplicate a code: point the camera at an existing QR, or pick a photo of one, and make it yours. Nothing is recorded, nothing is sent.
 • Clean export: PNG, JPEG, WebP for free; PDF and SVG vector in Pro, up to 4096 px.
-• macOS integration: right-click any URL, contact, or event in Safari, Contacts, or Calendar → "Generate QR Code". Instant.
 • Drag & drop: drop a text file, a vCard, or an .ics directly into the app.
 • 10 languages: English, French, German, Spanish, Italian, Portuguese, Japanese, Arabic, Hindi, Chinese.
 

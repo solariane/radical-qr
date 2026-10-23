@@ -38,6 +38,7 @@
     "place.title": "A place someone goes to (Lieu, Ort, 場所) — alone “Place” comes back as a town square (Place, Platz, Plaza) or the verb.",
     "help.recognition.ask.detail": "Quotes the button editor.keepAsText — copy that translation verbatim, or the help names a button the app does not have.",
     "help.writtenPlace.description": "Maps is Apple's app under its local name (Plans, Karten, Mappe, マップ), never the English “Maps”.",
-    "help.recognition.local.detail": "Same: if it names Maps, use the app's local name."
+    "help.recognition.local.detail": "Same: if it names Maps, use the app's local name.",
+    "help.services.detail": "Names the Services menu path, which must match ServicesMenu.xcstrings word for word; DeepL turned › into an apostrophe and translated the item freely."
   }
 }

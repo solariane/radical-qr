@@ -15694,13 +15694,13 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "انقر بزر الفأرة الأيمن فوق رقم هاتف أو عنوان بريد إلكتروني أو عنوان URL أو أي نص محدد واختر خدمات ' إنشاء رمز الاستجابة السريعة. في Finder يعمل أيضًا على بطاقات جهات الاتصال (.vcf) وأحداث التقويم (.ics)."
+            "value": "انقر بزر الفأرة الأيمن فوق رقم هاتف أو عنوان بريد إلكتروني أو عنوان URL أو أي نص محدد واختر الخدمات › إنشاء رمز الاستجابة السريعة. في Finder يعمل أيضًا على بطاقات جهات الاتصال (.vcf) وأحداث التقويم (.ics)."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Klicken Sie mit der rechten Maustaste auf eine Telefonnummer, E-Mail-Adresse, URL oder einen beliebigen Text und wählen Sie Dienste ' QR-Code generieren. Im Finder funktioniert es auch mit Kontaktkarten (.vcf) und Kalenderereignissen (.ics)."
+            "value": "Klicken Sie mit der rechten Maustaste auf eine Telefonnummer, E-Mail-Adresse, URL oder einen beliebigen Text und wählen Sie Dienste › QR-Code generieren. Im Finder funktioniert es auch mit Kontaktkarten (.vcf) und Kalenderereignissen (.ics)."
           }
         },
         "en": {
@@ -15712,43 +15712,43 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haga clic con el botón derecho en un número de teléfono, dirección de correo electrónico, URL o cualquier texto seleccionado y elija Servicios ' Generar código QR. En Finder también funciona con tarjetas de contacto (.vcf) y eventos de calendario (.ics)."
+            "value": "Haga clic con el botón derecho en un número de teléfono, dirección de correo electrónico, URL o cualquier texto seleccionado y elija Servicios › Generar código QR. En Finder también funciona con tarjetas de contacto (.vcf) y eventos de calendario (.ics)."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cliquez avec le bouton droit de la souris sur un numéro de téléphone, une adresse électronique, une URL ou tout autre texte sélectionné et choisissez Services ' Générer un code QR. Dans le Finder, il fonctionne également avec les cartes de contact (.vcf) et les événements du calendrier (.ics)."
+            "value": "Cliquez avec le bouton droit de la souris sur un numéro de téléphone, une adresse électronique, une URL ou tout autre texte sélectionné et choisissez Services › Générer un code QR. Dans le Finder, il fonctionne également avec les cartes de contact (.vcf) et les événements du calendrier (.ics)."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "किसी फ़ोन नंबर, ईमेल पते, URL या किसी चयनित टेक्स्ट पर राइट-क्लिक करें और Services › Generate QR Code चुनें। Finder में यह संपर्क कार्ड (.vcf) और कैलेंडर इवेंट (.ics) पर भी काम करता है।"
+            "value": "किसी फ़ोन नंबर, ईमेल पते, URL या किसी चयनित टेक्स्ट पर राइट-क्लिक करें और सेवाएँ › क्यूआर कोड बनाएँ चुनें। Finder में यह संपर्क कार्ड (.vcf) और कैलेंडर इवेंट (.ics) पर भी काम करता है।"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fate clic con il tasto destro del mouse su un numero di telefono, un indirizzo e-mail, un URL o qualsiasi testo selezionato e scegliete Servizi ' Genera codice QR. Nel Finder funziona anche sulle schede dei contatti (.vcf) e sugli eventi del calendario (.ics)."
+            "value": "Fate clic con il tasto destro del mouse su un numero di telefono, un indirizzo e-mail, un URL o qualsiasi testo selezionato e scegliete Servizi › Genera codice QR. Nel Finder funziona anche sulle schede dei contatti (.vcf) e sugli eventi del calendario (.ics)."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "電話番号、メールアドレス、URL、または選択したテキストを右クリックし、サービス ' QRコードの生成を選択します。Finderでは、連絡先カード（.vcf）やカレンダーイベント（.ics）でも動作します。"
+            "value": "電話番号、メールアドレス、URL、または選択したテキストを右クリックし、「サービス」›「QRコードを生成」を選択します。Finderでは、連絡先カード（.vcf）やカレンダーイベント（.ics）でも動作します。"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Clique com o botão direito do rato num número de telefone, endereço de correio eletrónico, URL ou qualquer texto selecionado e escolha Serviços ' Gerar código QR. No Finder, também funciona com cartões de contacto (.vcf) e eventos de calendário (.ics)."
+            "value": "Clique com o botão direito do rato num número de telefone, endereço de correio eletrónico, URL ou qualquer texto selecionado e escolha Serviços › Gerar código QR. No Finder, também funciona com cartões de contacto (.vcf) e eventos de calendário (.ics)."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "右键单击电话号码、电子邮件地址、URL 或任何选定文本，然后选择服务 ' 生成 QR 码。在 Finder 中，它还适用于联系人卡（.vcf）和日历事件（.ics）。"
+            "value": "右键单击电话号码、电子邮件地址、URL 或任何选定文本，然后选择服务 › 生成二维码。在 Finder 中，它还适用于联系人卡（.vcf）和日历事件（.ics）。"
           }
         }
       }

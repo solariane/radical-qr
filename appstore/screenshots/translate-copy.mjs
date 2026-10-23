@@ -88,7 +88,6 @@ const KEY_CONTEXT = {
   sidebarHistory: "macOS sidebar item leading to the list of past QR codes.",
   sidebarHelp: "macOS sidebar item leading to the help screen.",
   menuTitle: "The macOS 'Services' submenu in a right-click menu. Use the system's own name for it.",
-  menuItem: "Menu item that creates a QR code from the current selection.",
 };
 
 // --- Arguments -------------------------------------------------------------

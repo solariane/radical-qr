@@ -9,6 +9,7 @@
 
 import { renderQR } from "../lib/qr-svg.mjs";
 import { copyFor } from "../lib/copy.mjs";
+import { appString } from "../lib/app-strings.mjs";
 import { writeScene } from "../lib/poster.mjs";
 import {
   MAC_CANVAS, MAC_FONT, MAC_COLORS, trafficLights,
@@ -19,6 +20,8 @@ import { symbol } from "../lib/symbols.mjs";
 
 const LOCALE = process.argv[2] || "en-US";
 const L = copyFor("services", LOCALE);
+/** The item the Mac really shows, from the app's ServicesMenu catalog. */
+const MENU_ITEM = appString("Generate QR Code", LOCALE, "ServicesMenu");
 
 // --- The other app's document ----------------------------------------------
 
@@ -88,7 +91,7 @@ function contextMenu() {
     <rect x="${sub.x}" y="${sub.y}" width="${sub.w}" height="${sub.h}" rx="12" fill="#F7F7FA"/>
     <rect x="${sub.x + 8}" y="${sub.y + 10}" width="${sub.w - 16}" height="${MENU.rowH}" rx="7" fill="${INK.accent}"/>
     ${appMark(sub.x + 26, sub.y + 10 + MENU.rowH / 2 - 17, 34, "#ffffff")}
-    ${text(sub.x + 76, sub.y + 10 + MENU.rowH / 2 + 11, L.menuItem, {
+    ${text(sub.x + 76, sub.y + 10 + MENU.rowH / 2 + 11, MENU_ITEM, {
       size: 30, weight: 500, family: MAC_FONT, fill: "#ffffff",
     })}
   </g>`;
