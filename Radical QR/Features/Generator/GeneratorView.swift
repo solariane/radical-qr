@@ -259,12 +259,13 @@ struct GeneratorView: View {
     }
 
     /// The scroll area both layouts share, with the anchoring that brings newly
-    /// arrived content to the top.
+    /// arrived content to the top, and a fade on whichever edge hides more.
     private func scrollArea<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
         ScrollViewReader { proxy in
             ScrollView {
                 content()
             }
+            .scrollEdgeFade()
             .onChange(of: viewModel.hasValidInput) { _, hasInput in
                 guard hasInput else { return }
                 // A paste folds the field into the pill. A first keystroke must not:

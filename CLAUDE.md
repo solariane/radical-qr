@@ -100,7 +100,8 @@ Radical QR/
 │   │   ├── RoundnessSlider.swift        # QR element roundness
 │   │   └── LogoDropZone.swift           # Logo embedding (Pro)
 │   └── Modifiers/
-│       └── CardStyle.swift              # Consistent card styling
+│       ├── CardStyle.swift              # Consistent card styling
+│       └── ScrollEdgeFade.swift         # Fades a scroll edge while there is more past it
 └── Resources/
     ├── Localizable.xcstrings            # 7 languages
     └── InfoPlist.xcstrings              # Plist display name translations
