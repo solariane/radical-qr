@@ -132,21 +132,33 @@ struct GeneratorMetrics: Equatable, Sendable {
         return metrics
     }
 
-    /// Wide and short below the iPad sizes — a phone on its side, either screen
-    /// of the iPhone Duo held landscape. A column there scrolls through most of
-    /// its settings while the width beside them stays bare gradient, so when the
-    /// phone sizes fit side by side, they go side by side. 600pt high earns the
-    /// regular set: above any phone on its side and the folded Duo (466), below
-    /// the open one (669).
+    /// Wide and short below the iPad sizes — a large phone on its side, the open
+    /// iPhone Duo held landscape. A column there scrolls through most of its
+    /// settings while the width beside them stays bare gradient, so the settings
+    /// move beside the code at the regular tile sizes, and the code takes the
+    /// height. Phone sizes as they are made a 140pt code adrift in the gradient
+    /// and a save button too narrow for its label.
     private static func shortSplit(width: CGFloat, height: CGFloat) -> GeneratorMetrics? {
         guard width > height else { return nil }
-        var metrics = height >= 600 ? regular : compact
-        guard width - 32 >= metrics.splitWidthNeeded else { return nil }
+        var metrics = regular
+        // The left column stacks the card (code, summary pill), the save row and
+        // the vertical padding: what the height leaves after the rest is the code's.
+        let stacked = metrics.cardPadding * 2 + metrics.rowGap + summaryPillHeight
+            + metrics.sectionGap * 3 + metrics.actionHeight
+        metrics.preview = min(split.preview, max(compact.preview, height - stacked))
+        // Never narrower than the save row: below 340pt, "Enregistrer le code QR"
+        // breaks over two lines beside the copy and share buttons.
+        metrics.previewColumn = max(340, metrics.previewColumnFor(preview: metrics.preview))
+        guard width - 32 >= metrics.previewColumn + metrics.sectionGap + metrics.settingsColumnNeeded else {
+            return nil
+        }
         metrics.layout = .split
-        metrics.previewColumn = metrics.previewColumnFor(preview: metrics.preview)
         metrics.contentWidth = split.contentWidth
         return metrics
     }
+
+    /// The summary pill under the code, for the height budget above.
+    private static let summaryPillHeight: CGFloat = 52
 
     /// Settings column wide enough for the widest tile row, inside its panel.
     var settingsColumnNeeded: CGFloat {

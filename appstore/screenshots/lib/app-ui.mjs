@@ -129,15 +129,20 @@ function splitWidthNeeded(m) {
 }
 
 /**
- * `GeneratorMetrics.shortSplit` — wide and short below the iPad sizes: a phone
- * on its side, either Duo screen held landscape. The phone sizes, side by side.
+ * `GeneratorMetrics.shortSplit` — wide and short below the iPad sizes: a large
+ * phone on its side, the open Duo held landscape. Regular tiles beside the
+ * code, the code sized by the height, the left column wide enough to save.
  */
 function shortSplit(width, height) {
   if (width <= height) return null;
-  const metrics = { ...(height >= 600 ? METRICS : METRICS_COMPACT) };
-  if (width - 32 < splitWidthNeeded(metrics)) return null;
+  const metrics = { ...METRICS };
+  const stacked = metrics.cardPadding * 2 + metrics.rowGap + 52
+    + metrics.sectionGap * 3 + metrics.actionHeight;
+  metrics.preview = Math.min(METRICS_SPLIT.preview, Math.max(METRICS_COMPACT.preview, height - stacked));
+  metrics.previewColumn = Math.max(340, metrics.preview + metrics.cardPadding * 2 + 24);
+  const settings = 5 * metrics.tokenWidth + 4 * metrics.tileGap + metrics.panelPadding * 2 + 8;
+  if (width - 32 < metrics.previewColumn + metrics.sectionGap + settings) return null;
   metrics.layout = "split";
-  metrics.previewColumn = metrics.preview + metrics.cardPadding * 2 + 24;
   metrics.contentWidth = METRICS_SPLIT.contentWidth;
   return metrics;
 }
