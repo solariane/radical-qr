@@ -625,7 +625,9 @@ rather than a band. Check the vertical budget before adding anything there.
 `GeneratorMetrics.fitting(width:height:)` picks one of four sets and, with it,
 one of two arrangements. Below 700pt on either side the canvas is phone-shaped —
 an iPad in a narrow Split View included — and gets `.compact` or `.regular` in a
-single column. Above that, orientation decides: taller than it is wide is
+single column, unless it is wider than tall with room for both columns at those
+sizes (a phone on its side, the iPhone Duo held landscape): then the same sizes
+go side by side, `.regular` from 600pt high (`shortSplit`). Above that, orientation decides: taller than it is wide is
 `.expanded` (one column, capped at 640pt and centred, everything larger, the
 preview growing with the height left over), wider than it is tall is `.split`
 (preview and save row in the left column, rail and family panel in the right,

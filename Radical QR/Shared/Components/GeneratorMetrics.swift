@@ -103,7 +103,7 @@ struct GeneratorMetrics: Equatable, Sendable {
     /// really is phone-shaped — on the phone layout.
     static func fitting(width: CGFloat, height: CGFloat) -> GeneratorMetrics {
         guard width >= 700, height >= 700 else {
-            return height < 700 ? .compact : .regular
+            return shortSplit(width: width, height: height) ?? (height < 700 ? .compact : .regular)
         }
 
         if height >= width {
@@ -129,6 +129,22 @@ struct GeneratorMetrics: Equatable, Sendable {
         }
         metrics.previewColumn = metrics.preview + metrics.cardPadding * 2 + 24
         metrics.contentWidth = max(split.contentWidth, metrics.splitWidthNeeded)
+        return metrics
+    }
+
+    /// Wide and short below the iPad sizes — a phone on its side, either screen
+    /// of the iPhone Duo held landscape. A column there scrolls through most of
+    /// its settings while the width beside them stays bare gradient, so when the
+    /// phone sizes fit side by side, they go side by side. 600pt high earns the
+    /// regular set: above any phone on its side and the folded Duo (466), below
+    /// the open one (669).
+    private static func shortSplit(width: CGFloat, height: CGFloat) -> GeneratorMetrics? {
+        guard width > height else { return nil }
+        var metrics = height >= 600 ? regular : compact
+        guard width - 32 >= metrics.splitWidthNeeded else { return nil }
+        metrics.layout = .split
+        metrics.previewColumn = metrics.previewColumnFor(preview: metrics.preview)
+        metrics.contentWidth = split.contentWidth
         return metrics
     }
 

@@ -102,7 +102,7 @@ export const METRICS_SPLIT = {
  */
 export function fittingMetrics(width, height) {
   if (width < 700 || height < 700) {
-    return height < 700 ? METRICS_COMPACT : METRICS;
+    return shortSplit(width, height) ?? (height < 700 ? METRICS_COMPACT : METRICS);
   }
 
   if (height >= width) {
@@ -115,12 +115,30 @@ export function fittingMetrics(width, height) {
   metrics.preview = Math.min(420, metrics.preview + Math.max(0, height - 760) * 0.45);
   // Same rule as GeneratorMetrics.fitting: the cap grows so the settings column
   // holds five export tokens whole; without the width, the preview shrinks.
-  const needed = (m) => m.preview + m.cardPadding * 2 + 24 + m.sectionGap
-    + 5 * m.tokenWidth + 4 * m.tileGap + m.panelPadding * 2 + 8;
-  const overflow = needed(metrics) - Math.max(width - 32, METRICS_SPLIT.contentWidth);
+  const overflow = splitWidthNeeded(metrics) - Math.max(width - 32, METRICS_SPLIT.contentWidth);
   if (overflow > 0) metrics.preview = Math.max(METRICS_SPLIT.preview, metrics.preview - overflow);
   metrics.previewColumn = metrics.preview + metrics.cardPadding * 2 + 24;
-  metrics.contentWidth = Math.max(METRICS_SPLIT.contentWidth, needed(metrics));
+  metrics.contentWidth = Math.max(METRICS_SPLIT.contentWidth, splitWidthNeeded(metrics));
+  return metrics;
+}
+
+/** `GeneratorMetrics.splitWidthNeeded` — both columns, neither squeezed. */
+function splitWidthNeeded(m) {
+  return m.preview + m.cardPadding * 2 + 24 + m.sectionGap
+    + 5 * m.tokenWidth + 4 * m.tileGap + m.panelPadding * 2 + 8;
+}
+
+/**
+ * `GeneratorMetrics.shortSplit` — wide and short below the iPad sizes: a phone
+ * on its side, either Duo screen held landscape. The phone sizes, side by side.
+ */
+function shortSplit(width, height) {
+  if (width <= height) return null;
+  const metrics = { ...(height >= 600 ? METRICS : METRICS_COMPACT) };
+  if (width - 32 < splitWidthNeeded(metrics)) return null;
+  metrics.layout = "split";
+  metrics.previewColumn = metrics.preview + metrics.cardPadding * 2 + 24;
+  metrics.contentWidth = METRICS_SPLIT.contentWidth;
   return metrics;
 }
 
