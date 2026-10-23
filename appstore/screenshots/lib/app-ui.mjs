@@ -142,6 +142,10 @@ function shortSplit(width, height) {
   metrics.previewColumn = Math.max(340, metrics.preview + metrics.cardPadding * 2 + 24);
   const settings = 5 * metrics.tokenWidth + 4 * metrics.tileGap + metrics.panelPadding * 2 + 8;
   if (width - 32 < metrics.previewColumn + metrics.sectionGap + settings) return null;
+  // Only the square tile, at most four to a row, grows into the spare width.
+  const settingsWidth = Math.min(METRICS_SPLIT.contentWidth, width - 32) - metrics.previewColumn - metrics.sectionGap;
+  const fourAcross = Math.floor((settingsWidth - metrics.panelPadding * 2 - 8 - metrics.tileGap * 3) / 4 - 4);
+  metrics.tile = Math.min(METRICS_SPLIT.tile, Math.max(METRICS.tile, fourAcross));
   metrics.layout = "split";
   metrics.contentWidth = METRICS_SPLIT.contentWidth;
   return metrics;

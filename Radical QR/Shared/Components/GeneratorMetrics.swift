@@ -152,6 +152,14 @@ struct GeneratorMetrics: Equatable, Sendable {
         guard width - 32 >= metrics.previewColumn + metrics.sectionGap + metrics.settingsColumnNeeded else {
             return nil
         }
+        // Swatches and export tokens, six and five to a row, already fill the
+        // settings column. Square tiles come at most four to a row (the caption
+        // sizes, at tile + 4), so they alone grow into the width, up to the
+        // split's own size: the right column then balances the code beside it.
+        let settingsWidth = min(split.contentWidth, width - 32) - metrics.previewColumn - metrics.sectionGap
+        let rowWidth = settingsWidth - metrics.panelPadding * 2 - 8
+        let fourAcross = ((rowWidth - metrics.tileGap * 3) / 4 - 4).rounded(.down)
+        metrics.tile = min(split.tile, max(regular.tile, fourAcross))
         metrics.layout = .split
         metrics.contentWidth = split.contentWidth
         return metrics

@@ -627,8 +627,10 @@ one of two arrangements. Below 700pt on either side the canvas is phone-shaped â
 an iPad in a narrow Split View included â€” and gets `.compact` or `.regular` in a
 single column, unless it is wider than tall with room for a 340pt code column
 beside the regular settings (a large phone on its side, the open iPhone Duo held
-landscape): then it splits, regular tiles on the right and the code sized by
-the height on the left (`shortSplit`). Above that, orientation decides: taller than it is wide is
+landscape): then it splits, regular sizes on the right and the code sized by
+the height on the left (`shortSplit`). Only the square tile grows into the
+spare width (up to 60pt): swatches and export tokens already fill the column.
+Above that, orientation decides: taller than it is wide is
 `.expanded` (one column, capped at 640pt and centred, everything larger, the
 preview growing with the height left over), wider than it is tall is `.split`
 (preview and save row in the left column, rail and family panel in the right,
