@@ -25,6 +25,7 @@
 #   ./updScreenshots.sh --no-translate       # render + upload, skip DeepL
 #   ./updScreenshots.sh --dry-run            # show what would happen
 #   ./updScreenshots.sh --only=fr-FR,de-DE   # restrict to some locales
+#   ./updScreenshots.sh --upload-only --platform=MAC_OS  # upload one platform's sets
 #   ./updScreenshots.sh --force              # re-translate even if unchanged
 #   ./updScreenshots.sh --clean              # wipe out/ before rendering
 
@@ -41,6 +42,7 @@ DRY_RUN=false
 FORCE=false
 CLEAN=false
 ONLY=""
+PLATFORM=""
 
 for arg in "$@"; do
     case "$arg" in
@@ -51,6 +53,7 @@ for arg in "$@"; do
         --force)        FORCE=true ;;
         --clean)        CLEAN=true ;;
         --only=*)       ONLY="${arg#--only=}" ;;
+        --platform=*)   PLATFORM="${arg#--platform=}" ;;
         --help|-h)
             sed -n '3,29p' "$0" | sed 's/^# \{0,1\}//'
             exit 0
@@ -128,6 +131,7 @@ if [ "$UPLOAD" = true ]; then
     ARGS=()
     [ "$DRY_RUN" = true ] && ARGS+=("--dry-run")
     [ -n "$ONLY" ] && ARGS+=("--only=$ONLY")
+    [ -n "$PLATFORM" ] && ARGS+=("--platform=$PLATFORM")
     node "$SCRIPT_DIR/appstore-screenshots.mjs" ${ARGS[@]+"${ARGS[@]}"}
 fi
 

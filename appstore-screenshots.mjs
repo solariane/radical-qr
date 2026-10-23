@@ -26,6 +26,7 @@
  *   node appstore-screenshots.mjs --dry-run
  *   node appstore-screenshots.mjs                 # envoie tout
  *   node appstore-screenshots.mjs --only=fr-FR,de-DE
+ *   node appstore-screenshots.mjs --platform=MAC_OS   # une plateforme (IOS, MAC_OS)
  *
  * Les captures iPhone Duo (`-duo-`) n'ont pas de type classique : elles passent
  * par l'Asset Library, voir appstore/lib/asset-library.mjs.
@@ -59,6 +60,8 @@ const BUNDLE_ID = args["bundle-id"] || CONFIG.bundleID;
 const DRY_RUN = Boolean(args["dry-run"]);
 const LIST_ONLY = Boolean(args.list);
 const ONLY = typeof args.only === "string" ? new Set(args.only.split(",").map((s) => s.trim())) : null;
+// Une seule plateforme : refaire les captures Mac sans toucher aux jeux iPhone et iPad.
+const PLATFORM = typeof args.platform === "string" ? args.platform.toUpperCase() : null;
 // Par défaut on remplace le jeu complet ; --keep ajoute à côté de l'existant.
 const KEEP = Boolean(args.keep);
 
@@ -292,6 +295,7 @@ async function main() {
 
   for (const version of versions) {
     const platform = version.attributes?.platform;
+    if (PLATFORM && platform !== PLATFORM) continue;
     const types = DISPLAY_TYPES.filter((d) => d.platform === platform);
     if (!types.length) continue;
 

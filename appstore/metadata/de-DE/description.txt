@@ -1,35 +1,35 @@
 Elegante QR-Codes. Automatische Erkennung. Keine Nachverfolgung. Kein Abonnement.
 Radical QR generiert jeden Code – Links, Kontakte, WLAN, Veranstaltungen – vollständig auf Ihrem Gerät. Fügen Sie beliebige Inhalte ein, die App erkennt, um was es sich handelt, und erstellt den passenden QR-Code. Es werden keine Daten an einen Server gesendet. Ohne Ihre Zustimmung wird nichts gespeichert.
 
-Entwickelt für alle, die täglich QR-Codes nutzen – Freiberufler, Restaurants, Vereine, Unternehmer – und die sich etwas Schönes, Schnelles und Privatsphäre-freundliches wünschen.
+Entwickelt für Menschen, die täglich QR-Codes nutzen – Freiberufler, Restaurants, Vereine, Unternehmer – und die sich etwas Schönes, Schnelles und Privatsphäre-freundliches wünschen.
 
 
 WARUM RADICAL QR
 
 • Automatische Erkennung: Fügen Sie eine URL, eine Telefonnummer, eine E-Mail-Adresse, eine vCard, einen iCalendar-Termin oder ein WLAN-Netzwerk ein – die App erkennt den Inhalt und erstellt den passenden QR-Code mit der richtigen Kodierung.
-• So geschrieben, wie Menschen schreiben: Füge „Abendessen Samstag 20 Uhr“, „WLAN: CafeGuest / Passwort: …“, eine E-Mail-Signatur oder eine Adresse ein und erhalte einen Kalendertermin, einen WLAN-Code, eine Kontaktkarte oder einen Karten-Link – bereits ausgefüllt in einem kleinen Formular, das du anpassen kannst.
-• Sichtbare Einstellungen: Jede Option zeigt ihr eigenes Ergebnis an. Wählen Sie die gewünschte Ecke, das gewünschte Symbol und die gewünschte Größe – es gibt nichts zu lesen und nichts zu erraten.
-• Code duplizieren: Richten Sie die Kamera auf einen vorhandenen QR-Code oder wählen Sie ein Foto davon aus und machen Sie ihn zu Ihrem eigenen. Es wird nichts aufgezeichnet, nichts gesendet.
-• Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG-Vektorgrafik in der Pro-Version, bis zu 4096 px.
-• macOS-Integration: Klicke mit der rechten Maustaste auf eine beliebige URL, einen Kontakt oder einen Termin in Safari, „Kontakte“ oder „Kalender“ → „QR-Code generieren“. Sofort.
-• Drag & Drop: Ziehe eine Textdatei, eine vCard oder eine .ics-Datei direkt in die App.
+• Rechtsklick auf dem Mac, in jeder App: Markiere einen Link, eine Adresse oder beliebigen Text und wähle „Dienste“ › „QR-Code generieren“. Im Finder funktioniert dies auch bei Kontaktkarten (.vcf) und Kalenderterminen (.ics) – du musst „ Radical QR “ nicht erst öffnen.
+• So geschrieben, wie Menschen schreiben: Füge „Abendessen Samstag 20 Uhr“, „WLAN: CafeGuest / Passwort: …“, eine E-Mail-Signatur oder eine Adresse ein und erhalte einen Kalendertermin, einen WLAN-Code, eine Kontaktkarte oder einen Kartenlink – bereits ausgefüllt in einem kleinen Formular, das du anpassen kannst.
+• Sichtbare Einstellungen: Jede Option zeigt ihr eigenes Ergebnis an. Wähle die gewünschte Ecke, das gewünschte Symbol und die gewünschte Größe aus – es gibt nichts zu lesen und nichts zu erraten.
+• Einen Code duplizieren: Richte die Kamera auf einen vorhandenen QR-Code oder wähle ein Foto davon aus und mache ihn zu deinem eigenen. Es wird nichts aufgezeichnet, nichts gesendet.
+• Sauberer Export: PNG, JPEG, WebP kostenlos; PDF und SVG-Vektor in der Pro-Version, bis zu 4096 px.
+• Drag & Drop: Zieh eine Textdatei, eine vCard oder eine .ics-Datei direkt in die App.
 • 10 Sprachen: Englisch, Französisch, Deutsch, Spanisch, Italienisch, Portugiesisch, Japanisch, Arabisch, Hindi, Chinesisch.
 
 
 KOSTENLOS
 
-Alles Wesentliche: automatische Erkennung, Duplizieren eines bestehenden Codes, Modul- und Augenformen, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, PNG-/JPEG-/WebP-Export bis zu 512 px, Systemfreigabe.
+Alles Wesentliche: automatische Erkennung, Duplizieren eines vorhandenen Codes, Modul- und Augenformen, 6 voreingestellte Farben und 3 voreingestellte Farbverläufe, PNG-/JPEG-/WebP-Export bis zu 512 px, Freigabe über das System.
 
 
 PRO (einmaliger Kauf, lebenslang)
 
-• Vektor-Export als PDF und SVG für den Druck und die großflächige Verwendung
+• Vektor-Export als PDF und SVG für den Druck und großflächige Anwendungen
 • Einbetten eines eigenen Logos mit automatischer Sicherheitszone
 • Exportgröße bis zu 4096 px
 • Verlauf mit iCloud-Synchronisierung auf allen Ihren Geräten
-• Umfassende Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, eckig, rautenförmig)
+• Umfassende Farbauswahl und benutzerdefinierte Farbverläufe (linear, radial, winklig, rautenförmig)
 • Punkt- und Blatt-Augenformen
-• Bis zu vier eigene Stile, die mit einem Fingertipp gespeichert und wiederhergestellt werden können
+• Bis zu vier eigene Stile, die mit einem Fingertipp gespeichert und wieder abgerufen werden können
 
 Einmaliger Kauf. Lebenslanger Zugriff. Kein Abonnement.
 

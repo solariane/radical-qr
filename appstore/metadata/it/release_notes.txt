@@ -1,5 +1,5 @@
-Radical QR 2.1.2
+Radical QR 2.1.3
 
-• Una nuova immagine per la pagina dell'App Store. Questa versione la include; l'app resta invariata.
+• Layout migliorato su schermi larghi e bassi. Su iPhone Duo aperto e tenuto orizzontalmente — e sui modelli di iPhone più grandi in orizzontale, o su una finestra Mac più larga che alta — le impostazioni ora si posizionano accanto al codice invece che sotto, e il codice è grande quanto lo schermo consente.
 
-• Come nella 2.1.1: il testo scritto per le persone diventa un evento, un codice Wi-Fi, un contatto o un indirizzo, e la Guida nel menu ⋯ mostra come fare, con esempi che puoi copiare.
+• Quando le impostazioni non sono tutte visibili, una sfumatura delicata sul bordo indica che c'è altro da scorrere.

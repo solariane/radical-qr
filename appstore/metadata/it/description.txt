@@ -7,18 +7,18 @@ Progettata per chi usa i codici QR ogni giorno — liberi professionisti, ristor
 PERCHÉ RADICAL QR
 
 • Rilevamento automatico: incolla un URL, un numero di telefono, un’e-mail, una vCard, un evento iCalendar, una rete Wi-Fi: l’app lo riconosce e genera il codice QR corretto, con la codifica giusta.
+• Clicca con il tasto destro del mouse sul Mac, in qualsiasi app: seleziona un link, un indirizzo o qualsiasi testo e scegli Servizi › Genera codice QR. Nel Finder funziona anche con le schede di contatto (.vcf) e gli eventi del calendario (.ics) — non è necessario aprire prima Radical QR.
 • Scrivi come faresti normalmente: incolla “Cena sabato alle 20:00”, “Wi-Fi: CafeGuest / Password: …”, una firma e-mail o un indirizzo, e otterrai un evento del calendario, un codice Wi-Fi, una scheda di contatto o un link a Mappe — già compilati, in un piccolo modulo che puoi personalizzare.
-• Impostazioni visibili: ogni opzione genera il proprio risultato. Scegli l’angolo che preferisci, l’icona che preferisci, le dimensioni che preferisci: non c’è nulla da leggere e nulla da indovinare.
-• Duplica un codice: punta la fotocamera su un codice QR esistente, oppure seleziona una foto di uno di essi, e rendilo tuo. Nulla viene registrato, nulla viene inviato.
+• Impostazioni visibili: ogni opzione mostra il proprio risultato. Scegli l’angolo che preferisci, l’occhio che preferisci, le dimensioni che preferisci: non c’è nulla da leggere né da indovinare.
+• Duplica un codice: punta la fotocamera su un codice QR esistente, oppure scegli una foto di uno di essi, e rendilo tuo. Nulla viene registrato, nulla viene inviato.
 • Esportazione pulita: PNG, JPEG, WebP gratuitamente; PDF e vettoriale SVG nella versione Pro, fino a 4096 px.
-• Integrazione con macOS: clicca con il tasto destro su qualsiasi URL, contatto o evento in Safari, Contatti o Calendario → “Genera codice QR”. Istantaneo.
 • Trascina e rilascia: trascina un file di testo, una vCard o un file .ics direttamente nell’app.
 • 10 lingue: inglese, francese, tedesco, spagnolo, italiano, portoghese, giapponese, arabo, hindi, cinese.
 
 
 GRATUITO
 
-Tutto l’essenziale: rilevamento automatico, duplicazione di un codice esistente, forme di moduli e occhi, 6 colori predefiniti e 3 sfumature predefinite, esportazione in PNG / JPEG / WebP fino a 512 px, condivisione di sistema.
+Tutto l’essenziale: rilevamento automatico, duplicazione di un codice esistente, forme dei moduli e degli occhi, 6 colori predefiniti e 3 sfumature predefinite, esportazione in PNG / JPEG / WebP fino a 512 px, condivisione tramite il sistema.
 
 
 PRO (acquisto una tantum, a vita)
@@ -29,7 +29,7 @@ PRO (acquisto una tantum, a vita)
 • Cronologia con sincronizzazione iCloud su tutti i tuoi dispositivi
 • Selettore di colori completo e sfumature personalizzate (lineari, radiali, angolari, a rombo)
 • Forme degli occhi a punto e a foglia
-• Fino a quattro stili personali, salvati e richiamabili con un solo tocco
+• Fino a quattro stili personalizzati, salvati e richiamabili con un solo tocco
 
 Un unico acquisto. Accesso a vita. Nessun abbonamento.
 
