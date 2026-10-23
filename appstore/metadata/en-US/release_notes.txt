@@ -1,5 +1,5 @@
-Radical QR 2.1.2
+Radical QR 2.1.3
 
-• A new picture for the App Store page. This version carries it; nothing changes in the app itself.
+• A better layout on wide, short screens. On iPhone Duo open and held sideways — and on the largest iPhones in landscape, or a Mac window wider than it is tall — the settings now sit beside the code instead of below it, and the code is as large as the screen allows.
 
-• As in 2.1.1: text written for people becomes an event, a Wi-Fi code, a contact or an address, and the Help in the ⋯ menu shows how, with examples you can copy.
+• When the settings don't all fit, a soft fade on the edge shows there is more to scroll.
