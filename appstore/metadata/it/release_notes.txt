@@ -1,5 +1,3 @@
-Radical QR 2.1.3
+Radical QR 2.1.4
 
-• Layout migliorato su schermi larghi e bassi. Su iPhone Duo aperto e tenuto orizzontalmente — e sui modelli di iPhone più grandi in orizzontale, o su una finestra Mac più larga che alta — le impostazioni ora si posizionano accanto al codice invece che sotto, e il codice è grande quanto lo schermo consente.
-
-• Quando le impostazioni non sono tutte visibili, una sfumatura delicata sul bordo indica che c'è altro da scorrere.
+• Correzioni di bug minori e miglioramenti dell'interfaccia.
