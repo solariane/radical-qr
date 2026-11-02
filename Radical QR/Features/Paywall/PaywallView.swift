@@ -77,6 +77,9 @@ struct PaywallView: View {
                 }
             }
         }
+        // Whatever comes of it, a session that met the paywall is not the
+        // one to ask for a review in.
+        .onAppear { ReviewPrompter.shared.recordFriction() }
     }
 
     // MARK: - Header Section

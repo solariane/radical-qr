@@ -2,6 +2,7 @@ import SwiftUI
 import PhotosUI
 import SwiftData
 import UniformTypeIdentifiers
+import StoreKit
 
 #if os(macOS)
 import AppKit
@@ -21,6 +22,7 @@ struct GeneratorView: View {
     @EnvironmentObject private var purchaseManager: PurchaseManager
     @Environment(DeepLinkHandler.self) private var deepLinkHandler
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.requestReview) private var requestReview
 
     @State private var copiedFeedback = false
     @State private var selectedFormat: ExportFormat = .png
@@ -36,6 +38,10 @@ struct GeneratorView: View {
     /// The size this screen actually got. Every number below — and whether the
     /// settings sit under the code or beside it — is derived from it.
     @State private var canvasSize: CGSize = .zero
+    #if os(macOS)
+    /// A save just handed Finder the focus: ask, if due, once the user is back.
+    @State private var reviewOnReturn = false
+    #endif
 
     private let inputAnchorID = "input-section"
 
@@ -106,7 +112,7 @@ struct GeneratorView: View {
         // The mark and the name sit in the bar now; a material behind them would
         // put white on near-white, and the gradient is the app's backdrop anyway.
         .toolbarBackground(.hidden, for: .navigationBar)
-        .sheet(isPresented: $showShareSheet) {
+        .sheet(isPresented: $showShareSheet, onDismiss: askForReviewIfDue) {
             if let url = exportedFileURL {
                 ShareSheet(items: [url])
             }
@@ -154,6 +160,14 @@ struct GeneratorView: View {
             #endif
         }
         #if os(macOS)
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            guard reviewOnReturn else { return }
+            reviewOnReturn = false
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(600))
+                askForReviewIfDue()
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: ServicesProvider.contentReceived)) { note in
             guard let content = note.userInfo?["content"] as? String else { return }
             Task { @MainActor in
@@ -617,9 +631,13 @@ struct GeneratorView: View {
         isExporting = true
         do {
             let url = try await viewModel.saveToFile(config: exportConfiguration)
-            await MainActor.run { recordHistoryIfEligible() }
+            await MainActor.run {
+                recordHistoryIfEligible()
+                ReviewPrompter.shared.recordValueMoment()
+            }
 
             #if os(macOS)
+            await MainActor.run { reviewOnReturn = true }
             NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
             #else
             await MainActor.run {
@@ -628,7 +646,10 @@ struct GeneratorView: View {
             }
             #endif
         } catch {
-            await MainActor.run { viewModel.error = .exportFailed(error.localizedDescription) }
+            await MainActor.run {
+                ReviewPrompter.shared.recordFriction()
+                viewModel.error = .exportFailed(error.localizedDescription)
+            }
         }
         await MainActor.run { isExporting = false }
     }
@@ -645,14 +666,21 @@ struct GeneratorView: View {
 
             await MainActor.run {
                 recordHistoryIfEligible()
+                ReviewPrompter.shared.recordValueMoment()
                 withAnimation { copiedFeedback = true }
             }
 
             try? await Task.sleep(nanoseconds: 2_000_000_000)
 
-            await MainActor.run { withAnimation { copiedFeedback = false } }
+            await MainActor.run {
+                withAnimation { copiedFeedback = false }
+                askForReviewIfDue()
+            }
         } catch {
-            await MainActor.run { viewModel.error = .exportFailed(error.localizedDescription) }
+            await MainActor.run {
+                ReviewPrompter.shared.recordFriction()
+                viewModel.error = .exportFailed(error.localizedDescription)
+            }
         }
         await MainActor.run { isExporting = false }
     }
@@ -661,7 +689,12 @@ struct GeneratorView: View {
         isExporting = true
         do {
             let url = try await viewModel.saveToFile(config: exportConfiguration)
-            await MainActor.run { recordHistoryIfEligible() }
+            // No ask here on a Mac: nothing says when the picker closes, so the
+            // next copy or save asks instead.
+            await MainActor.run {
+                recordHistoryIfEligible()
+                ReviewPrompter.shared.recordValueMoment()
+            }
 
             #if os(macOS)
             await MainActor.run {
@@ -678,9 +711,22 @@ struct GeneratorView: View {
             }
             #endif
         } catch {
-            await MainActor.run { viewModel.error = .exportFailed(error.localizedDescription) }
+            await MainActor.run {
+                ReviewPrompter.shared.recordFriction()
+                viewModel.error = .exportFailed(error.localizedDescription)
+            }
         }
         await MainActor.run { isExporting = false }
+    }
+
+    /// Asks at a calm point after a save or a copy — never over the share
+    /// sheet, and on a Mac only while this app is in front.
+    @MainActor
+    private func askForReviewIfDue() {
+        #if os(macOS)
+        guard NSApp.isActive else { return }
+        #endif
+        ReviewPrompter.shared.requestIfDue { requestReview() }
     }
 
     @MainActor

@@ -58,6 +58,7 @@ Radical QR/
 │       ├── PlaceDetector.swift          # An address on its own → place
 │       ├── ExportService.swift          # Export to various formats (incl. SVG)
 │       ├── PurchaseManager.swift        # StoreKit 2 wrapper
+│       ├── ReviewPrompter.swift         # When to ask for a review (local counters, shared with PNC)
 │       ├── CaptionGenerator.swift       # Auto-caption from QR content
 │       ├── AppDelegate.swift            # macOS: Services registration + URL interception
 │       ├── ServicesProvider.swift        # macOS: right-click Services handler
@@ -409,6 +410,23 @@ final class GeneratorViewModel: ObservableObject {
 - QR content is processed locally and immediately discarded
 - Pro history is stored in user's private iCloud container
 - No third-party services receive any data
+
+### Review prompt
+
+`ReviewPrompter` (same file in Phone Number Cleaner — edit both) decides when to
+call the system `requestReview`, from five counters in `UserDefaults`: nothing
+leaves the device. A save, copy or share that worked is a *value moment*; an
+export error or the paywall appearing is *friction*, and puts the ask off for
+the rest of the session. The rules are declared in `RadicalQRApp.swift`: 3
+moments on 2 different days, 3 days after the first, once per version and 120
+days apart. It asks at a calm point only — the share sheet closed, the "Copied"
+check gone, back from Finder on a Mac.
+
+- Never a custom "5★" dialog or a "Do you like it?" gate: guideline 5.6.1.
+- A "Rate" button opens `AppLinks.radicalQRWriteReview` (`?action=write-review`),
+  never `requestReview`, which may show nothing and spends one of three yearly asks.
+- `requestReview` never shows in TestFlight; in Debug launch with
+  `-review.alwaysAsk YES` to see it.
 
 ---
 

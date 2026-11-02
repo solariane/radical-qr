@@ -80,3 +80,13 @@ struct RadicalQRApp: App {
         #endif
     }
 }
+
+extension ReviewPrompter {
+    /// Three saves or copies, on two different days, at least three days
+    /// after the first: someone who came back, not someone trying the app.
+    static let shared = ReviewPrompter(rules: Rules(
+        minimumMoments: 3,
+        minimumActiveDays: 2,
+        minimumDaysSinceFirstUse: 3
+    ))
+}

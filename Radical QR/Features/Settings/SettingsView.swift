@@ -14,13 +14,18 @@ enum AppLinks {
     static var phoneCleanerAppStore: URL {
         URL(string: "https://apps.apple.com/app/id\(phoneCleanerAppStoreID)")!
     }
+    /// Opens the App Store straight on the review form. Unlike `requestReview`,
+    /// which the system may silently skip, this always works.
+    static var radicalQRWriteReview: URL {
+        URL(string: "https://apps.apple.com/app/id\(radicalQRAppStoreID)?action=write-review")!
+    }
 }
 
 /// Settings and preferences view
 struct SettingsView: View {
     @EnvironmentObject private var purchaseManager: PurchaseManager
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.requestReview) private var requestReview
+    @Environment(\.openURL) private var openURL
 
     @AppStorage("defaultRoundness") private var defaultRoundness: Double = 0
     @AppStorage("defaultBackgroundTransparent") private var defaultBackgroundTransparent = false
@@ -225,7 +230,7 @@ struct SettingsView: View {
     private var supportSection: some View {
         Section {
             Button {
-                requestReview()
+                openURL(AppLinks.radicalQRWriteReview)
             } label: {
                 linkRow(
                     icon: "star.fill",
