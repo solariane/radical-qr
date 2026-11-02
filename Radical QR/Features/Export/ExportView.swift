@@ -13,6 +13,9 @@ struct ExportView: View {
     @State private var exportError: Error?
     @State private var showShareSheet = false
     @State private var exportedFileURL: URL?
+    @State private var savedFile: ExportedFile?
+    @State private var savedFileName = ""
+    @State private var showsSavePanel = false
 
     var body: some View {
         NavigationStack {
@@ -68,6 +71,19 @@ struct ExportView: View {
                 }
             }
             #endif
+            .fileExporter(
+                isPresented: $showsSavePanel,
+                document: savedFile,
+                contentType: selectedFormat.uniformType,
+                defaultFilename: savedFileName,
+                onCompletion: { result in
+                    savedFile = nil
+                    switch result {
+                    case .success: dismiss()
+                    case .failure(let error): exportError = error
+                    }
+                }
+            )
         }
     }
 
@@ -231,18 +247,13 @@ struct ExportView: View {
     private func performExport() async {
         isExporting = true
 
+        // The user names the file and picks its folder; the temporary
+        // directory is only for the share sheet.
         do {
-            let url = try await viewModel.saveToFile(config: exportConfiguration)
-
-            #if os(macOS)
-            // On macOS, reveal in Finder
-            NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
-            dismiss()
-            #else
-            // On iOS, show save dialog
-            exportedFileURL = url
-            showShareSheet = true
-            #endif
+            let data = try await viewModel.export(config: exportConfiguration)
+            savedFile = ExportedFile(data: data)
+            savedFileName = viewModel.suggestedBaseName(config: exportConfiguration)
+            showsSavePanel = true
         } catch {
             exportError = error
         }

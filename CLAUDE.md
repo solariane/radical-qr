@@ -667,6 +667,18 @@ budget. Copy ignores the format (the clipboard takes a picture) — its VoiceOve
 value gives only the size. The screenshot library draws the same line
 (`actionRow({ detail })`).
 
+Save goes through the system save panel (`fileExporter` with `ExportedFile`),
+on iOS as on macOS: the user picks the folder and can rename the file. It used
+to write into the temporary directory and reveal it in Finder, where the
+system may delete it. Only Share still uses a temporary file. The proposed
+name is `ExportFileName.baseName`: "qrcode-", what the code holds (the site of
+a link, "wifi-" and the network, the name on a card, an event's title, the
+first words of a text), then the size: `qrcode-wifi-ma-box-512px`. No
+timestamp, and no attempt at uniqueness: the app cannot see the folder before
+the user picks it, and the panel asks before replacing a file. It lives in
+`ExportFileName.swift`, not `ExportFormat.swift`, which the share extension
+also compiles. macOS needs `ENABLE_USER_SELECTED_FILES = readwrite`.
+
 The two layouts live in `GeneratorView` as `columnLayout` and `splitLayout` and
 share `scrollArea`; the family panels are used unchanged by both, so a new
 family needs no layout work. In `.split` the save row moves *inside* the left

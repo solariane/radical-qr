@@ -38,10 +38,11 @@ struct GeneratorView: View {
     /// The size this screen actually got. Every number below — and whether the
     /// settings sit under the code or beside it — is derived from it.
     @State private var canvasSize: CGSize = .zero
-    #if os(macOS)
-    /// A save just handed Finder the focus: ask, if due, once the user is back.
-    @State private var reviewOnReturn = false
-    #endif
+    /// What the save panel writes, under the name it proposes.
+    @State private var savedFile: ExportedFile?
+    @State private var savedFileName = ""
+    @State private var savedFileType: UTType = .png
+    @State private var showsSavePanel = false
 
     private let inputAnchorID = "input-section"
 
@@ -121,6 +122,13 @@ struct GeneratorView: View {
         .sheet(item: $paywallFeature) { feature in
             PaywallView(feature: feature)
         }
+        .fileExporter(
+            isPresented: $showsSavePanel,
+            document: savedFile,
+            contentType: savedFileType,
+            defaultFilename: savedFileName,
+            onCompletion: savePanelFinished
+        )
         .alert(item: $viewModel.error) { error in
             Alert(
                 title: Text(String(localized: "error.title", defaultValue: "Error")),
@@ -160,14 +168,6 @@ struct GeneratorView: View {
             #endif
         }
         #if os(macOS)
-        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
-            guard reviewOnReturn else { return }
-            reviewOnReturn = false
-            Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(600))
-                askForReviewIfDue()
-            }
-        }
         .onReceive(NotificationCenter.default.publisher(for: ServicesProvider.contentReceived)) { note in
             guard let content = note.userInfo?["content"] as? String else { return }
             Task { @MainActor in
@@ -647,31 +647,37 @@ struct GeneratorView: View {
         )
     }
 
+    /// Renders the file, then lets the user name it and pick its folder. It
+    /// only counts as saved once the panel says it is written.
     private func performSave() async {
         isExporting = true
         do {
-            let url = try await viewModel.saveToFile(config: exportConfiguration)
-            await MainActor.run {
-                recordHistoryIfEligible()
-                ReviewPrompter.shared.recordValueMoment()
-            }
-
-            #if os(macOS)
-            await MainActor.run { reviewOnReturn = true }
-            NSWorkspace.shared.selectFile(url.path, inFileViewerRootedAtPath: "")
-            #else
-            await MainActor.run {
-                exportedFileURL = url
-                showShareSheet = true
-            }
-            #endif
+            let data = try await viewModel.export(config: exportConfiguration)
+            savedFile = ExportedFile(data: data)
+            savedFileType = selectedFormat.uniformType
+            savedFileName = viewModel.suggestedBaseName(config: exportConfiguration)
+            showsSavePanel = true
         } catch {
-            await MainActor.run {
-                ReviewPrompter.shared.recordFriction()
-                viewModel.error = .exportFailed(error.localizedDescription)
-            }
+            ReviewPrompter.shared.recordFriction()
+            viewModel.error = .exportFailed(error.localizedDescription)
         }
-        await MainActor.run { isExporting = false }
+        isExporting = false
+    }
+
+    private func savePanelFinished(_ result: Result<URL, Error>) {
+        savedFile = nil
+        switch result {
+        case .success:
+            recordHistoryIfEligible()
+            ReviewPrompter.shared.recordValueMoment()
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(600))
+                askForReviewIfDue()
+            }
+        case .failure(let error):
+            ReviewPrompter.shared.recordFriction()
+            viewModel.error = .exportFailed(error.localizedDescription)
+        }
     }
 
     private func performCopy() async {

@@ -120,13 +120,6 @@ struct ExportConfiguration: Sendable {
         self.size = size
         self.includeBackground = includeBackground || !format.supportsTransparency
     }
-
-    /// Suggested filename for export
-    func suggestedFilename(prefix: String = "qrcode") -> String {
-        let timestamp = ISO8601DateFormatter().string(from: Date())
-            .replacingOccurrences(of: ":", with: "-")
-        return "\(prefix)_\(timestamp).\(format.fileExtension)"
-    }
 }
 
 // MARK: - Feature Limits

@@ -269,10 +269,15 @@ final class GeneratorViewModel: ObservableObject {
         )
     }
 
-    /// Saves the QR code to a file and returns the URL
+    /// The name the save panel proposes, without extension.
+    func suggestedBaseName(config: ExportConfiguration) -> String {
+        config.suggestedBaseName(for: currentInput)
+    }
+
+    /// Writes the QR code to a temporary file for the share sheet and returns its URL
     func saveToFile(config: ExportConfiguration) async throws -> URL {
         let data = try await export(config: config)
-        let filename = config.suggestedFilename()
+        let filename = config.suggestedFilename(for: currentInput)
 
         return try await exportService.saveToFile(
             data: data,
