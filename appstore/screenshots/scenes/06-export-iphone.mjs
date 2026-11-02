@@ -54,7 +54,7 @@ const screen = `
   })}
   ${familyRail({ x: GUTTER, y: railY, width: CONTENT_W, active: "export" })}
   ${exports.svg}
-  ${actionRow({ x: GUTTER, y: actionY, width: CONTENT_W, label: L.save })}
+  ${actionRow({ x: GUTTER, y: actionY, width: CONTENT_W, label: L.save, detail: "SVG · 4096 px" })}
 `;
 
 const inner = `

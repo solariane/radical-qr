@@ -556,6 +556,12 @@ struct GeneratorView: View {
 
     // MARK: - Actions
 
+    /// What Save and Share produce, from the export family's choices: shown
+    /// under the button so nobody has to open that family to find out.
+    private var exportSummary: String {
+        "\(selectedFormat.displayName) · \(selectedSize.width) px"
+    }
+
     private var actionRow: some View {
         HStack(spacing: metrics.tileGap) {
             Button {
@@ -567,8 +573,16 @@ struct GeneratorView: View {
                     } else {
                         Image(systemName: "square.and.arrow.down")
                             .font(.system(size: 17, weight: .semibold))
-                        Text(String(localized: "action.saveQR", defaultValue: "Save QR Code"))
-                            .font(.system(size: 16, weight: .semibold))
+                        VStack(alignment: .leading, spacing: 1) {
+                            Text(String(localized: "action.saveQR", defaultValue: "Save QR Code"))
+                                .font(.system(size: 16, weight: .semibold))
+                            Text(verbatim: exportSummary)
+                                .font(.system(size: 12, weight: .medium))
+                                .opacity(0.65)
+                                .contentTransition(.numericText())
+                        }
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                     }
                 }
                 .foregroundStyle(Color(red: 0.294, green: 0.227, blue: 0.525))
@@ -582,24 +596,29 @@ struct GeneratorView: View {
             .buttonStyle(.plain)
             .disabled(isExporting || !canExport)
             .opacity(canExport ? 1 : 0.55)
+            .animation(.easeInOut(duration: 0.2), value: exportSummary)
+            .accessibilityValue(Text(verbatim: exportSummary))
 
+            // The clipboard takes a picture whatever the format: only the size applies.
             secondaryAction(
                 systemImage: copiedFeedback ? "checkmark" : "doc.on.doc",
-                label: String(localized: "action.copyQR", defaultValue: "Copy QR Code")
+                label: String(localized: "action.copyQR", defaultValue: "Copy QR Code"),
+                value: "\(selectedSize.width) px"
             ) {
                 Task { await performCopy() }
             }
 
             secondaryAction(
                 systemImage: "square.and.arrow.up",
-                label: String(localized: "action.share", defaultValue: "Share")
+                label: String(localized: "action.share", defaultValue: "Share"),
+                value: exportSummary
             ) {
                 Task { await performShare() }
             }
         }
     }
 
-    private func secondaryAction(systemImage: String, label: String, action: @escaping () -> Void) -> some View {
+    private func secondaryAction(systemImage: String, label: String, value: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: systemImage)
                 .font(.system(size: 18, weight: .medium))
@@ -611,6 +630,7 @@ struct GeneratorView: View {
         .disabled(isExporting || !canExport)
         .opacity(canExport ? 1 : 0.55)
         .accessibilityLabel(label)
+        .accessibilityValue(Text(verbatim: value))
     }
 
     private var canExport: Bool {

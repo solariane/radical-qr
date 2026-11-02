@@ -660,6 +660,13 @@ preview growing with the height left over), wider than it is tall is `.split`
 both centred under the header). The rule is about the canvas, not the platform,
 so a wide-and-short Mac window gets the split layout too.
 
+The save button carries a second line, "PNG · 512 px": what Save and Share will
+produce, from the export family's choices, so nobody has to open that family to
+find out. It sits inside the button, not in a row of its own, for the vertical
+budget. Copy ignores the format (the clipboard takes a picture) — its VoiceOver
+value gives only the size. The screenshot library draws the same line
+(`actionRow({ detail })`).
+
 The two layouts live in `GeneratorView` as `columnLayout` and `splitLayout` and
 share `scrollArea`; the family panels are used unchanged by both, so a new
 family needs no layout work. In `.split` the save row moves *inside* the left

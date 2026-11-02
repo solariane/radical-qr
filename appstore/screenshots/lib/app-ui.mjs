@@ -498,31 +498,44 @@ export function header({ x, y, width }) {
   </g>`;
 }
 
-/** GeneratorView.actionRow — Save QR Code, then copy and share. */
-export function actionRow({ x, y, width, label, m = METRICS }) {
+/**
+ * GeneratorView.actionRow — Save QR Code over what it saves ("PNG · 512 px",
+ * the export family's choices), then copy and share.
+ */
+export function actionRow({ x, y, width, label, detail = "PNG · 512 px", m = METRICS }) {
   const secondary = m.actionHeight;
   const primary = width - (secondary + m.tileGap) * 2;
 
-  // Icon and label are centred as a pair, from the label's measured width —
-  // "Enregistrer le code QR" is half again as long as "Save QR Code", and a
-  // fixed icon offset put the two on top of each other. The size drops if the
-  // label still will not fit, the way `.minimumScaleFactor` does in the app.
+  // Icon and the two lines are centred as a pair, from the wider line's
+  // measured width — "Enregistrer le code QR" is half again as long as "Save
+  // QR Code". The size drops if the label still will not fit, the way
+  // `.minimumScaleFactor` does in the app.
   const icon = 17;
   const gap = 9;
   let size = 16;
+  const detailSize = 12;
   let labelW = estimateTextWidth(label, size);
   const room = primary - 36 - icon - gap;
   if (labelW > room) {
     size = Math.max(11, Math.floor(size * (room / labelW)));
     labelW = estimateTextWidth(label, size);
   }
-  const startX = x + primary / 2 - (icon + gap + labelW) / 2;
+  const blockW = Math.max(labelW, estimateTextWidth(detail, detailSize));
+  const startX = x + primary / 2 - (icon + gap + blockW) / 2;
+  const mid = y + m.actionHeight / 2;
+  // Two lines, 1pt apart, centred on the button as the VStack is.
+  const blockH = size * 1.2 + 1 + detailSize * 1.2;
+  const labelBase = mid - blockH / 2 + size * 0.95;
+  const detailBase = labelBase + size * 0.25 + 1 + detailSize * 0.95;
 
   return `<g>
     ${rrect(x, y, primary, m.actionHeight, m.actionHeight / 2, `fill="#ffffff"`)}
-    ${symbol("square.and.arrow.down", startX + icon / 2, y + m.actionHeight / 2, icon, INK.save, "semibold")}
-    ${text(startX + icon + gap, y + m.actionHeight / 2 + size * 0.36, label, {
+    ${symbol("square.and.arrow.down", startX + icon / 2, mid, icon, INK.save, "semibold")}
+    ${text(startX + icon + gap, labelBase, label, {
       size, weight: 600, fill: INK.save,
+    })}
+    ${text(startX + icon + gap, detailBase, detail, {
+      size: detailSize, weight: 500, fill: INK.save, opacity: 0.65,
     })}
     <circle cx="${x + primary + m.tileGap + secondary / 2}" cy="${y + secondary / 2}" r="${secondary / 2}" fill="#ffffff" fill-opacity="0.2"/>
     ${symbol("doc.on.doc", x + primary + m.tileGap + secondary / 2, y + secondary / 2, 18, "#ffffff", "medium")}

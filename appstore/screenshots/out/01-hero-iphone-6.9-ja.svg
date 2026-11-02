@@ -165,7 +165,8 @@
       fill="none" stroke="#4B3A86" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M22 40 L16 40 A9 9 0 0 0 7 49 L7 83 A9 9 0 0 0 16 92 L84 92 A9 9 0 0 0 93 83 L93 49 A9 9 0 0 0 84 40 L78 40"
       fill="none" stroke="#4B3A86" stroke-width="9.5" stroke-linecap="round"/></g>
-    <text x="88.22800000000001" y="755.76" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#4B3A86" text-anchor="start" opacity="1">QRコードを保存</text>
+    <text x="88.22800000000001" y="747.9000000000001" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#4B3A86" text-anchor="start" opacity="1">QRコードを保存</text>
+    <text x="88.22800000000001" y="764.3000000000001" font-family="-apple-system, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="12" font-weight="500" fill="#4B3A86" text-anchor="start" opacity="0.65">PNG · 512 px</text>
     <circle cx="285" cy="750" r="27" fill="#ffffff" fill-opacity="0.2"/>
     <g transform="translate(276 741) scale(0.18)">
     <rect x="28" y="8" width="65" height="60" rx="12" ry="12"
