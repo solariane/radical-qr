@@ -1,3 +1,5 @@
-Radical QR 2.1.4
+Radical QR 2.1.5
 
-• Kleinere Fehlerbehebungen und Verbesserungen der Benutzeroberfläche.
+• Beim Speichern können Sie jetzt wählen, wohin Ihr Code gespeichert wird. Das Speicherdialogfeld öffnet sich auf iPhone, iPad und Mac: Wählen Sie einen Ordner und benennen Sie die Datei bei Bedarf um.
+
+• Der vorgeschlagene Name gibt an, was der Code enthält und wie groß er ist – „qrcode-wifi-my-box-512px", „qrcode-apple.com-1024px" – damit Sie Ihre Codes leicht unterscheiden können.

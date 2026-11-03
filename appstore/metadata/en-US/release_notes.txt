@@ -1,3 +1,5 @@
-Radical QR 2.1.4
+Radical QR 2.1.5
 
-• Minor bug fixes and interface improvements.
+• Save now lets you choose where your code goes. The save panel opens on iPhone, iPad and Mac: pick a folder, and rename the file if you like.
+
+• The proposed name says what the code holds and its size — "qrcode-wifi-my-box-512px", "qrcode-apple.com-1024px" — so your codes are easy to tell apart.

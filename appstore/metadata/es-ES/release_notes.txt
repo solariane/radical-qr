@@ -1,3 +1,5 @@
-Radical QR 2.1.4
+Radical QR 2.1.5
 
-• Correcciones menores de errores y mejoras en la interfaz.
+• Guardar ahora te permite elegir dónde va tu código. El panel de guardado se abre en iPhone, iPad y Mac: elige una carpeta y cambia el nombre del archivo si quieres.
+
+• El nombre propuesto indica qué contiene el código y su tamaño — "qrcode-wifi-my-box-512px", "qrcode-apple.com-1024px" — para que tus códigos sean fáciles de distinguir.

@@ -1,3 +1,5 @@
-Radical QR 2.1.4
+Radical QR 2.1.5
 
-• Correction de bugs mineurs et amélioration de l'interface.
+• Enregistrer vous laisse choisir où va votre code. La fenêtre d'enregistrement s'ouvre sur iPhone, iPad et Mac : choisissez un dossier, et renommez le fichier si vous le souhaitez.
+
+• Le nom proposé dit ce que contient le code et sa taille — « qrcode-wifi-ma-box-512px », « qrcode-apple.com-1024px » — pour retrouver facilement vos codes.
