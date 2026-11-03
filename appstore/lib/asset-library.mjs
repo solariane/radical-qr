@@ -69,9 +69,12 @@ export async function clearDuoPlacements({ asc, locId }) {
   for (const imageId of new Set(placements.map((p) => p.imageId).filter(Boolean))) {
     const still = await asc(`/v1/appAssetLibraryImages/${imageId}/placements?limit=1`);
     if ((still?.data ?? []).length) continue;
+    // 409 : seule une image approuvée s'archive. Une image encore en revue reste
+    // dans la bibliothèque, sans placement, ce qui ne gêne pas.
     await asc(`/v1/appAssetLibraryImages/${imageId}`, {
       method: "PATCH",
       body: { data: { type: "appAssetLibraryImages", id: imageId, attributes: { archived: true } } },
+      tolerate: [409],
     });
   }
   return placements.length;
