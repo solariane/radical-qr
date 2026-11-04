@@ -1,5 +1,5 @@
-Radical QR 2.1.5
+Radical QR 2.2.0
 
-• Salvar agora permite escolher onde seu código vai. O painel de salvamento abre no iPhone, iPad e Mac: escolha uma pasta e renomeie o arquivo se quiser.
+• Pro: dê qualquer cor de fundo ao seu código. As cores prontas o acompanham para que o código continue fácil de escanear — escolha um azul escuro e você verá branco, azul claro, dourado e mais.
 
-• O nome sugerido indica o que o código contém e seu tamanho — "qrcode-wifi-my-box-512px", "qrcode-apple.com-1024px" — para que seus códigos sejam fáceis de distinguir.
+• O botão Colar funciona novamente no iPhone e iPad.

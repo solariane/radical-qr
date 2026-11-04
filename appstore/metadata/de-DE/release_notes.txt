@@ -1,5 +1,5 @@
-Radical QR 2.1.5
+Radical QR 2.2.0
 
-• Beim Speichern können Sie jetzt wählen, wohin Ihr Code gespeichert wird. Das Speicherdialogfeld öffnet sich auf iPhone, iPad und Mac: Wählen Sie einen Ordner und benennen Sie die Datei bei Bedarf um.
+• Pro: Geben Sie Ihrem Code eine beliebige Hintergrundfarbe. Die vorgefertigten Farben passen sich an, damit der Code leicht lesbar bleibt – wählen Sie ein dunkles Blau und erhalten Sie Weiß, Hellblau, Gold und mehr.
 
-• Der vorgeschlagene Name gibt an, was der Code enthält und wie groß er ist – „qrcode-wifi-my-box-512px", „qrcode-apple.com-1024px" – damit Sie Ihre Codes leicht unterscheiden können.
+• Die Schaltfläche „Einfügen“ funktioniert wieder auf iPhone und iPad.

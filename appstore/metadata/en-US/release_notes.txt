@@ -1,5 +1,5 @@
-Radical QR 2.1.5
+Radical QR 2.2.0
 
-• Save now lets you choose where your code goes. The save panel opens on iPhone, iPad and Mac: pick a folder, and rename the file if you like.
+• Pro: give your code any background color. The ready-made colors follow it so the code stays easy to scan — pick a deep blue and you are offered white, pale blue, gold and more.
 
-• The proposed name says what the code holds and its size — "qrcode-wifi-my-box-512px", "qrcode-apple.com-1024px" — so your codes are easy to tell apart.
+• The Paste button works again on iPhone and iPad.
