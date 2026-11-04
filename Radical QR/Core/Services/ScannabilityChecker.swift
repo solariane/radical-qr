@@ -53,23 +53,49 @@ nonisolated final class ScannabilityChecker: Sendable {
         // A transparent background leaves (0,0,0,0) pixels, which the detector
         // reads as black: the whole image goes dark and nothing decodes, so a
         // perfectly good black-on-clear code was reported as risky. Flatten onto
-        // white first — the same light surface the code will be placed on.
-        let ciImage = flattenedOnWhite(cgImage)
+        // white first — the same light surface the code will be placed on. An
+        // opaque background, coloured or not, is unaffected.
+        var ciImage = flattenedOnWhite(cgImage)
+        let ink = configuration.foregroundStyle.inkColor
+        let surface = configuration.backgroundFill ?? .white
+        let contrast = ContrastPalette.contrast(ink, surface)
+        // A light code on a dark background: test the code the way a scanner
+        // that handles inverted codes sees it, then say that some don't.
+        let inverted = ContrastPalette.luminance(ink) > ContrastPalette.luminance(surface)
+        if inverted {
+            ciImage = ciImage.applyingFilter("CIColorInvert")
+        }
         let features = makeDetector()?.features(in: ciImage) ?? []
         let decoded = (features.first as? CIQRCodeFeature)?.messageString
         let decodes = !(decoded ?? "").isEmpty
+
+        // Too little contrast explains a failure better than the shape does, and
+        // no error-correction level fixes it.
+        if contrast < ContrastPalette.riskyContrast {
+            return ScannabilityResult(level: .risky, reason: Self.contrastReason, fix: nil)
+        }
 
         if !decodes {
             return ScannabilityResult(level: .risky, reason: failReason(for: configuration), fix: failFix(for: configuration))
         }
 
-        // Decodes — but flag a low-contrast design that scanners struggle with
-        // in the real world (e.g. a pale code on white).
-        if let contrastReason = lowContrastReason(for: configuration) {
-            return ScannabilityResult(level: .risky, reason: contrastReason, fix: nil)
+        if inverted {
+            return ScannabilityResult(
+                level: .risky,
+                reason: String(
+                    localized: "scan.reason.inverted",
+                    defaultValue: "Light on dark: some older scanner apps can’t read it.",
+                    comment: "Why a QR code may not scan: its pattern is lighter than its background. Phone cameras read it; some older scanning apps do not."
+                ),
+                fix: nil
+            )
         }
 
         return .reliable
+    }
+
+    private static var contrastReason: String {
+        String(localized: "scan.reason.contrast", defaultValue: "Low contrast with the background.")
     }
 
     /// The rendered code composited over opaque white.
@@ -105,27 +131,14 @@ nonisolated final class ScannabilityChecker: Sendable {
         }
     }
 
-    /// Foreground-vs-background luminance gap, assuming the light surface the
-    /// code ends up on — white background or transparent alike.
-    private func lowContrastReason(for config: QRCodeConfiguration) -> String? {
-        let fg = config.foregroundStyle.primaryColorComponents
-        let luminance = 0.2126 * fg.r + 0.7152 * fg.g + 0.0722 * fg.b
-        // Pale foreground on white → poor scan contrast.
-        if luminance > 0.6 {
-            return String(localized: "scan.reason.contrast", defaultValue: "Low contrast with the background.")
-        }
-        return nil
-    }
 }
 
 nonisolated private extension ForegroundStyle {
-    /// Approx RGB (0…1) of the dominant foreground color.
-    var primaryColorComponents: (r: Double, g: Double, b: Double) {
-        let c: SerializableColor
+    /// The dominant foreground colour: the caption's colour too.
+    var inkColor: SerializableColor {
         switch self {
-        case .solid(let color): c = color
-        case .gradient(let g): c = g.startColor
+        case .solid(let color): color
+        case .gradient(let g): g.startColor
         }
-        return (c.red, c.green, c.blue)
     }
 }

@@ -187,11 +187,9 @@ final class ExportService: Sendable {
         """
 
         // Background
-        switch configuration.backgroundType {
-        case .white:
-            svg += "\n<rect width=\"\(matrix.size)\" height=\"\(fmt(totalViewBoxHeight))\" fill=\"#fff\"/>"
-        case .transparent, .transparentWithLogoCutout:
-            break
+        let backgroundHex = configuration.backgroundFill.map(svgFill)
+        if let backgroundHex {
+            svg += "\n<rect width=\"\(matrix.size)\" height=\"\(fmt(totalViewBoxHeight))\" fill=\"\(backgroundHex)\"/>"
         }
 
         // Gradient definition if needed
@@ -243,7 +241,7 @@ final class ExportService: Sendable {
             svg += generateSVGLogoElement(
                 logoData: logoData,
                 qrSize: CGFloat(matrix.size),
-                withBackground: configuration.backgroundType == .white
+                patchFill: backgroundHex
             )
         }
 
@@ -449,6 +447,12 @@ final class ExportService: Sendable {
         }
     }
 
+    /// Background fill: the short `#fff` for white, as before colours existed.
+    private func svgFill(_ color: SerializableColor) -> String {
+        let hex = colorToHex(color)
+        return hex == "#ffffff" ? "#fff" : hex
+    }
+
     private func colorToHex(_ color: SerializableColor) -> String {
         // Clamp to sRGB range — extended color spaces (Display P3) can
         // produce components outside 0…1 which break hex formatting.
@@ -493,7 +497,9 @@ final class ExportService: Sendable {
         )
     }
 
-    private func generateSVGLogoElement(logoData: Data, qrSize: CGFloat, withBackground: Bool = true) -> String {
+    /// `patchFill`: colour of the rounded patch that hides the modules behind
+    /// the logo, `nil` for none (transparent backgrounds).
+    private func generateSVGLogoElement(logoData: Data, qrSize: CGFloat, patchFill: String?) -> String {
         // qrSize is in module units (viewBox coordinates)
         let imageSize = getImageSize(from: logoData)
         let aspectRatio = imageSize.width / imageSize.height
@@ -527,8 +533,8 @@ final class ExportService: Sendable {
 
         var result = ""
 
-        if withBackground {
-            result += "\n<rect x=\"\(fmt(backgroundX))\" y=\"\(fmt(backgroundY))\" width=\"\(fmt(backgroundWidth))\" height=\"\(fmt(backgroundHeight))\" rx=\"\(fmt(cornerRadius))\" fill=\"#fff\"/>"
+        if let patchFill {
+            result += "\n<rect x=\"\(fmt(backgroundX))\" y=\"\(fmt(backgroundY))\" width=\"\(fmt(backgroundWidth))\" height=\"\(fmt(backgroundHeight))\" rx=\"\(fmt(cornerRadius))\" fill=\"\(patchFill)\"/>"
         }
 
         result += "\n<image x=\"\(fmt(logoX))\" y=\"\(fmt(logoY))\" width=\"\(fmt(logoWidth))\" height=\"\(fmt(logoHeight))\" href=\"data:\(imageType);base64,\(base64)\"/>"

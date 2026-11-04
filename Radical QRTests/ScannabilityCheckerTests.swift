@@ -49,4 +49,34 @@ final class ScannabilityCheckerTests: XCTestCase {
                           "A risky verdict must explain why or offer a fix")
         }
     }
+
+    // MARK: - Background colour
+
+    private let hardBlue = SerializableColor(red: 0.05, green: 0.15, blue: 0.75)
+
+    func testDarkCodeOnCreamIsReliable() {
+        var config = QRCodeConfiguration()
+        config.setBackground(.white, color: SerializableColor(red: 1.0, green: 0.97, blue: 0.9))
+        let result = checker.check(cgImage: render { $0 = config }, configuration: config)
+        XCTAssertEqual(result.level, .reliable)
+    }
+
+    func testLightCodeOnDarkBackgroundDecodesButWarns() {
+        var config = QRCodeConfiguration()
+        config.setBackground(.white, color: hardBlue)   // black follows to white
+        XCTAssertEqual(config.foregroundStyle, .solid(.white))
+        let result = checker.check(cgImage: render { $0 = config }, configuration: config)
+        XCTAssertEqual(result.level, .risky)
+        XCTAssertNil(result.fix, "Inverted is a property of the design, not a fault to fix")
+        XCTAssertNotNil(result.reason)     // a nil fix also means it decoded: failures always offer one
+    }
+
+    func testCodeTooCloseToTheBackgroundIsRisky() {
+        var config = QRCodeConfiguration()
+        config.backgroundColor = hardBlue                // set directly: no palette move
+        config.foregroundStyle = .solid(.navy)
+        let result = checker.check(cgImage: render { $0 = config }, configuration: config)
+        XCTAssertEqual(result.level, .risky)
+        XCTAssertNil(result.fix)
+    }
 }

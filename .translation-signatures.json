@@ -418,5 +418,12 @@
   "wifi.password.placeholder": "dc647eb65e6711e155375218212b3964",
   "wifi.security": "2fae32629d4ef4fc6341f1751b405e45",
   "wifi.suggestion.accept": "b95fb5ad6a6ffffd1da4de71912c26ae",
-  "wifi.suggestion.title": "a36b64ff41949ed4f0bdfafb3c70390c"
+  "wifi.suggestion.title": "a36b64ff41949ed4f0bdfafb3c70390c",
+  "background.color": "368d9ac76af05f714092bc808a426bfc",
+  "color.complement": "8e27980da3f20547aad0e1e6fa16266b",
+  "color.suggested": "5ab774221d990a3ef097f4fd3dfb3263",
+  "color.tone": "9cbd5c576c67049a4965a7ef49a47263",
+  "color.white": "25a81701fbfa4a1efdf660a950c1d006",
+  "scan.reason.inverted": "3794b0ed875ca50a4e6c09d3e37f0f48",
+  "Generate QR Code": "73b00356c62eb391f571b6468be7c372"
 }

@@ -115,4 +115,20 @@ final class ExportServiceSVGTests: XCTestCase {
         XCTAssertFalse(svg.contains("textLength="),
                        "Short captions must not be stretched to full width")
     }
+
+    // MARK: - Background colour
+
+    func testBackgroundColorFillsTheSVG() async throws {
+        let svg = try await makeSVG { config in
+            config.setBackground(.white, color: SerializableColor(red: 0.05, green: 0.15, blue: 0.75))
+        }
+        XCTAssertTrue(svg.contains("<rect width=\"") && svg.contains("fill=\"#0d26bf\""),
+                      "The background rect carries the chosen colour")
+        XCTAssertFalse(svg.contains("fill=\"#fff\""))
+    }
+
+    func testWhiteBackgroundStaysShortHex() async throws {
+        let svg = try await makeSVG { _ in }
+        XCTAssertTrue(svg.contains("fill=\"#fff\""))
+    }
 }

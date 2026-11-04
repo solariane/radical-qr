@@ -9,6 +9,14 @@ import SwiftUI
 nonisolated struct QRCodeConfiguration: Codable, Hashable, Sendable {
     var foregroundStyle: ForegroundStyle = .solid(.black)
     var backgroundType: BackgroundType = .white
+    /// Pro: colour of the opaque background, `nil` meaning white. Read only while
+    /// `backgroundType` is `.white` (opaque).
+    ///
+    /// A field of its own rather than a new `BackgroundType` case: 2.1.5 and
+    /// earlier fail on an unknown case and fall back to the default style for the
+    /// whole item, while an unknown key is simply skipped — a code synced from a
+    /// newer device keeps its colours and shape there, on white.
+    var backgroundColor: SerializableColor?
     var roundness: CGFloat = 0.0
     /// Independent roundness for the 3 finder-pattern "eyes" (0 = square, 1 = fully circular).
     /// Controls both the outer ring and the inner pupil of each eye.
@@ -124,6 +132,12 @@ nonisolated struct QRCodeConfiguration: Codable, Hashable, Sendable {
         }
     }
 
+    /// What fills the code's square, and the caption band and logo patch with it:
+    /// `nil` when the background is see-through.
+    var backgroundFill: SerializableColor? {
+        backgroundType == .white ? (backgroundColor ?? .white) : nil
+    }
+
     /// Automatically adjusts error correction when logo is present
     var effectiveErrorCorrectionLevel: ErrorCorrectionLevel {
         logoData != nil ? .high : errorCorrectionLevel
@@ -139,6 +153,7 @@ nonisolated extension QRCodeConfiguration {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         self.foregroundStyle = try c.decodeIfPresent(ForegroundStyle.self, forKey: .foregroundStyle) ?? .solid(.black)
         self.backgroundType = try c.decodeIfPresent(BackgroundType.self, forKey: .backgroundType) ?? .white
+        self.backgroundColor = try? c.decodeIfPresent(SerializableColor.self, forKey: .backgroundColor)
         self.roundness = try c.decodeIfPresent(CGFloat.self, forKey: .roundness) ?? 0.0
         self.eyeRoundness = try c.decodeIfPresent(CGFloat.self, forKey: .eyeRoundness) ?? 0.0
         // Migrate pre-eyeStyle configs by inferring a style from the old roundness.
@@ -272,6 +287,7 @@ nonisolated struct SerializableColor: Codable, Hashable, Sendable {
 
 nonisolated extension SerializableColor {
     static let black = SerializableColor(red: 0, green: 0, blue: 0)
+    static let white = SerializableColor(red: 1, green: 1, blue: 1)
     static let navy = SerializableColor(red: 0.118, green: 0.227, blue: 0.373) // #1e3a5f
     static let forest = SerializableColor(red: 0.176, green: 0.353, blue: 0.239) // #2d5a3d
     static let burgundy = SerializableColor(red: 0.447, green: 0.184, blue: 0.216) // #722f37

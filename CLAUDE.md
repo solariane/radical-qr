@@ -58,6 +58,7 @@ Radical QR/
 │       ├── PlaceDetector.swift          # An address on its own → place
 │       ├── ExportService.swift          # Export to various formats (incl. SVG)
 │       ├── PurchaseManager.swift        # StoreKit 2 wrapper
+│       ├── ContrastPalette.swift        # Swatches kept readable on a background color (OKLCH, WCAG ratio)
 │       ├── ReviewPrompter.swift         # When to ask for a review (local counters, shared with PNC)
 │       ├── CaptionGenerator.swift       # Auto-caption from QR content
 │       ├── AppDelegate.swift            # macOS: Services registration + URL interception
@@ -76,6 +77,7 @@ Radical QR/
 │   │   ├── ContentSuggestionBanner.swift # "Looks like …" offer for medium confidence
 │   │   ├── CustomizationRail.swift      # Icon rail: 5 setting families, one shown at a time
 │   │   ├── ColorGroupView.swift         # Solid, gradient, background
+│   │   ├── BackgroundRow.swift          # White, clear, logo cutout, any color (Pro)
 │   │   ├── ShapeGroupView.swift         # Modules, eyes, eye size
 │   │   ├── BrandGroupView.swift         # Logo + caption
 │   │   ├── SavedStylesStrip.swift       # Pro: the user's own saved styles
@@ -95,6 +97,7 @@ Radical QR/
 │   │   ├── DropZone.swift               # Drag & drop target
 │   │   ├── InputZone.swift              # Text input area
 │   │   ├── ColorPickerView.swift        # Color selection
+│   │   ├── ColorPickerTile.swift        # System color picker dressed as a SettingTile
 │   │   ├── GeneratorMetrics.swift       # Four size sets + the layout, chosen from the canvas measured
 │   │   ├── SettingTile.swift            # The one control shape: squircle + concentric ring
 │   │   ├── ShapeGlyphs.swift            # Vector previews — every option draws its result
@@ -139,7 +142,7 @@ RadicalQRShare/                          # Share Extension (iOS + macOS)
 | **Colors** | Full system color picker |
 | **Gradients** | Full color picker for gradient stops |
 | **Gradient Types** | Linear (all angles), Radial, Angular, Diamond |
-| **Background** | White or Transparent |
+| **Background** | White, Transparent, or **any color** (the ready-made code colors adjust to stay readable on it) |
 | **Export Formats** | PNG, JPEG, WebP, **PDF**, **SVG** |
 | **Export Size** | Unlimited (up to 4096px) |
 | **Logo Embedding** | Yes (centered, with automatic quiet zone) |
@@ -683,6 +686,25 @@ The two layouts live in `GeneratorView` as `columnLayout` and `splitLayout` and
 share `scrollArea`; the family panels are used unchanged by both, so a new
 family needs no layout work. In `.split` the save row moves *inside* the left
 column and is no longer pinned below the scroll area.
+
+### Background color (Pro)
+
+`QRCodeConfiguration.backgroundColor` is a field of its own, read only while
+`backgroundType` is `.white` (opaque): not a new `BackgroundType` case, because
+2.1.5 and earlier fail on an unknown case and drop the whole synced style, while
+they skip an unknown key and show the code on white. Draw with `backgroundFill`
+(nil when transparent): it paints the square, the caption band and the patch
+behind the logo, in `QRCodeRenderer` and in the SVG.
+
+Change the background only through `setBackground(_:color:)`. The swatch rows
+come from `ContrastPalette` (WCAG ratio, lightness moved in OKLCH): on a
+background where dark ink reads best, the free colors stay, darkened only if
+below 4.5:1 (gradient stops 3:1); on a dark one the row becomes white, a pale
+tone of the background's hue, its complement and three other hues. A code
+wearing swatch *i* moves to swatch *i* of the new row; a custom color is moved
+only if it falls below the target. Light-on-dark codes are decoded inverted by
+`ScannabilityChecker`, which then warns that some older scanner apps can't
+read them (phone cameras can).
 
 ## Notes for Claude
 

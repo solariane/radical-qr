@@ -256,8 +256,11 @@ export function eyeScaleGlyph(x, y, size, scale) {
   </g>`;
 }
 
-/** BackgroundGlyph — white paper, or the checkerboard that means transparent. */
-export function backgroundGlyph(x, y, size, type) {
+/**
+ * BackgroundGlyph — white paper, or the checkerboard that means transparent.
+ * `paint` ({ defs, fill }) paints the square instead: the colour option's tile.
+ */
+export function backgroundGlyph(x, y, size, type, paint = null) {
   const r = size * 0.22;
   const cell = size / 4;
   let squares = "";
@@ -272,7 +275,8 @@ export function backgroundGlyph(x, y, size, type) {
   const clipId = `bgClip${Math.round(x * 7 + y * 13 + size)}`;
   return `<g>
     <defs><clipPath id="${clipId}">${rrect(x, y, size, size, r, "")}</clipPath></defs>
-    ${rrect(x, y, size, size, r, `fill="#ffffff"`)}
+    ${paint ? paint.defs : ""}
+    ${rrect(x, y, size, size, r, `fill="${paint ? paint.fill : "#ffffff"}"`)}
     <g clip-path="url(#${clipId})">${squares}</g>
     ${rrect(x, y, size, size, r, `fill="none" stroke="${INK.hairline}" stroke-width="1"`)}
   </g>`;
@@ -852,13 +856,20 @@ export function colorFamily({ x, y, width, copy, selection = {}, m = METRICS }) 
     `<circle cx="${gx + side / 2}" cy="${gy + side / 2}" r="${side / 2}" fill="${fill}"/>`;
 
   let wheelSerial = 0;
-  const wheel = (gx, gy, side) => {
+  /** A fresh wheel gradient: `{ defs, fill }` to paint any shape with. */
+  const wheelFill = () => {
     const id = `wheel${wheelSerial += 1}`;
     const stops = ["#FF3B30", "#FFCC00", "#34C759", "#00C7BE", "#007AFF", "#AF52DE", "#FF3B30"];
-    return `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">${
-      stops.map((c, i) => `<stop offset="${i / (stops.length - 1)}" stop-color="${c}"/>`).join("")
-    }</linearGradient></defs>
-    <circle cx="${gx + side / 2}" cy="${gy + side / 2}" r="${side / 2}" fill="url(#${id})"/>`;
+    return {
+      defs: `<defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">${
+        stops.map((c, i) => `<stop offset="${i / (stops.length - 1)}" stop-color="${c}"/>`).join("")
+      }</linearGradient></defs>`,
+      fill: `url(#${id})`,
+    };
+  };
+  const wheel = (gx, gy, side) => {
+    const { defs, fill } = wheelFill();
+    return `${defs}<circle cx="${gx + side / 2}" cy="${gy + side / 2}" r="${side / 2}" fill="${fill}"/>`;
   };
 
   let gradSerial = 0;
@@ -894,10 +905,14 @@ export function colorFamily({ x, y, width, copy, selection = {}, m = METRICS }) 
       },
       {
         label: copy.labelBackground,
-        tiles: ["white", "transparent"].map((type) => ({
-          selected: type === background,
-          draw: (gx, gy, side) => backgroundGlyph(gx, gy, side, type),
-        })),
+        tiles: [
+          ...["white", "transparent"].map((type) => ({
+            selected: type === background,
+            draw: (gx, gy, side) => backgroundGlyph(gx, gy, side, type),
+          })),
+          // BackgroundRow's colour tile: Pro, a squircle painted with the wheel.
+          { locked: true, draw: (gx, gy, side) => backgroundGlyph(gx, gy, side, "white", wheelFill()) },
+        ],
       },
     ],
   });

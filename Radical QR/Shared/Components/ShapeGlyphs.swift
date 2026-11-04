@@ -151,12 +151,27 @@ struct EyeScaleGlyph: View {
 
 struct BackgroundGlyph: View {
     let type: BackgroundType
+    /// Paints the square instead of white (the colour option's tile).
+    var fill: AnyShapeStyle?
+
+    init(type: BackgroundType) {
+        self.type = type
+    }
+
+    init<S: ShapeStyle>(type: BackgroundType, fill: S) {
+        self.type = type
+        self.fill = AnyShapeStyle(fill)
+    }
 
     var body: some View {
         Canvas { context, size in
             let rect = CGRect(origin: .zero, size: size)
             let clip = Path(roundedRect: rect, cornerRadius: size.width * 0.22)
-            context.fill(clip, with: .color(QRGlyph.paper))
+            if let fill {
+                context.fill(clip, with: .style(fill))
+            } else {
+                context.fill(clip, with: .color(QRGlyph.paper))
+            }
 
             if type != .white {
                 let cell = size.width / 4
@@ -283,10 +298,10 @@ struct MiniQRGlyph: View {
             let unit = canvasSize.width / CGFloat(Self.size)
             let shading = QRGlyph.shading(for: configuration.foregroundStyle, in: canvasSize)
 
-            if configuration.backgroundType == .white {
+            if let fill = configuration.backgroundFill {
                 context.fill(
                     Path(roundedRect: CGRect(origin: .zero, size: canvasSize), cornerRadius: unit),
-                    with: .color(QRGlyph.paper)
+                    with: .color(configuration.backgroundColor == nil ? QRGlyph.paper : fill.color)
                 )
             }
 

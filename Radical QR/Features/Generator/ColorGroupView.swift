@@ -31,7 +31,7 @@ struct ColorGroupView: View {
         VStack(alignment: .leading, spacing: metrics.rowGap) {
             solidRow
             gradientRow
-            backgroundRow
+            BackgroundRow(configuration: $configuration, onLocked: onLocked)
         }
     }
 
@@ -42,13 +42,13 @@ struct ColorGroupView: View {
             SettingRowLabel(text: String(localized: "style.solid", defaultValue: "Solid color", comment: "A single flat colour, as opposed to a gradient. Not solid as in sturdy or solid matter."))
 
             TileRow {
-                ForEach(SerializableColor.freeColors, id: \.self) { color in
+                ForEach(Array(solids.enumerated()), id: \.offset) { index, color in
                     SettingTile(
                         width: metrics.swatch,
                         height: metrics.swatch,
                         contentScale: 0.64,
                         isSelected: !isGradient && solidColor == color,
-                        label: color.accessibilityName,
+                        label: solidName(at: index),
                         action: { configuration.foregroundStyle = .solid(color) }
                     ) {
                         Circle().fill(color.color)
@@ -87,13 +87,13 @@ struct ColorGroupView: View {
             SettingRowLabel(text: String(localized: "style.gradient", defaultValue: "Gradient", comment: "A colour gradient, two colours blending. Not a slope or a mathematical gradient."))
 
             TileRow {
-                ForEach(GradientConfiguration.freeGradients, id: \.self) { preset in
+                ForEach(Array(gradients.enumerated()), id: \.offset) { index, preset in
                     SettingTile(
                         width: metrics.swatch,
                         height: metrics.swatch,
                         contentScale: 0.64,
                         isSelected: isGradient && gradient.matchesStops(of: preset),
-                        label: preset.accessibilityName,
+                        label: GradientConfiguration.freeGradients[index].accessibilityName,
                         action: { configuration.foregroundStyle = .gradient(preset) }
                     ) {
                         Circle().fill(LinearGradient(
@@ -193,35 +193,30 @@ struct ColorGroupView: View {
         }
     }
 
-    // MARK: - Background
+    // MARK: - Palette
 
-    private var backgroundRow: some View {
-        VStack(alignment: .leading, spacing: metrics.labelGap) {
-            SettingRowLabel(text: String(localized: "customization.background", defaultValue: "Background"))
-
-            HStack(spacing: metrics.tileGap) {
-                ForEach(backgroundOptions, id: \.self) { type in
-                    SettingTile(
-                        width: metrics.tile,
-                        height: metrics.tile,
-                        isSelected: configuration.backgroundType == type,
-                        label: type.displayName,
-                        action: { configuration.backgroundType = type }
-                    ) {
-                        BackgroundGlyph(type: type)
-                    }
-                }
-                Spacer(minLength: 0)
-            }
-        }
+    /// The ready-made swatches, kept readable on the chosen background colour.
+    private var solids: [SerializableColor] {
+        ContrastPalette.solids(on: configuration.customBackground)
     }
 
-    private var backgroundOptions: [BackgroundType] {
-        var options: [BackgroundType] = [.white, .transparent]
-        if purchaseManager.isPro && configuration.logoData != nil {
-            options.append(.transparentWithLogoCutout)
+    private var gradients: [GradientConfiguration] {
+        ContrastPalette.gradients(on: configuration.customBackground)
+    }
+
+    /// On a light background the swatches are the free colours, darkened at
+    /// most, and keep their names. On a dark one the row is drawn from the
+    /// background: white, its own tone, its complement, then other hues.
+    private func solidName(at index: Int) -> String {
+        if let background = configuration.customBackground, !ContrastPalette.inkIsDark(on: background) {
+            switch index {
+            case 0: return String(localized: "color.white", defaultValue: "White", comment: "Name of a colour swatch: white.")
+            case 1: return String(localized: "color.tone", defaultValue: "Light shade of the background", comment: "Name of a colour swatch: a pale version of the background colour.")
+            case 2: return String(localized: "color.complement", defaultValue: "Complementary color", comment: "Name of a colour swatch: the colour opposite the background colour on the colour wheel.")
+            default: return String(localized: "color.suggested", defaultValue: "Suggested color", comment: "Name of a colour swatch picked to stand out on the background colour.")
+            }
         }
-        return options
+        return SerializableColor.freeColors[index].accessibilityName
     }
 
     // MARK: - Helpers
@@ -235,27 +230,6 @@ struct ColorGroupView: View {
     }
 
     private static let wheel: [Color] = [.red, .yellow, .green, .cyan, .blue, .purple, .red]
-}
-
-// MARK: - Color picker dressed as a tile
-
-private struct ColorPickerTile: View {
-    @Binding var color: Color
-    let label: String
-
-    @Environment(\.generatorMetrics) private var metrics
-
-    var body: some View {
-        ColorPicker("", selection: $color, supportsOpacity: false)
-            .labelsHidden()
-            .frame(width: metrics.swatch * 0.68, height: metrics.swatch * 0.68)
-            .frame(width: metrics.swatch, height: metrics.swatch)
-            .background(
-                RoundedRectangle(cornerRadius: metrics.swatch * 0.3, style: .continuous)
-                    .fill(.white.opacity(0.68))
-            )
-            .accessibilityLabel(label)
-    }
 }
 
 // MARK: - Gradient type glyph

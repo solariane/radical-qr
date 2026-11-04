@@ -102,12 +102,12 @@ nonisolated final class QRCodeRenderer: Sendable {
         context.scaleBy(x: 1, y: -1)
 
         // Draw background (only for the QR code area)
-        drawBackground(in: context, size: renderSize, type: configuration.backgroundType)
+        drawBackground(in: context, size: renderSize, fill: configuration.backgroundFill)
 
-        // If we have a caption area and background is white, fill caption area too
-        if captionHeight > 0 && configuration.backgroundType == .white {
+        // An opaque background runs under the caption too
+        if captionHeight > 0, let fill = configuration.backgroundFill {
             let captionRect = CGRect(x: 0, y: renderSize, width: renderSize, height: captionHeight)
-            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+            context.setFillColor(fill.cgColor)
             context.fill(captionRect)
         }
 
@@ -143,7 +143,7 @@ nonisolated final class QRCodeRenderer: Sendable {
                 in: context,
                 logoData: logoData,
                 size: renderSize,
-                backgroundType: configuration.backgroundType,
+                patchColor: configuration.backgroundFill,
                 totalHeight: totalRenderHeight
             )
         }
@@ -198,17 +198,15 @@ nonisolated final class QRCodeRenderer: Sendable {
     private func drawBackground(
         in context: CGContext,
         size: CGFloat,
-        type: BackgroundType
+        fill: SerializableColor?
     ) {
         let rect = CGRect(origin: .zero, size: CGSize(width: size, height: size))
 
-        switch type {
-        case .white:
-            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+        if let fill {
+            context.setFillColor(fill.cgColor)
             context.fill(rect)
-        case .transparent, .transparentWithLogoCutout:
-            // Both start with transparent background
-            // Logo cutout will draw white behind logo in drawLogo
+        } else {
+            // Transparent, with or without a logo cutout
             context.clear(rect)
         }
     }
@@ -562,7 +560,7 @@ nonisolated final class QRCodeRenderer: Sendable {
         in context: CGContext,
         logoData: Data,
         size: CGFloat,
-        backgroundType: BackgroundType,
+        patchColor: SerializableColor?,
         totalHeight: CGFloat? = nil
     ) {
         let canvasHeight = totalHeight ?? size
@@ -607,14 +605,13 @@ nonisolated final class QRCodeRenderer: Sendable {
             height: logoHeight
         )
 
-        // Draw white background behind logo only for .white background type
-        // - white: draw white background for logo visibility
-        // - transparent: no background (preserve logo transparency)
-        // - transparentWithLogoCutout: transparent cutout (no white, just the logo)
-        if backgroundType == .white {
+        // A patch of the background colour behind the logo hides the modules it
+        // covers. None on a transparent background (with or without cutout), so
+        // the logo keeps its own transparency.
+        if let patchColor {
             let padding: CGFloat = min(logoWidth, logoHeight) * 0.12
             let backgroundRect = logoRect.insetBy(dx: -padding, dy: -padding)
-            context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+            context.setFillColor(patchColor.cgColor)
 
             let cornerRadius = padding * 0.8
             let backgroundPath = CGPath(

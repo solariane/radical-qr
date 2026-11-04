@@ -167,16 +167,16 @@ struct CustomizationPanel: View {
             HStack(spacing: 12) {
                 BackgroundOptionButton(
                     type: .white,
-                    isSelected: configuration.backgroundType == .white
+                    isSelected: configuration.backgroundType == .white && configuration.backgroundColor == nil
                 ) {
-                    configuration.backgroundType = .white
+                    configuration.setBackground(.white)
                 }
 
                 BackgroundOptionButton(
                     type: .transparent,
                     isSelected: configuration.backgroundType == .transparent
                 ) {
-                    configuration.backgroundType = .transparent
+                    configuration.setBackground(.transparent)
                 }
 
                 // Logo cutout option - only show when logo is present and user is Pro
@@ -185,7 +185,7 @@ struct CustomizationPanel: View {
                         type: .transparentWithLogoCutout,
                         isSelected: configuration.backgroundType == .transparentWithLogoCutout
                     ) {
-                        configuration.backgroundType = .transparentWithLogoCutout
+                        configuration.setBackground(.transparentWithLogoCutout)
                     }
                 }
             }

@@ -1150,6 +1150,72 @@
         }
       }
     },
+    "background.color": {
+      "comment": "Pro option: pick any colour for the background of the generated QR code.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لون الخلفية"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hintergrundfarbe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Background color"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color de fondo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couleur d'arrière-plan"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पृष्ठभूमि का रंग"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colore dello sfondo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景色"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cor de fundo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景颜色"
+          }
+        }
+      }
+    },
     "background.logoCutout": {
       "comment": "Name of the background type that includes a white cutout for a logo.",
       "extractionState": "extracted_with_value",
@@ -2207,6 +2273,72 @@
         }
       }
     },
+    "color.complement": {
+      "comment": "Name of a colour swatch: the colour opposite the background colour on the colour wheel.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اللون المكمل"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Komplementärfarbe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Complementary color"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color complementario"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couleur complémentaire"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पूरक रंग"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colore complementare"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "補色"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cor complementar"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "补色"
+          }
+        }
+      }
+    },
     "color.custom": {
       "extractionState": "extracted_with_value",
       "localizations": {
@@ -2463,6 +2595,204 @@
           "stringUnit": {
             "state": "translated",
             "value": "海军"
+          }
+        }
+      }
+    },
+    "color.suggested": {
+      "comment": "Name of a colour swatch picked to stand out on the background colour.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اللون المقترح"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vorgeschlagene Farbe"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Suggested color"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Color sugerido"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couleur suggérée"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सुझाया गया रंग"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colore suggerito"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "推奨色"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cor sugerida"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建议颜色"
+          }
+        }
+      }
+    },
+    "color.tone": {
+      "comment": "Name of a colour swatch: a pale version of the background colour.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "درجة فاتحة من لون الخلفية"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Heller Farbton des Hintergrunds"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Light shade of the background"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tono claro del fondo"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nuance claire de la couleur de fond"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पृष्ठभूमि का हल्का शेड"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tonalità chiara dello sfondo"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景色の明るい色合い"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tom claro do fundo"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "背景色的浅色调"
+          }
+        }
+      }
+    },
+    "color.white": {
+      "comment": "Name of a colour swatch: white.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "أبيض"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weiß"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "White"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blanco"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Blanc"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "सफेद"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bianco"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "白"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branco"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "白色"
           }
         }
       }
@@ -21423,13 +21753,13 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "دائري بالكامل"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Ganz rund"
           }
         },
         "en": {
@@ -21441,43 +21771,43 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Totalmente redondo"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Entièrement rond"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "पूरी तरह गोल"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Completamente rotondo"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "完全な円形"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Totalmente redondo"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "全圆"
           }
         }
       }
@@ -21622,13 +21952,13 @@
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "زوايا مستديرة"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Abgerundete Ecken"
           }
         },
         "en": {
@@ -21640,43 +21970,43 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Esquinas redondeadas"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Coins arrondis"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "कोने गोल"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Angoli arrotondati"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "角が丸い"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "Cantos arredondados"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": ""
+            "value": "圆角"
           }
         }
       }
@@ -22198,6 +22528,72 @@
           "stringUnit": {
             "state": "translated",
             "value": "在我们的测试中没有扫描到。"
+          }
+        }
+      }
+    },
+    "scan.reason.inverted": {
+      "comment": "Why a QR code may not scan: its pattern is lighter than its background. Phone cameras read it; some older scanning apps do not.",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لون فاتح على خلفية داكنة: بعض تطبيقات المسح الضوئي القديمة لا تستطيع قراءته."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hell auf dunkel: Einige ältere Scan-Apps können ihn nicht lesen."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Light on dark: some older scanner apps can’t read it."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claro sobre oscuro: algunas aplicaciones de escaneo más antiguas no pueden leerlo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clair sur foncé : certaines anciennes applications de lecture ne parviennent pas à le lire."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "अँधेरे में प्रकाश: कुछ पुराने स्कैनर ऐप्स इसे नहीं पढ़ सकते।"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chiaro su scuro: alcune app di scansione meno recenti non riescono a leggerlo."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "明るい模様が暗い背景の上にある場合：一部の古いスキャンアプリでは読み取れないことがあります。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claro sobre escuro: alguns aplicativos de leitura mais antigos não conseguem lê-lo."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浅色图案配深色背景：某些较旧的扫描应用无法识别。"
           }
         }
       }
