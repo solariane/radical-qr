@@ -139,8 +139,7 @@
     <g opacity="1"><circle cx="599" cy="821" r="18.56" fill="#4B0082"/></g>
   </g><g>
     <rect x="642" y="792" width="58" height="58" rx="17.4" ry="17.4" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="0.5"><defs><linearGradient id="wheel1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
-    <circle cx="671" cy="821" r="18.56" fill="url(#wheel1)"/></g>
+    <g opacity="0.5"><defs><linearGradient id="wheel1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs><circle cx="671" cy="821" r="18.56" fill="url(#wheel1)"/></g>
     <circle cx="690.5" cy="801.5" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
     <g transform="translate(686.25 797.25) scale(0.085)">
     <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
@@ -170,8 +169,7 @@
     <circle cx="383" cy="914" r="18.56" fill="url(#gsw3)"/></g>
   </g><g>
     <rect x="426" y="885" width="58" height="58" rx="17.4" ry="17.4" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="0.5"><defs><linearGradient id="wheel2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
-    <circle cx="455" cy="914" r="18.56" fill="url(#wheel2)"/></g>
+    <g opacity="0.5"><defs><linearGradient id="wheel2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs><circle cx="455" cy="914" r="18.56" fill="url(#wheel2)"/></g>
     <circle cx="474.5" cy="894.5" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
     <g transform="translate(470.25 890.25) scale(0.085)">
     <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
@@ -182,6 +180,7 @@
     <rect x="210" y="978" width="64" height="64" rx="19.2" ry="19.2" fill="#ffffff" fill-opacity="1"/>
     <g opacity="1"><g>
     <defs><clipPath id="bgClip14473"><rect x="222.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" /></clipPath></defs>
+    
     <rect x="222.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" fill="#ffffff"/>
     <g clip-path="url(#bgClip14473)"></g>
     <rect x="222.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" fill="none" stroke="#C2BED2" stroke-width="1"/>
@@ -193,10 +192,26 @@
     <rect x="288" y="978" width="64" height="64" rx="19.2" ry="19.2" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="1"><g>
     <defs><clipPath id="bgClip15019"><rect x="300.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" /></clipPath></defs>
+    
     <rect x="300.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" fill="#ffffff"/>
     <g clip-path="url(#bgClip15019)"><rect x="300.48" y="990.48" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="320" y="990.48" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="310.24" y="1000.24" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="329.76" y="1000.24" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="300.48" y="1010" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="320" y="1010" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="310.24" y="1019.76" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/><rect x="329.76" y="1019.76" width="9.76" height="9.76" fill="#C2BED2" opacity="0.55"/></g>
     <rect x="300.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" fill="none" stroke="#C2BED2" stroke-width="1"/>
   </g></g>
+  </g><g>
+    <rect x="366" y="978" width="64" height="64" rx="19.2" ry="19.2" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="0.5"><g>
+    <defs><clipPath id="bgClip15565"><rect x="378.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" /></clipPath></defs>
+    <defs><linearGradient id="wheel3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
+    <rect x="378.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" fill="url(#wheel3)"/>
+    <g clip-path="url(#bgClip15565)"></g>
+    <rect x="378.48" y="990.48" width="39.04" height="39.04" rx="8.588799999999999" ry="8.588799999999999" fill="none" stroke="#C2BED2" stroke-width="1"/>
+  </g></g>
+    <circle cx="420.5" cy="987.5" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
+    <g transform="translate(416.25 983.25) scale(0.085)">
+    <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
+    <path d="M32 44 L32 32 A18 18 0 0 1 68 32 L68 44"
+      fill="none" stroke="#474747" stroke-width="11"/></g>
+  
   </g></g>
   </g>
     <g>

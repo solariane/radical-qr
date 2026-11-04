@@ -153,8 +153,7 @@
     <g opacity="1"><circle cx="771.139175257732" cy="292.5850515463917" r="17.28" fill="#4B0082"/></g>
   </g><g>
     <rect x="810.139175257732" y="265.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="0.5"><defs><linearGradient id="wheel1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
-    <circle cx="837.139175257732" cy="292.5850515463917" r="17.28" fill="url(#wheel1)"/></g>
+    <g opacity="0.5"><defs><linearGradient id="wheel1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs><circle cx="837.139175257732" cy="292.5850515463917" r="17.28" fill="url(#wheel1)"/></g>
     <circle cx="854.639175257732" cy="275.08505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
     <g transform="translate(850.389175257732 270.83505154639175) scale(0.085)">
     <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
@@ -184,8 +183,7 @@
     <circle cx="573.139175257732" cy="378.5850515463917" r="17.28" fill="url(#gsw3)"/></g>
   </g><g>
     <rect x="612.139175257732" y="351.58505154639175" width="54" height="54" rx="16.2" ry="16.2" fill="#ffffff" fill-opacity="0.68"/>
-    <g opacity="0.5"><defs><linearGradient id="wheel2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
-    <circle cx="639.139175257732" cy="378.5850515463917" r="17.28" fill="url(#wheel2)"/></g>
+    <g opacity="0.5"><defs><linearGradient id="wheel2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs><circle cx="639.139175257732" cy="378.5850515463917" r="17.28" fill="url(#wheel2)"/></g>
     <circle cx="656.639175257732" cy="361.08505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
     <g transform="translate(652.389175257732 356.83505154639175) scale(0.085)">
     <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
@@ -196,6 +194,7 @@
     <rect x="414.13917525773195" y="437.58505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="1"/>
     <g opacity="1"><g>
     <defs><clipPath id="bgClip8858"><rect x="425.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
+    
     <rect x="425.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="#ffffff"/>
     <g clip-path="url(#bgClip8858)"></g>
     <rect x="425.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
@@ -207,10 +206,26 @@
     <rect x="486.13917525773195" y="437.58505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="0.68"/>
     <g opacity="1"><g>
     <defs><clipPath id="bgClip9362"><rect x="497.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
+    
     <rect x="497.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="#ffffff"/>
     <g clip-path="url(#bgClip9362)"><rect x="497.83917525773194" y="449.28505154639174" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="516.139175257732" y="449.28505154639174" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="506.9891752577319" y="458.4350515463917" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="525.2891752577319" y="458.4350515463917" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="497.83917525773194" y="467.58505154639175" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="516.139175257732" y="467.58505154639175" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="506.9891752577319" y="476.73505154639173" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/><rect x="525.2891752577319" y="476.73505154639173" width="9.15" height="9.15" fill="#C2BED2" opacity="0.55"/></g>
     <rect x="497.83917525773194" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
   </g></g>
+  </g><g>
+    <rect x="558.139175257732" y="437.58505154639175" width="60" height="60" rx="18" ry="18" fill="#ffffff" fill-opacity="0.68"/>
+    <g opacity="0.5"><g>
+    <defs><clipPath id="bgClip9866"><rect x="569.839175257732" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" /></clipPath></defs>
+    <defs><linearGradient id="wheel3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3B30"/><stop offset="0.16666666666666666" stop-color="#FFCC00"/><stop offset="0.3333333333333333" stop-color="#34C759"/><stop offset="0.5" stop-color="#00C7BE"/><stop offset="0.6666666666666666" stop-color="#007AFF"/><stop offset="0.8333333333333334" stop-color="#AF52DE"/><stop offset="1" stop-color="#FF3B30"/></linearGradient></defs>
+    <rect x="569.839175257732" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="url(#wheel3)"/>
+    <g clip-path="url(#bgClip9866)"></g>
+    <rect x="569.839175257732" y="449.28505154639174" width="36.6" height="36.6" rx="8.052" ry="8.052" fill="none" stroke="#C2BED2" stroke-width="1"/>
+  </g></g>
+    <circle cx="608.639175257732" cy="447.08505154639175" r="7.5" fill="#ffffff" fill-opacity="0.95"/>
+    <g transform="translate(604.389175257732 442.83505154639175) scale(0.085)">
+    <rect x="20" y="44" width="60" height="48" rx="13" ry="13" fill="#474747"/>
+    <path d="M32 44 L32 32 A18 18 0 0 1 68 32 L68 44"
+      fill="none" stroke="#474747" stroke-width="11"/></g>
+  
   </g></g>
   </g>
   
