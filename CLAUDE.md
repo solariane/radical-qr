@@ -431,6 +431,15 @@ check gone, back from Finder on a Mac.
 - `requestReview` never shows in TestFlight; in Debug launch with
   `-review.alwaysAsk YES` to see it.
 
+### Testing Free and Pro
+
+Settings → "Testing" section, with Pro state: Auto (StoreKit) / Force Pro /
+Force Free. It shows in Debug, and in Release only when StoreKit's
+`AppTransaction.environment` is not `.production`: in TestFlight and at App
+Review, never in the App Store build (`PurchaseManager.canOverrideProState`).
+App Review sees it, so the review notes in App Store Connect explain it. The
+recipe, shared with Phone Number Cleaner, is §10 of `../CLAUDE.md`.
+
 ---
 
 ## Build Configuration

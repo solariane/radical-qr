@@ -16,10 +16,12 @@ final class PurchaseManager: ObservableObject {
 
     private var transactionListener: Task<Void, Error>?
 
-    #if DEBUG
-    /// Debug-only override to test Free / Pro states without a real purchase.
-    /// Compiled out entirely in Release builds — cannot reach the App Store.
-    enum DebugProOverride: String, CaseIterable, Identifiable {
+    /// Lets a tester see the app as a Free or a Pro user without buying or
+    /// refunding anything. Offered only where purchases are not real: a build
+    /// run from Xcode, or TestFlight (and App Review, which uses the same
+    /// sandbox — the review notes explain the section). The App Store build
+    /// asks StoreKit which environment it was signed for and never shows it.
+    enum TestProOverride: String, CaseIterable, Identifiable {
         case auto       // Use the real StoreKit entitlement state
         case forcePro   // Pretend Pro is unlocked
         case forceFree  // Pretend Pro is NOT unlocked
@@ -35,26 +37,34 @@ final class PurchaseManager: ObservableObject {
         }
     }
 
+    /// True in Debug, and once StoreKit says the app is not the App Store
+    /// build. Starts false in Release, so a failed check keeps it hidden.
+    #if DEBUG
+    @Published private(set) var canOverrideProState = true
+    #else
+    @Published private(set) var canOverrideProState = false
+    #endif
+
     /// Persisted across launches via UserDefaults; `@Published` so SwiftUI
-    /// views observing the manager re-render the instant it changes.
-    @Published var debugProOverride: DebugProOverride = .init(
+    /// views observing the manager re-render the instant it changes. A value
+    /// left over from TestFlight is ignored by the App Store build.
+    @Published var testProOverride: TestProOverride = .init(
         rawValue: UserDefaults.standard.string(forKey: "debug_pro_override") ?? ""
     ) ?? .auto {
         didSet {
-            UserDefaults.standard.set(debugProOverride.rawValue, forKey: "debug_pro_override")
+            UserDefaults.standard.set(testProOverride.rawValue, forKey: "debug_pro_override")
         }
     }
-    #endif
 
     /// Whether the user has Pro access
     var isPro: Bool {
-        #if DEBUG
-        switch debugProOverride {
-        case .forcePro: return true
-        case .forceFree: return false
-        case .auto: break
+        if canOverrideProState {
+            switch testProOverride {
+            case .forcePro: return true
+            case .forceFree: return false
+            case .auto: break
+            }
         }
-        #endif
         return purchasedProductIDs.contains(Self.proProductID)
     }
 
@@ -66,6 +76,7 @@ final class PurchaseManager: ObservableObject {
     private init() {
         transactionListener = listenForTransactions()
         Task {
+            await detectTestEnvironment()
             await loadProducts()
             await updatePurchasedProducts()
         }
@@ -73,6 +84,17 @@ final class PurchaseManager: ObservableObject {
 
     deinit {
         transactionListener?.cancel()
+    }
+
+    // MARK: - Test environment
+
+    /// TestFlight and Xcode builds are signed for the sandbox; the App Store
+    /// build for production. Anything unverified counts as production.
+    private func detectTestEnvironment() async {
+        #if !DEBUG
+        guard case .verified(let app)? = try? await AppTransaction.shared else { return }
+        canOverrideProState = app.environment != .production
+        #endif
     }
 
     // MARK: - Product Loading

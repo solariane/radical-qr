@@ -55,10 +55,10 @@ struct SettingsView: View {
                 // About section
                 aboutSection
 
-                #if DEBUG
-                // Developer-only section, compiled out of Release/App Store builds
-                debugSection
-                #endif
+                // Xcode and TestFlight only: never in the App Store build
+                if purchaseManager.canOverrideProState {
+                    testingSection
+                }
             }
             .navigationTitle(String(localized: "settings.title", defaultValue: "Settings"))
             #if os(iOS)
@@ -315,34 +315,35 @@ struct SettingsView: View {
         .contentShape(Rectangle())
     }
 
-    // MARK: - Debug Section (DEBUG builds only)
+    // MARK: - Testing Section (Xcode and TestFlight only)
 
-    #if DEBUG
-    private var debugSection: some View {
+    /// Not localized on purpose: testers only, and kept out of the catalog.
+    private var testingSection: some View {
         Section {
-            Picker("Pro state", selection: $purchaseManager.debugProOverride) {
-                ForEach(PurchaseManager.DebugProOverride.allCases) { option in
-                    Text(option.label).tag(option)
+            Picker(selection: $purchaseManager.testProOverride) {
+                ForEach(PurchaseManager.TestProOverride.allCases) { option in
+                    Text(verbatim: option.label).tag(option)
                 }
+            } label: {
+                Text(verbatim: "Pro state")
             }
             #if os(iOS)
             .pickerStyle(.segmented)
             #endif
 
             HStack {
-                Text("Currently")
+                Text(verbatim: "Currently")
                 Spacer()
-                Text(purchaseManager.isPro ? "PRO" : "FREE")
+                Text(verbatim: purchaseManager.isPro ? "PRO" : "FREE")
                     .font(.caption.bold())
                     .foregroundStyle(purchaseManager.isPro ? .green : .secondary)
             }
         } header: {
-            Text("Developer")
+            Text(verbatim: "Testing")
         } footer: {
-            Text("Not visible in Release / App Store builds.")
+            Text(verbatim: "Xcode and TestFlight builds only. The App Store version never shows this, and purchases here are not charged.")
         }
     }
-    #endif
 }
 
 // MARK: - Style Preset View
