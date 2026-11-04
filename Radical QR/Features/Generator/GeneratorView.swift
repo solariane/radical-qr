@@ -106,9 +106,7 @@ struct GeneratorView: View {
         }
         #endif
         #if os(iOS)
-        .onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
+        .dismissesKeyboardOnTap()
         .navigationBarTitleDisplayMode(.inline)
         // The mark and the name sit in the bar now; a material behind them would
         // put white on near-white, and the gradient is the app's backdrop anyway.
