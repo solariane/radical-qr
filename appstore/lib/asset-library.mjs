@@ -94,7 +94,9 @@ export async function uploadLibraryImage({ asc, fetchRetry, libraryId, filePath 
           category: "APP_SCREENSHOTS_AND_PREVIEWS",
           fileName,
           fileSize: buffer.length,
-          referenceName: fileName.replace(/\.png$/, ""),
+          // Unique per upload, as in tuv-ios: an image from an earlier upload keeps
+          // its name in the library (409 "already in use") until Apple archives it.
+          referenceName: `${fileName.replace(/\.png$/, "")}-${new Date().toISOString().slice(0, 16).replace(/[-:T]/g, "")}`,
         },
         relationships: { assetLibrary: { data: { type: "appAssetLibraries", id: libraryId } } },
       },
