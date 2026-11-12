@@ -9,8 +9,15 @@ import AppKit
 @Observable
 @MainActor
 final class DeepLinkHandler {
+    /// The app's one handler, so App Intents that open the app can hand it
+    /// content the same way a link or the share extension does.
+    static let shared = DeepLinkHandler()
+
     /// Content received from a deep link, ready to be used in the generator
     var pendingContent: String?
+
+    /// A history item an App Intent asked to open, with its style.
+    var pendingHistoryItemID: UUID?
 
     /// Processes an incoming URL and extracts any content to create a QR code
     /// - Parameter url: The incoming URL

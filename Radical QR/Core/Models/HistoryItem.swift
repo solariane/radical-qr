@@ -93,6 +93,45 @@ final class StylePreset {
     }
 }
 
+// MARK: - Recording
+
+extension HistoryItem {
+    /// Records a code in history. De-duplicates by content: an entry with the
+    /// same content gets the new style and a bumped usage count instead of a
+    /// twin. Keeps `FeatureLimit.maxHistoryItems` by pruning the oldest.
+    /// Used by the generator and by the App Intents.
+    @discardableResult
+    static func record(
+        content: String,
+        dataType: DataType,
+        configuration: QRCodeConfiguration,
+        in context: ModelContext
+    ) -> HistoryItem {
+        let descriptor = FetchDescriptor<HistoryItem>(
+            sortBy: [SortDescriptor(\.lastUsedAt, order: .reverse)]
+        )
+        let items = (try? context.fetch(descriptor)) ?? []
+
+        if let existing = items.first(where: { $0.content == content }) {
+            existing.setConfiguration(configuration)
+            existing.markUsed()
+            return existing
+        }
+
+        let newItem = HistoryItem(content: content, dataType: dataType, configuration: configuration)
+        context.insert(newItem)
+
+        // Prune anything beyond the cap (oldest first).
+        let overflow = items.count + 1 - FeatureLimit.maxHistoryItems
+        if overflow > 0 {
+            for item in items.suffix(overflow) {
+                context.delete(item)
+            }
+        }
+        return newItem
+    }
+}
+
 // MARK: - History Query Helpers
 
 extension HistoryItem {

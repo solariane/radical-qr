@@ -48,7 +48,7 @@ Radical QR/
 │   │   ├── ContactDraft.swift           # Editable card ⇄ vCard 3.0
 │   │   ├── PlaceDraft.swift             # Editable address ⇄ maps.apple.com/?address= link
 │   │   └── HistoryItem.swift            # SwiftData model for history
-│   └── Services/
+│   ├── Services/
 │       ├── QRCodeGenerator.swift        # Core QR generation (Core Image)
 │       ├── QRCodeRenderer.swift         # Custom rendering with styles
 │       ├── DataTypeDetector.swift       # Auto-detect input type + summarize
@@ -63,7 +63,14 @@ Radical QR/
 │       ├── CaptionGenerator.swift       # Auto-caption from QR content
 │       ├── AppDelegate.swift            # macOS: Services registration + URL interception
 │       ├── ServicesProvider.swift        # macOS: right-click Services handler
-│       └── DeepLinkHandler.swift        # radicalqr:// URL scheme handler
+│       ├── AppModelContainer.swift      # The one SwiftData container (windows + intents)
+│       └── DeepLinkHandler.swift        # radicalqr:// URL scheme handler (+ .shared for intents)
+│   └── Intents/
+│       ├── CreateQRCodeIntent.swift     # Siri/Shortcuts: text → QR file + snippet, no app opened
+│       ├── OpenInAppIntents.swift       # Open content in the generator; reopen a history code
+│       ├── QRIntentEntities.swift       # Saved styles + history codes as AppEntity
+│       ├── QRIntentSupport.swift        # Format enum, errors, payload, snippet view
+│       └── RadicalQRShortcuts.swift     # App Shortcuts: Siri phrases, Spotlight, Action button
 ├── Features/
 │   ├── Generator/
 │   │   ├── GeneratorView.swift          # Main generation interface
@@ -108,6 +115,7 @@ Radical QR/
 │       └── ScrollEdgeFade.swift         # Fades a scroll edge while there is more past it
 └── Resources/
     ├── Localizable.xcstrings            # 7 languages
+    ├── AppShortcuts.xcstrings           # Siri phrases, hand-translated (keep ${applicationName})
     ├── InfoPlist.xcstrings              # Plist display name translations
     └── ServicesMenu.xcstrings           # macOS Services item ("Generate QR Code"), hand-translated
 
@@ -441,6 +449,51 @@ App Review sees it, so the review notes in App Store Connect explain it. The
 recipe, shared with Phone Number Cleaner, is §10 of `../CLAUDE.md`.
 
 ---
+
+## Siri & Shortcuts (App Intents)
+
+Three intents in `Core/Intents/`, in the main target only (not the share
+extension):
+
+- **Create QR Code** (`CreateQRCodeIntent`) runs without opening the app and
+  returns the file (`IntentFile`) plus a snippet showing the code to scan.
+  The text goes through `QRIntentPayload.input(from:)`: a *high* confidence
+  event, Wi-Fi, contact or place is encoded as one, like a paste; anything
+  less stays as written. Free/Pro limits are the app's — PDF, SVG, more than
+  512 px and saved styles throw `QRIntentError.requiresPro`. A Pro run is
+  recorded in history (`HistoryItem.record`, shared with the generator).
+- **Open in Radical QR** sets `DeepLinkHandler.shared.pendingContent`, the
+  share extension's path.
+- **Open QR Code** (`OpenIntent` on `QRCodeEntity`) sets
+  `pendingHistoryItemID`; `GeneratorView` loads the item with its style.
+
+Entities: `SavedStyleEntity` (≤ 4) and `QRCodeEntity` (history, ≤ 100), both
+`EnumerableEntityQuery`, read through `AppModelContainer.shared`. That container
+is in memory under XCTest, so tests never touch the real history or iCloud.
+Call `PurchaseManager.refreshEntitlements()` before checking Pro in an intent:
+the process may have been launched for it a moment ago.
+
+Isolation: the target defaults to `MainActor`. Intents and entities with
+`@Parameter`/`@Property` stay plain `struct`s (`nonisolated` is refused on
+their wrappers); queries, enums and errors are `nonisolated`, with
+`@MainActor` on the methods that touch SwiftData.
+
+Strings: titles and descriptions are keyed (`intent.*`) in
+`Localizable.xcstrings` and go through DeepL; `format-specifiers.mjs` now
+protects `${…}` placeholders (parameter summaries) as it does `%@`. The Siri
+phrases are in `AppShortcuts.xcstrings`, written by hand in the ten
+languages — Siri matches them word for word. DeepL's first pass on these strings gave
+"PNG" as Papua New Guinea and "Content" as a table of contents (目次): the
+format names and the sentences around `${content}` are reserved in
+`translation-manual-keys.json` and hand-written.
+
+**Siri AI** (preview in the 27.3 betas, App Store submission in spring 2027):
+when Xcode 27.3 is installed, mark `CreateQRCodeIntent` and `OpenQRCodeIntent`
+with `@AppIntent(.tool)`. Their titles and descriptions were written for a
+model choosing between tools. Not available in the EU on iOS/iPadOS for now
+(macOS is). Next steps: Spotlight indexing of history (`IndexedEntity`,
+iOS 18+), the code on screen as an entity, a `SKILL.md` ("QR code of this
+event / page / card").
 
 ## Build Configuration
 

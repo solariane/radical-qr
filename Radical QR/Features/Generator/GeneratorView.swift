@@ -145,7 +145,12 @@ struct GeneratorView: View {
                 deepLinkHandler.clearPendingContent()
             }
         }
+        .onChange(of: deepLinkHandler.pendingHistoryItemID) { _, id in
+            if id != nil { openPendingHistoryItem() }
+        }
         .onAppear {
+            // An App Intent that launched the app to open a history item.
+            openPendingHistoryItem()
             // Handle any pending content on appear (for cold launch)
             if let content = deepLinkHandler.pendingContent {
                 Task { @MainActor in
@@ -751,6 +756,17 @@ struct GeneratorView: View {
         guard NSApp.isActive else { return }
         #endif
         ReviewPrompter.shared.requestIfDue { requestReview() }
+    }
+
+    /// Loads the history item an App Intent asked for, with its style.
+    @MainActor
+    private func openPendingHistoryItem() {
+        guard let id = deepLinkHandler.pendingHistoryItemID else { return }
+        deepLinkHandler.pendingHistoryItemID = nil
+        let descriptor = FetchDescriptor<HistoryItem>(predicate: #Predicate { $0.id == id })
+        if let item = try? modelContext.fetch(descriptor).first {
+            viewModel.loadFromHistory(item)
+        }
     }
 
     @MainActor

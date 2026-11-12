@@ -86,6 +86,14 @@ final class PurchaseManager: ObservableObject {
         transactionListener?.cancel()
     }
 
+    /// Reads the entitlements again and waits for them. An App Intent can run
+    /// in a process launched for it a moment ago, before `init`'s own task has
+    /// finished: without this, a Pro user would be treated as Free.
+    func refreshEntitlements() async {
+        await detectTestEnvironment()
+        await updatePurchasedProducts()
+    }
+
     // MARK: - Test environment
 
     /// TestFlight and Xcode builds are signed for the sandbox; the App Store

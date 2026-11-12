@@ -421,33 +421,12 @@ final class GeneratorViewModel: ObservableObject {
     /// Enforces `FeatureLimit.maxHistoryItems` by pruning the oldest entries.
     func recordHistory(in context: ModelContext) {
         guard let input = currentInput else { return }
-        let content = input.content
-
-        let descriptor = FetchDescriptor<HistoryItem>(
-            sortBy: [SortDescriptor(\.lastUsedAt, order: .reverse)]
+        HistoryItem.record(
+            content: input.content,
+            dataType: detectedDataType,
+            configuration: configuration,
+            in: context
         )
-        let items = (try? context.fetch(descriptor)) ?? []
-
-        if let existing = items.first(where: { $0.content == content }) {
-            existing.setConfiguration(configuration)
-            existing.markUsed()
-        } else {
-            let newItem = HistoryItem(
-                content: content,
-                dataType: detectedDataType,
-                configuration: configuration
-            )
-            context.insert(newItem)
-
-            // Prune anything beyond the cap (oldest first).
-            let overflow = items.count + 1 - FeatureLimit.maxHistoryItems
-            if overflow > 0 {
-                let toDelete = items.suffix(overflow)
-                for item in toDelete {
-                    context.delete(item)
-                }
-            }
-        }
     }
 
     /// Loads a history item into the generator, replacing both the current input
