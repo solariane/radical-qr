@@ -86,6 +86,7 @@ struct DropZone: View {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title2)
                             .foregroundStyle(.white.opacity(0.7))
+                            .touchTarget(10, leading: 6)
                     }
                     .buttonStyle(.plain)
                     .transition(.scale.combined(with: .opacity))

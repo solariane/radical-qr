@@ -40,6 +40,7 @@ struct BrandGroupView: View {
                             .foregroundStyle(.white.opacity(0.85))
                             .frame(width: 30, height: 30)
                             .background(Circle().fill(.white.opacity(0.18)))
+                            .touchTarget(7)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel(String(localized: "logo.remove", defaultValue: "Remove logo"))

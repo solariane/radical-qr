@@ -31,6 +31,7 @@ struct ContentSuggestionBanner: View {
                 Image(systemName: "xmark")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
+                    .touchTarget(16, leading: 5)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "suggestion.dismiss", defaultValue: "Keep as text",

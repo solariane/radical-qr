@@ -782,3 +782,10 @@ read them (phone cameras can).
 - When adding features, update this document
 - Test on both iOS and macOS targets
 - Ensure accessibility labels for all interactive elements
+- An icon-only `.plain` button answers only where its glyph draws: put
+  `.touchTarget()` (`Shared/Modifiers/TouchTarget.swift`) on its label — 44pt
+  on iOS, 36pt asked by Touch on Mac — with `leading:`/`trailing:` cut to half
+  the stack spacing beside another control. A full-width row button needs
+  `.contentShape(Rectangle())` or its blank part does not answer.
+- Touch on Mac (macOS 27.3): `NSIsTouchNative` in Info.plist only once tested
+  under Xcode 27.3; native controls (sliders, steppers, menus) adapt alone.

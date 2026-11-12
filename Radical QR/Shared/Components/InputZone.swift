@@ -105,6 +105,7 @@ struct InputZone: View {
                         Image(systemName: "xmark.circle.fill")
                             .font(.title3)
                             .foregroundStyle(.secondary)
+                            .touchTarget(leading: 4, trailing: 4)
                     }
                     .buttonStyle(.plain)
                     .transition(.scale.combined(with: .opacity))
@@ -118,6 +119,7 @@ struct InputZone: View {
                         Image(systemName: "folder")
                             .font(.title3)
                             .foregroundStyle(Color.accentColor)
+                            .touchTarget(leading: 4)
                     }
                     .buttonStyle(.plain)
                 }
@@ -207,6 +209,7 @@ struct InputZone: View {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.title2)
                                 .foregroundStyle(.white.opacity(0.7))
+                                .touchTarget(10, leading: 6)
                         }
                         .buttonStyle(.plain)
                         .transition(.scale.combined(with: .opacity))
@@ -320,6 +323,7 @@ struct InputSummaryChip: View {
                 Image(systemName: "xmark.circle.fill")
                     .font(.title3)
                     .foregroundStyle(.secondary)
+                    .touchTarget()
             }
             .buttonStyle(.plain)
         }

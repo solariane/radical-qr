@@ -41,6 +41,7 @@ struct EditorCard<Content: View>: View {
                 Image(systemName: "xmark.circle.fill")
                     .font(.title3)
                     .foregroundStyle(.secondary)
+                    .touchTarget(leading: 4)
             }
             .buttonStyle(.plain)
             .accessibilityLabel(String(localized: "editor.clear", defaultValue: "Clear",
