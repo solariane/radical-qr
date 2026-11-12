@@ -1,5 +1,9 @@
 Radical QR 2.2.0
 
-• Pro: Geben Sie Ihrem Code eine beliebige Hintergrundfarbe. Die vorgefertigten Farben passen sich an, damit der Code leicht lesbar bleibt – wählen Sie ein dunkles Blau und erhalten Sie Weiß, Hellblau, Gold und mehr.
+• Pro: Verleihen Sie Ihrem Code eine beliebige Hintergrundfarbe. Die vorgefertigten Farben passen sich automatisch an, damit der Code gut lesbar bleibt – wählen Sie ein tiefes Blau und es werden Weiß, helles Blau, Gold und mehr angeboten.
 
-• Die Schaltfläche „Einfügen“ funktioniert wieder auf iPhone und iPad.
+• Siri und Kurzbefehle: Bitten Sie Siri, einen QR-Code mit Radical QR zu erstellen, oder nutzen Sie die App in einem Kurzbefehl. Der Code wird erstellt, ohne die App zu öffnen, und ein eingefügter Termin, ein WLAN-Netzwerk oder eine Kontaktkarte wird direkt kodiert.
+
+• Kleine Schaltflächen lassen sich leichter mit dem Finger antippen.
+
+• Die Einfügen-Taste funktioniert auf iPhone und iPad wieder.

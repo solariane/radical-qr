@@ -1,5 +1,9 @@
 Radical QR 2.2.0
 
-• Pro: scegli qualsiasi colore di sfondo per il tuo codice. I colori predefiniti si adattano automaticamente per mantenere il codice facilmente scansionabile — scegli un blu intenso e ti verranno proposti bianco, azzurro chiaro, oro e altro.
+• Pro: scegli qualsiasi colore di sfondo per il tuo codice. I colori predefiniti si adattano automaticamente per mantenere il codice facile da scansionare — seleziona un blu intenso e ti verranno proposti bianco, azzurro chiaro, oro e altro ancora.
+
+• Siri e Comandi Rapidi: chiedi a Siri di creare un codice QR con Radical QR, oppure utilizzalo in un comando rapido. Il codice viene generato senza aprire l'app e un evento, una rete Wi-Fi o una scheda contatto incollati vengono codificati come tali.
+
+• I pulsanti piccoli sono più facili da toccare con un dito.
 
 • Il pulsante Incolla funziona di nuovo su iPhone e iPad.

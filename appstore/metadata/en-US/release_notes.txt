@@ -2,4 +2,8 @@ Radical QR 2.2.0
 
 • Pro: give your code any background color. The ready-made colors follow it so the code stays easy to scan — pick a deep blue and you are offered white, pale blue, gold and more.
 
+• Siri and Shortcuts: ask Siri to create a QR code with Radical QR, or use it in a shortcut. The code is made without opening the app, and a pasted event, Wi-Fi network or contact card is encoded as one.
+
+• Small buttons are easier to tap with a finger.
+
 • The Paste button works again on iPhone and iPad.

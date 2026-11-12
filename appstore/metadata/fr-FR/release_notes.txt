@@ -2,4 +2,8 @@ Radical QR 2.2.0
 
 • Pro : donnez à votre code la couleur de fond de votre choix. Les couleurs proposées s'y adaptent pour que le code reste facile à scanner — choisissez un bleu profond, et on vous propose blanc, bleu pâle, or et d'autres.
 
+• Siri et Raccourcis : demandez à Siri de créer un code QR avec Radical QR, ou utilisez-le dans un raccourci. Le code est créé sans ouvrir l'app, et un événement, un réseau Wi-Fi ou une fiche contact collés sont encodés comme tels.
+
+• Les petits boutons sont plus faciles à toucher du doigt.
+
 • Le bouton Coller fonctionne de nouveau sur iPhone et iPad.

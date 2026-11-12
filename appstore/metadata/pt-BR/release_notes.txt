@@ -1,5 +1,9 @@
 Radical QR 2.2.0
 
-• Pro: dê qualquer cor de fundo ao seu código. As cores prontas o acompanham para que o código continue fácil de escanear — escolha um azul escuro e você verá branco, azul claro, dourado e mais.
+• Pro: dê ao seu código qualquer cor de fundo. As cores prontas se adaptam automaticamente para que o código continue fácil de escanear — escolha um azul profundo e você terá branco, azul claro, dourado e mais.
 
-• O botão Colar funciona novamente no iPhone e iPad.
+• Siri e Atalhos: peça à Siri para criar um código QR com o Radical QR, ou use em um atalho. O código é criado sem abrir o app, e um evento colado, rede Wi-Fi ou cartão de contato é codificado diretamente.
+
+• Botões pequenos ficaram mais fáceis de tocar com o dedo.
+
+• O botão Colar voltou a funcionar no iPhone e iPad.
