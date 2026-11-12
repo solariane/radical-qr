@@ -42,19 +42,25 @@ nonisolated enum QRIntentError: Error, CustomLocalizedStringResourceConvertible 
     case notFound
     case renderingFailed
 
+    // Resolved here, in the app: a LocalizedStringResource handed over as is
+    // is read by Shortcuts in its own bundle, and shows in English.
     var localizedStringResource: LocalizedStringResource {
+        LocalizedStringResource(stringLiteral: message)
+    }
+
+    private var message: String {
         switch self {
         case .emptyContent:
-            LocalizedStringResource("intent.error.empty", defaultValue: "There is nothing to put in the QR code.")
+            String(localized: "intent.error.empty", defaultValue: "There is nothing to put in the QR code.")
         case .requiresPro:
-            LocalizedStringResource(
-                "intent.error.pro",
+            String(
+                localized: "intent.error.pro",
                 defaultValue: "This option is part of Radical QR Pro. Open the app to unlock it."
             )
         case .notFound:
-            LocalizedStringResource("intent.error.notFound", defaultValue: "This QR code is no longer in your history.")
+            String(localized: "intent.error.notFound", defaultValue: "This QR code is no longer in your history.")
         case .renderingFailed:
-            LocalizedStringResource("intent.error.rendering", defaultValue: "The QR code could not be drawn.")
+            String(localized: "intent.error.rendering", defaultValue: "The QR code could not be drawn.")
         }
     }
 }

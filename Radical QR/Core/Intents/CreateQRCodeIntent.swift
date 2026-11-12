@@ -120,7 +120,8 @@ struct CreateQRCodeIntent: AppIntent {
         let summary = QRIntentPayload.summary(for: input)
         return .result(
             value: file,
-            dialog: IntentDialog(LocalizedStringResource("intent.create.done", defaultValue: "Here is your QR code.")),
+            // Resolved in the app: see QRIntentError.
+            dialog: IntentDialog(stringLiteral: String(localized: "intent.create.done", defaultValue: "Here is your QR code.")),
             view: QRCodeSnippetView(image: preview, summary: summary)
         )
     }

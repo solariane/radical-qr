@@ -487,6 +487,11 @@ languages — Siri matches them word for word. DeepL's first pass on these strin
 format names and the sentences around `${content}` are reserved in
 `translation-manual-keys.json` and hand-written.
 
+Messages built at run time (dialogs, errors) are resolved in the app with
+`String(localized:)` and handed over as plain text: a `LocalizedStringResource`
+passed as is is read by Shortcuts in its own bundle and shows in English
+(seen in the simulator on 12 Nov 2026). Static titles and descriptions are fine.
+
 **Siri AI** (preview in the 27.3 betas, App Store submission in spring 2027):
 when Xcode 27.3 is installed, mark `CreateQRCodeIntent` and `OpenQRCodeIntent`
 with `@AppIntent(.tool)`. Their titles and descriptions were written for a
