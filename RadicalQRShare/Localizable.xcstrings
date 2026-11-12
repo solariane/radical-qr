@@ -138,13 +138,13 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "مسح"
+            "value" : "شفاف"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lösch"
+            "value" : "Transparent"
           }
         },
         "en" : {
@@ -156,43 +156,43 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar"
+            "value" : "Transparente"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Effacer"
+            "value" : "Transparent"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "स्पष्ट"
+            "value" : "पारदर्शी"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancella"
+            "value" : "Trasparente"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "クリア"
+            "value" : "透明"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Limpar"
+            "value" : "Transparente"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清除"
+            "value" : "透明"
           }
         }
       }
@@ -3240,7 +3240,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "イベント"
+            "value" : "%@のイベント"
           }
         },
         "pt-BR" : {
@@ -3328,7 +3328,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "الموقع: %1$$@، %2$@"
+            "value" : "الموقع: %1$@، %2$@"
           }
         },
         "de" : {
@@ -3435,7 +3435,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "にSMS"
+            "value" : "SMSを %@ に送信"
           }
         },
         "pt-BR" : {

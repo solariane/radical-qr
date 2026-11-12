@@ -13,6 +13,9 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const defaults = [
   path.join(here, "Radical QR/Resources/Localizable.xcstrings"),
   path.join(here, "Radical QR/Resources/InfoPlist.xcstrings"),
+  path.join(here, "Radical QR/Resources/AppShortcuts.xcstrings"),
+  // The share extension compiles its own copy of the shared strings.
+  path.join(here, "RadicalQRShare/Localizable.xcstrings"),
 ];
 
 /** Every stringUnit under a localization, keyed by its variation path ("plural.one"). */

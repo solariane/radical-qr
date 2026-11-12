@@ -39,6 +39,19 @@
     "help.recognition.ask.detail": "Quotes the button editor.keepAsText — copy that translation verbatim, or the help names a button the app does not have.",
     "help.writtenPlace.description": "Maps is Apple's app under its local name (Plans, Karten, Mappe, マップ), never the English “Maps”.",
     "help.recognition.local.detail": "Same: if it names Maps, use the app's local name.",
-    "help.services.detail": "Names the Services menu path, which must match ServicesMenu.xcstrings word for word; DeepL turned › into an apostrophe and translated the item freely."
+    "help.services.detail": "Names the Services menu path, which must match ServicesMenu.xcstrings word for word; DeepL turned › into an apostrophe and translated the item freely.",
+    "PNG": "File format name, never translated — came back as Papua New Guinea (Papúa Nueva Guinea, 巴布亚新几内亚, بابوا غينيا الجديدة).",
+    "JPEG": "File format name, never translated or transliterated (जेपीईजी).",
+    "WebP": "Same as JPEG.",
+    "PDF": "Same as JPEG.",
+    "SVG": "Same as JPEG.",
+    "intent.create.content": "What a QR code holds (内容) — 目次 is a table of contents.",
+    "intent.code.content": "Same as intent.create.content.",
+    "intent.code.kind": "The type of a code (प्रकार) — “kind” came back as benevolent (दयालु).",
+    "intent.error.empty": "Means the content is empty; DeepL read “nothing needs to be entered” (de, ar, zh).",
+    "Create a QR code of ${content}": "Shortcuts sentence around a parameter: ja/zh/hi put ${content} at the end, cut from its particle.",
+    "Open ${content} in Radical QR": "Same; ar added “the link”, ja/zh/hi broke the order.",
+    "intent.open.title": "ja/zh/hi split “Open in” from the app name ([ここで開く]Radical QR).",
+    "background.transparent": "Source is “Clear”: a see-through background, not the verb — came back as Effacer, Lösch, クリア, مسح."
   }
 }

@@ -9,9 +9,15 @@
 // Two strings agree when every argument keeps the same conversion (a positional
 // "%2$@ … %1$@" may reorder "%@ … %@"), the number of literal "%%" is the same,
 // and no stray "%" is left that is not a valid specifier.
+//
+// App Intents strings carry placeholders of their own — "${applicationName}"
+// in a Siri phrase, "${content}" in a parameter summary. DeepL translates them
+// ("${nomApplication}") and Siri then never matches the phrase, so they are
+// protected and compared like Xcode's %#@name@ substitutions.
 
-// %[n$][flags][width][.precision][length]conversion, plus Xcode's %#@name@.
-const SPEC = /%(?:%|#@[A-Za-z0-9_]+@|(?:(\d+)\$)?[-+ #0']*(?:\d+|\*)?(?:\.(?:\d+|\*))?(hh|h|ll|l|q|L|z|t|j)?([@dDiuUxXoOfFeEgGcCsSpaA]))/g;
+// %[n$][flags][width][.precision][length]conversion, plus Xcode's %#@name@
+// and App Intents' ${name}.
+const SPEC = /\$\{[A-Za-z0-9_]+\}|%(?:%|#@[A-Za-z0-9_]+@|(?:(\d+)\$)?[-+ #0']*(?:\d+|\*)?(?:\.(?:\d+|\*))?(hh|h|ll|l|q|L|z|t|j)?([@dDiuUxXoOfFeEgGcCsSpaA]))/g;
 
 /**
  * Tokens of `text`, in order: { raw, kind: "arg"|"percent"|"subst"|"stray", index?, conv? }.
@@ -32,7 +38,7 @@ export function parseSpecifiers(text) {
     last = m.index + m[0].length;
     const raw = m[0];
     if (raw === "%%") { tokens.push({ raw, kind: "percent" }); continue; }
-    if (raw.startsWith("%#@")) { tokens.push({ raw, kind: "subst" }); continue; }
+    if (raw.startsWith("%#@") || raw.startsWith("${")) { tokens.push({ raw, kind: "subst" }); continue; }
     const index = m[1] ? Number(m[1]) : next++;
     const conv = raw.slice(1).replace(/^\d+\$/, "");
     tokens.push({ raw, kind: "arg", index, conv });
